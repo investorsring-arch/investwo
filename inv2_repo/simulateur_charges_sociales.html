@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur CNSS & Paie — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--er:#B91C1C;--wn:#C05820;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.header{position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  border-bottom:1px solid rgba(184,134,42,.2)}
+.hl{display:flex;align-items:center;gap:14px}
+.back{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none}.back:hover{color:var(--gl)}
+.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:#fff}.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:10px;color:var(--gl);background:rgba(184,134,42,.12);
+  border:1px solid rgba(184,134,42,.25);padding:4px 10px;border-radius:100px}
+.disc{font-size:11px;color:rgba(255,255,255,.25);font-family:var(--fm)}
+
+.page{max-width:1200px;margin:0 auto;padding:32px 32px 80px}
+.page-title{font-family:var(--ft);font-size:26px;font-weight:800;margin-bottom:6px}
+.page-title span{color:var(--gold)}
+.page-sub{font-size:14px;color:var(--sm);margin-bottom:28px;line-height:1.65}
+
+.tabs{display:flex;gap:4px;margin-bottom:28px;background:var(--b2);border-radius:12px;padding:4px;width:fit-content}
+.tab{padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;
+  border:none;background:none;color:var(--sm);transition:all .2s;font-family:var(--fb)}
+.tab.active{background:var(--wh);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tab-panel{display:none}.tab-panel.show{display:block}
+
+.sim-panel{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+@media(max-width:900px){.sim-panel{grid-template-columns:1fr}}
+
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:22px;margin-bottom:16px}
+.card-title{font-family:var(--ft);font-size:14px;font-weight:800;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px}
+.ct-badge{font-family:var(--fm);font-size:9px;padding:2px 8px;border-radius:100px;
+  background:var(--gp);color:var(--gold);border:1px solid rgba(184,134,42,.2)}
+
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--is);
+  margin-bottom:5px;text-transform:uppercase;font-family:var(--fm)}
+.fg input,.fg select{width:100%;padding:10px 13px;border:1.5px solid var(--bd);border-radius:9px;
+  font-family:var(--fb);font-size:14px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus{border-color:var(--gold);background:var(--wh)}
+.fg .hint{font-size:11px;color:var(--sm);margin-top:4px;font-family:var(--fm)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* BULLETIN DE PAIE */
+.bulletin{background:var(--wh);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.bul-header{background:var(--ink);padding:18px 20px;color:#fff}
+.bul-company{font-family:var(--ft);font-size:16px;font-weight:800;margin-bottom:4px}
+.bul-info{display:flex;gap:24px;flex-wrap:wrap;margin-top:8px}
+.bul-info-item{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.5)}
+.bul-info-item strong{color:rgba(255,255,255,.85);display:block;font-size:11px}
+.bul-body{padding:0}
+.bul-section{padding:12px 20px;border-bottom:1px solid var(--bd)}
+.bul-section-title{font-family:var(--fm);font-size:9px;color:var(--gold);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:8px}
+.bul-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
+  padding:6px 0;font-size:12.5px;border-bottom:1px solid rgba(0,0,0,.04)}
+.bul-row:last-child{border:none}
+.bul-row .br-label{color:var(--is)}
+.bul-row .br-base{font-family:var(--fm);font-size:11px;color:var(--sm);text-align:right;min-width:100px}
+.bul-row .br-montant{font-family:var(--fm);font-weight:600;text-align:right;min-width:90px}
+.bul-row.positive .br-montant{color:var(--ok)}
+.bul-row.negative .br-montant{color:var(--er)}
+.bul-row.subtotal{background:var(--b2);border-radius:6px;padding:7px 10px;margin:4px 0;font-weight:700}
+.bul-footer{padding:16px 20px;background:var(--b2)}
+.bul-net{display:flex;justify-content:space-between;align-items:center}
+.bul-net-label{font-family:var(--ft);font-size:14px;font-weight:800}
+.bul-net-amount{font-family:var(--ft);font-size:28px;font-weight:800;color:var(--ok)}
+
+/* COTISATIONS TABLEAU */
+.cotis-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.cotis-table th{padding:8px 12px;background:var(--b2);color:var(--sm);font-family:var(--fm);
+  font-size:9px;letter-spacing:.07em;text-transform:uppercase;border-bottom:1px solid var(--bd);text-align:left}
+.cotis-table td{padding:9px 12px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.cotis-table tr:last-child td{border:none}
+.cotis-table .tfoot td{background:rgba(184,134,42,.05);font-weight:700;border-top:2px solid var(--gold)}
+
+/* MASSE SALARIALE */
+.ms-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;
+  border-bottom:1px solid var(--bd);font-size:13.5px}
+.ms-row:last-child{border:none}
+.ms-total{font-family:var(--ft);font-size:20px;font-weight:800;color:var(--gold);margin-top:12px}
+
+.btn-calc{width:100%;padding:13px;background:var(--gold);color:var(--ink);border:none;
+  border-radius:10px;font-family:var(--fb);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px}
+.btn-calc:hover{background:var(--gl);transform:translateY(-1px)}
+.btn-export{padding:9px 18px;background:transparent;border:1.5px solid var(--bd);
+  border-radius:8px;font-family:var(--fb);font-size:12px;color:var(--is);cursor:pointer;transition:all .2s}
+.btn-export:hover{border-color:var(--gold);color:var(--gold)}
+
+.alert{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:9px;
+  font-size:13px;margin-bottom:14px;line-height:1.55}
+.alert-info{background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.2);border-left:3px solid var(--ac);color:var(--ac)}
+.alert-ok{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.2);border-left:3px solid var(--ok);color:var(--ok)}
+.alert-warn{background:rgba(192,88,32,.07);border:1px solid rgba(192,88,32,.2);border-left:3px solid var(--wn);color:var(--wn)}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="hl">
+    <a href="landing.html" class="back">← Accueil</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="badge">CNSS & Paie · Barèmes 2024-2025</span>
+  </div>
+  <div class="disc">⚖️ Barèmes CNSS 2024 · IR salarial CGI 2024 · SMIG 2025</div>
+</header>
+
+<div class="page">
+  <div class="page-title">Simulateur <span>CNSS & Bulletin de Paie</span></div>
+  <p class="page-sub">Calcul complet des cotisations sociales CNSS, AMO, CIMR · IR salarial · Génération de bulletin de paie · Masse salariale employeur</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('bulletin',this)">Bulletin de paie</button>
+    <button class="tab" onclick="showTab('masse',this)">Masse salariale</button>
+    <button class="tab" onclick="showTab('baremes',this)">Barèmes CNSS 2024</button>
+    <button class="tab" onclick="showTab('smig',this)">SMIG & Plafonds</button>
+  </div>
+
+  <!-- ══ ONGLET 1 : BULLETIN ══ -->
+  <div class="tab-panel show" id="tp-bulletin">
+    <div class="sim-panel">
+      <!-- INPUTS -->
+      <div>
+        <div class="card">
+          <div class="card-title">👤 Informations salarié</div>
+          <div class="fg-row">
+            <div class="fg"><label>Prénom</label><input type="text" id="sal_prenom" value="Mohammed" oninput="genBulletin()"></div>
+            <div class="fg"><label>Nom</label><input type="text" id="sal_nom" value="ALAMI" oninput="genBulletin()"></div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Matricule</label><input type="text" id="sal_mat" value="EMP-001"></div>
+            <div class="fg"><label>Mois de paie</label>
+              <select id="sal_mois" onchange="genBulletin()">
+                <option>Janvier 2025</option><option>Février 2025</option><option>Mars 2025</option>
+                <option>Avril 2025</option><option selected>Mai 2025</option><option>Juin 2025</option>
+                <option>Juillet 2025</option><option>Août 2025</option><option>Septembre 2025</option>
+                <option>Octobre 2025</option><option>Novembre 2025</option><option>Décembre 2025</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label>Poste / Fonction</label><input type="text" id="sal_poste" value="Responsable Commercial" oninput="genBulletin()"></div>
+          <div class="fg"><label>Catégorie</label>
+            <select id="sal_cat" onchange="genBulletin()">
+              <option value="cadre">Cadre (CIMR obligatoire)</option>
+              <option value="ouvrier" selected>Non-cadre / Employé</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">💰 Éléments de rémunération</div>
+          <div class="fg">
+            <label>Salaire de base brut (MAD)</label>
+            <input type="number" id="sal_base" value="8000" min="0" oninput="genBulletin()">
+            <div class="hint">SMIG 2025 : 3 111,39 MAD/mois · SMAG : 102,48 MAD/jour</div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Indemnité de transport (MAD)</label>
+              <input type="number" id="sal_transport" value="500" min="0" oninput="genBulletin()">
+              <div class="hint">Exonérée IR (≤ 1 500 MAD)</div>
+            </div>
+            <div class="fg"><label>Indemnité de repas (MAD)</label>
+              <input type="number" id="sal_repas" value="300" min="0" oninput="genBulletin()">
+              <div class="hint">Exonérée IR (≤ 1 440 MAD)</div>
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Prime mensuelle (MAD)</label>
+              <input type="number" id="sal_prime" value="0" min="0" oninput="genBulletin()">
+            </div>
+            <div class="fg"><label>Heures supplémentaires</label>
+              <input type="number" id="sal_hs" value="0" min="0" oninput="genBulletin()">
+              <div class="hint">Taux : +25% (normales), +50% (nuit/férié)</div>
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Taux horaire (MAD)</label>
+              <input type="number" id="sal_taux_h" value="46.15" step="0.01" min="0" oninput="genBulletin()">
+            </div>
+            <div class="fg"><label>Type heures suppl.</label>
+              <select id="sal_hs_type" onchange="genBulletin()">
+                <option value="25">+25% (heures normales)</option>
+                <option value="50">+50% (nuit / jours fériés)</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Avantages en nature (MAD)</label>
+              <input type="number" id="sal_nature" value="0" min="0" oninput="genBulletin()">
+            </div>
+            <div class="fg"><label>Cotisation CIMR salarié (%)</label>
+              <input type="number" id="sal_cimr" value="6" min="0" max="10" step="0.5" oninput="genBulletin()">
+              <div class="hint">Cadres : min 3% · déductible IR</div>
+            </div>
+          </div>
+          <button class="btn-calc" onclick="genBulletin()">🧮 Générer le bulletin</button>
+        </div>
+      </div>
+
+      <!-- BULLETIN -->
+      <div>
+        <div class="bulletin" id="bulletinBox">
+          <div class="bul-header">
+            <div class="bul-company" id="b_company">Votre Entreprise SARL</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.4);font-family:var(--fm);margin-top:2px">BULLETIN DE PAIE</div>
+            <div class="bul-info" id="b_infos"></div>
+          </div>
+          <div class="bul-body" id="b_body"></div>
+          <div class="bul-footer">
+            <div class="bul-net">
+              <div class="bul-net-label">NET À PAYER</div>
+              <div class="bul-net-amount" id="b_net">—</div>
+            </div>
+            <div style="font-size:11px;color:var(--sm);margin-top:8px;font-family:var(--fm)" id="b_footer_info"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-export" onclick="window.print()">🖨 Imprimer le bulletin</button>
+          <button class="btn-export" onclick="exportBulletin()">⬇ Export PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ONGLET 2 : MASSE SALARIALE ══ -->
+  <div class="tab-panel" id="tp-masse">
+    <div class="sim-panel">
+      <div>
+        <div class="card">
+          <div class="card-title">🏭 Simulation masse salariale employeur</div>
+          <div class="alert alert-info">ℹ️ Calculez le coût total employeur pour N salariés avec des profils différents.</div>
+          <div id="masseSalaries">
+            <!-- Généré dynamiquement -->
+          </div>
+          <button onclick="addSalarie()" style="width:100%;padding:10px;background:transparent;border:1.5px dashed var(--bd);border-radius:9px;font-family:var(--fb);font-size:13px;color:var(--sm);cursor:pointer;transition:all .2s;margin-top:8px" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--bd)';this.style.color='var(--sm)'">
+            + Ajouter un poste
+          </button>
+          <button class="btn-calc" onclick="calcMasse()" style="margin-top:12px">Calculer la masse salariale</button>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="masseResult" style="display:none">
+          <div class="card-title">📊 Coût total employeur</div>
+          <div id="masseRows"></div>
+          <div class="ms-total" id="masseTotalEl"></div>
+          <div style="font-size:12px;color:var(--sm);margin-top:8px;font-family:var(--fm)" id="masseFooter"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ONGLET 3 : BARÈMES CNSS ══ -->
+  <div class="tab-panel" id="tp-baremes">
+    <div class="card">
+      <div class="card-title">🏥 Cotisations CNSS — Barèmes 2024</div>
+      <table class="cotis-table">
+        <thead><tr><th>Branche</th><th>Part salarié</th><th>Part patronal</th><th>Assiette</th><th>Plafond</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Prestations Sociales Courtes (PSC)</strong><br><small style="color:var(--sm)">Maladie AT, Maternité, Décès</small></td>
+            <td style="font-family:var(--fm);font-weight:600;color:var(--er)">4,29%</td>
+            <td style="font-family:var(--fm);font-weight:600;color:var(--gold)">8,98%</td>
+            <td>Salaire brut plafonné</td>
+            <td style="font-family:var(--fm)">6 000 MAD/mois</td>
+          </tr>
+          <tr>
+            <td><strong>Prestations Sociales Longues (PSL)</strong><br><small style="color:var(--sm)">Retraite, Invalidité, Survivants</small></td>
+            <td style="font-family:var(--fm);font-weight:600;color:var(--er)">3,96%</td>
+            <td style="font-family:var(--fm);font-weight:600;color:var(--gold)">7,93%</td>
+            <td>Salaire brut plafonné</td>
+            <td style="font-family:var(--fm)">6 000 MAD/mois</td>
+          </tr>
+          <tr>
+            <td><strong>AMO (Assurance Maladie Obligatoire)</strong><br><small style="color:var(--sm)">Non plafonné</small></td>
+            <td style="font-family:var(--fm);font-weight:600;color:var(--er)">2,26%</td>
+            <td style="font-family:var(--fm);font-weight:600;color:var(--gold)">4,11%</td>
+            <td>Salaire brut total</td>
+            <td style="font-family:var(--fm)">Aucun plafond</td>
+          </tr>
+          <tr>
+            <td><strong>CNSS Accidents du Travail</strong></td>
+            <td style="font-family:var(--fm);color:var(--sm)">0%</td>
+            <td style="font-family:var(--fm);font-weight:600;color:var(--gold)">0,26% à 4%</td>
+            <td>Salaire brut</td>
+            <td style="font-family:var(--fm)">Selon risque secteur</td>
+          </tr>
+          <tr>
+            <td><strong>Taxe de Formation Professionnelle (TFP)</strong></td>
+            <td style="font-family:var(--fm);color:var(--sm)">0%</td>
+            <td style="font-family:var(--fm);font-weight:600;color:var(--gold)">1,6% ou 1%</td>
+            <td>Masse salariale brute</td>
+            <td style="font-family:var(--fm)">1,6% industrie · 1% autres</td>
+          </tr>
+          <tr class="tfoot">
+            <td><strong>TOTAL CNSS + AMO</strong></td>
+            <td style="font-family:var(--fm);color:var(--er)">≈ 6,5% - 10,51%</td>
+            <td style="font-family:var(--fm);color:var(--gold)">≈ 21,28% - 25%</td>
+            <td colspan="2">Selon plafond et secteur</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💰 Barème IR Salarial — CGI 2024</div>
+      <table class="cotis-table">
+        <thead><tr><th>Revenu net imposable annuel</th><th>Taux marginal</th><th>Application</th></tr></thead>
+        <tbody>
+          <tr><td>0 à 30 000 MAD</td><td style="color:var(--ok);font-family:var(--fm);font-weight:600">0%</td><td>Exonéré</td></tr>
+          <tr><td>30 001 à 50 000 MAD</td><td style="color:var(--gold);font-family:var(--fm);font-weight:600">10%</td><td>Cotisation = (RNI × 10%) - 3 000</td></tr>
+          <tr><td>50 001 à 60 000 MAD</td><td style="color:var(--wn);font-family:var(--fm);font-weight:600">20%</td><td>Cotisation = (RNI × 20%) - 8 000</td></tr>
+          <tr><td>60 001 à 80 000 MAD</td><td style="color:var(--wn);font-family:var(--fm);font-weight:600">30%</td><td>Cotisation = (RNI × 30%) - 14 000</td></tr>
+          <tr><td>80 001 à 180 000 MAD</td><td style="color:var(--er);font-family:var(--fm);font-weight:600">34%</td><td>Cotisation = (RNI × 34%) - 17 200</td></tr>
+          <tr><td>Au-delà de 180 000 MAD</td><td style="color:var(--er);font-family:var(--fm);font-weight:600">38%</td><td>Cotisation = (RNI × 38%) - 24 400</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:12px;color:var(--sm);margin-top:12px;line-height:1.7;font-family:var(--fm)">
+        * Abattement forfaitaire pour frais professionnels : 20% (plafonné à 30 000 MAD/an)<br>
+        * Déduction charges de famille : 360 MAD/personne/an (max 2 160 MAD/an pour 6 personnes)<br>
+        * Crédit d'impôt logement : 500 MAD/mois pour prêt immobilier résidence principale
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ONGLET 4 : SMIG & PLAFONDS ══ -->
+  <div class="tab-panel" id="tp-smig">
+    <div class="card">
+      <div class="card-title">💵 SMIG & SMAG — Valeurs 2025</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div style="padding:20px;background:var(--b2);border-radius:12px;text-align:center">
+          <div style="font-family:var(--fm);font-size:10px;color:var(--sm);margin-bottom:6px">SMIG MENSUEL 2025</div>
+          <div style="font-family:var(--ft);font-size:32px;font-weight:800;color:var(--gold)">3 111,39</div>
+          <div style="font-size:12px;color:var(--sm)">MAD / mois · 191 h</div>
+          <div style="font-family:var(--fm);font-size:10px;color:var(--ok);margin-top:6px">Horaire : 16,29 MAD</div>
+        </div>
+        <div style="padding:20px;background:var(--b2);border-radius:12px;text-align:center">
+          <div style="font-family:var(--fm);font-size:10px;color:var(--sm);margin-bottom:6px">SMAG JOURNALIER 2025</div>
+          <div style="font-family:var(--ft);font-size:32px;font-weight:800;color:var(--ac)">102,48</div>
+          <div style="font-size:12px;color:var(--sm)">MAD / jour (secteur agricole)</div>
+          <div style="font-family:var(--fm);font-size:10px;color:var(--ok);margin-top:6px">Annuel : ~26 645 MAD</div>
+        </div>
+      </div>
+
+      <div class="card-title" style="font-size:13px;margin-top:8px">Plafonds CNSS 2024</div>
+      <table class="cotis-table">
+        <thead><tr><th>Plafond</th><th>Valeur mensuelle</th><th>Valeur annuelle</th><th>Application</th></tr></thead>
+        <tbody>
+          <tr><td>Plafond PSC (Courtes)</td><td style="font-family:var(--fm);font-weight:600">6 000 MAD</td><td style="font-family:var(--fm)">72 000 MAD</td><td>Cotisations PSC salarié+patronal</td></tr>
+          <tr><td>Plafond PSL (Longues)</td><td style="font-family:var(--fm);font-weight:600">6 000 MAD</td><td style="font-family:var(--fm)">72 000 MAD</td><td>Cotisations retraite salarié+patronal</td></tr>
+          <tr><td>AMO — Pas de plafond</td><td style="color:var(--sm)">—</td><td style="color:var(--sm)">—</td><td>Calculée sur la totalité du salaire brut</td></tr>
+          <tr><td>Exonération IR — Indemnités de transport</td><td style="font-family:var(--fm);font-weight:600">1 500 MAD</td><td style="font-family:var(--fm)">18 000 MAD</td><td>Transport domicile-travail</td></tr>
+          <tr><td>Exonération IR — Indemnités de repas</td><td style="font-family:var(--fm);font-weight:600">1 440 MAD</td><td style="font-family:var(--fm)">17 280 MAD</td><td>Panier-repas</td></tr>
+          <tr><td>Abattement frais professionnels IR</td><td style="font-family:var(--fm)">20%</td><td style="font-family:var(--fm)">Max 30 000 MAD</td><td>Sur revenu brut imposable</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 Délais de versement CNSS 2025</div>
+      <div style="font-size:13.5px;color:var(--is);line-height:2">
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)">🗓 <strong>Déclaration mensuelle CNSS :</strong> avant le 30 du mois suivant (en ligne via DAMANCOM)</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)">🗓 <strong>Déclaration trimestrielle :</strong> option pour entreprises &lt; 3 salariés — avant le 30 du mois suivant le trimestre</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)">🗓 <strong>Versement IR salarial :</strong> avant le 31 du mois suivant (DGI — Simpl-Paie ou directement)</div>
+        <div style="padding:6px 0;border-bottom:1px solid var(--bd)">🗓 <strong>TFP :</strong> mensuel avec la masse salariale — base = masse salariale brute mensuelle</div>
+        <div style="padding:6px 0;font-size:12px;color:var(--sm)">⚠ Pénalités de retard CNSS : 3% par mois de retard · IR : 10% (premier mois) + 5%/mois suivant</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src='lib/auth.js'></script>
+<script>
+// ── BARÈMES CNSS & IR ─────────────────────────────────────────
+const CNSS = {
+  psc_sal: 0.0429, psc_pat: 0.0898,
+  psl_sal: 0.0396, psl_pat: 0.0793,
+  amo_sal: 0.0226, amo_pat: 0.0411,
+  plafond: 6000,
+  at_pat: 0.01,  // 1% moyen
+  tfp_pat: 0.016 // industrie
+};
+
+const IR_BAREME = [
+  { min: 0,      max: 30000,  taux: 0,    deduction: 0 },
+  { min: 30001,  max: 50000,  taux: 0.10, deduction: 3000 },
+  { min: 50001,  max: 60000,  taux: 0.20, deduction: 8000 },
+  { min: 60001,  max: 80000,  taux: 0.30, deduction: 14000 },
+  { min: 80001,  max: 180000, taux: 0.34, deduction: 17200 },
+  { min: 180001, max: Infinity,taux: 0.38, deduction: 24400 },
+];
+
+function calcIR_annuel(rni_annuel) {
+  const tr = IR_BAREME.find(t => rni_annuel <= t.max);
+  if (!tr || tr.taux === 0) return 0;
+  return Math.max(0, rni_annuel * tr.taux - tr.deduction);
+}
+
+function fmt(n, dec = 2) {
+  return n.toLocaleString('fr-MA', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+
+function showTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tp-' + id).classList.add('show');
+  if (el) el.classList.add('active');
+}
+
+// ── GÉNÉRATION DU BULLETIN ────────────────────────────────────
+function genBulletin() {
+  const prenom   = document.getElementById('sal_prenom').value || 'Salarié';
+  const nom      = document.getElementById('sal_nom').value || '';
+  const mois     = document.getElementById('sal_mois').value;
+  const poste    = document.getElementById('sal_poste').value;
+  const mat      = document.getElementById('sal_mat').value;
+  const base     = parseFloat(document.getElementById('sal_base').value) || 0;
+  const transport= parseFloat(document.getElementById('sal_transport').value) || 0;
+  const repas    = parseFloat(document.getElementById('sal_repas').value) || 0;
+  const prime    = parseFloat(document.getElementById('sal_prime').value) || 0;
+  const nbHS     = parseFloat(document.getElementById('sal_hs').value) || 0;
+  const tauxH    = parseFloat(document.getElementById('sal_taux_h').value) || 0;
+  const majorHS  = parseFloat(document.getElementById('sal_hs_type').value) || 25;
+  const nature   = parseFloat(document.getElementById('sal_nature').value) || 0;
+  const cimrPct  = parseFloat(document.getElementById('sal_cimr').value) / 100 || 0;
+  const isCadre  = document.getElementById('sal_cat').value === 'cadre';
+
+  // ── CALCULS ────────────────────────────────────────────────
+  const montantHS   = nbHS * tauxH * (1 + majorHS / 100);
+  const brutTotal   = base + prime + montantHS + nature;
+  const brutImposable = base + prime + montantHS + nature; // hors transport/repas exonérés
+
+  // CNSS — assiette plafonnée
+  const assietteCNSS = Math.min(brutTotal, CNSS.plafond);
+  const cnss_sal_psc = assietteCNSS * CNSS.psc_sal;
+  const cnss_sal_psl = assietteCNSS * CNSS.psl_sal;
+  const amo_sal      = brutTotal * CNSS.amo_sal;
+  const totalCNSS_sal = cnss_sal_psc + cnss_sal_psl + amo_sal;
+
+  // CIMR salarié (si cadre)
+  const cimr_sal = isCadre ? brutTotal * cimrPct : 0;
+
+  // Revenu Net Imposable
+  const abattement = Math.min(brutImposable * 0.20, 2500); // plafond mensuel
+  const rni_mensuel = Math.max(0, brutImposable - totalCNSS_sal - cimr_sal - abattement);
+  const rni_annuel  = rni_mensuel * 12;
+
+  // IR mensuel
+  const ir_annuel  = calcIR_annuel(rni_annuel);
+  const ir_mensuel = ir_annuel / 12;
+
+  // Net à payer
+  const netAPayer = base + prime + montantHS + nature + transport + repas - totalCNSS_sal - cimr_sal - ir_mensuel;
+
+  // ── COÛT EMPLOYEUR ─────────────────────────────────────────
+  const cnss_pat_psc = assietteCNSS * CNSS.psc_pat;
+  const cnss_pat_psl = assietteCNSS * CNSS.psl_pat;
+  const amo_pat      = brutTotal * CNSS.amo_pat;
+  const at_pat       = brutTotal * CNSS.at_pat;
+  const tfp_pat      = brutTotal * CNSS.tfp_pat;
+  const cimr_pat     = isCadre ? brutTotal * cimrPct : 0;
+  const totalChargesPat = cnss_pat_psc + cnss_pat_psl + amo_pat + at_pat + tfp_pat + cimr_pat;
+  const coutEmployeur = brutTotal + transport + repas + totalChargesPat;
+
+  // ── BULLETIN HTML ──────────────────────────────────────────
+  document.getElementById('b_infos').innerHTML = `
+    <div class="bul-info-item"><span>Salarié</span><strong>${prenom} ${nom}</strong></div>
+    <div class="bul-info-item"><span>Matricule</span><strong>${mat}</strong></div>
+    <div class="bul-info-item"><span>Fonction</span><strong>${poste}</strong></div>
+    <div class="bul-info-item"><span>Période</span><strong>${mois}</strong></div>`;
+
+  document.getElementById('b_body').innerHTML = `
+    <!-- SALAIRE BRUT -->
+    <div class="bul-section">
+      <div class="bul-section-title">Éléments du salaire brut</div>
+      <div class="bul-row positive"><span class="br-label">Salaire de base</span><span class="br-base">1 mois</span><span class="br-montant">${fmt(base)} MAD</span></div>
+      ${prime > 0 ? `<div class="bul-row positive"><span class="br-label">Prime</span><span class="br-base">—</span><span class="br-montant">${fmt(prime)} MAD</span></div>` : ''}
+      ${nbHS > 0 ? `<div class="bul-row positive"><span class="br-label">Heures supplémentaires (${nbHS}h × +${majorHS}%)</span><span class="br-base">${fmt(tauxH)} MAD/h</span><span class="br-montant">${fmt(montantHS)} MAD</span></div>` : ''}
+      ${nature > 0 ? `<div class="bul-row positive"><span class="br-label">Avantages en nature</span><span class="br-base">—</span><span class="br-montant">${fmt(nature)} MAD</span></div>` : ''}
+      <div class="bul-row subtotal"><span class="br-label">Salaire brut imposable</span><span class="br-base"></span><span class="br-montant">${fmt(brutImposable)} MAD</span></div>
+    </div>
+
+    <!-- INDEMNITÉS EXONÉRÉES -->
+    <div class="bul-section">
+      <div class="bul-section-title">Indemnités exonérées d'IR</div>
+      ${transport > 0 ? `<div class="bul-row positive"><span class="br-label">Indemnité de transport</span><span class="br-base">Exo. IR ≤ 1 500 MAD</span><span class="br-montant">${fmt(transport)} MAD</span></div>` : ''}
+      ${repas > 0 ? `<div class="bul-row positive"><span class="br-label">Indemnité de repas</span><span class="br-base">Exo. IR ≤ 1 440 MAD</span><span class="br-montant">${fmt(repas)} MAD</span></div>` : ''}
+    </div>
+
+    <!-- COTISATIONS SALARIALES -->
+    <div class="bul-section">
+      <div class="bul-section-title">Cotisations salariales (déductions)</div>
+      <div class="bul-row negative"><span class="br-label">CNSS — PSC (4,29%)</span><span class="br-base">Base : ${fmt(assietteCNSS)} MAD</span><span class="br-montant">-${fmt(cnss_sal_psc)} MAD</span></div>
+      <div class="bul-row negative"><span class="br-label">CNSS — PSL (3,96%)</span><span class="br-base">Base : ${fmt(assietteCNSS)} MAD</span><span class="br-montant">-${fmt(cnss_sal_psl)} MAD</span></div>
+      <div class="bul-row negative"><span class="br-label">AMO (2,26%)</span><span class="br-base">Base : ${fmt(brutTotal)} MAD</span><span class="br-montant">-${fmt(amo_sal)} MAD</span></div>
+      ${cimr_sal > 0 ? `<div class="bul-row negative"><span class="br-label">CIMR Salarié (${(cimrPct*100).toFixed(1)}%)</span><span class="br-base">Déductible IR</span><span class="br-montant">-${fmt(cimr_sal)} MAD</span></div>` : ''}
+      <div class="bul-row subtotal"><span class="br-label">Total cotisations salariales</span><span class="br-base"></span><span class="br-montant">-${fmt(totalCNSS_sal + cimr_sal)} MAD</span></div>
+    </div>
+
+    <!-- IR -->
+    <div class="bul-section">
+      <div class="bul-section-title">Impôt sur le revenu (IR) salarial</div>
+      <div class="bul-row"><span class="br-label">Abattement frais professionnels (20%)</span><span class="br-base">Max 2 500 MAD/mois</span><span class="br-montant" style="color:var(--ok)">-${fmt(abattement)} MAD</span></div>
+      <div class="bul-row"><span class="br-label">Revenu Net Imposable mensuel</span><span class="br-base">Base IR</span><span class="br-montant">${fmt(rni_mensuel)} MAD</span></div>
+      <div class="bul-row negative"><span class="br-label">IR salarial (barème progressif)</span><span class="br-base">RNI annuel : ${fmt(rni_annuel)} MAD</span><span class="br-montant">-${fmt(ir_mensuel)} MAD</span></div>
+    </div>
+
+    <!-- COÛT EMPLOYEUR INFO -->
+    <div class="bul-section" style="background:rgba(184,134,42,.03)">
+      <div class="bul-section-title">Charges patronales (info employeur)</div>
+      <div class="bul-row"><span class="br-label">CNSS patronal total</span><span class="br-base">PSC + PSL + AMO + AT</span><span class="br-montant" style="color:var(--wn)">${fmt(cnss_pat_psc + cnss_pat_psl + amo_pat + at_pat)} MAD</span></div>
+      <div class="bul-row"><span class="br-label">TFP (1,6%)</span><span class="br-base">Formation professionnelle</span><span class="br-montant" style="color:var(--wn)">${fmt(tfp_pat)} MAD</span></div>
+      ${cimr_pat > 0 ? `<div class="bul-row"><span class="br-label">CIMR Patronal</span><span class="br-base">${(cimrPct*100).toFixed(1)}%</span><span class="br-montant" style="color:var(--wn);">${fmt(cimr_pat)} MAD</span></div>` : ''}
+      <div class="bul-row subtotal"><span class="br-label">Coût total employeur</span><span class="br-base"></span><span class="br-montant" style="color:var(--wn);">${fmt(coutEmployeur)} MAD</span></div>
+    </div>`;
+
+  document.getElementById('b_net').textContent = fmt(netAPayer) + ' MAD';
+  document.getElementById('b_footer_info').textContent =
+    `Brut ${fmt(brutImposable)} MAD · Charges sal. ${fmt(totalCNSS_sal + cimr_sal)} MAD · IR ${fmt(ir_mensuel)} MAD · Coût emp. ${fmt(coutEmployeur)} MAD`;
+}
+
+// ── MASSE SALARIALE ───────────────────────────────────────────
+let salaries = [
+  { poste: 'Directeur Général', nb: 1, brut: 25000, cat: 'cadre' },
+  { poste: 'Ingénieur', nb: 2, brut: 12000, cat: 'cadre' },
+  { poste: 'Technicien', nb: 5, brut: 5500, cat: 'ouvrier' },
+  { poste: 'Opérateur', nb: 10, brut: 3500, cat: 'ouvrier' },
+];
+
+function renderMasseSalaries() {
+  document.getElementById('masseSalaries').innerHTML = salaries.map((s, i) => `
+    <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:end;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--bd)">
+      <div class="fg" style="margin:0"><label>Poste</label><input type="text" value="${s.poste}" oninput="salaries[${i}].poste=this.value"></div>
+      <div class="fg" style="margin:0"><label>Nb</label><input type="number" value="${s.nb}" min="1" style="width:60px" oninput="salaries[${i}].nb=parseInt(this.value)||1"></div>
+      <div class="fg" style="margin:0"><label>Brut/mois</label><input type="number" value="${s.brut}" min="0" style="width:110px" oninput="salaries[${i}].brut=parseFloat(this.value)||0"></div>
+      <button onclick="removeSalarie(${i})" style="padding:8px 10px;background:rgba(185,28,28,.1);color:var(--er);border:1px solid rgba(185,28,28,.2);border-radius:7px;cursor:pointer;font-size:12px">✕</button>
+    </div>`).join('');
+}
+
+function addSalarie() {
+  salaries.push({ poste: 'Nouveau poste', nb: 1, brut: CNSS.plafond, cat: 'ouvrier' });
+  renderMasseSalaries();
+}
+
+function removeSalarie(i) {
+  salaries.splice(i, 1);
+  renderMasseSalaries();
+}
+
+function calcMasse() {
+  const rows = document.querySelectorAll('#masseSalaries input');
+  // Re-read values
+  let idx = 0;
+  salaries.forEach((s, i) => {
+    s.poste = rows[idx]?.value || s.poste;
+    s.nb    = parseInt(rows[idx+1]?.value) || s.nb;
+    s.brut  = parseFloat(rows[idx+2]?.value) || s.brut;
+    idx += 3;
+  });
+
+  let totalBrut = 0, totalCNSS_pat = 0, totalIR = 0, totalNet = 0, totalCout = 0;
+  const lignes = salaries.map(s => {
+    const b = s.brut;
+    const assiette = Math.min(b, CNSS.plafond);
+    const cnss_p = assiette * (CNSS.psc_pat + CNSS.psl_pat) + b * (CNSS.amo_pat + CNSS.at_pat + CNSS.tfp_pat);
+    const cnss_s = assiette * (CNSS.psc_sal + CNSS.psl_sal) + b * CNSS.amo_sal;
+    const abi = Math.min(b * 0.20, 2500);
+    const rni_m = Math.max(0, b - cnss_s - abi);
+    const ir_m  = calcIR_annuel(rni_m * 12) / 12;
+    const net   = b - cnss_s - ir_m;
+    const cout  = b + cnss_p;
+    totalBrut    += b * s.nb;
+    totalCNSS_pat+= cnss_p * s.nb;
+    totalIR      += ir_m * s.nb;
+    totalNet     += net * s.nb;
+    totalCout    += cout * s.nb;
+    return `<div class="ms-row"><span>${s.nb}× ${s.poste}</span><div style="text-align:right;font-family:var(--fm)"><div style="font-size:11px;color:var(--sm)">Brut ${fmt(b)} × ${s.nb}</div><div style="font-weight:600;color:var(--gold)">${fmt(cout * s.nb)} MAD/mois</div></div></div>`;
+  }).join('');
+
+  document.getElementById('masseResult').style.display = 'block';
+  document.getElementById('masseRows').innerHTML = lignes +
+    `<div style="height:1px;background:var(--bd);margin:12px 0"></div>
+    <div class="ms-row"><span style="color:var(--sm)">Total salaires bruts</span><span style="font-family:var(--fm);color:var(--is)">${fmt(totalBrut)} MAD</span></div>
+    <div class="ms-row"><span style="color:var(--sm)">Total charges patronales</span><span style="font-family:var(--fm);color:var(--wn)">${fmt(totalCNSS_pat)} MAD</span></div>
+    <div class="ms-row"><span style="color:var(--sm)">Total IR salarial</span><span style="font-family:var(--fm);color:var(--er)">${fmt(totalIR)} MAD</span></div>
+    <div class="ms-row"><span style="color:var(--sm)">Total nets à payer</span><span style="font-family:var(--fm);color:var(--ok)">${fmt(totalNet)} MAD</span></div>`;
+  document.getElementById('masseTotalEl').textContent = `Coût total mensuel : ${fmt(totalCout)} MAD`;
+  document.getElementById('masseFooter').textContent =
+    `Annualisé : ${fmt(totalCout * 12)} MAD · Coût moyen/salarié : ${fmt(totalCout / salaries.reduce((a,s)=>a+s.nb,0))} MAD`;
+}
+
+function exportBulletin() { window.print(); }
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  genBulletin();
+  renderMasseSalaries();
+});
+</script>
+<script src='lib/upgrade-modal.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

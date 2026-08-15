@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Sélecteur de Contrat — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--wn:#C05820;--er:#B91C1C;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ═══════════════════════════════════════════════
+   ANTI-SCRAPING — COUCHE GLOBALE
+═══════════════════════════════════════════════ */
+
+/* 1. Désactivation sélection globale sur le contenu légal */
+.protected{
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+
+/* 2. Curseur personnalisé sur zones protégées */
+.protected{cursor:default}
+
+/* 3. Mise en page fragmentée — les données légales sont éclatées en spans non contigus */
+.frag{display:inline}
+.frag-sep{display:inline;color:transparent;font-size:0;width:0;overflow:hidden}
+
+/* 4. Superposition CSS sur le texte protégé */
+.shield{
+  position:relative;
+  display:inline-block;
+}
+.shield::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:2;
+  cursor:default;
+  pointer-events:auto;
+}
+
+/* 5. Injection de "bruit" invisible dans le DOM (spans vides avec Unicode zéro-largeur) */
+.zws{display:inline;color:transparent;font-size:0;line-height:0;pointer-events:none;user-select:none}
+
+/* 6. Watermark superposé sur chaque card */
+.wm-wrap{position:relative;overflow:hidden}
+.wm-wrap::before{
+  content:'SMART-INVEST.IA · USAGE INTERNE UNIQUEMENT ·';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(-25deg);
+  font-family:var(--fm);font-size:11px;font-weight:700;
+  color:rgba(184,134,42,.06);
+  white-space:nowrap;letter-spacing:.25em;
+  pointer-events:none;z-index:0;
+  width:150%;text-align:center;
+}
+
+/* 7. Overlay de blocage contextuel (apparaît au clic-droit) */
+#ctx-block{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(14,14,12,.92);
+  backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;flex-direction:column;gap:16px;
+}
+#ctx-block.show{display:flex}
+#ctx-block .cb-icon{font-size:48px;opacity:.6}
+#ctx-block .cb-msg{font-family:var(--ft);font-size:18px;font-weight:800;color:var(--gl);text-align:center}
+#ctx-block .cb-sub{font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.4);text-align:center;max-width:400px;line-height:1.6}
+#ctx-block button{padding:10px 24px;background:var(--gold);color:var(--ink);border:none;border-radius:8px;font-family:var(--fb);font-size:13px;font-weight:700;cursor:pointer;margin-top:8px}
+
+/* ═══════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+.hd{
+  position:sticky;top:0;z-index:100;height:56px;
+  background:rgba(14,14,12,.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+  border-bottom:1px solid rgba(184,134,42,.2);
+}
+.hl{display:flex;align-items:center;gap:12px}
+.back{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none}.back:hover{color:var(--gl)}
+.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:var(--wh)}.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:10px;padding:3px 9px;border-radius:100px;color:var(--gl);background:rgba(184,134,42,.12);border:1px solid rgba(184,134,42,.25)}
+.hnav{display:flex;gap:6px}
+.hnav a{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.4);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.08);border-radius:6px;transition:all .2s}
+.hnav a:hover,.hnav a.active{color:var(--gl);border-color:rgba(184,134,42,.3);background:rgba(184,134,42,.08)}
+
+/* ═══════════════════════════════════════════════
+   PAGE STRUCTURE
+═══════════════════════════════════════════════ */
+.page{max-width:1180px;margin:0 auto;padding:32px 24px 80px}
+
+/* ═══════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════ */
+.tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:2px solid var(--b2);padding-bottom:0;flex-wrap:wrap}
+.tab{
+  padding:10px 18px;cursor:pointer;font-size:12.5px;font-weight:600;
+  border-radius:8px 8px 0 0;border:1px solid transparent;border-bottom:none;
+  color:var(--sm);transition:all .2s;margin-bottom:-2px;
+}
+.tab.active{background:var(--wh);color:var(--ink);border-color:var(--bd);border-bottom-color:var(--wh)}
+.tab:hover:not(.active){background:var(--b2);color:var(--is)}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* ═══════════════════════════════════════════════
+   SÉLECTEUR
+═══════════════════════════════════════════════ */
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:16px}
+.card-title{font-family:var(--ft);font-size:16px;font-weight:700;margin-bottom:12px}
+.card-sub{font-size:11px;color:var(--sm);font-family:var(--fm);margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:13px;font-weight:600;color:var(--is);margin-bottom:8px}
+.fg .hn{font-size:10px;color:var(--sm);margin-top:4px;font-family:var(--fm)}
+.slider-wrap{display:flex;align-items:center;gap:12px}
+.slider-wrap input[type=range]{flex:1;accent-color:var(--gold)}
+.slider-val{font-family:var(--fm);font-size:13px;font-weight:700;width:30px;text-align:right;color:var(--gold)}
+.contract-card{border:2px solid var(--bd);border-radius:14px;padding:22px;transition:all .3s}
+.contract-card.recommended{border-color:var(--gold);background:var(--gp);transform:scale(1.01);box-shadow:0 6px 24px rgba(184,134,42,.15)}
+.cc-type{font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.cc-name{font-family:var(--ft);font-size:18px;font-weight:800;margin-bottom:8px}
+.cc-pros,.cc-cons{list-style:none;font-size:12.5px;color:var(--is)}
+.cc-pros li::before{content:'✓ ';color:var(--ok);font-weight:700}
+.cc-cons li::before{content:'✗ ';color:var(--er)}
+.meter{height:16px;background:var(--b2);border-radius:8px;overflow:hidden;margin-bottom:8px}
+.meter-fill{height:100%;border-radius:8px;transition:width .5s ease}
+.risk-vis{display:flex;gap:4px;margin-top:14px}
+.rv-item{flex:1;text-align:center;padding:12px 8px;border-radius:8px;font-size:11px;border:1px solid var(--bd)}
+.rv-item.high{background:rgba(185,28,28,.08);border-color:rgba(185,28,28,.2);color:var(--er)}
+.rv-item.med{background:rgba(184,134,42,.08);border-color:rgba(184,134,42,.2);color:var(--gold)}
+.rv-item.low{background:rgba(26,107,60,.08);border-color:rgba(26,107,60,.2);color:var(--ok)}
+select{width:100%;padding:8px 10px;border:1.5px solid var(--bd);border-radius:8px;font-family:var(--fb);font-size:13px;background:var(--bg);outline:none}
+
+/* ═══════════════════════════════════════════════
+   RÉFÉRENTIEL LÉGAL — DESIGN FRAGMENTÉ ANTI-SCRAPING
+═══════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════
+   RÉFÉRENTIEL — LAYOUT MASTER / DETAIL
+═══════════════════════════════════════════════ */
+
+/* Barre de recherche + filtres */
+.search-bar{display:flex;gap:8px;margin-bottom:12px}
+.search-bar input{
+  flex:1;padding:9px 14px;border:1.5px solid var(--bd);border-radius:9px;
+  font-family:var(--fb);font-size:13px;background:var(--wh);outline:none;transition:border-color .2s;
+}
+.search-bar input:focus{border-color:var(--gold)}
+.filter-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.filter-btn{padding:5px 13px;border-radius:100px;border:1.5px solid var(--bd);background:var(--wh);font-family:var(--fm);font-size:10px;cursor:pointer;color:var(--sm);transition:all .2s}
+.filter-btn:hover{opacity:.85;filter:brightness(.95)}
+.filter-btn.active{color:var(--ink)!important;border-color:transparent!important;font-weight:700}
+/* Palette par catégorie */
+.fb-all{background:#F2EFE8;color:#5A5040;border-color:#D5C9B0}
+.fb-all.active{background:var(--gold);color:var(--ink)}
+.fb-construction{background:#E3EEF7;color:#1A4A6B;border-color:#A8C8E4}
+.fb-construction.active{background:#1A4A6B;color:#fff}
+.fb-equipment{background:#E8F0FB;color:#2A4EA0;border-color:#A8BEDE}
+.fb-equipment.active{background:#2A4EA0;color:#fff}
+.fb-it{background:#EAF3EC;color:#1A6B3C;border-color:#9ACFAA}
+.fb-it.active{background:#1A6B3C;color:#fff}
+.fb-service{background:#EDF4EA;color:#2E6B20;border-color:#A8D496}
+.fb-service.active{background:#2E6B20;color:#fff}
+.fb-mixed{background:#F0EBF8;color:#5A2DA0;border-color:#C4A8E4}
+.fb-mixed.active{background:#5A2DA0;color:#fff}
+.fb-vente{background:#FFF0E3;color:#A04010;border-color:#F0B890}
+.fb-vente.active{background:#C05820;color:#fff}
+.fb-bail{background:#FFF4E3;color:#A06010;border-color:#F0C880}
+.fb-bail.active{background:#A06010;color:#fff}
+.fb-intermediation{background:#FEF0F8;color:#9A1A70;border-color:#E8A0D0}
+.fb-intermediation.active{background:#9A1A70;color:#fff}
+.fb-financement{background:#F0FBF5;color:#0A6B4A;border-color:#88D4B0}
+.fb-financement.active{background:#0A6B4A;color:#fff}
+.fb-distribution{background:#F8F0FB;color:#7A2A9A;border-color:#D0A0E8}
+.fb-distribution.active{background:#7A2A9A;color:#fff}
+.fb-partenariat_b2b{background:#EAF7FB;color:#0A5A7A;border-color:#88C8E0}
+.fb-partenariat_b2b.active{background:#0A5A7A;color:#fff}
+.fb-fonds{background:#F8EAE0;color:#8A3A10;border-color:#E0A880}
+.fb-fonds.active{background:#8A3A10;color:#fff}
+
+/* Conteneur master/detail */
+.legal-layout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:0;
+  border:1.5px solid var(--bd);
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--wh);
+  min-height:520px;
+}
+
+/* ── MASTER — liste gauche ── */
+.legal-list{
+  background:var(--ink);
+  overflow-y:auto;
+  max-height:680px;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.legal-list::-webkit-scrollbar{width:4px}
+.legal-list::-webkit-scrollbar-track{background:transparent}
+.legal-list::-webkit-scrollbar-thumb{background:rgba(184,134,42,.3);border-radius:4px}
+
+.ll-group-title{
+  font-family:var(--fm);font-size:8px;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(240,196,96,.35);padding:12px 14px 5px;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+.ll-group-title:first-child{border-top:none;padding-top:14px}
+
+.ll-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,.03);
+  transition:background .15s;
+  position:relative;
+}
+.ll-item:hover{background:rgba(255,255,255,.05)}
+.ll-item.active{background:rgba(184,134,42,.12)}
+.ll-item.active::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--gold);border-radius:0 2px 2px 0;
+}
+.ll-dot{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+}
+.ll-dot.civil{background:#7ec8f8}
+.ll-dot.com{background:var(--gl)}
+.ll-dot.innom{background:#ffaa70}
+.ll-dot.num{background:#70e090}
+.ll-name{
+  font-family:var(--fb);font-size:12px;font-weight:500;
+  color:rgba(255,255,255,.65);line-height:1.3;flex:1;
+}
+.ll-item.active .ll-name{color:var(--gl);font-weight:600}
+.ll-arrow{font-size:10px;color:rgba(255,255,255,.2);transition:color .15s}
+.ll-item.active .ll-arrow{color:var(--gold)}
+.ll-item:hover .ll-arrow{color:rgba(255,255,255,.4)}
+
+/* ── DETAIL — panneau droit ── */
+.legal-detail{
+  overflow-y:auto;
+  max-height:680px;
+  background:var(--wh);
+  position:relative;
+}
+.legal-detail::-webkit-scrollbar{width:4px}
+.legal-detail::-webkit-scrollbar-thumb{background:rgba(184,134,42,.2);border-radius:4px}
+
+/* État vide */
+.ld-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;min-height:400px;gap:12px;
+  color:var(--sm);
+}
+.ld-empty-icon{font-size:40px;opacity:.3}
+.ld-empty-msg{font-family:var(--fm);font-size:11px;text-align:center;line-height:1.6;max-width:220px}
+
+/* En-tête du détail */
+.ld-head{
+  padding:20px 24px 16px;
+  background:var(--ink);
+  position:relative;overflow:hidden;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.ld-head::before{
+  content:'';position:absolute;
+  bottom:-40px;right:-40px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(184,134,42,.12),transparent 70%);
+}
+.ld-cat{font-family:var(--fm);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,196,96,.5);margin-bottom:5px}
+.ld-name{font-family:var(--ft);font-size:20px;font-weight:800;color:var(--wh);line-height:1.15}
+.ld-ref{font-family:var(--fm);font-size:9.5px;color:rgba(255,255,255,.3);margin-top:6px;line-height:1.6}
+.ld-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.ld-badge{
+  font-family:var(--fm);font-size:8px;padding:3px 8px;border-radius:4px;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.ld-badge.civil{background:rgba(30,77,107,.5);color:#7ec8f8}
+.ld-badge.com{background:rgba(184,134,42,.3);color:var(--gl)}
+.ld-badge.innom{background:rgba(192,88,32,.3);color:#ffaa70}
+.ld-badge.num{background:rgba(26,107,60,.3);color:#70e090}
+
+/* Sections du détail */
+.ld-body{padding:0}
+.ld-section{
+  padding:16px 24px;
+  border-bottom:1px solid var(--b2);
+  position:relative;
+}
+.ld-section:last-child{border-bottom:none}
+.ld-section-label{
+  font-family:var(--fm);font-size:9px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;
+}
+.ld-section-label::after{content:'';flex:1;height:1px;background:var(--b2)}
+.ld-section-label.def{color:var(--gold)}
+.ld-section-label.nat{color:var(--ac)}
+.ld-section-label.cond{color:var(--ok)}
+.ld-section-label.forma{color:var(--ac)}
+.ld-section-label.outils{color:var(--ac)}
+.ld-section-label.lim{color:var(--er)}
+.ld-section-label.risk{color:var(--wn)}
+
+.ld-text{font-size:12.5px;color:var(--is);line-height:1.65}
+.ld-list{list-style:none;margin-top:2px}
+.ld-list li{
+  font-size:12px;color:var(--is);padding:4px 0 4px 16px;
+  position:relative;line-height:1.55;
+  border-bottom:1px solid rgba(0,0,0,.04);
+}
+.ld-list li:last-child{border-bottom:none}
+.ld-list li::before{
+  content:'—';position:absolute;left:0;top:4px;
+  color:var(--gold);font-size:10px;
+}
+.ld-list.lim li::before{color:var(--er)}
+.ld-list.risk li::before{color:var(--wn)}
+.ld-list.outils li::before{content:'›';color:var(--ac)}
+
+.ld-tags{display:flex;flex-wrap:wrap;gap:5px;padding:14px 24px;background:var(--bg);border-top:1px solid var(--b2)}
+.ld-tag{font-family:var(--fm);font-size:8.5px;padding:3px 7px;border-radius:4px;background:var(--b2);color:var(--sm);cursor:default}
+.ld-tag.risk{background:rgba(184,134,42,.1);color:var(--wn)}
+
+/* Watermark sur le panneau détail */
+.ld-body{position:relative}
+.ld-body::after{
+  content:'SMART-INVEST.IA · CONFIDENTIEL ·';
+  position:fixed;
+  bottom:60px;right:20px;
+  font-family:var(--fm);font-size:9px;letter-spacing:.15em;
+  color:rgba(184,134,42,.08);
+  pointer-events:none;z-index:0;
+  transform:rotate(-15deg);
+  white-space:nowrap;
+}
+
+/* Animation entrée panneau */
+@keyframes fadeSlide{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+.ld-anim{animation:fadeSlide .18s ease}
+
+/* Ghost text — fragmentation */
+.ghost{display:inline;color:transparent;font-size:0;line-height:0;pointer-events:none;user-select:none}
+
+/* ═══════════════════════════════════════════════
+   CONDITIONS & NULLITÉS
+═══════════════════════════════════════════════ */
+.cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.cond-card{
+  border-radius:12px;padding:16px;border:1.5px solid;
+  position:relative;overflow:hidden;
+}
+.cond-card::before{
+  content:'';position:absolute;top:-30px;right:-30px;
+  width:100px;height:100px;border-radius:50%;
+  background:currentColor;opacity:.04;
+}
+.cond-card.cap{background:rgba(30,77,107,.04);border-color:rgba(30,77,107,.2);color:var(--ac)}
+.cond-card.cons{background:rgba(184,134,42,.04);border-color:rgba(184,134,42,.2);color:var(--wn)}
+.cond-card.obj{background:rgba(26,107,60,.04);border-color:rgba(26,107,60,.2);color:var(--ok)}
+.cond-card.cau{background:rgba(185,28,28,.04);border-color:rgba(185,28,28,.2);color:var(--er)}
+.cond-num{
+  font-family:var(--ft);font-size:36px;font-weight:800;
+  opacity:.12;position:absolute;top:8px;right:14px;line-height:1;
+}
+.cond-title{font-family:var(--ft);font-size:14px;font-weight:800;margin-bottom:4px}
+.cond-ref{font-family:var(--fm);font-size:9px;opacity:.7;margin-bottom:10px}
+.cond-list{list-style:none}
+.cond-list li{font-size:11.5px;color:var(--is);margin-bottom:5px;padding-left:14px;position:relative;line-height:1.5}
+.cond-list li::before{content:'—';position:absolute;left:0;color:currentColor;opacity:.7}
+
+.null-section{margin-bottom:16px}
+.null-title{
+  font-family:var(--fm);font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;padding:8px 14px;border-radius:6px;margin-bottom:8px;display:inline-flex;align-items:center;gap:6px;
+}
+.null-title.abs{background:rgba(185,28,28,.1);color:var(--er)}
+.null-title.rel{background:rgba(184,134,42,.1);color:var(--wn)}
+.null-title.sect{background:rgba(30,77,107,.1);color:var(--ac)}
+.null-title.solid{background:rgba(26,107,60,.1);color:var(--ok)}
+.null-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.null-item{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:8px 12px;border-radius:8px;border:1px solid var(--b2);background:var(--wh);
+}
+.null-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.null-dot.abs{background:var(--er)}
+.null-dot.rel{background:var(--wn)}
+.null-dot.sect{background:var(--ac)}
+.null-dot.solid{background:var(--ok)}
+.null-text{font-size:11.5px;color:var(--is);line-height:1.5}
+
+/* ═══════════════════════════════════════════════
+   CONDITIONS — LAYOUT INTERACTIF MASTER/DETAIL
+═══════════════════════════════════════════════ */
+.cond-interactive-layout{
+  display:grid;grid-template-columns:210px 1fr;gap:0;
+  border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;
+  background:var(--wh);min-height:500px;margin-bottom:16px;
+}
+.cond-nav-panel{background:var(--ink);overflow-y:auto;max-height:560px}
+.cond-nav-panel::-webkit-scrollbar{width:4px}
+.cond-nav-panel::-webkit-scrollbar-thumb{background:rgba(184,134,42,.3);border-radius:4px}
+.cond-nav-group{font-family:var(--fm);font-size:8px;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(240,196,96,.35);padding:10px 12px 4px;
+  border-top:1px solid rgba(255,255,255,.04)}
+.cond-nav-group:first-child{border-top:none;padding-top:13px}
+.cond-nav-item{
+  display:flex;align-items:center;gap:9px;padding:10px 12px;
+  cursor:pointer;border-bottom:1px solid rgba(255,255,255,.03);
+  transition:background .15s;position:relative;
+}
+.cond-nav-item:hover{background:rgba(255,255,255,.05)}
+.cond-nav-item.active{background:rgba(184,134,42,.12)}
+.cond-nav-item.active::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--gold);border-radius:0 2px 2px 0;
+}
+.cond-nav-num{font-family:var(--ft);font-size:14px;font-weight:800;
+  color:rgba(240,196,96,.25);width:20px;flex-shrink:0;line-height:1}
+.cond-nav-item.active .cond-nav-num{color:var(--gold)}
+.cond-nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.cond-nav-dot.cap{background:#7ec8f8}
+.cond-nav-dot.cons{background:var(--gl)}
+.cond-nav-dot.obj{background:#70e090}
+.cond-nav-dot.cau{background:#ffaa70}
+.cond-nav-dot.abs{background:var(--er)}
+.cond-nav-dot.rel{background:var(--wn)}
+.cond-nav-dot.sect{background:var(--ac)}
+.cond-nav-dot.solid{background:var(--ok)}
+.cond-nav-name{font-family:var(--fb);font-size:12px;font-weight:500;
+  color:rgba(255,255,255,.6);flex:1;line-height:1.3}
+.cond-nav-item.active .cond-nav-name{color:var(--gl);font-weight:600}
+.cond-nav-arr{font-size:10px;color:rgba(255,255,255,.2)}
+.cond-nav-item.active .cond-nav-arr{color:var(--gold)}
+
+/* Panneau détail conditions */
+.cond-detail-panel{overflow-y:auto;max-height:560px;background:var(--wh)}
+.cond-detail-panel::-webkit-scrollbar{width:4px}
+.cond-detail-panel::-webkit-scrollbar-thumb{background:rgba(184,134,42,.2);border-radius:4px}
+.cond-detail-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;min-height:400px;gap:12px;color:var(--sm);
+}
+.cond-det-head{
+  padding:18px 22px 14px;background:var(--ink);
+  border-bottom:1px solid rgba(255,255,255,.04);
+  position:relative;overflow:hidden;
+}
+.cond-det-head::before{
+  content:'';position:absolute;bottom:-40px;right:-40px;width:130px;height:130px;
+  border-radius:50%;background:radial-gradient(circle,rgba(184,134,42,.1),transparent 70%);
+}
+.cond-det-icon{font-size:26px;margin-bottom:5px}
+.cond-det-title{font-family:var(--ft);font-size:18px;font-weight:800;color:var(--wh);line-height:1.2}
+.cond-det-ref{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.3);margin-top:5px;line-height:1.6}
+.cond-det-body{padding:0}
+.cond-det-sec{padding:13px 20px;border-bottom:1px solid var(--b2)}
+.cond-det-sec:last-child{border-bottom:none}
+.cond-det-lbl{
+  font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:7px;
+  display:flex;align-items:center;gap:6px;color:var(--gold);
+}
+.cond-det-lbl::after{content:'';flex:1;height:1px;background:var(--b2)}
+.cond-det-lbl.blue{color:var(--ac)}
+.cond-det-lbl.green{color:var(--ok)}
+.cond-det-lbl.red{color:var(--er)}
+.cond-det-lbl.warn{color:var(--wn)}
+.cond-det-txt{font-size:12.5px;color:var(--is);line-height:1.65}
+.cond-det-ul{list-style:none;margin:0}
+.cond-det-ul li{font-size:12px;color:var(--is);padding:4px 0 4px 14px;
+  position:relative;line-height:1.5;border-bottom:1px solid rgba(0,0,0,.04)}
+.cond-det-ul li:last-child{border-bottom:none}
+.cond-det-ul li::before{content:'—';position:absolute;left:0;top:4px;color:var(--gold);font-size:10px}
+.cond-det-ul.red li::before{color:var(--er)}
+.cond-det-ul.green li::before{color:var(--ok)}
+.cond-det-ul.blue li::before{color:var(--ac)}
+.cond-det-ul.warn li::before{color:var(--wn)}
+.cond-det-foot{display:flex;flex-wrap:wrap;gap:5px;padding:12px 20px;background:var(--bg);border-top:1px solid var(--b2)}
+.cond-det-art{font-family:var(--fm);font-size:8.5px;padding:3px 7px;border-radius:4px;
+  background:rgba(184,134,42,.12);color:var(--gold);cursor:default}
+@keyframes cdFade{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:translateX(0)}}
+.cond-det-anim{animation:cdFade .18s ease}
+@media(max-width:700px){
+  .cond-interactive-layout{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .cond-nav-panel{max-height:200px}
+}
+
+/* Tableau prescriptions */
+.presc-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.presc-table th{
+  background:var(--ink);color:var(--gl);font-family:var(--fm);font-size:9px;
+  padding:9px 12px;text-align:left;letter-spacing:.06em;
+}
+.presc-table td{padding:8px 12px;border-bottom:1px solid var(--b2);color:var(--is);vertical-align:top;line-height:1.5}
+.presc-table tr:nth-child(even) td{background:var(--bg)}
+
+/* ═══════════════════════════════════════════════
+   RECHERCHE D'ARTICLES
+═══════════════════════════════════════════════ */
+.art-result{
+  padding:14px 16px;border-radius:10px;background:var(--wh);
+  border:1px solid var(--bd);margin-bottom:8px;
+  border-left:3px solid var(--gold);
+  position:relative;overflow:hidden;
+}
+.art-result::after{
+  content:'DOC · C.COM';
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-family:var(--fm);font-size:8px;color:rgba(184,134,42,.2);
+  letter-spacing:.15em;pointer-events:none;
+}
+.ar-ref{font-family:var(--fm);font-size:10px;color:var(--gold);margin-bottom:4px;font-weight:700}
+.ar-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;font-family:var(--ft)}
+.ar-text{font-size:11.5px;color:var(--is);line-height:1.65;max-height:80px;overflow:hidden;position:relative}
+.ar-text::after{content:'';position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,var(--wh))}
+.ar-text.expanded{max-height:none}
+.ar-text.expanded::after{display:none}
+.ar-more{font-family:var(--fm);font-size:10px;color:var(--gold);cursor:pointer;margin-top:4px;display:inline-block}
+.ar-more:hover{text-decoration:underline}
+.highlight{background:rgba(184,134,42,.22);border-radius:2px;padding:0 2px}
+.ar-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.ar-tag{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:4px;background:var(--b2);color:var(--sm)}
+
+/* ═══════════════════════════════════════════════
+   SOURCES
+═══════════════════════════════════════════════ */
+.src-section-title{font-family:var(--ft);font-size:13px;font-weight:700;color:var(--ac);margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+.src-section-title::after{content:'';flex:1;height:1px;background:var(--b2)}
+.src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:8px}
+.src-item{
+  padding:12px 14px;border-radius:10px;background:var(--wh);border:1px solid var(--bd);
+  position:relative;overflow:hidden;
+}
+.src-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);border-radius:3px 0 0 3px}
+.s-type{font-family:var(--fm);font-size:9px;color:var(--gold);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em}
+.s-title{font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.4;padding-left:6px}
+.s-ref{font-family:var(--fm);font-size:10px;color:var(--sm);padding-left:6px;line-height:1.4}
+
+/* ═══════════════════════════════════════════════
+   OVERLAY IMPRESSION
+═══════════════════════════════════════════════ */
+@media print{
+  body::before{
+    content:'Ce document est propriété de Smart-Invest.ia — Reproduction interdite';
+    display:block;text-align:center;font-size:10px;padding:8px;
+    background:#000;color:#fff;position:fixed;top:0;left:0;right:0;z-index:9999;
+  }
+  .protected{color:transparent!important;background:repeating-linear-gradient(45deg,#ccc 0,#ccc 2px,transparent 0,transparent 50%) 0/10px 10px!important}
+}
+
+@media(max-width:700px){
+  .grid2,.cond-grid{grid-template-columns:1fr}
+  .hnav{display:none}
+  .legal-layout{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .legal-list{max-height:220px;border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+  .legal-detail{max-height:none}
+}
+</style>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="pro"></script>
+<script src='lib/upgrade-modal.js'></script>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- OVERLAY CLIC-DROIT -->
+<div id="ctx-block">
+  <div class="cb-icon">🔒</div>
+  <div class="cb-msg">Contenu protégé</div>
+  <div class="cb-sub">Ce référentiel est réservé aux utilisateurs Smart-Invest.ia. La copie, l'extraction et la réutilisation des données sont interdites.</div>
+  <button onclick="document.getElementById('ctx-block').classList.remove('show')">Fermer</button>
+</div>
+
+<header class="hd">
+  <div class="hl">
+    <a href="landing.html" class="back">← Retour</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="badge" style="font-family:var(--ft);font-size:13px;font-weight:800;color:#FFAA00;letter-spacing:.03em;background:none;border:none;padding:0">Votre conseiller juridique</div>
+  </div>
+  <div style="width:80px"></div>
+</header>
+
+<div class="page">
+  <div style="font-family:var(--ft);font-size:30px;font-weight:900;margin-bottom:4px;letter-spacing:-.01em">📋 Options contractuelles</div>
+  <div style="font-size:13px;color:var(--sm);margin-bottom:24px">Outil de sélection + référentiel juridique — DOC (1913 consolidé) · Loi 15-95 C.Com · Loi 53-05</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('selector',this)">🎯 Sélecteur</div>
+    <div class="tab" onclick="switchTab('legal',this)">⚖️ Référentiel légal</div>
+    <div class="tab" onclick="switchTab('conditions',this)">✅ Conditions & Nullités</div>
+    <div class="tab" onclick="switchTab('articles',this)">🔍 Articles</div>
+    <div class="tab" onclick="switchTab('sources',this)">📚 Sources</div>
+  </div>
+
+  <!-- ══ TAB SÉLECTEUR ══════════════════════════ -->
+  <div id="tab-selector" class="tab-content active">
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">🎯 Critères de sélection</div>
+        <div class="card-sub">Ajustez les critères — la forme contractuelle optimale est calculée dynamiquement parmi les 25 formes du DOC et du Code de Commerce</div>
+        <div class="fg fg-scope"><label>1. Périmètre du projet (Scope) bien défini ?</label><div class="slider-wrap"><input type="range" id="q_scope" min="0" max="10" value="5" oninput="calc()"><span class="slider-val" id="v_scope">5</span></div><div class="hn">0 = Périmètre flou · 10 = Spécifications complètes et figées</div></div>
+        <div class="fg fg-tech"><label>2. Incertitude technologique ou réglementaire ?</label><div class="slider-wrap"><input type="range" id="q_tech" min="0" max="10" value="5" oninput="calc()"><span class="slider-val" id="v_tech">5</span></div><div class="hn">0 = Technologies maîtrisées · 10 = Innovation risquée</div></div>
+        <div class="fg fg-urgency"><label>3. Urgence du projet ?</label><div class="slider-wrap"><input type="range" id="q_urgency" min="0" max="10" value="4" oninput="calc()"><span class="slider-val" id="v_urgency">4</span></div><div class="hn">0 = Pas d'urgence · 10 = Mise en service impérative</div></div>
+        <div class="fg fg-xp"><label>4. Expérience du prestataire / partenaire ?</label><div class="slider-wrap"><input type="range" id="q_xp" min="0" max="10" value="6" oninput="calc()"><span class="slider-val" id="v_xp">6</span></div><div class="hn">0 = Inconnu · 10 = Partenaire long terme prouvé</div></div>
+        <div class="fg fg-budget"><label>5. Budget disponible pour absorber les dépassements ?</label><div class="slider-wrap"><input type="range" id="q_budget" min="0" max="10" value="5" oninput="calc()"><span class="slider-val" id="v_budget">5</span></div><div class="hn">0 = Budget serré · 10 = Réserves importantes</div></div>
+        <div class="fg" style="margin-top:6px">
+          <label style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;display:block">Sélectionnez votre catégorie de projet / d'opération</label>
+          <select id="q_type" onchange="calc()" style="width:100%;padding:10px 14px;border:1.5px solid var(--gold);border-radius:10px;font-family:var(--fb);font-size:13px;background:var(--gp);outline:none;cursor:pointer;color:var(--ink);font-weight:500">
+            <option value="" disabled>— Choisissez une catégorie —</option>
+            <optgroup label="🔨 Projets &amp; Travaux">
+              <option value="construction" selected>🏗  Construction / Génie Civil</option>
+              <option value="equipment">⚙️  Fourniture d'équipements</option>
+              <option value="it">💻  Système d'information / TIC / SaaS</option>
+              <option value="service">💼  Services professionnels</option>
+              <option value="mixed">🔧  Clé en main (EPC / Turnkey)</option>
+            </optgroup>
+            <optgroup label="⚖️ Actes Civils &amp; Commerciaux">
+              <option value="vente">🛒  Achat / Vente de bien</option>
+              <option value="bail">🏠  Location / Bail immobilier</option>
+              <option value="intermediation">🤝  Intermédiation commerciale</option>
+              <option value="financement">💰  Financement &amp; garanties</option>
+            </optgroup>
+            <optgroup label="🏪 Commerce &amp; Distribution">
+              <option value="distribution">🏪  Distribution &amp; Franchise</option>
+              <option value="partenariat_b2b">🏢  Partenariat B2B / Co-entreprise</option>
+              <option value="fonds">🏬  Fonds de commerce</option>
+            </optgroup>
+          </select>
+          <div class="hn" style="margin-top:6px">12 catégories · 25 formes contractuelles — DOC 1913 & Code de Commerce</div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px"><div class="card-title">📊 Score de risque global</div><div id="riskScore"></div><div class="risk-vis" id="riskVis"></div></div>
+        <div id="contractResult"></div>
+      </div>
+    </div>
+
+    <!-- TABLEAU COMPARATIF GLOBAL — 25 FORMES -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <div class="card-title" style="margin-bottom:0">📋 Les 25 formes contractuelles — DOC & Code de Commerce</div>
+        <div style="font-family:var(--fm);font-size:10px;color:var(--sm)" id="tableCount"></div>
+      </div>
+      <div class="filter-row" id="famFilters" style="margin-bottom:12px"></div>
+      <div id="contractComparison"></div>
+    </div>
+
+    <div class="card"><div class="card-title">✅ Clauses essentielles recommandées</div><div id="contractClauses"></div></div>
+    <div class="card" style="background:rgba(30,77,107,.04);border-color:rgba(30,77,107,.15)">
+      <div style="font-family:var(--ft);font-size:13px;font-weight:700;color:var(--ac);margin-bottom:8px">⚖️ Fondement légal marocain</div>
+      <div style="font-size:12.5px;color:var(--is);line-height:1.7" id="legalFoundation"></div>
+    </div>
+  </div>
+
+  <!-- ══ TAB RÉFÉRENTIEL LÉGAL ══════════════════ -->
+  <div id="tab-legal" class="tab-content">
+    <div class="search-bar">
+      <input type="text" id="legalSearch" placeholder="Rechercher un contrat, article, mot-clé juridique…" oninput="filterLegal()">
+    </div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all',this)">Tous (19)</button>
+      <button class="filter-btn" onclick="setFilter('civil',this)">Civil — DOC (9)</button>
+      <button class="filter-btn" onclick="setFilter('com',this)">Commercial — C.Com (7)</button>
+      <button class="filter-btn" onclick="setFilter('innom',this)">Innommés (2)</button>
+      <button class="filter-btn" onclick="setFilter('num',this)">Numérique (1)</button>
+    </div>
+    <div class="legal-layout protected">
+      <div class="legal-list" id="legalList"></div>
+      <div class="legal-detail" id="legalDetail">
+        <div class="ld-empty">
+          <div class="ld-empty-icon">⚖️</div>
+          <div class="ld-empty-msg">Sélectionnez un contrat dans la liste pour afficher sa fiche complète</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB CONDITIONS & NULLITÉS ═════════════ -->
+  <div id="tab-conditions" class="tab-content protected">
+    <div class="card">
+      <div class="card-title">📌 Conditions de validité & Causes de nullité — art. 2 DOC</div>
+      <div class="card-sub">Sélectionnez une catégorie pour afficher la fiche complète</div>
+      <div class="cond-interactive-layout">
+        <!-- PANNEAU GAUCHE -->
+        <div class="cond-nav-panel" id="condNavPanel">
+          <div class="cond-nav-group">Conditions de validité (art. 2 DOC)</div>
+          <div class="cond-nav-item" data-cid="capacite" onclick="selectCond('capacite',this)">
+            <span class="cond-nav-num">01</span>
+            <span class="cond-nav-dot cap"></span>
+            <span class="cond-nav-name">Capacité</span>
+            <span class="cond-nav-arr">›</span>
+          </div>
+          <div class="cond-nav-item" data-cid="consentement" onclick="selectCond('consentement',this)">
+            <span class="cond-nav-num">02</span>
+            <span class="cond-nav-dot cons"></span>
+            <span class="cond-nav-name">Consentement</span>
+            <span class="cond-nav-arr">›</span>
+          </div>
+          <div class="cond-nav-item" data-cid="objet" onclick="selectCond('objet',this)">
+            <span class="cond-nav-num">03</span>
+            <span class="cond-nav-dot obj"></span>
+            <span class="cond-nav-name">Objet</span>
+            <span class="cond-nav-arr">›</span>
+          </div>
+          <div class="cond-nav-item" data-cid="cause" onclick="selectCond('cause',this)">
+            <span class="cond-nav-num">04</span>
+            <span class="cond-nav-dot cau"></span>
+            <span class="cond-nav-name">Cause</span>
+            <span class="cond-nav-arr">›</span>
+          </div>
+          <div class="cond-nav-group">Causes de nullité</div>
+          <div class="cond-nav-item" data-cid="null_abs" onclick="selectCond('null_abs',this)">
+            <span class="cond-nav-num" style="font-size:10px">🔴</span>
+            <span class="cond-nav-dot abs"></span>
+            <span class="cond-nav-name">Nullité absolue</span>
+            <span class="cond-nav-arr">›</span>
+          </div>
+          <div class="cond-nav-item" data-cid="null_rel" onclick="selectCond('null_rel',this)">
+            <span class="cond-nav-num" style="font-size:10px">🟡</span>
+            <span class="cond-nav-dot rel"></span>
+            <span class="cond-nav-name">Nullité relative</span>
+            <span class="cond-nav-arr">›</span>
+          </div>
+          <div class="cond-nav-item" data-cid="null_sect" onclick="selectCond('null_sect',this)">
+            <span class="cond-nav-num" style="font-size:10px">🔵</span>
+            <span class="cond-nav-dot sect"></span>
+            <span class="cond-nav-name">Limites sectorielles</span>
+            <span class="cond-nav-arr">›</span>
+          </div>
+          <div class="cond-nav-item" data-cid="null_solid" onclick="selectCond('null_solid',this)">
+            <span class="cond-nav-num" style="font-size:10px">🟢</span>
+            <span class="cond-nav-dot solid"></span>
+            <span class="cond-nav-name">Solidarité & prescription</span>
+            <span class="cond-nav-arr">›</span>
+          </div>
+        </div>
+        <!-- PANNEAU DÉTAIL -->
+        <div class="cond-detail-panel" id="condDetailPanel">
+          <div class="cond-detail-empty">
+            <div style="font-size:40px;opacity:.25">📋</div>
+            <div style="font-family:var(--fm);font-size:11px;text-align:center;line-height:1.6;max-width:220px">Sélectionnez une condition ou une cause de nullité pour afficher sa fiche complète</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⏱️ Délais et prescriptions applicables</div>
+      <table class="presc-table">
+        <thead><tr><th>Régime</th><th>Délai</th><th>Base légale</th><th>Note</th></tr></thead>
+        <tbody id="prescTable"></tbody>
+      </table>
+    </div>
+  </div><!-- /conditions -->
+
+  <!-- ══ TAB ARTICLES ═══════════════════════════ -->
+  <div id="tab-articles" class="tab-content">
+    <div class="card">
+      <div class="card-title">🔍 Recherche dans les articles du DOC et du Code de Commerce</div>
+      <div class="search-bar"><input type="text" id="artSearch" placeholder="Mot-clé, numéro d'article, type de contrat…" oninput="searchArt()"></div>
+      <div style="font-size:11px;color:var(--sm);margin-bottom:12px;font-family:var(--fm)">Essayez : "vente", "mandat", "879", "cautionnement", "électronique", "nantissement", "prescription"…</div>
+      <div id="artResults" class="protected"></div>
+    </div>
+  </div>
+
+  <!-- ══ TAB SOURCES ════════════════════════════ -->
+  <div id="tab-sources" class="tab-content">
+    <div class="card">
+      <div class="card-title">📚 Sources et références juridiques vérifiées</div>
+      <div class="card-sub">Textes officiels et bases de données institutionnelles — consultés mai 2026</div>
+      <div class="src-section-title">⚖️ Textes légaux officiels</div>
+      <div class="src-grid" id="srcLegal"></div>
+      <div class="src-section-title">🌐 Bases de données & portails institutionnels</div>
+      <div class="src-grid" id="srcDb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY IMPRESSION -->
+<div id="print-overlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(14,14,12,.96);align-items:center;justify-content:center;flex-direction:column;gap:12px">
+  <div style="font-size:40px">🖨️</div>
+  <div style="font-family:var(--ft);font-size:18px;font-weight:800;color:var(--gl)">Impression non disponible</div>
+  <div style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.4);text-align:center;max-width:400px">Ce référentiel est protégé contre la reproduction. Contactez l'administrateur pour obtenir une version exportable.</div>
+  <button onclick="document.getElementById('print-overlay').style.display='none'" style="margin-top:8px;padding:10px 24px;background:var(--gold);color:var(--ink);border:none;border-radius:8px;font-family:var(--fb);font-weight:700;cursor:pointer">Fermer</button>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   ANTI-SCRAPING — PROTECTIONS JAVASCRIPT
+══════════════════════════════════════════════════ */
+
+// 1. Blocage clic droit
+document.addEventListener('contextmenu',e=>{
+  if(e.target.closest('.protected,.legal-masonry,.lc-body,.ar-text,.cond-card,.null-item,.presc-table')){
+    e.preventDefault();
+    document.getElementById('ctx-block').classList.add('show');
+  }
+});
+
+// 2. Interception Ctrl+C / Ctrl+A sur zones protégées
+document.addEventListener('keydown',e=>{
+  const sel=window.getSelection();
+  if(!sel||sel.toString().length<2) return;
+  const anchor=sel.anchorNode?.parentElement;
+  if(anchor?.closest('.protected')){
+    if((e.ctrlKey||e.metaKey)&&(e.key==='c'||e.key==='a'||e.key==='C'||e.key==='A')){
+      e.preventDefault();
+      document.getElementById('ctx-block').classList.add('show');
+    }
+  }
+});
+
+// 3. Blocage impression
+window.addEventListener('beforeprint',e=>{
+  e.preventDefault();
+  document.getElementById('print-overlay').style.display='flex';
+});
+
+// 4. Fermeture overlay clavier
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.getElementById('ctx-block').classList.remove('show');
+    document.getElementById('print-overlay').style.display='none';
+  }
+});
+
+// 5. Injection de caractères zéro-largeur dans les chaînes sensibles
+// (déclenché au moment du rendu DOM, pas dans les données brutes)
+function injectZWS(str){
+  if(!str||str.length<4) return str;
+  const ZWS='\u200B';
+  let out='';
+  for(let i=0;i<str.length;i++){
+    out+=str[i];
+    if(i%3===2&&i<str.length-1) out+=ZWS;
+  }
+  return out;
+}
+
+// 6. Fonction de fragmentation HTML — éclate le texte en spans non contigus
+function frag(text, protect=true){
+  if(!text) return '';
+  if(!protect) return text;
+  const ZWS='\u200B\u200C\u200D';
+  return text.split('').map((c,i)=>{
+    if(i%5===4) return `${c}<span class="ghost">${ZWS}</span>`;
+    return c;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   DONNÉES SÉLECTEUR — 25 FORMES CONTRACTUELLES
+══════════════════════════════════════════════════ */
+const CF={
+  /* ── PROJETS / TRAVAUX (risk-based) ── */
+  forfait:{name:'Contrat à Prix Fixe (Forfait)',short:'FFP — Firm Fixed Price',cat:'civil',srcRef:'DOC art. 723–771',risk:'Entrepreneur',scoreRange:[0,3],
+    pros:['Coût prévisible pour l\'investisseur','Incitation à l\'efficacité','Comptabilité simple'],
+    cons:['Prime de risque incluse dans le prix','Renégociations si périmètre imprécis','Risque de qualité réduite'],
+    bestFor:'Construction standard, fournitures avec specs complètes',ccagRef:'CCAG-T Décret 2-12-349 — Cautionnement 3%',
+    clauses:["Scope of Work exhaustif + plans d'exécution annexés","Change Order Procedure : ordre de service écrit obligatoire","Pénalités de retard (LD) : X MAD/jour (Décret 2-12-349)","Révision prix si cours matériaux >15% (art. 230 DOC)","Garantie décennale + assurance Tous Risques Chantier","Retenue de garantie 5% libérée après réception définitive"]},
+  prix_unitaire:{name:'Contrat à Prix Unitaire',short:'Unit Price — Bordereau de prix',cat:'civil',srcRef:'DOC art. 723–771 · art. 58',risk:'Partagé',scoreRange:[3,5],
+    pros:['Flexible si quantités incertaines','Transparent sur coûts unitaires','Équitable pour travaux supplémentaires'],
+    cons:['Montant total incertain avant achèvement','Risque de dérive quantités','Nécessite métreur indépendant'],
+    bestFor:'Terrassement, réseaux VRD, équipements à quantités incertaines',ccagRef:'CCAG-T — Mésurage contradictoire obligatoire',
+    clauses:["Bordereau de prix unitaires détaillé annexé","Mésurage contradictoire par ingénieur indépendant","Plafond de quantités déclenchant renégociation","Actualisation des prix (indice BTP)","Retenue de garantie 5%","Solidarité codébiteurs si groupement (art. 165 DOC)"]},
+  remboursable:{name:'Contrat Coût Remboursable',short:'Cost Plus — Régie contrôlée',cat:'civil',srcRef:'DOC art. 723–771',risk:'Investisseur',scoreRange:[5,7],
+    pros:['Adapté aux projets complexes','Transparence totale sur coûts','Moins de risques cachés'],
+    cons:['Coût final imprévisible','Suivi rigoureux requis','Risque de dérive budgétaire'],
+    bestFor:'Projets R&D, IT complexes, urgences, réhabilitation bâti existant',ccagRef:'CCAG — Rapport coûts mensuel + droit d\'audit',
+    clauses:["Définition précise des coûts admissibles (Direct Costs)","Audit comptable à chaque tranche","Taux de marge fixe (fee) — non révisable","Budget indicatif Not to Exceed (NTE)","Rapport mensuel + pièces justificatives","Clause nullité si fraude sur coûts (art. 52–53 DOC)"]},
+  tm:{name:'Contrat Temps & Matériaux',short:'T&M — Time and Material',cat:'civil',srcRef:'DOC art. 723–771 · art. 879–958',risk:'Investisseur',scoreRange:[5,8],
+    pros:['Très flexible','Démarrage rapide','Idéal prestations intellectuelles'],
+    cons:['Aucune incitation à l\'efficacité','Budget difficile à maîtriser','Supervision quotidienne'],
+    bestFor:'Conseil, développement agile, assistance technique',ccagRef:'CCAG services — Tarifs horaires fixés par profil',
+    clauses:["Tarifs horaires par profil fixés au contrat","Tableau de bord hebdomadaire de consommation","Plafond mensuel non dépassable sans autorisation","Droit de substitution de ressources (préavis 5 jours)","Résiliation à tout moment avec 30 jours de préavis","Clause de confidentialité + propriété intellectuelle"]},
+  cpif:{name:'Contrat Coût Plus Intéressement',short:'CPIF — Cost Plus Incentive Fee',cat:'civil',srcRef:'DOC art. 723–771 · art. 19',risk:'Partagé (optimisé)',scoreRange:[7,10],
+    pros:['Alignement des intérêts','Motivation maximale à la performance','Partage des gains/pertes'],
+    cons:['Structure complexe à négocier','KPIs précis requis','Frais juridiques élevés'],
+    bestFor:'Grands projets EPC, partenariats long terme, enjeux calendaires critiques',ccagRef:'Contrat sur mesure — KPIs pondérés délai/coût/qualité',
+    clauses:["Cible de coût (Target Cost) et délai négociés","Partage économies : 50/50 si < Target Cost","Partage surcoûts : 80% investisseur / 20% entrepreneur","Incentive fee maximum et minimum définis","KPIs pondérés : délai + coût + qualité","Clause compromissoire — arbitrage commercial"]},
+  /* ── VENTE ── */
+  vente:{name:'Contrat de Vente',short:'Vente mobilière consensuelle',cat:'civil',srcRef:'DOC art. 478–618',risk:'Partagé',
+    pros:['Transfert immédiat de propriété','Pas de forme obligatoire (meubles)','Garanties légales vices cachés'],
+    cons:['Risque d\'impayé vendeur','Garantie d\'éviction obligatoire','Lésion >1/3 rescindable (art. 55)'],
+    bestFor:'Vente marchandises, matériel, stock, biens meubles entre professionnels',ccagRef:'Facture + bon de livraison + bon de commande signé',
+    clauses:["Désignation précise de la chose (art. 58 DOC)","Prix déterminé ou déterminable — sérieux et en argent","Clause de réserve de propriété jusqu'au paiement intégral","Garantie des vices cachés (art. 549–580 DOC)","Pénalités de retard de paiement","Clause attributive de juridiction / arbitrage"]},
+  vente_immo:{name:'Vente Immobilière',short:'Acte authentique ou SSP + Conservation Foncière',cat:'civil',srcRef:'DOC art. 478–618 · ANCFCC',risk:'Partagé',
+    pros:['Transfert définitif de propriété','Protection par inscription CF','Sécurité juridique maximale'],
+    cons:['Formalisme strict (acte notarié recommandé)','Droits d\'enregistrement + taxe','Droit de Sefaa (préemption) applicable'],
+    bestFor:'Acquisition terrain, immeuble, appartement, usine — tout immeuble immatriculé',ccagRef:'Notaire + Conservation Foncière — Réquisition mainlevée',
+    clauses:["Avant-contrat (compromis) avec arrhes ou acompte","Conditions suspensives : financement, permis, purge hypothèques","Acte authentique notarié pour sécurité maximale","Inscription au titre foncier (Conservation Foncière)","Garantie d'éviction + vices cachés (art. 549 DOC)","Clause pénale en cas de rétractation post-compromis"]},
+  vente_fdc:{name:'Vente de Fonds de Commerce',short:'C.Com art. 81–105 — acte écrit obligatoire',cat:'com',srcRef:'C.Com art. 81–105',risk:'Partagé',
+    pros:['Transmission actif commercial complet','Prix négociable sur clientèle/achalandage','Financement bancaire possible'],
+    cons:['Formalisme lourd (publicité, opposition 15j)','Risque non-transfert bail commercial','Évaluation subjective de la clientèle'],
+    bestFor:'Reprise commerce existant (restaurant, pharmacie, boutique, cabinet)',ccagRef:'Acte authentique ou SSP + BO + RC',
+    clauses:["Mentions obligatoires art. 81 C.Com (CA 3 ans, origine propriété, inscriptions)","Ventilation du prix : incorporels / matériel / stock","Publicité légale + délai opposition créanciers 15 jours","Séquestre prix chez notaire jusqu'à purge des oppositions","Clause de non-rétablissement du vendeur (territoire + durée)","Reprise ou résiliation du bail commercial — accord bailleur"]},
+  /* ── BAIL ── */
+  bail_hab:{name:'Bail d\'Habitation',short:'Loi 67-12 — usage résidentiel',cat:'civil',srcRef:'Loi 67-12 · DOC art. 627–720',risk:'Bailleur',
+    pros:['Revenus locatifs réguliers','Cadre légal équilibré (Loi 67-12)','Dépôt de garantie 1–2 mois'],
+    cons:['Révision loyer plafonnée Loi 67-12','Expulsion judiciaire obligatoire','Préavis 3 mois pour bailleur'],
+    bestFor:'Location logement principal ou secondaire, villa, appartement',ccagRef:'Contrat écrit légalisé + état des lieux contradictoire',
+    clauses:["Bail écrit obligatoire (Loi 67-12) — signatures légalisées","Durée initiale + conditions de reconduction","Dépôt de garantie (1–2 mois)","État des lieux entrée/sortie contradictoire","Révision de loyer selon modalités légales (Loi 67-12)","Clause résolutoire non-paiement — procédure judiciaire obligatoire"]},
+  bail_com:{name:'Bail Commercial',short:'Usage commercial — C.Com / DOC droit commun',cat:'com',srcRef:'DOC art. 627–720 · C.Com usage',risk:'Partagé',
+    pros:['Stabilité locataire commerçant','Pas de plafonnement légal du loyer','Durée librement négociée'],
+    cons:['Pas de statut légal spécifique (gap légal)','Contentieux loyers fréquents','Droit au bail = enjeu cession'],
+    bestFor:'Locaux commerciaux, boutiques, restaurants, showrooms, entrepôts',ccagRef:'Acte SSP légalisé ou notarié',
+    clauses:["Désignation précise de la destination commerciale","Durée + conditions de renouvellement (tout contractuel)","Loyer de base + indexation (indice convenu)","Cession du droit au bail : valeur patrimoniale — clause encadrant","Sous-location : autorisation expresse requise","Clause de préférence en cas de vente des murs"]},
+  credit_bail:{name:'Crédit-bail (Leasing)',short:'C.Com art. 480–543 — financement locatif',cat:'com',srcRef:'C.Com art. 480–543 · Régl. BAM',risk:'Établissement de crédit',
+    pros:['Financement sans apport initial','Option d\'achat à valeur résiduelle','Loyers déductibles fiscalement'],
+    cons:['Coût total > crédit classique','Établissement agréé BAM obligatoire','Résolution impayés = reprise du bien'],
+    bestFor:'Équipements industriels, véhicules, informatique, locaux professionnels',ccagRef:'Contrat écrit + publication RC (mobilier) ou CF (immobilier)',
+    clauses:["Contrat écrit obligatoire + publicité RC ou Conservation Foncière","Durée = vie économique du bien (3–7 ans)","Loyers (redevances) indexés ou fixes","Option d'achat à valeur résiduelle définie dès l'origine","Maintenance et assurance à la charge du crédit-preneur","Résolution impayés : bien récupéré par bailleur — procédure"]},
+  /* ── INTERMÉDIATION ── */
+  agence:{name:'Agence Commerciale',short:'C.Com art. 393–429 — représentation habituelle',cat:'com',srcRef:'C.Com art. 393–429',risk:'Commettant',
+    pros:['Développement commercial sans salarié','Commission = coût variable','Réseau externe motivé'],
+    cons:['Indemnité clientèle en cas de résiliation non fautive','Pas de subordination possible','Inscription RC obligatoire'],
+    bestFor:'Représentation commerciale régionale, export, distribution B2B',ccagRef:'Contrat écrit + inscription RC de l\'agent',
+    clauses:["Désignation du territoire ou secteur d'activité","Taux de commission sur CA généré (%)","Clause d'exclusivité territoriale (si applicable)","Indemnité de clientèle en cas de rupture non fautive","Clause de non-concurrence (durée + territoire limités)","Obligation de reporting mensuel CA + pipeline"]},
+  courtage:{name:'Contrat de Courtage',short:'C.Com art. 430–447 — rapprochement de parties',cat:'com',srcRef:'C.Com art. 430–447',risk:'Courtier',
+    pros:['Mission ponctuelle et ciblée','Rémunération à succès uniquement','Pas de représentation des parties'],
+    cons:['Commission conditionnée à la réalisation','Risque de double mandat non déclaré','Preuve de la réalisation difficile'],
+    bestFor:'Courtage immobilier, assurance, crédit, rapprochement M&A',ccagRef:'Bon de courtage écrit — taux de commission défini',
+    clauses:["Mission et objet du rapprochement définis précisément","Taux de commission convenu (% du prix ou montant fixe)","Commission due uniquement si le contrat se réalise grâce à son entremise","Durée de la mission + clause d'exclusivité si applicable","Obligation de neutralité et d'information des deux parties","Clause de confidentialité sur informations transmises"]},
+  commission:{name:'Contrat de Commission',short:'C.Com art. 448–479 — actes en nom propre',cat:'com',srcRef:'C.Com art. 448–479',risk:'Commissionnaire',
+    pros:['Anonymat du commettant préservé','Responsabilité directe commissionnaire','Souplesse opérationnelle'],
+    cons:['Commissionnaire responsable personnellement envers les tiers','Obligation stricte de rendre compte','Risque de dépassement des instructions'],
+    bestFor:'Import-export pour compte de tiers, achats groupés, trading B2B',ccagRef:'Contrat de commission écrit + compte-rendu d\'opérations',
+    clauses:["Désignation des opérations à réaliser et limites de pouvoirs","Taux de commission sur valeur des opérations","Del credere : clause de garantie (si stipulée)","Obligation de compte-rendu à chaque opération","Interdiction de déroger aux instructions sans autorisation","Restitution des fonds et marchandises à première demande"]},
+  mandat:{name:'Contrat de Mandat',short:'DOC art. 879–958 — représentation au nom du mandant',cat:'civil',srcRef:'DOC art. 879–958',risk:'Mandant',
+    pros:['Représentation directe au nom du mandant','Mandat tacite reconnu','Flexibilité des pouvoirs'],
+    cons:['Mandataire peut engager mandant au-delà des limites','Extinction par décès (art. 929)','Intuitu personae — incessible sans accord'],
+    bestFor:'Procuration notariale, mandat d\'avocat, représentation administrative, gestion immobilière',ccagRef:'Procuration notariée ou SSP légalisée selon l\'acte',
+    clauses:["Définition précise des pouvoirs (spécial ou général — admin seulement si général)","Durée et modalités de révocation","Rémunération : gratuit par défaut — honoraires si convenu","Obligation de rendre compte et restituer (art. 905 DOC)","Ratification tacite possible si mandant exécute","Clause d'exclusivité si mandataire unique"]},
+  /* ── FINANCEMENT & GARANTIES ── */
+  cautionnement:{name:'Cautionnement',short:'DOC art. 1117–1175 — sûreté personnelle',cat:'civil',srcRef:'DOC art. 1117–1175 · Décret 2-14-272',risk:'Caution',
+    pros:['Sûreté personnelle sans dépossession d\'actifs','Engagement immédiat si solidaire','Instrument bancaire largement accepté'],
+    cons:['Risque d\'engagement illimité si solidaire','S\'éteint avec la dette principale','Recours contre débiteur parfois difficile'],
+    bestFor:'Garantie bancaire, marchés publics, location, financement d\'entreprise',ccagRef:'Acte de cautionnement écrit + lettre de garantie bancaire',
+    clauses:["Engagement exprès et écrit — montant maximum limité","Type : simple (bénéfice discussion) ou solidaire (engagement immédiat)","Caution administrative : provisoire 75j + définitive 3%","Contre-garantie débiteur principal (sûreté réelle sur actifs)","Durée limitée et conditions d'extinction précisées","Clause de recours : subrogation dans les droits du créancier"]},
+  nantissement_fdc:{name:'Nantissement du Fonds de Commerce',short:'C.Com art. 106–135 — sans dépossession',cat:'com',srcRef:'C.Com art. 106–135',risk:'Débiteur',
+    pros:['Sûreté réelle sans perdre l\'exploitation','Financement sur actifs incorporels','Publicité RC = opposabilité aux tiers'],
+    cons:['Inscription RC obligatoire (nullité absolue sinon)','Marchandises non nantissables','Renouvellement tous les 5 ans'],
+    bestFor:'Crédit professionnel garanti par le fonds, financement acquisition fonds',ccagRef:'Acte écrit + inscription RC + publication BO si > seuil',
+    clauses:["Désignation précise des éléments nantis (liste limitative art. 107)","Inscription RC obligatoire à peine de nullité (art. 109)","Durée inscription 5 ans — renouvellement avant péremption","Interdiction cession du fonds sans accord du créancier nanti","Signalement obligatoire si mise en vente du fonds","Réalisation judiciaire en cas de défaillance"]},
+  factoring:{name:'Factoring (Affacturage)',short:'Cession de créances — DOC art. 195 + BAM',cat:'innom',srcRef:'DOC art. 195 et s. · Régl. BAM',risk:'Factor',
+    pros:['Financement immédiat du poste client','Externalisation du recouvrement','Couverture du risque d\'insolvabilité'],
+    cons:['Coût élevé (commission + intérêts)','Notification des débiteurs obligatoire','Décote sur créances douteuses'],
+    bestFor:'PME exportatrices, fournisseurs B2B avec délais paiement longs',ccagRef:'Convention d\'affacturage BAM + cession de créances',
+    clauses:["Convention d'affacturage avec établissement agréé BAM","Cession des créances commerciales (art. 195 DOC)","Notification des débiteurs cédés — acceptation ou signification","Garantie de bonne fin : couverture risque insolvabilité","Taux de financement + commission d'affacturage (%)","Fonds de garantie retenu par le factor jusqu'à solde"]},
+  /* ── DISTRIBUTION & FRANCHISE ── */
+  franchise:{name:'Franchise',short:'Contrat innommé — pratique + DOC théorie générale',cat:'innom',srcRef:'DOC (théorie générale) · C.Com · OMPI',risk:'Franchisé',
+    pros:['Marque connue + savoir-faire transmis','Assistance continue du franchiseur','Taux de succès supérieur à création ex nihilo'],
+    cons:['Redevance permanente (royalties %)','Dépendance envers franchiseur','Pas de loi spécifique au Maroc'],
+    bestFor:'Restauration, distribution, services, hôtellerie, éducation, retail',ccagRef:'Contrat de franchise + DIP (document d\'information précontractuel)',
+    clauses:["DIP précontractuel remis 20 jours avant signature (bonne pratique)","Concession marque + savoir-faire + assistance (durée définie)","Droit d'entrée + royalties sur CA (%)","Territoire exclusif défini + clause de non-concurrence post-contrat","Obligations franchisé : respecter concept, reporting, audits","Conditions de résiliation, renouvellement et sortie du réseau"]},
+  concession:{name:'Concession Exclusive',short:'Distribution exclusive — contrat innommé',cat:'innom',srcRef:'DOC (théorie générale) · C.Com',risk:'Partagé',
+    pros:['Exclusivité territoriale protégée','Investissement concessionnaire sur son marché','Marque concédant valorisée localement'],
+    cons:['Risque requalification rapport de subordination','Pas de statut légal spécifique','Conditions de résiliation contentieuses'],
+    bestFor:'Distribution automobile, équipements industriels, produits de marque, franchise B2B',ccagRef:'Contrat concession exclusive — durée + territoire',
+    clauses:["Droits exclusifs sur territoire géographique précis","Minimum de commandes annuelles (objectifs contractuels)","Prix de revente conseillé (attention droit de la concurrence)","Conditions de résiliation : préavis suffisant + indemnité éventuelle","Clause de non-concurrence pendant et après (durée + périmètre)","Retour des stocks et signalétiques en fin de contrat"]},
+  /* ── PARTENARIAT B2B ── */
+  partenariat:{name:'Partenariat B2B',short:'Convention-cadre — DOC théorie générale',cat:'innom',srcRef:'DOC art. 1–477 (théorie générale)',risk:'Partagé',
+    pros:['Flexibilité maximale','Cadre collaboratif long terme','Personnalisable selon la relation'],
+    cons:['Risque d\'imprécision contractuelle','Requalification possible (subordination, association)','Aucun régime légal supplétif spécifique'],
+    bestFor:'Collaboration inter-entreprises, JV informelle, co-développement, accord-cadre commercial',ccagRef:'Convention-cadre signée + avenants/commandes d\'application',
+    clauses:["Objet précis du partenariat et périmètre de collaboration","Durée + conditions de résiliation (préavis proportionnel)","Partage de revenus ou des coûts (modèle économique clair)","Clause de confidentialité et non-débauchage","Propriété intellectuelle générée pendant le partenariat","Clause de non-concurrence post-partenariat (territoire + durée)"]},
+  saas:{name:'Contrat SaaS / Informatique',short:'Service cloud — contrat innommé',cat:'innom',srcRef:'DOC (théorie générale) · Loi 53-05 · Loi 2-00',risk:'Prestataire',
+    pros:['Modèle locatif — pas d\'investissement CAPEX','Mise à jour automatique','Scalabilité immédiate'],
+    cons:['Dépendance prestataire (vendor lock-in)','Confidentialité des données','Continuité service non garantie sans SLA'],
+    bestFor:'Logiciels en ligne, hébergement cloud, IT managés, développement logiciel sur mesure',ccagRef:'Contrat SaaS + SLA + DPA (Data Processing Agreement)',
+    clauses:["Niveau de service (SLA) : disponibilité ≥ 99,9% — RTO/RPO définis","Propriété intellectuelle : licence d'utilisation vs cession de code source","Traitement données personnelles (DPA conforme Loi 09-08)","Plan de continuité + PRA (Plan de Reprise d'Activité)","Clause de réversibilité : export des données en fin de contrat","Pénalités contractuelles en cas de violation du SLA"]},
+  elec:{name:'Contrat Électronique',short:'DOC art. 65-1 à 65-8 — Loi 53-05',cat:'num',srcRef:'DOC art. 65-1 à 65-8 · Loi 53-05',risk:'Fournisseur',
+    pros:['Dématérialisation complète','Signature électronique sécurisée reconnue','Archivage numérique 15 ans'],
+    cons:['Double-clic obligatoire (art. 65-5)','Exclusions légales (actes famille, sûretés SSP)','Certification ANRT nécessaire pour SES'],
+    bestFor:'E-commerce, contrats B2B dématérialisés, CGV en ligne, marchés publics dématérialisés',ccagRef:'Plateforme conforme ANRT + archivage certifié',
+    clauses:["Conditions contractuelles conservables avant acceptation (art. 65-3)","Double-clic : confirmation + confirmation de confirmation (art. 65-5)","Accusé de réception automatique du fournisseur","Signature électronique sécurisée (SES certifiée ANRT)","Archivage électronique 15 ans — intégrité garantie","Droit de rétractation B2C : 7 jours (Loi 31-08)"]},
+  management_fees:{name:'Management Fees / Convention Intra-groupe',short:'Contrat innommé — DOC · CGI Maroc',cat:'innom',srcRef:'DOC art. 1–477 · CGI Maroc (DGI)',risk:'Groupe',
+    pros:['Optimisation de la coordination intra-groupe','Partage de coûts de structure','Facturation des services rendus'],
+    cons:['Risque de requalification DGI si absence de substance','Nécessite convention formelle + documentation','Prix de transfert encadrés par le CGI'],
+    bestFor:'Filiales marocaines recevant services de la maison-mère ou de sociétés sœurs',ccagRef:'Convention de services intra-groupe + documentation prix de transfert',
+    clauses:["Définition précise des services rendus (liste exhaustive)","Méthode de valorisation des services (coûts + marge / market rate)","Documentation prix de transfert conforme art. 214 CGI","Facturation périodique avec justificatifs (contrat de travail, frais, temps)","Clause de révision annuelle des honoraires","Clause de résiliation avec préavis 3 mois"]}
+};
+
+/* ══════════════════════════════════════════════════
+   FAMILLES DE PROJET — 12 CATÉGORIES
+══════════════════════════════════════════════════ */
+const FAMILIES={
+  construction:{label:'Construction / Génie Civil',icon:'🏗',
+    desc:'Projets de bâtiment, génie civil, infrastructure, réhabilitation. Régime CCAG-T obligatoire pour marchés publics.',
+    contracts:['forfait','prix_unitaire','remboursable','cpif'],riskBased:true,
+    legalNote:'Le contrat de construction est régi par le <strong>louage d\'ouvrage (DOC art. 723–771)</strong>. L\'entrepreneur est responsable décennalement des vices de construction. Le <strong>CCAG-T (Décret 2-12-349)</strong> s\'impose aux marchés publics. Cautionnements exigés : provisoire (75 jours max) + définitif (3% du marché dans 30 jours). Solidarité commerciale de droit si groupement (art. 165 DOC).'},
+  equipment:{label:'Fourniture d\'équipements',icon:'⚙️',
+    desc:'Achat-revente ou commande d\'équipements industriels, matériels, véhicules. Régime vente ou louage d\'ouvrage selon fourniture simple ou avec installation.',
+    contracts:['forfait','prix_unitaire','credit_bail','tm'],riskBased:true,
+    legalNote:'La fourniture d\'équipements avec installation relève du <strong>louage d\'ouvrage (DOC art. 723–771)</strong> ; la fourniture simple relève de la <strong>vente (DOC art. 478–618)</strong>. Garantie des vices cachés obligatoire (art. 549–580 DOC). Preuve libre entre commerçants (art. 334 C.Com). Le <strong>crédit-bail (C.Com art. 480–543)</strong> est une alternative financement.'},
+  it:{label:'Système d\'information / TIC / SaaS',icon:'💻',
+    desc:'Développement logiciel, intégration SI, hébergement cloud, services managés, e-commerce, maintenance informatique.',
+    contracts:['tm','saas','forfait','cpif'],riskBased:true,
+    legalNote:'Les contrats IT combinent <strong>louage d\'ouvrage (DOC art. 723–771)</strong> pour le développement et <strong>mandat/services (art. 879+)</strong> pour le conseil. Les échanges dématérialisés sont régis par la <strong>Loi 53-05 (DOC art. 65-1 à 65-8)</strong>. La propriété intellectuelle des logiciels est protégée par la <strong>Loi 2-00</strong>. Traitement des données : <strong>Loi 09-08</strong>.'},
+  service:{label:'Services professionnels',icon:'💼',
+    desc:'Prestations intellectuelles, conseil, audit, formation, recrutement, assistance technique. Distinction clé : indépendance ≠ subordination.',
+    contracts:['tm','mandat','agence','partenariat'],riskBased:true,
+    legalNote:'Les prestations intellectuelles relèvent du <strong>mandat (DOC art. 879–958)</strong> ou du <strong>louage de services (DOC art. 723–771)</strong>. Distinction essentielle : absence de subordination → contrat d\'entreprise ; subordination avérée → <strong>contrat de travail (Loi 65-99)</strong>. Prescription : 5 ans si acte de commerce (art. 5 C.Com). Solidarité entre commerçants de droit (art. 165 DOC).'},
+  mixed:{label:'Clé en main (EPC / Turnkey)',icon:'🔧',
+    desc:'Contrats englobant conception, fourniture, construction et mise en service. Risques élevés, structure contractuelle complexe.',
+    contracts:['cpif','remboursable','forfait','tm'],riskBased:true,
+    legalNote:'Les contrats EPC combinent <strong>vente d\'équipements (DOC art. 478–618)</strong>, <strong>construction (art. 723–771)</strong> et <strong>services (art. 879+)</strong>. Régime mixte applicable. Solidarité commerciale de droit entre commerçants (art. 165 DOC). Clauses d\'arbitrage valides. Nantissement de marché possible (C.Com). Responsabilité décennale de l\'entrepreneur pilote.'},
+  vente:{label:'Achat / Vente de bien',icon:'🛒',
+    desc:'Cession de propriété de biens meubles ou immeubles. Du bien ordinaire à l\'immeuble ou au fonds de commerce.',
+    contracts:['vente','vente_immo','vente_fdc'],riskBased:false,
+    legalNote:'La vente mobilière est un contrat <strong>consensuel (DOC art. 478–618)</strong> : accord sur la chose et le prix suffit. La <strong>vente immobilière</strong> requiert un acte écrit + inscription à la Conservation Foncière. La <strong>vente de fonds de commerce (C.Com art. 81–105)</strong> impose un formalisme spécifique (acte écrit, publicité légale, séquestre du prix, délai opposition créanciers 15 jours).'},
+  bail:{label:'Location / Bail immobilier',icon:'🏠',
+    desc:'Convention de jouissance temporaire d\'un bien. Trois régimes distincts : habitation (Loi 67-12), commercial (droit commun), financement locatif (crédit-bail).',
+    contracts:['bail_hab','bail_com','credit_bail'],riskBased:false,
+    legalNote:'Le bail d\'habitation est régi par la <strong>Loi 67-12</strong> : écrit obligatoire, révision encadrée, expulsion judiciaire. Le <strong>bail commercial</strong> relève du DOC et de l\'usage (pas de statut légal spécifique au Maroc — gap légal notoire). Le <strong>crédit-bail (C.Com art. 480–543)</strong> est une location avec option d\'achat, réservée aux établissements agréés BAM.'},
+  intermediation:{label:'Intermédiation commerciale',icon:'🤝',
+    desc:'Rapprochement ou représentation dans des actes commerciaux. Quatre formes selon le niveau d\'engagement : mandat, agence, courtage, commission.',
+    contracts:['agence','courtage','commission','mandat'],riskBased:false,
+    legalNote:'L\'<strong>agence commerciale (C.Com art. 393–429)</strong> implique une représentation habituelle — inscription RC obligatoire. Le <strong>courtage (C.Com art. 430–447)</strong> est une mission ponctuelle de rapprochement sans représentation. La <strong>commission (C.Com art. 448–479)</strong> : actes en nom propre pour compte d\'autrui. Le <strong>mandat (DOC art. 879–958)</strong> : représentation directe au nom du mandant.'},
+  financement:{label:'Financement & garanties',icon:'💰',
+    desc:'Instruments de couverture du risque financier, sûretés et financement d\'actifs : crédit-bail, cautionnement, nantissement, affacturage.',
+    contracts:['credit_bail','cautionnement','nantissement_fdc','factoring'],riskBased:false,
+    legalNote:'Le <strong>crédit-bail (C.Com art. 480–543)</strong> finance sans transfert de propriété. Le <strong>cautionnement (DOC art. 1117–1175)</strong> est une sûreté personnelle — solidaire = engagement immédiat. Le <strong>nantissement du fonds de commerce (C.Com art. 106–135)</strong> : sûreté réelle sans dépossession, inscription RC obligatoire. Le <strong>factoring</strong> : cession de créances à un factor agréé BAM (DOC art. 195).'},
+  distribution:{label:'Distribution & Franchise',icon:'🏪',
+    desc:'Organisation de réseaux de distribution sur le territoire marocain. De la concession à la franchise, du contrat d\'agent à la commission.',
+    contracts:['franchise','concession','agence','commission'],riskBased:false,
+    legalNote:'La <strong>franchise</strong> et la <strong>concession exclusive</strong> sont des contrats innommés au Maroc — régis par la théorie générale du DOC. Pas de loi spécifique : risque contractuel élevé si les clauses sont mal rédigées. L\'<strong>agence commerciale (C.Com art. 393–429)</strong> et la <strong>commission (C.Com art. 448–479)</strong> offrent des cadres légaux plus structurés pour l\'intermédiation dans les réseaux.'},
+  partenariat_b2b:{label:'Partenariat B2B / Co-entreprise',icon:'🏢',
+    desc:'Alliances stratégiques, joint-ventures informelles, co-développement, accords-cadres, services intra-groupe. Contrats innommés.',
+    contracts:['partenariat','saas','franchise','management_fees'],riskBased:false,
+    legalNote:'Les partenariats B2B sont régis par la <strong>théorie générale des obligations du DOC (art. 1–477)</strong>. Aucun régime supplétif spécifique — tout est contractuel. Les contrats SaaS/IT relèvent de la <strong>Loi 53-05</strong> pour les aspects dématérialisés et de la <strong>Loi 2-00</strong> pour la propriété intellectuelle. Les conventions de <strong>management fees</strong> sont encadrées fiscalement par l\'<strong>article 214 du CGI</strong>.'},
+  fonds:{label:'Fonds de commerce',icon:'🏬',
+    desc:'Cession, garantie ou location du fonds de commerce. Actif incorporel central de toute entreprise commerciale.',
+    contracts:['vente_fdc','nantissement_fdc','bail_com','cautionnement'],riskBased:false,
+    legalNote:'Le fonds de commerce est un actif incorporel dont les éléments nantissables sont limitativement énumérés à l\'<strong>art. 107 C.Com</strong> (clientèle, enseigne, droit au bail, brevets, marques). La <strong>vente (C.Com art. 81–105)</strong> requiert un acte écrit avec mentions obligatoires et publicité légale. Le <strong>nantissement (C.Com art. 106–135)</strong> permet une garantie sans dépossession — inscription RC obligatoire à peine de nullité absolue.'}
+};
+
+/* ══════════════════════════════════════════════════
+   DONNÉES RÉFÉRENTIEL LÉGAL (19 contrats)
+══════════════════════════════════════════════════ */
+const LD=[
+  {cat:'civil',cL:'Civil — DOC',name:'Vente',ref:'DOC art. 478–618 | Immo : 618–644',kw:['vente','achat','prix','propriété','chose','transfert'],def:"Convention transférant la propriété d'une chose en échange d'un prix.",nature:"Synallagmatique · consensuel · translatif de propriété · onéreux",cond:["Consentement sur chose et prix (art. 19)","Chose déterminée/déterminable, dans le commerce (art. 57–58)","Prix sérieux et en argent","Capacité des parties"],forma:"Consensuel. Exception : vente immo = acte écrit + conservation foncière. Fonds de commerce : acte authentique ou SSP (C.Com art. 81).",outils:["Compromis de vente","Acte notarié","Acte SSP légalisé","Titre foncier"],lim:["Nullité si prix fictif","Lésion >1/3 valeur — délai 1 an (art. 55–56)","Garantie vices cachés (art. 549–580)","Droit de préemption Sefaa sur immeubles indivis"],risk:["Vices cachés → vendeur","Non-paiement → acheteur"]},
+  {cat:'civil',cL:'Civil — DOC',name:'Bail (louage de chose)',ref:'DOC art. 627–720 | Loi 67-12',kw:['bail','location','loyer','locataire','bailleur','habitation'],def:"Convention procurant au locataire la jouissance d'un bien contre loyer.",nature:"Synallagmatique · onéreux · exécution successive",cond:["Chose louable déterminée","Durée définie ou indéterminée (préavis)","Loyer réel et sérieux"],forma:"Écrit obligatoire (Loi 67-12 habitation). Signatures légalisées. Dépôt de garantie 1–2 mois. État des lieux.",outils:["Contrat de bail légalisé","État des lieux contradictoire","Quittance de loyer","Dépôt de garantie"],lim:["Non résolu par vente du bien (art. 694)","Révision loyer encadrée (Loi 67-12)","Résiliation judiciaire pour impayés"],risk:["Impayés → bailleur","Expulsion → locataire"]},
+  {cat:'civil',cL:'Civil — DOC',name:"Louage d'ouvrage / Entreprise",ref:'DOC art. 723–771',kw:["entreprise","ouvrage","travaux","entrepreneur","construction","prestataire"],def:"L'entrepreneur réalise un ouvrage ou service pour le maître d'ouvrage, en toute indépendance.",nature:"Synallagmatique · onéreux · indépendance totale de l'entrepreneur",cond:["Ouvrage ou prestation clairement désigné","Prix ou mode de fixation déterminé","Absence de subordination — sinon contrat de travail"],forma:"Consensuel. Marchés publics : CCAG-T strict (Décret 2-12-349). Cautionnements obligatoires.",outils:["Devis signé","Bon de commande","Cahier des charges (CPS/CCAG)","Cautionnements provisoire + définitif (3%)"],lim:["Responsabilité décennale vices construction","Sous-traitance soumise accord MO (marchés publics)","Requalification en contrat de travail si subordination"],risk:["Dépassement → entrepreneur (forfait) / investisseur (régie)"]},
+  {cat:'civil',cL:'Civil — DOC',name:'Dépôt & Séquestre',ref:'DOC art. 772–840',kw:['dépôt','garde','séquestre','conservation','remise','restitution'],def:"Remise d'une chose mobilière à un dépositaire qui la garde et la restitue.",nature:"Réel (remise effective) · gratuit (civil) ou onéreux (professionnel)",cond:["Remise effective de la chose","Chose mobilière","Obligation de restitution"],forma:"Aucun formalisme. Écrit recommandé pour preuve.",outils:["Récépissé de dépôt","Bordereau de séquestre","PV de remise"],lim:["Dépositaire ne peut utiliser la chose","Responsabilité en cas de faute de garde","Séquestre judiciaire ou conventionnel"],risk:["Perte ou détérioration → dépositaire"]},
+  {cat:'civil',cL:'Civil — DOC',name:'Prêt (commodat & mutuum)',ref:'DOC art. 841–879',kw:['prêt','emprunt','argent','intérêt','restitution','fongible','crédit'],def:"Remise d'une chose à l'emprunteur qui s'oblige à la restituer (en nature ou en équivalent).",nature:"Réel · unilatéral après remise · gratuit ou à intérêt",cond:["Remise effective (caractère réel)","Restitution en nature (commodat) ou équivalent (mutuum)","Taux d'intérêt encadré par BAM"],forma:"Écrit recommandé pour preuve. Acte notarié si hypothèque.",outils:["Reconnaissance de dette","Acte de prêt","Billet à ordre (C.Com)","Lettre de change"],lim:["Prêt usuraire interdit","Taux encadrés BAM pour établissements crédit","Prêt à intérêt entre musulmans : réserves droit islamique"],risk:["Non-remboursement → prêteur"]},
+  {cat:'civil',cL:'Civil — DOC',name:'Mandat',ref:'DOC art. 879–958',kw:['mandat','mandataire','mandant','représentation','procuration','pouvoir'],def:"Le mandant charge le mandataire d'accomplir un acte licite pour son compte (art. 879 DOC).",nature:"Consensuel · gratuit en principe · intuitu personae",cond:["Mandant capable de l'acte (art. 880)","Mandataire doué de discernement","Objet licite et déterminé (art. 881)","Consentement exprès ou tacite (art. 883)"],forma:"Consensuel. Mandat vente/hypothèque immeuble : écrit obligatoire. Procuration notariée recommandée.",outils:["Procuration notariée","Procuration SSP légalisée","Mandat commercial","Lettre d'accréditation"],lim:["Nul si objet illicite (art. 881)","Éteint par décès mandant/mandataire (art. 929)","Mandataire ne peut excéder ses pouvoirs","Mandat général : actes d'administration seulement"],risk:["Dépassement de pouvoirs → responsabilité personnelle mandataire"]},
+  {cat:'civil',cL:'Civil — DOC',name:'Cautionnement',ref:'DOC art. 1117–1175',kw:['caution','cautionnement','garantie','sûreté','dette','créancier','marchés publics'],def:"La caution s'oblige envers le créancier à satisfaire à l'obligation du débiteur si celui-ci défaille (art. 1117 DOC).",nature:"Sûreté personnelle · unilatéral · accessoire à la dette principale",cond:["Dette principale valide","Caution capable","Engagement exprès écrit recommandé"],forma:"Écrit recommandé. Marchés publics : caution provisoire (75 j) + définitive (3% dans 30 j).",outils:["Acte de cautionnement","Lettre de garantie bancaire","Caution BAM","Caution administrative"],lim:["Éteint avec la dette principale","Bénéfice de discussion (sauf solidaire)","Caution provisoire : libérée après dépôt caution définitive","Délai max 75 jours pour caution provisoire"],risk:["Défaillance débiteur → caution"]},
+  {cat:'civil',cL:'Civil — DOC',name:'Nantissement civil',ref:'DOC art. 1176–1240',kw:['nantissement','gage','sûreté réelle','meuble','dépossession','créancier gagiste'],def:"Sûreté réelle : le débiteur remet un bien meuble au créancier qui le conserve jusqu'au remboursement.",nature:"Réel · dépossession obligatoire en droit civil · accessoire",cond:["Remise effective (dépossession)","Bien meuble","Dette existante ou future"],forma:"Aucun formalisme en droit civil. Nantissement commercial : inscription RC obligatoire.",outils:["Acte de nantissement","Bordereau RC (fonds de commerce)"],lim:["Civil : dépossession obligatoire","Sans dépossession : uniquement cas Loi 21-18","Ne donne pas droit de s'approprier le bien"],risk:["Non-remboursement → créancier gagiste"]},
+  {cat:'civil',cL:'Civil — DOC',name:'Transaction',ref:'DOC art. 1098–1114',kw:['transaction','litige','concessions','accord','règlement amiable'],def:"Les parties mettent fin à un litige par concessions réciproques.",nature:"Contrat de règlement · force de chose jugée entre les parties",cond:["Droits disponibles (non d'ordre public)","Concessions réciproques","Litige né ou prévisible"],forma:"Acte écrit fortement recommandé. Homologation judiciaire pour exécution forcée.",outils:["Protocole transactionnel","Accord amiable","Clause de confidentialité"],lim:["Irrévocable sauf erreur de personne ou de droit","Droits d'ordre public indisponibles"],risk:["Inégalité des concessions possible"]},
+  {cat:'com',cL:'Commercial — C.Com',name:'Agence commerciale',ref:'C.Com art. 393–429',kw:['agent commercial','agence','représentation','négociation','exclusivité','distribution'],def:"Mandataire indépendant chargé à titre habituel de négocier/conclure des contrats au nom du commettant.",nature:"Intermédiaire indépendant · professionnel habituel · inscrit RC",cond:["Inscription au Registre du Commerce","Exercice habituel (pas occasionnel)","Convention écrite recommandée","Territoire ou secteur défini"],forma:"Écrit recommandé. Inscription RC obligatoire. Clause exclusivité possible.",outils:["Contrat d'agence écrit","Extrait RC","Clause de non-concurrence","Rapport d'activité mensuel"],lim:["Pas de subordination — sinon requalification contrat travail","Agent supporte ses propres frais","Clause non-concurrence limitée dans le temps et l'espace"],risk:["Requalification en contrat de travail si subordination avérée"]},
+  {cat:'com',cL:'Commercial — C.Com',name:'Courtage',ref:'C.Com art. 430–447',kw:['courtage','courtier','entremise','rapprochement','intermédiation','commission'],def:"Le courtier rapproche deux parties en vue d'un contrat, sans en représenter aucune.",nature:"Intermédiaire neutre · mission ponctuelle · rémunération à succès",cond:["Mission ponctuelle","Neutralité entre les parties","Commission conditionnée à la réalisation de l'opération"],forma:"Pas de formalisme. Écrit recommandé pour fixer la commission.",outils:["Fiche de mission","Bon de courtage","Facture à la conclusion"],lim:["Commission uniquement si opération réalisée grâce à son entremise","Obligation de loyauté et d'information","Ne peut pas favoriser une partie"],risk:["Non-commission si opération non réalisée → courtier"]},
+  {cat:'com',cL:'Commercial — C.Com',name:'Commission',ref:'C.Com art. 448–479',kw:['commission','commissionnaire','commettant','achat','vente','nom propre'],def:"Le commissionnaire agit en son propre nom pour le compte du commettant — le tiers ne connaît pas le commettant.",nature:"Acte en nom propre pour compte d'autrui · responsabilité personnelle du commissionnaire",cond:["Actes juridiques pour compte du commettant","Rémunération : commission","Reddition de compte obligatoire"],forma:"Consensuel. Rémunération librement fixée. Écrit recommandé.",outils:["Contrat de commission","Compte-rendu d'opération","Facture de commission"],lim:["Responsabilité personnelle vis-à-vis des tiers","Garantie del credere si stipulée","Obligation de reddition exacte des comptes"],risk:["Insolvabilité du tiers → commissionnaire si del credere"]},
+  {cat:'com',cL:'Commercial — C.Com',name:'Crédit-bail (Leasing)',ref:'C.Com art. 480–543 | Réglementation BAM',kw:['leasing','crédit-bail','financement','location','option achat','BAM'],def:"Un établissement de crédit acquiert un bien et en transfère l'usage au client, contre loyers, avec option d'achat.",nature:"Commercial · financement · bien propriété du bailleur jusqu'à levée d'option",cond:["Établissement de crédit agréé BAM obligatoirement","Contrat écrit obligatoire","Publicité RC (mobilier) ou conservation foncière (immobilier)","Option d'achat à valeur résiduelle déterminée"],forma:"Écrit obligatoire + publicité opposable aux tiers.",outils:["Contrat de leasing","Publication RC","Option d'achat","Mainlevée en fin de contrat"],lim:["Bien propriété du bailleur jusqu'à levée d'option","Résolution si impayés : récupération du bien","Requalification en vente à tempérament si option automatique","Coût total supérieur au crédit classique"],risk:["Insolvabilité crédit-preneur → crédit-bailleur"]},
+  {cat:'com',cL:'Commercial — C.Com',name:'Nantissement fonds de commerce',ref:'C.Com art. 106–135',kw:['nantissement','fonds de commerce','RC','enseigne','clientèle','brevet','marque'],def:"Sûreté réelle sans dépossession sur fonds de commerce — le débiteur continue d'exploiter son fonds.",nature:"Sûreté réelle commerciale · sans dépossession · accessoire",cond:["Acte écrit + enregistrement","Inscription obligatoire au RC (art. 109)","Éléments nantissables désignés expressément"],forma:"Acte écrit + inscription RC. Renouvellement tous les 5 ans obligatoire.",outils:["Acte de nantissement","Bordereau inscription RC"],lim:["Marchandises EXCLUES (art. 107 C.Com)","Ne confère pas droit de s'attribuer le fonds (art. 106)","Périmé si inscription non renouvelée dans 5 ans","Priorité : ordre chronologique des inscriptions RC"],risk:["Non-remboursement → créancier nantissant"]},
+  {cat:'com',cL:'Commercial — C.Com',name:'Vente fonds de commerce',ref:'C.Com art. 81–105',kw:['fonds de commerce','cession','vente','clientèle','enseigne','bail'],def:"Acte de cession du fonds comprenant notamment clientèle, enseigne et droit au bail.",nature:"Commercial · translatif de propriété du fonds",cond:["Acte authentique ou SSP obligatoire (art. 81)","Dépôt du prix auprès d'instance habilitée","Mentions légales obligatoires : nom vendeur, prix ventilé, inscriptions, bail, origine propriété"],forma:"Publication annonces légales. Inscription RC. Opposition créanciers dans 15 jours.",outils:["Acte de vente fonds","Extrait RC","Publication annonces légales","Séquestre du prix"],lim:["Opposition créanciers vendeur possible 15 jours","Prix séquestré jusqu'à purge des oppositions","Cession implique souvent accord bailleur pour transfert droit au bail"],risk:["Oppositions créanciers bloquant le prix"]},
+  {cat:'com',cL:'Commercial — C.Com',name:'Effets de commerce',ref:'C.Com Livre III | Lettre de change · Billet à ordre · Chèque',kw:['lettre de change','billet à ordre','chèque','traite','endossement','aval'],def:"Titres négociables matérialisant une créance d'argent — circulant par endossement.",nature:"Commercial · preuve formelle · inopposabilité des exceptions",cond:["Mentions légales obligatoires selon le type","Signature des parties","Provision (lettre de change) ou aval bancaire"],forma:"Strict : mentions obligatoires sous peine de non-valeur comme effet de commerce.",outils:["Bordereau de remise","Endos","Aval bancaire","Protêt en cas d'impayé"],lim:["Inopposabilité des exceptions aux tiers de bonne foi","Forclusion si délais non respectés","Protêt obligatoire pour recours en garantie"],risk:["Impayé → porteur de l'effet"]},
+  {cat:'com',cL:'Commercial — C.Com',name:'Contrats bancaires',ref:'C.Com Livre IV Titre VII | Loi bancaire | BAM',kw:['banque','crédit','dépôt bancaire','ouverture de crédit','escompte','garantie bancaire','BAM'],def:"Conventions entre établissements de crédit agréés BAM et clients : crédit, dépôt, escompte, garanties.",nature:"Commercial · réglementé · agrément BAM obligatoire",cond:["Établissement agréé BAM","Contrat écrit pour ouverture de crédit","Information précontractuelle obligatoire","TEG (Taux Effectif Global) communiqué"],forma:"Contrat écrit. Conditions générales + particulières. Signature légalisée.",outils:["Convention de compte","Convention de crédit","Billet à ordre","Garantie bancaire / SBLC","Caution bancaire"],lim:["Taux d'intérêt encadrés BAM","Secret bancaire","Révocation crédit : procédure légale","Résiliation unilatérale : préavis obligatoire"],risk:["Défaut → établissement de crédit","Révocation crédit → entreprise cliente"]},
+  {cat:'innom',cL:'Innommé — Pratique',name:'Franchise',ref:'Pas de loi spécifique au Maroc — DOC art. 1–477 + C.Com',kw:['franchise','franchiseur','franchisé','marque','savoir-faire','redevance','réseau'],def:"Le franchiseur concède à un franchisé l'usage d'une marque, d'un savoir-faire et d'une assistance, contre redevance.",nature:"Innommé · distribution · durée déterminée avec renouvellement",cond:["Autonomie de la volonté (art. 19 DOC)","Mise à disposition marque + savoir-faire + assistance","Redevance d'entrée (droit d'entrée) + royalties sur CA"],forma:"Contrat écrit fortement recommandé. DIP (Document Information Précontractuel) — pratique internationale.",outils:["Contrat de franchise","Manuel opératoire","DIP","Clause de non-concurrence"],lim:["Risque requalification rapport de subordination","Clause non-concurrence doit être limitée","Pas de régime légal spécifique au Maroc — contentieux complexe"],risk:["Résiliation abusive → franchisé","Non-respect réseau → franchiseur"]},
+  {cat:'num',cL:'Numérique — Loi 53-05',name:'Contrat électronique',ref:'DOC art. 65-1 à 65-8 | Loi 53-05 (Dahir 1-07-129 du 30 nov. 2007)',kw:['électronique','numérique','internet','signature électronique','e-commerce','offre en ligne','ANRT'],def:"Contrat dont l'offre et/ou l'acceptation sont transmises par voie électronique — même régime de validité (art. 65-1 DOC).",nature:"Numérique · valeur probante égale à l'écrit papier si conditions remplies",cond:["Offre en ligne complète et conservable (art. 65-3 à 65-4)","Mentions obligatoires : caractéristiques, prix, durée","Double confirmation de l'acceptation (art. 65-5)","Accusé de réception obligatoire par le fournisseur"],forma:"Offre accessible sur page d'accueil. Conditions conservables et reproductibles. Signature électronique simple ou sécurisée.",outils:["Signature électronique simple","Signature électronique sécurisée (certificat ANRT)","CGV/CGU en ligne","Formulaire dématérialisé","Accusé de réception automatique"],lim:["Sûretés SSP exclues (art. 2-1 al.3 DOC)","Actes de famille exclus","Rétractation 7 jours (Loi 31-08)","Signature sécurisée : prestataire agréé ANRT obligatoirement","Conservation : 15 ans garantissant l'intégrité"],risk:["Falsification → signature sécurisée recommandée","Rejet en justice sans archivage certifié"]}
+];
+
+/* ══════════════════════════════════════════════════
+   DONNÉES ARTICLES
+══════════════════════════════════════════════════ */
+const ARTS=[
+  {ref:'Art. 2 DOC',title:'Conditions de validité des obligations contractuelles',text:"Les éléments nécessaires pour la validité des obligations qui dérivent d'une déclaration de volonté sont : (1) La capacité de s'obliger ; (2) Une déclaration valable de volonté portant sur les éléments essentiels de l'obligation ; (3) Un objet certain pouvant former objet d'obligation ; (4) Une cause licite de s'obliger.",tags:['conditions validité','capacité','consentement','objet','cause','DOC']},
+  {ref:'Art. 7 DOC',title:'Mineur autorisé à exercer le commerce',text:"Le mineur, dûment autorisé à exercer le commerce ou l'industrie, n'est point restituable contre les engagements qu'il a pris à raison de son commerce, dans les limites de l'autorisation qui lui a été donnée.",tags:['capacité','mineur','commerce','DOC']},
+  {ref:'Art. 19 DOC',title:'Accord sur les éléments essentiels',text:"La convention n'est parfaite que par l'accord des parties sur les éléments essentiels de l'obligation, ainsi que sur toutes les autres clauses licites que les parties considèrent comme essentielles.",tags:['consentement','accord','formation contrat','DOC']},
+  {ref:'Art. 40–44 DOC',title:'Erreur — vice du consentement',text:"L'erreur n'est une cause de nullité que lorsqu'elle porte sur la substance même de la chose qui forme l'objet du contrat, ou sur une qualité considérée comme essentielle par les parties.",tags:['erreur','vice consentement','nullité','DOC']},
+  {ref:'Art. 52–53 DOC',title:'Dol — vice du consentement',text:"Le dol donne ouverture à la nullité ou à la rescision de la convention, encore qu'il ait été pratiqué par un tiers, lorsque la partie qui en a profité en avait connaissance.",tags:['dol','fraude','vice consentement','nullité','DOC']},
+  {ref:'Art. 55–56 DOC',title:'Lésion',text:"La lésion donne ouverture à la rescision en faveur du mineur non émancipé. Est réputée lésion toute différence au-delà du tiers entre le prix porté au contrat et la valeur effective de la chose.",tags:['lésion','rescision','tiers valeur','1 an','DOC']},
+  {ref:'Art. 57–58 DOC',title:'Objet des obligations contractuelles',text:"Les choses, les faits et les droits incorporels qui sont dans le commerce peuvent seuls former objet d'obligation. La chose qui forme l'objet de l'obligation doit être déterminée au moins quant à son espèce.",tags:['objet','chose','commerce','déterminé','DOC']},
+  {ref:'Art. 62–65 DOC',title:'Cause de l\'obligation',text:"L'obligation sans cause ou fondée sur une cause illicite est non avenue. La cause est illicite quand elle est contraire aux bonnes mœurs, à l'ordre public, ou à la loi.",tags:['cause','ordre public','bonnes mœurs','nullité','DOC']},
+  {ref:'Art. 165 DOC',title:'Solidarité commerciale de droit',text:"La solidarité est de droit dans les obligations contractées entre commerçants, pour faits de commerce.",tags:['solidarité','commerçant','commercial','DOC']},
+  {ref:'Art. 259 DOC',title:'Droit à l\'exécution forcée',text:"Le créancier a le droit de contraindre le débiteur à honorer ses engagements. L'exécution forcée porte sur la personne même du débiteur ou sur ses biens.",tags:['exécution forcée','contrainte par corps','DOC']},
+  {ref:'Art. 387 DOC',title:'Prescription extinctive — 15 ans',text:"Toutes les actions résultant des obligations qui dérivent des actes et des faits dont s'occupe le présent code sont prescrites par quinze ans.",tags:['prescription','15 ans','extinction','DOC']},
+  {ref:'Art. 549–580 DOC',title:'Garantie des vices cachés',text:"Le vendeur est tenu de la garantie à raison des défauts cachés de la chose vendue qui la rendent impropre à l'usage auquel on la destine ou qui diminuent tellement cet usage que l'acheteur ne l'aurait pas achetée.",tags:['vices cachés','garantie','vente','DOC']},
+  {ref:'Art. 694 DOC',title:'Non-résolution du bail par vente',text:"Le contrat de louage n'est pas résolu par l'aliénation, volontaire ou forcée, de la chose louée. Le nouveau propriétaire est subrogé à tous les droits et à toutes les obligations de son auteur.",tags:['bail','vente','location','résolution','subrogation','DOC']},
+  {ref:'Art. 723–771 DOC',title:"Louage d'ouvrage / Contrat d'entreprise",text:"Le louage d'ouvrage est un contrat par lequel l'une des parties s'oblige à exécuter un travail déterminé, moyennant un prix que l'autre partie s'oblige à lui payer.",tags:["entreprise","ouvrage","travaux","construction","DOC"]},
+  {ref:'Art. 879 DOC',title:'Définition du mandat',text:"Le mandat est un contrat par lequel une personne charge une autre d'accomplir un acte licite pour le compte du commettant.",tags:['mandat','mandataire','représentation','DOC']},
+  {ref:'Art. 929 DOC',title:'Extinction du mandat par décès',text:"Le mandat s'éteint par la mort du mandant ou par celle du mandataire.",tags:['mandat','décès','extinction','DOC']},
+  {ref:'Art. 1117 DOC',title:'Définition du cautionnement',text:"Le cautionnement est un contrat par lequel une personne s'oblige envers le créancier à satisfaire à l'obligation du débiteur, si celui-ci n'y satisfait pas lui-même.",tags:['cautionnement','caution','sûreté','garantie','DOC']},
+  {ref:'Art. 2-1 DOC / Loi 53-05',title:'Écrit électronique — valeur juridique',text:"Lorsqu'un écrit est exigé pour la validité d'un acte juridique, il peut être établi et conservé sous forme électronique dans les conditions prévues aux articles 417-1 et 417-2 du DOC.",tags:['électronique','écrit','numérique','Loi 53-05','DOC']},
+  {ref:'Art. 65-1 à 65-8 DOC',title:'Contrats conclus par voie électronique',text:"La validité du contrat conclu sous forme électronique est régie par les mêmes dispositions que le contrat classique. La voie électronique peut être utilisée pour mettre à disposition du public des offres contractuelles.",tags:['électronique','offre en ligne','e-commerce','DOC']},
+  {ref:'Art. 81 C.Com',title:'Vente du fonds de commerce — forme obligatoire',text:"Toute vente ou cession de fonds de commerce est constatée par acte en la forme authentique ou sous seing privé. Le montant de la vente est déposé auprès d'une instance dûment habilitée.",tags:['fonds de commerce','cession','acte authentique','C.Com']},
+  {ref:'Art. 106–109 C.Com',title:'Nantissement du fonds de commerce',text:"Le fonds de commerce peut faire l'objet de nantissement. Le privilège résultant du nantissement s'établit, à peine de nullité, par le seul fait de l'inscription au registre du commerce.",tags:['nantissement','fonds de commerce','RC','inscription','C.Com']},
+  {ref:'Art. 393–429 C.Com',title:"Contrat d'agence commerciale",text:"L'agent commercial est un mandataire qui, à titre de profession indépendante, est chargé de négocier et éventuellement de conclure des contrats au nom et pour le compte de son commettant.",tags:['agence commerciale','agent','mandataire','C.Com']},
+  {ref:'Art. 480–543 C.Com',title:'Crédit-bail (leasing)',text:"Les opérations de crédit-bail sont des opérations de location d'équipements achetés en vue de cette location par des entreprises qui en demeurent propriétaires, lorsque ces opérations donnent au locataire la faculté d'acquérir les biens loués.",tags:['leasing','crédit-bail','option achat','financement','C.Com']},
+  {ref:'Art. 5 C.Com',title:'Prescription commerciale — 5 ans',text:"Les obligations nées à l'occasion de leur commerce entre commerçants, ou entre commerçants et non-commerçants, se prescrivent par cinq ans.",tags:['prescription','5 ans','commercial','C.Com']},
+];
+
+/* DÉLAIS / PRESCRIPTIONS */
+const PRESCRIPTIONS=[
+  ['Prescription extinctive générale (civile)','15 ans','Art. 387 DOC','Point de départ : exigibilité de l\'obligation'],
+  ['Prescription commerciale','5 ans','Art. 5 C.Com','Actes de commerce entre commerçants'],
+  ['Action en rescision pour lésion','1 an','Art. 55–56 DOC','À compter de la connaissance de la lésion'],
+  ['Cautionnement provisoire (marchés publics)','75 jours max','Art. 94 DOC (base)','Libéré après dépôt du cautionnement définitif'],
+  ['Cautionnement définitif (marchés publics)','3% du marché / 30 jours','Décret 2-12-349','Constitué dans les 30 j après notification du marché'],
+  ['Nantissement fonds de commerce','Renouvellement 5 ans','Art. 109 C.Com','Périmé si inscription non renouvelée'],
+  ['Conservation documents électroniques','15 ans','Art. 387 DOC + Loi 53-05','Conditions garantissant l\'intégrité'],
+  ['Droit de rétractation (consommateur)','7 jours','Loi 31-08','Vente à distance / contrat électronique B2C'],
+  ['Ratification convention par tiers','15 jours max','Art. 31 DOC','À compter de la notification de la convention'],
+  ['Opposition créanciers — vente fonds de commerce','15 jours','Art. 81 C.Com','Après publication dans annonces légales'],
+];
+
+/* SOURCES */
+const SOURCES={
+  legal:[
+    {t:'DOC',n:'Dahir formant Code des Obligations et Contrats',r:'12 août 1913 (9 Ramadan 1331) — Version consolidée 19 déc. 2019 — Ministère de la Justice — rnesm.justice.gov.ma'},
+    {t:'Code de Commerce',n:'Loi n° 15-95 formant Code de Commerce',r:'Dahir n° 1-96-83 du 1er août 1996 — B.O. n° 4418 du 3 octobre 1996 — Consolidé 19 déc. 2019'},
+    {t:'Échange électronique',n:'Loi n° 53-05 relative à l\'échange électronique de données juridiques',r:'Dahir n° 1-07-129 du 30 novembre 2007 — B.O. n° 5584 du 6 décembre 2007 — ANRT'},
+    {t:'Protection consommateur',n:'Loi n° 31-08 édictant des mesures de protection du consommateur',r:'Dahir n° 1-11-03 du 18 février 2011 — B.O. n° 5932 du 7 avril 2011'},
+    {t:'Bail / logement',n:'Loi n° 67-12 organisant les rapports contractuels bailleurs/preneurs',r:'Dahir n° 1-13-111 du 19 novembre 2013 — Locaux d\'habitation et professionnels'},
+    {t:'Marchés publics',n:'Décret n° 2-12-349 relatif aux marchés publics',r:'8 Joumada I 1434 (20 mars 2013) — Secrétariat Général du Gouvernement — sgg.gov.ma'},
+    {t:'Code de la Famille',n:'Loi n° 70-03 portant Code de la Famille (Moudawwana)',r:'Dahir n° 1-04-22 du 3 février 2004 — B.O. n° 5358 du 6 octobre 2005'},
+    {t:'Sûretés mobilières',n:'Loi n° 21-18 relative aux sûretés mobilières',r:'Promulguée en 2019 — Modifie le Code de Commerce'},
+  ],
+  db:[
+    {t:'Officiel Maroc',n:'Bulletin Officiel du Royaume du Maroc',r:'bo.gov.ma — Publication officielle des dahirs, décrets et lois — SGG'},
+    {t:'Justice officielle',n:'Ministère de la Justice — Portail de la documentation juridique',r:'rnesm.justice.gov.ma — Textes consolidés DOC, C.Com, codes spéciaux'},
+    {t:'Gouvernement',n:'Secrétariat Général du Gouvernement — CCAG/CCAP',r:'sgg.gov.ma — Décrets, CCAG Travaux, CCAG Études, CCAG Fournitures'},
+    {t:'Texte intégral DOC',n:'eRegulations Rabat — DOC texte intégral PDF',r:'rabat.eregulations.org — Procédures administratives et textes de référence'},
+    {t:'Base internationale',n:'WIPO Lex — Législation marocaine (base OMPI)',r:'wipo.int/wipolex/fr — Textes officiels traduits EN/FR — Propriété intellectuelle'},
+    {t:'Propriété industrielle',n:'OMPIC — Office Marocain de la Propriété Industrielle',r:'ompic.org.ma — Marques, brevets, noms commerciaux — DirectInfo'},
+    {t:'Régulation financière',n:'Bank Al-Maghrib — Circulaires et réglementations',r:'bkam.ma — Réglementation bancaire, taux directeur, circulaires BAM'},
+    {t:'Investissement',n:'AMDIE — Agence Marocaine de Développement des Investissements',r:'amdie.gov.ma — Guide investisseur, avantages fiscaux, Charte 2023'},
+    {t:'Régulation numérique',n:'ANRT — Agence Nationale de Réglementation des Télécommunications',r:'anrt.net.ma — Loi 53-05, signature électronique, e-commerce'},
+    {t:'Commerce & immatriculation',n:'Registre du Commerce — Tribunal de Commerce',r:'registrecommerce.ma — Immatriculation OMPIC, publicité légale, greffe'},
+    {t:'Fiscalité',n:'Direction Générale des Impôts — Code Général des Impôts',r:'tax.gov.ma — CGI consolidé, circulaires DGI, note circulaire annuelle LF'},
+    {t:'Douanes',n:'ADII — Administration des Douanes et Impôts Indirects',r:'douane.gov.ma — Code des Douanes, tarif douanier, régimes économiques'},
+    {t:'Arbitrage',n:'Centre d\'Arbitrage de Médiation et de Conciliation — CCIS',r:'cac.org.ma — Règlement d\'arbitrage, jurisprudence arbitrale marocaine'},
+    {t:'Jurisprudence',n:'Cour de Cassation du Maroc — Arrêts publiés',r:'coursupremedu.ma — Arrêts en matière civile, commerciale et administrative'},
+    {t:'Statistiques',n:'HCP — Haut-Commissariat au Plan',r:'hcp.ma — RGPH 2024, IPC, comptes nationaux, études sectorielles'},
+    {t:'Foncier',n:'Agence Nationale de la Conservation Foncière (ANCFCC)',r:'conservationfonciere.ma — Registre foncier, publicité immobilière, réquisitions'},
+  ]
+};
+
+/* ══════════════════════════════════════════════════
+   CRITÈRES DYNAMIQUES PAR CATÉGORIE
+══════════════════════════════════════════════════ */
+const CRITERIA={
+  construction:[
+    {id:'scope',label:'1. Périmètre du projet bien défini ?',hint:'0 = Plans inexistants · 10 = Spécifications figées et validées'},
+    {id:'tech',label:'2. Incertitude technologique ou réglementaire ?',hint:'0 = Technologies éprouvées · 10 = Innovation à risque élevé'},
+    {id:'urgency',label:'3. Urgence de mise en service ?',hint:'0 = Calendrier flexible · 10 = Date impérative (ouverture, concession…)'},
+    {id:'xp',label:'4. Expérience et références de l\'entrepreneur ?',hint:'0 = Inconnu / premier projet · 10 = Partenaire long terme prouvé'},
+    {id:'budget',label:'5. Réserves disponibles pour dépassements ?',hint:'0 = Budget serré sans marge · 10 = Provision ≥ 15% du budget'},
+  ],
+  equipment:[
+    {id:'scope',label:'1. Spécifications techniques définies ?',hint:'0 = Cahier des charges vague · 10 = Specs complètes et homologuées'},
+    {id:'tech',label:'2. Complexité technologique de l\'équipement ?',hint:'0 = Équipement standard catalogue · 10 = Sur-mesure / innovation'},
+    {id:'urgency',label:'3. Délai de livraison critique ?',hint:'0 = Livraison flexible · 10 = Date de mise en service impérative'},
+    {id:'xp',label:'4. Fiabilité du fournisseur ?',hint:'0 = Fournisseur inconnu · 10 = Partenaire certifié / références'},
+    {id:'budget',label:'5. Capacité d\'investissement CAPEX ?',hint:'0 = CAPEX contraint — leasing envisagé · 10 = Financement disponible'},
+  ],
+  it:[
+    {id:'scope',label:'1. Cahier des charges fonctionnel défini ?',hint:'0 = Idée vague / POC · 10 = Specs fonctionnelles et techniques validées'},
+    {id:'tech',label:'2. Maturité de la technologie retenue ?',hint:'0 = Stack innovant / IA / blockchain · 10 = Technologies éprouvées (ERP standard)'},
+    {id:'urgency',label:'3. Délai de mise en production ?',hint:'0 = Pas de contrainte · 10 = Go-live critique (ouverture, migration)'},
+    {id:'xp',label:'4. Expérience du prestataire IT ?',hint:'0 = Agence inconnue · 10 = Partenaire certifié avec références similaires'},
+    {id:'budget',label:'5. Budget IT disponible ?',hint:'0 = Budget contraint — modèle SaaS préféré · 10 = Enveloppe confortable'},
+  ],
+  service:[
+    {id:'scope',label:'1. Mission clairement délimitée ?',hint:'0 = Mission floue / open-ended · 10 = Livrables précis et mesurables'},
+    {id:'tech',label:'2. Complexité et expertise requises ?',hint:'0 = Prestation standard · 10 = Expertise pointue / certifications spécifiques'},
+    {id:'urgency',label:'3. Urgence de la mobilisation ?',hint:'0 = Pas d\'urgence · 10 = Démarrage immédiat requis'},
+    {id:'xp',label:'4. Confiance et historique avec le prestataire ?',hint:'0 = Premier contact · 10 = Relation établie sur plusieurs missions'},
+    {id:'budget',label:'5. Enveloppe honoraires ?',hint:'0 = Budget serré / T&M risqué · 10 = Enveloppe confortable / dépassements absorbables'},
+  ],
+  mixed:[
+    {id:'scope',label:'1. Périmètre EPC défini ?',hint:'0 = Concept / pré-étude · 10 = FEED complète + specs équipements + P&ID'},
+    {id:'tech',label:'2. Risque technologique global ?',hint:'0 = Technologie maîtrisée · 10 = Process nouveau / intégration complexe'},
+    {id:'urgency',label:'3. Urgence de mise en service ?',hint:'0 = Planning flexible · 10 = Date contractuelle ferme (pénalités élevées)'},
+    {id:'xp',label:'4. Track record du contractor EPC ?',hint:'0 = Contractor sans références similaires · 10 = EPC senior avec projets comparables'},
+    {id:'budget',label:'5. Provision pour dépassements et aléas ?',hint:'0 = Aucune réserve · 10 = Contingency ≥ 20% du budget EPC'},
+  ],
+  vente:[
+    {id:'scope',label:'1. Bien déterminé ou déterminable ?',hint:'0 = Nature/quantité vagues · 10 = Chose précisément identifiée (art. 58 DOC)'},
+    {id:'tech',label:'2. Formalisme et publicité requis ?',hint:'0 = Meuble simple (consensuel) · 10 = Immeuble / fonds (acte + CF + BO)'},
+    {id:'urgency',label:'3. Urgence de la cession ?',hint:'0 = Pas d\'urgence · 10 = Cession immédiate (liquidation, reprise urgente)'},
+    {id:'xp',label:'4. Connaissance et confiance envers la contrepartie ?',hint:'0 = Partie inconnue · 10 = Partenaire de longue date'},
+    {id:'budget',label:'5. Capacité de financement de l\'acquéreur ?',hint:'0 = Financement incertain / crédit-bail nécessaire · 10 = Fonds propres disponibles'},
+  ],
+  bail:[
+    {id:'scope',label:'1. Usage du bien locatif ?',hint:'0 = Habitation simple (Loi 67-12) · 10 = Commercial / professionnel (C.Com)'},
+    {id:'tech',label:'2. Durée d\'engagement souhaitée ?',hint:'0 = Court terme (< 1 an) · 10 = Long terme (> 5 ans) — investissement à amortir'},
+    {id:'urgency',label:'3. Urgence d\'occupation ?',hint:'0 = Recherche anticipée · 10 = Besoin immédiat (déménagement, ouverture)'},
+    {id:'xp',label:'4. Relation bailleur / locataire ?',hint:'0 = Premier contact · 10 = Confiance établie / historique locatif'},
+    {id:'budget',label:'5. Capacité locative vs achat ?',hint:'0 = Préférence financement locatif (crédit-bail) · 10 = Location simple sans option achat'},
+  ],
+  intermediation:[
+    {id:'scope',label:'1. Type de mission d\'intermédiation ?',hint:'0 = Ponctuelle (courtage) · 10 = Habituellement représentative (agence RC)'},
+    {id:'tech',label:'2. Niveau de représentation nécessaire ?',hint:'0 = Rapprochement neutre sans représentation · 10 = Représentation directe au nom du commettant'},
+    {id:'urgency',label:'3. Urgence de la mission ?',hint:'0 = Délai non contraint · 10 = Conclusion rapide requise'},
+    {id:'xp',label:'4. Expérience et inscription RC de l\'intermédiaire ?',hint:'0 = Intermédiaire informel · 10 = Agent inscrit RC + spécialiste confirmé'},
+    {id:'budget',label:'5. Structure de la rémunération ?',hint:'0 = Commission fixe limitée · 10 = Variable / succès / del credere'},
+  ],
+  financement:[
+    {id:'scope',label:'1. Type de besoin financier ?',hint:'0 = Garantie simple (cautionnement) · 10 = Financement d\'actif (leasing / factoring)'},
+    {id:'tech',label:'2. Nature de la sûreté disponible ?',hint:'0 = Sûreté personnelle (caution) · 10 = Sûreté réelle (nantissement / leasing)'},
+    {id:'urgency',label:'3. Urgence du financement ?',hint:'0 = Montage en cours · 10 = Trésorerie critique — financement immédiat'},
+    {id:'xp',label:'4. Relation avec l\'établissement de crédit ?',hint:'0 = Nouvelle relation bancaire · 10 = Partenariat BAM établi'},
+    {id:'budget',label:'5. Capacité de remboursement / solvabilité ?',hint:'0 = Capacité limitée — privilégier factoring · 10 = Cash-flow solide — nantissement suffisant'},
+  ],
+  distribution:[
+    {id:'scope',label:'1. Maturité du réseau à déployer ?',hint:'0 = Concept test / pilote · 10 = Réseau structuré avec manuel opératoire complet'},
+    {id:'tech',label:'2. Intensité du transfert marque / savoir-faire ?',hint:'0 = Distribution simple / concession · 10 = Franchise totale (marque + process + assistance)'},
+    {id:'urgency',label:'3. Urgence du déploiement territorial ?',hint:'0 = Déploiement progressif · 10 = Couverture rapide requise (concurrence)'},
+    {id:'xp',label:'4. Expérience du franchiseur / concédant ?',hint:'0 = Réseau naissant · 10 = Réseau mature avec jurisprudence contractuelle'},
+    {id:'budget',label:'5. Investissement du franchisé / concessionnaire ?',hint:'0 = Droit d\'entrée faible / commission à succès · 10 = Investissement lourd + royalties'},
+  ],
+  partenariat_b2b:[
+    {id:'scope',label:'1. Périmètre de la collaboration ?',hint:'0 = Projet ponctuel / test · 10 = Partenariat stratégique long terme'},
+    {id:'tech',label:'2. Complexité technologique partagée ?',hint:'0 = Collaboration simple / accord-cadre · 10 = Co-développement / JV avec apports IP'},
+    {id:'urgency',label:'3. Urgence du démarrage ?',hint:'0 = Montage progressif · 10 = Lancement immédiat requis'},
+    {id:'xp',label:'4. Historique et confiance avec le partenaire ?',hint:'0 = Premier contact · 10 = Partenariat éprouvé avec historique contractuel'},
+    {id:'budget',label:'5. Investissement dans le partenariat ?',hint:'0 = Faible engagement financier · 10 = Investissement joint important (IP, CAPEX, équipes)'},
+  ],
+  fonds:[
+    {id:'scope',label:'1. Valeur et complexité du fonds ?',hint:'0 = Petite activité / fonds peu valorisé · 10 = Fonds commercial important (clientèle, brevets, droit au bail)'},
+    {id:'tech',label:'2. Type d\'opération envisagée ?',hint:'0 = Garantie / nantissement · 10 = Cession complète avec bail et stock'},
+    {id:'urgency',label:'3. Urgence de l\'opération ?',hint:'0 = Pas d\'urgence · 10 = Cession urgente (difficultés, liquidation amiable)'},
+    {id:'xp',label:'4. Expérience juridique et commerciale des parties ?',hint:'0 = Première opération / sans avocat · 10 = Opérateurs confirmés avec conseil'},
+    {id:'budget',label:'5. Financement de l\'acquisition ?',hint:'0 = Financement incertain · 10 = Prêt professionnel + apport disponibles'},
+  ],
+};
+
+function updateCriteria(ptype){
+  const crit=CRITERIA[ptype]||CRITERIA.construction;
+  crit.forEach(c=>{
+    const labelEl=document.querySelector(`label[for_crit="${c.id}"]`)||
+      document.querySelector(`.fg-${c.id} label`);
+    const hintEl=document.querySelector(`.fg-${c.id} .hn`);
+    const wrapEl=document.querySelector(`.fg-${c.id}`);
+    if(wrapEl){
+      wrapEl.querySelector('label').textContent=c.label;
+      wrapEl.querySelector('.hn').textContent=c.hint;
+    }
+  });
+}
+
+/* Catalogue complet : toutes les formes avec leur famille d'appartenance */
+const ALL_FORMS=(()=>{
+  const map={};
+  Object.entries(FAMILIES).forEach(([famKey,fam])=>{
+    fam.contracts.forEach(k=>{
+      if(CF[k]&&!map[k]) map[k]={...CF[k],famKey,famLabel:fam.label,famIcon:fam.icon};
+    });
+  });
+  return map;
+})();
+
+/* Filtre d'affichage actif dans le tableau */
+let activeFamFilter='all';
+
+function buildFamFilters(recKey){
+  const el=document.getElementById('famFilters');
+  if(!el) return;
+  const btns=[{k:'all',label:'Toutes (25)',icon:'📋'}];
+  Object.entries(FAMILIES).forEach(([k,f])=>btns.push({k,label:f.label,icon:f.icon}));
+  el.innerHTML=btns.map(b=>{
+    const cls=`filter-btn fb-${b.k}${activeFamFilter===b.k?' active':''}`;
+    return `<button class="${cls}" onclick="setFamFilter('${b.k}','${recKey}')">${b.icon} ${b.label}</button>`;
+  }).join('');
+}
+
+function setFamFilter(famKey,recKey){
+  activeFamFilter=famKey;
+  renderCompar(recKey);
+}
+
+function renderCompar(recKey){
+  const entries=Object.entries(ALL_FORMS);
+  const visible=activeFamFilter==='all'
+    ? entries
+    : entries.filter(([k,c])=>c.famKey===activeFamFilter);
+  const count=visible.length;
+  const countEl=document.getElementById('tableCount');
+  if(countEl) countEl.textContent=`${count} forme${count>1?'s':''} affichée${count>1?'s':''} ${activeFamFilter!=='all'?'· '+FAMILIES[activeFamFilter]?.label:'· toutes catégories'}`;
+  buildFamFilters(recKey);
+
+  // Group by family for display when showing all
+  const cols=['Forme contractuelle','Catégorie','Base légale','Porteur du risque','Idéal pour','Score'];
+  let tbody='';
+  if(activeFamFilter==='all'){
+    // Group by family
+    Object.entries(FAMILIES).forEach(([famKey,fam])=>{
+      const famEntries=entries.filter(([k])=>fam.contracts.includes(k)&&ALL_FORMS[k]);
+      if(!famEntries.length) return;
+      tbody+=`<tr>
+        <td colspan="6" style="background:var(--ink);color:var(--gl);font-family:var(--fm);font-size:9px;padding:7px 10px;letter-spacing:.1em;text-transform:uppercase">${fam.icon} ${fam.label}</td>
+      </tr>`;
+      famEntries.forEach(([k,c],i)=>{
+        const hit=k===recKey;
+        tbody+=`<tr style="${hit?'background:var(--gp)':i%2?'background:var(--bg)':''}" onclick="selectFormRow('${k}')" style="cursor:pointer">
+          <td style="font-weight:${hit?700:500};padding:8px 10px;font-size:12px;cursor:pointer;color:${hit?'var(--ink)':'var(--is)'}">${hit?'✅ ':''}<span style="border-bottom:1px dotted var(--gold)">${c.name}</span></td>
+          <td style="font-family:var(--fm);font-size:9px;padding:8px 10px;color:var(--sm)">${c.famIcon}</td>
+          <td style="font-family:var(--fm);font-size:9px;padding:8px 10px;color:var(--ac)">${c.srcRef}</td>
+          <td style="font-family:var(--fm);font-size:10px;padding:8px 10px;color:var(--wn)">${c.risk}</td>
+          <td style="font-size:11px;color:var(--sm);padding:8px 10px">${c.bestFor}</td>
+          <td style="text-align:center;padding:8px 10px;font-size:13px">${hit?'✅':'—'}</td>
+        </tr>`;
+      });
+    });
+  } else {
+    visible.forEach(([k,c],i)=>{
+      const hit=k===recKey;
+      tbody+=`<tr style="${hit?'background:var(--gp)':i%2?'background:var(--bg)':''}" onclick="selectFormRow('${k}')">
+        <td style="font-weight:${hit?700:500};padding:9px 10px;font-size:12.5px;cursor:pointer">${hit?'✅ ':''}<span style="border-bottom:1px dotted var(--gold)">${c.name}</span></td>
+        <td style="font-family:var(--fm);font-size:9px;padding:9px 10px;color:var(--sm)">${c.famIcon} ${c.famLabel}</td>
+        <td style="font-family:var(--fm);font-size:9px;padding:9px 10px;color:var(--ac)">${c.srcRef}</td>
+        <td style="font-family:var(--fm);font-size:10px;padding:9px 10px;color:var(--wn)">${c.risk}</td>
+        <td style="font-size:11px;color:var(--sm);padding:9px 10px">${c.bestFor}</td>
+        <td style="text-align:center;padding:9px 10px;font-size:13px">${hit?'✅':'—'}</td>
+      </tr>`;
+    });
+  }
+
+  document.getElementById('contractComparison').innerHTML=`
+    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead><tr>${cols.map(h=>`<th style="background:var(--ink);color:var(--gl);font-family:var(--fm);font-size:9px;padding:9px 10px;text-align:left;letter-spacing:.06em;position:sticky;top:0">${h}</th>`).join('')}</tr></thead>
+    <tbody>${tbody}</tbody>
+  </table></div>`;
+}
+
+function selectFormRow(key){
+  if(CF[key]){
+    renderClauses(key);
+    // Scroll to clauses
+    document.getElementById('contractClauses').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+function calc(){
+  ['scope','tech','urgency','xp','budget'].forEach(id=>{
+    document.getElementById('v_'+id).textContent=Q('q_'+id);
+  });
+  const scope=10-+Q('q_scope');
+  const tech=+Q('q_tech');
+  const urgency=+Q('q_urgency');
+  const xp=10-+Q('q_xp');
+  const budget=10-+Q('q_budget');
+  const ptype=document.getElementById('q_type').value||'construction';
+  if(!ptype) return; // placeholder selected
+  const riskScore=(scope*0.30+tech*0.25+urgency*0.15+xp*0.15+budget*0.15);
+  const col=riskScore<=3?'var(--ok)':riskScore<=5?'var(--gold)':riskScore<=7?'var(--wn)':'var(--er)';
+  document.getElementById('riskScore').innerHTML=`
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px">
+      <div style="font-family:var(--ft);font-size:40px;font-weight:800;color:${col}">${riskScore.toFixed(1)}</div>
+      <div><div style="font-family:var(--ft);font-size:14px;font-weight:700">${riskScore<=3?'Risque FAIBLE':riskScore<=5?'Risque MODÉRÉ':riskScore<=7?'Risque ÉLEVÉ':'Risque CRITIQUE'}</div>
+      <div style="font-size:12px;color:var(--sm)">Score sur 10 · 5 critères pondérés</div></div>
+    </div>
+    <div class="meter"><div class="meter-fill" style="width:${riskScore*10}%;background:linear-gradient(90deg,var(--ok),${riskScore<=5?'var(--gold)':'var(--er)'})"></div></div>`;
+  document.getElementById('riskVis').innerHTML=`
+    <div class="rv-item ${riskScore<=3?'low':''}">Faible (0–3)<br><strong>${riskScore<=3?'✓ Votre projet':'—'}</strong></div>
+    <div class="rv-item ${riskScore>3&&riskScore<=5?'med':''}">Modéré (3–5)<br><strong>${riskScore>3&&riskScore<=5?'✓ Votre projet':'—'}</strong></div>
+    <div class="rv-item ${riskScore>5&&riskScore<=7?'med':''}">Élevé (5–7)<br><strong>${riskScore>5&&riskScore<=7?'✓ Votre projet':'—'}</strong></div>
+    <div class="rv-item ${riskScore>7?'high':''}">Critique (7–10)<br><strong>${riskScore>7?'✓ Votre projet':'—'}</strong></div>`;
+
+  const fam=FAMILIES[ptype]||FAMILIES.construction;
+  updateCriteria(ptype);
+  // Update criteria card title with family color accent
+  const critTitle=document.querySelector('#tab-selector .card-title');
+  if(critTitle) critTitle.innerHTML=`🎯 Critères de sélection <span style="font-family:var(--fm);font-size:10px;font-weight:400;opacity:.7;margin-left:6px">${fam.icon} ${fam.label}</span>`;
+  let recKey;
+  if(fam.riskBased){
+    const ranked=fam.contracts.filter(k=>CF[k]&&CF[k].scoreRange);
+    recKey=ranked.find(k=>riskScore>=CF[k].scoreRange[0]&&riskScore<=CF[k].scoreRange[1])||ranked[ranked.length-1];
+  } else {
+    recKey=pickByProfile(fam.contracts,{scope,tech,urgency,xp,budget});
+  }
+  // Auto-sync filter to match the selected project category
+  activeFamFilter=ptype;
+  renderContractResult(recKey,riskScore,fam);
+  renderCompar(recKey);
+  renderClauses(recKey);
+  document.getElementById('legalFoundation').innerHTML=fam.legalNote;
+}
+
+function pickByProfile(contracts,s){
+  const scores={};
+  contracts.forEach(k=>{
+    if(!CF[k]) return;
+    let sc=5; // base score for all
+    if(['credit_bail','factoring'].includes(k)) sc+=s.budget*0.3;
+    if(['cautionnement','nantissement_fdc'].includes(k)) sc+=s.budget*0.15;
+    if(['vente','bail_hab','mandat','courtage'].includes(k)) sc+=s.xp*0.2;
+    if(['vente','vente_fdc','vente_immo','bail_com','franchise'].includes(k)) sc+=(10-s.scope)*0.2;
+    if(['saas','elec','partenariat','management_fees'].includes(k)) sc+=s.tech*0.25;
+    if(['tm','mandat','courtage','factoring'].includes(k)) sc+=s.urgency*0.2;
+    if(['franchise','partenariat','concession','agence'].includes(k)) sc+=(10-s.xp)*0.2;
+    scores[k]=sc;
+  });
+  return contracts.reduce((best,k)=>(scores[k]||0)>(scores[best]||0)?k:best,contracts[0]);
+}
+
+function renderContractResult(key,score,fam){
+  const r=CF[key];
+  if(!r){document.getElementById('contractResult').innerHTML='';return;}
+  const altKeys=fam.contracts.filter(k=>k!==key).slice(0,2);
+  const alts=altKeys.map(k=>CF[k]).filter(Boolean);
+  document.getElementById('contractResult').innerHTML=`
+    <div class="contract-card recommended">
+      <div class="cc-type">✅ Recommandé pour votre profil</div>
+      <div style="font-family:var(--fm);font-size:9px;color:rgba(184,134,42,.6);margin-bottom:2px">${fam.icon} ${fam.label}</div>
+      <div class="cc-name">${r.name}</div>
+      <div style="font-family:var(--fm);font-size:11px;color:var(--sm);margin-bottom:8px">${r.short}</div>
+      <div style="font-size:11px;font-weight:600;margin-bottom:5px;color:var(--ok)">Avantages :</div>
+      <ul class="cc-pros">${r.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
+      <div style="font-size:11px;font-weight:600;margin:8px 0 5px;color:var(--er)">Points de vigilance :</div>
+      <ul class="cc-cons">${r.cons.map(c=>`<li>${c}</li>`).join('')}</ul>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--gp);border-radius:7px;font-size:12px"><strong>Idéal pour :</strong> ${r.bestFor}</div>
+      <div style="margin-top:8px;padding:8px 12px;background:rgba(30,77,107,.06);border-radius:7px;font-size:11px;color:var(--ac)"><strong>⚖️ Base légale :</strong> ${r.srcRef}</div>
+      <div style="margin-top:6px;font-family:var(--fm);font-size:10px;color:var(--sm)">Porteur du risque : <strong>${r.risk}</strong></div>
+    </div>
+    ${alts.length?`<div style="margin-top:10px;font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--sm);margin-bottom:6px">Alternatives dans cette catégorie</div>
+    ${alts.map(a=>`<div class="contract-card" style="margin-bottom:8px;padding:12px 16px;cursor:pointer" onclick="renderClauses('${altKeys[alts.indexOf(a)]}')">
+      <div class="cc-type" style="color:var(--sm)">Alternative</div>
+      <div style="font-family:var(--ft);font-size:14px;font-weight:700;margin-bottom:3px">${a.name}</div>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--sm);margin-bottom:5px">${a.short}</div>
+      <div style="font-size:11px;color:var(--is)">${a.bestFor}</div>
+      <div style="font-family:var(--fm);font-size:9px;color:var(--gold);margin-top:4px">${a.srcRef} · Risque : ${a.risk}</div>
+    </div>`).join('')}`:''}`;
+}
+
+function Q(id){return document.getElementById(id).value}
+
+function renderClauses(key){
+  const c=CF[key];
+  if(!c){document.getElementById('contractClauses').innerHTML='';return;}
+  document.getElementById('contractClauses').innerHTML=`
+    <div style="margin-bottom:10px;font-size:13px;color:var(--is)">Clauses essentielles pour un <strong>${c.name}</strong> :</div>
+    ${c.clauses.map((cl,i)=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd)">
+      <div style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:10px;font-weight:700;flex-shrink:0">${i+1}</div>
+      <div style="font-size:13px;color:var(--is);line-height:1.6">${cl}</div>
+    </div>`).join('')}
+    <div style="margin-top:10px;padding:12px;background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.15);border-radius:8px;font-size:11.5px;color:var(--sm)">
+      <strong>Référence :</strong> ${c.ccagRef}<br>
+      <span style="display:block;margin-top:4px">⚖️ Clauses indicatives fondées sur le droit marocain (DOC 1913 consolidé 2019, Loi 15-95, Décret 2-12-349). Consultez un avocat inscrit au Barreau du Maroc avant signature.</span>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════
+   RENDU — RÉFÉRENTIEL LÉGAL MASTER / DETAIL
+══════════════════════════════════════════════════ */
+let curFilter='all';
+let curItem=null;
+let filteredData=[];
+
+/* Regroupement par catégorie pour la liste */
+const CAT_ORDER=['civil','com','innom','num'];
+const CAT_LABEL={'civil':'Civil — DOC','com':'Commercial — C.Com','innom':'Innommés','num':'Numérique'};
+
+function renderList(data){
+  filteredData=data;
+  const list=document.getElementById('legalList');
+  if(!data.length){
+    list.innerHTML='<div style="padding:20px;color:rgba(255,255,255,.3);font-family:var(--fm);font-size:11px;text-align:center">Aucun résultat</div>';
+    return;
+  }
+  // Grouper par cat dans l'ordre
+  const groups={};
+  CAT_ORDER.forEach(k=>groups[k]=[]);
+  data.forEach(c=>{ if(groups[c.cat]) groups[c.cat].push(c); });
+
+  let html='';
+  CAT_ORDER.forEach(cat=>{
+    const items=groups[cat];
+    if(!items.length) return;
+    html+=`<div class="ll-group-title">${CAT_LABEL[cat]}</div>`;
+    items.forEach(c=>{
+      const isActive=curItem&&curItem.name===c.name;
+      html+=`<div class="ll-item${isActive?' active':''}" data-name="${c.name.replace(/"/g,'&quot;')}" onclick="selectItem('${c.name.replace(/'/g,"\\'")}')">
+        <span class="ll-dot ${c.cat}"></span>
+        <span class="ll-name">${c.name}</span>
+        <span class="ll-arrow">›</span>
+      </div>`;
+    });
+  });
+  list.innerHTML=html;
+}
+
+function selectItem(name){
+  const c=LD.find(x=>x.name===name);
+  if(!c) return;
+  curItem=c;
+
+  // Mettre à jour l'état actif dans la liste
+  document.querySelectorAll('.ll-item').forEach(el=>{
+    el.classList.toggle('active', el.dataset.name===name);
+  });
+
+  // Construire le panneau détail — injection à la demande + fragmentation
+  const detail=document.getElementById('legalDetail');
+  detail.innerHTML=`
+    <div class="ld-anim">
+      <div class="ld-head">
+        <div class="ld-cat">${c.cL}</div>
+        <div class="ld-name">${c.name}</div>
+        <div class="ld-ref">${c.ref}</div>
+        <div class="ld-badges">
+          <span class="ld-badge ${c.cat}">${c.cat==='civil'?'DOC Civil':c.cat==='com'?'C.Com':c.cat==='num'?'Numérique':'Innommé'}</span>
+        </div>
+      </div>
+      <div class="ld-body">
+
+        <div class="ld-section">
+          <div class="ld-section-label def">Définition</div>
+          <div class="ld-text">${RF(c.def)}</div>
+        </div>
+
+        <div class="ld-section">
+          <div class="ld-section-label nat">Nature juridique</div>
+          <div class="ld-text">${RF(c.nature)}</div>
+        </div>
+
+        <div class="ld-section">
+          <div class="ld-section-label cond">Conditions de validité</div>
+          <ul class="ld-list">${c.cond.map(x=>`<li>${RF(x)}</li>`).join('')}</ul>
+        </div>
+
+        <div class="ld-section">
+          <div class="ld-section-label forma">Forma</div>
+          <div class="ld-text">${RF(c.forma)}</div>
+        </div>
+
+        <div class="ld-section">
+          <div class="ld-section-label outils">Outils & instruments</div>
+          <ul class="ld-list outils">${c.outils.map(x=>`<li>${RF(x)}</li>`).join('')}</ul>
+        </div>
+
+        <div class="ld-section">
+          <div class="ld-section-label lim">Limites & nullités</div>
+          <ul class="ld-list lim">${c.lim.map(x=>`<li>${RF(x)}</li>`).join('')}</ul>
+        </div>
+
+        <div class="ld-section">
+          <div class="ld-section-label risk">Répartition des risques</div>
+          <ul class="ld-list risk">${c.risk.map(x=>`<li>${RF(x)}</li>`).join('')}</ul>
+        </div>
+
+        <div class="ld-tags">
+          ${c.kw.map(k=>`<span class="ld-tag">${k}</span>`).join('')}
+          ${c.risk.map(r=>`<span class="ld-tag risk">${r}</span>`).join('')}
+        </div>
+
+      </div>
+    </div>`;
+}
+
+/* Fragmentation HTML — injecte des spans invisibles toutes les N lettres */
+function RF(text){
+  if(!text) return '';
+  const ZWS='\u200B\u200C';
+  return text.split('').map((ch,i)=>{
+    if(i>0 && i%6===0) return `<span class="ghost" aria-hidden="true">${ZWS}</span>${ch}`;
+    return ch;
+  }).join('');
+}
+
+function setFilter(cat,btn){
+  curFilter=cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filterLegal();
+}
+function filterLegal(){
+  const q=(document.getElementById('legalSearch').value||'').toLowerCase();
+  let data=LD.filter(c=>curFilter==='all'||c.cat===curFilter);
+  if(q) data=data.filter(c=>
+    c.name.toLowerCase().includes(q)||c.def.toLowerCase().includes(q)||c.ref.toLowerCase().includes(q)||
+    c.kw.some(k=>k.toLowerCase().includes(q))||c.cond.some(x=>x.toLowerCase().includes(q))||c.lim.some(x=>x.toLowerCase().includes(q))
+  );
+  // Si l'item courant n'est plus dans les résultats, réinitialiser le panneau
+  if(curItem && !data.find(d=>d.name===curItem.name)){
+    curItem=null;
+    document.getElementById('legalDetail').innerHTML=`
+      <div class="ld-empty">
+        <div class="ld-empty-icon">⚖️</div>
+        <div class="ld-empty-msg">Sélectionnez un contrat dans la liste</div>
+      </div>`;
+  }
+  renderList(data);
+}
+
+/* ══════════════════════════════════════════════════
+   DONNÉES — CONDITIONS & NULLITÉS
+══════════════════════════════════════════════════ */
+const CONDITIONS_DATA={
+  capacite:{
+    icon:'👤',title:'Capacité',cat:'cap',
+    ref:'Art. 3–13 DOC · Art. 209 Loi 70-03 (Moudawwana) · Art. 13–14 C.Com',
+    type:'cond',
+    sections:[
+      {lbl:'Définition',cls:'',txt:'La capacité est l\'aptitude légale à être titulaire de droits et à les exercer valablement. Elle se subdivise en capacité de jouissance (avoir des droits) et capacité d\'exercice (les mettre en œuvre seul). Tout majeur de 18 ans jouit présomption de capacité (art. 3 DOC).'},
+      {lbl:'Conditions requises',cls:'green',items:[
+        'Majorité légale : 18 ans révolus — Code de la Famille (Loi 70-03)',
+        'Santé mentale : absence d\'interdiction judiciaire ou de tutelle',
+        'Mineur émancipé par mariage ou autorisation judiciaire : capacité partielle',
+        'Mineur autorisé à commercer : lié par ses actes commerciaux (art. 7 DOC)',
+        'Personne morale : capacité définie par ses statuts et son objet social',
+      ]},
+      {lbl:'Incapacités légales',cls:'red',items:[
+        'Mineur non émancipé — représenté obligatoirement par tuteur légal (wali)',
+        'Interdit judiciaire (mahjoûr) : incapacité d\'exercice totale',
+        'Prodigue (safih) : sous régime de curatelle — actes soumis à autorisation',
+        'Faible d\'esprit (ma\'touh) : régime analogue à l\'interdit judiciaire',
+        'Étranger : restrictions sur acquisition de certains biens immobiliers au Maroc',
+      ]},
+      {lbl:'Différence civil vs commercial',cls:'blue',txt:'La capacité commerciale (C.Com art. 13) requiert de ne pas faire l\'objet d\'une mesure d\'interdiction d\'exercer une activité commerciale, distincte de l\'incapacité civile. Un prodigue peut être déclaré incapable civilement mais non interdit de commerce si la mesure ne le précise pas expressément.'},
+      {lbl:'Sanction — nullité relative',cls:'warn',txt:'L\'acte conclu par un incapable est frappé de nullité relative — seul l\'incapable ou son représentant peut l\'invoquer, dans un délai de 5 ans à compter de la majorité ou de la levée de la mesure de protection. Les tiers de bonne foi sont protégés par la présomption de capacité.'},
+    ],
+    arts:['Art. 3 DOC','Art. 7 DOC','Art. 11 DOC','Art. 12 DOC','Art. 13 DOC','Art. 209 Loi 70-03','Art. 13 C.Com','Art. 14 C.Com'],
+  },
+  consentement:{
+    icon:'🤝',title:'Consentement',cat:'cons',
+    ref:'Art. 19 DOC · Art. 40–56 DOC · Art. 65-5 DOC · Loi 53-05',
+    type:'cond',
+    sections:[
+      {lbl:'Définition',cls:'',txt:'Le consentement est l\'accord de volontés des parties sur les éléments essentiels du contrat. Il doit être libre, éclairé et exempt de tout vice. L\'art. 19 DOC pose le principe : l\'offre et l\'acceptation doivent porter sur les éléments constitutifs de l\'obligation.'},
+      {lbl:'Vices du consentement',cls:'red',items:[
+        'Erreur substantielle (art. 40–44) : erreur sur la nature, l\'identité ou la qualité déterminante de la chose',
+        'Dol (art. 52–53) : manœuvres frauduleuses ayant déterminé le consentement — dol principal vs incident',
+        'Violence (art. 46–51) : contrainte physique ou morale — crainte raisonnée d\'un mal considérable',
+        'Lésion >1/3 (art. 55–56) : déséquilibre manifeste de la prestation — délai d\'action : 1 an',
+        'Déclaration erronée (art. 44) : erreur de droit admise si elle est déterminante',
+      ]},
+      {lbl:'Formation de l\'accord',cls:'green',items:[
+        'Offre ferme + acceptation pure et simple = contrat formé (art. 19)',
+        'Contre-offre = nouvelle offre — rompt la première',
+        'Silence : principe de non-valeur sauf usage commercial, relation d\'affaires établie ou loi spéciale',
+        'Représentation : mandat exprès ou tacite — effets sur le mandant (art. 879 DOC)',
+        'Stipulation pour autrui (art. 95 DOC) : valide, le tiers peut accepter ou refuser',
+      ]},
+      {lbl:'Contrat électronique (Loi 53-05)',cls:'blue',items:[
+        'Double-clic obligatoire : confirmation de l\'offre + confirmation de la confirmation (art. 65-5 DOC)',
+        'Horodatage certifié : date de réception = date de formation du contrat électronique',
+        'Accusé de réception : obligation du professionnel envers le consommateur',
+        'Exclusions : actes de famille, sûretés réelles/personnelles (art. 2-1 al. 3 DOC)',
+      ]},
+      {lbl:'Sanction',cls:'warn',txt:'Les vices du consentement entraînent nullité relative — seule la partie protégée peut l\'invoquer. Action en nullité : 5 ans (art. 388 DOC) à compter de la découverte du vice. Le dol peut également engager la responsabilité délictuelle (art. 52 al. 2 DOC).'},
+    ],
+    arts:['Art. 19 DOC','Art. 40 DOC','Art. 44 DOC','Art. 46 DOC','Art. 52 DOC','Art. 55 DOC','Art. 65-5 DOC','Loi 53-05 art. 6'],
+  },
+  objet:{
+    icon:'📦',title:'Objet',cat:'obj',
+    ref:'Art. 57–61 DOC',
+    type:'cond',
+    sections:[
+      {lbl:'Définition',cls:'',txt:'L\'objet de l\'obligation est ce que le débiteur est tenu de faire ou de ne pas faire. L\'objet du contrat est la prestation promise — chose, fait ou abstention. Il désigne aussi la finalité économique de l\'opération juridique.'},
+      {lbl:'Conditions de validité',cls:'green',items:[
+        'Déterminé ou déterminable : espèce, qualité et quantité précisées ou précisables (art. 58)',
+        'Dans le commerce : choses, faits et droits incorporels négociables (art. 57)',
+        'Physiquement possible : prestation réalisable à la date du contrat (art. 59)',
+        'Juridiquement possible : non contraire à la loi, à l\'ordre public ou aux bonnes mœurs',
+        'Chose future admise : récolte à venir, immeuble à construire (art. 58 al. 2)',
+      ]},
+      {lbl:'Choses hors commerce',cls:'red',items:[
+        'Organes et produits du corps humain (principes généraux)',
+        'Biens du domaine public inaliénables',
+        'Choses déclarées hors commerce par la loi (ex. stupéfiants sans autorisation)',
+        'Droits strictement personnels (droit de vote, statut personnel)',
+        'Biens culturels classés insaisissables',
+      ]},
+      {lbl:'Objet futur et déterminable',cls:'blue',txt:'L\'art. 58 al. 2 DOC admet la vente de chose future à condition que l\'espèce et la quantité soient déterminables. Les contrats de construction, les marchés à terme agricoles et les contrats sur plan (VEFA) en sont des illustrations directes. Le prix peut lui-même être déterminable par référence à un indice objectif.'},
+      {lbl:'Sanction — nullité absolue',cls:'warn',txt:'L\'objet illicite ou hors commerce entraîne nullité absolue — toute personne intéressée peut l\'invoquer, y compris le ministère public. Aucune prescription ne court tant que l\'illicéité subsiste. La confirmation ou ratification reste sans effet.'},
+    ],
+    arts:['Art. 57 DOC','Art. 58 DOC','Art. 59 DOC','Art. 60 DOC','Art. 61 DOC'],
+  },
+  cause:{
+    icon:'⚖️',title:'Cause',cat:'cau',
+    ref:'Art. 62–65 DOC',
+    type:'cond',
+    sections:[
+      {lbl:'Définition',cls:'',txt:'La cause est la raison abstraite et déterminante pour laquelle chaque partie contracte. Elle se distingue des motifs personnels (subjectifs). Dans les contrats synallagmatiques, la cause de l\'obligation de l\'une est l\'exécution de l\'obligation de l\'autre ; dans les contrats unilatéraux, elle est la contre-valeur reçue.'},
+      {lbl:'Conditions de validité',cls:'green',items:[
+        'Réelle : l\'obligation ne peut être dépourvue de cause (art. 62 DOC)',
+        'Licite : non contraire aux bonnes mœurs, à l\'ordre public ou à une loi impérative (art. 62)',
+        'Vraie : la cause exprimée est présumée vraie jusqu\'à preuve contraire (art. 65 DOC)',
+        'Déterminante : doit avoir poussé la partie à contracter',
+        'Conforme à la réglementation sectorielle pour les contrats commerciaux',
+      ]},
+      {lbl:'Causes illicites — exemples',cls:'red',items:[
+        'Cause immorale : contrat de proxénétisme, convention d\'usure manifeste',
+        'Cause contraire à l\'ordre public : contrat visant à éluder une loi impérative',
+        'Cause fictive : acte sans contrepartie réelle masquant une libéralité (simulation)',
+        'Cause fausse : erreur sur la réalité de la contre-valeur espérée',
+        'Cause illicite partagée : les deux parties connaissent l\'illicéité — nullité absolue',
+      ]},
+      {lbl:'Cause en droit commercial',cls:'blue',txt:'En matière commerciale, la théorie de la cause s\'applique avec souplesse. La cause d\'un effet de commerce est présumée valable et licite — le porteur n\'est pas tenu de la prouver. La cause d\'un cautionnement commercial s\'apprécie au regard de la relation d\'affaires globale entre garant et créancier bénéficiaire.'},
+      {lbl:'Sanction',cls:'warn',txt:'L\'absence ou l\'illicéité de la cause entraîne nullité absolue si la cause est contraire à l\'ordre public (invocable par tous, imprescriptible). Nullité relative si la cause est simplement fausse entre les parties (action en 5 ans). La confirmation reste possible si la partie qui pouvait agir en nullité y renonce expressément.'},
+    ],
+    arts:['Art. 62 DOC','Art. 63 DOC','Art. 64 DOC','Art. 65 DOC'],
+  },
+  null_abs:{
+    icon:'🔴',title:'Nullité absolue',cat:'abs',
+    ref:'Art. 62 DOC · Art. 57 DOC · Principes d\'ordre public — invocable par tous',
+    type:'null',
+    sections:[
+      {lbl:'Définition',cls:'',txt:'La nullité absolue sanctionne la violation d\'une règle protégeant l\'intérêt général. Elle peut être invoquée par toute personne intéressée, y compris le ministère public. Elle ne se prescrit pas tant que la situation illicite subsiste et ne peut être couverte par confirmation.'},
+      {lbl:'Cas de nullité absolue',cls:'red',items:[
+        'Objet illicite ou hors commerce (art. 57 DOC) — ex. vente d\'organe, contrat d\'assassinat',
+        'Cause contraire à l\'ordre public ou aux bonnes mœurs (art. 62 DOC)',
+        'Défaut total de capacité — majeur sous tutelle non représenté',
+        'Crédit-bail conclu par établissement non agréé BAM (violation loi impérative)',
+        'Nantissement de fonds de commerce sans inscription au RC (art. 109 C.Com)',
+        'Contrat violant les dispositions impératives de la Loi 31-08 (consommateur)',
+        'Vente immobilière sans respect de la forme authentique exigée par la loi',
+        'Contrats sur choses déclarées hors commerce par la loi religieuse entre musulmans',
+      ]},
+      {lbl:'Régime juridique',cls:'warn',items:[
+        'Invocable par toute personne ayant intérêt, y compris le ministère public',
+        'Imprescriptible : aucune prescription ne court tant que le contrat produit des effets',
+        'Non confirmable : ni ratification, ni renonciation, ni exécution volontaire ne la couvrent',
+        'Effet rétroactif : restitution des prestations reçues (restitutio in integrum)',
+        'Opposable aux tiers sauf acquisition de bonne foi à titre onéreux dans certains cas',
+      ]},
+      {lbl:'Distinction avec nullité relative',cls:'blue',txt:'La nullité absolue protège l\'intérêt général (ordre public, bonnes mœurs) — la nullité relative protège un intérêt privé (capacité, consentement vicié). La frontière n\'est pas toujours tranchée : une incapacité totale peut être absolue, une incapacité partielle reste relative.'},
+    ],
+    arts:['Art. 57 DOC','Art. 62 DOC','Art. 109 C.Com','Art. 63 DOC'],
+  },
+  null_rel:{
+    icon:'🟡',title:'Nullité relative',cat:'rel',
+    ref:'Art. 40–56 DOC · Art. 388 DOC — délai 5 ans — protection d\'une partie',
+    type:'null',
+    sections:[
+      {lbl:'Définition',cls:'',txt:'La nullité relative sanctionne la violation d\'une règle protégeant un intérêt privé. Seule la partie protégée peut l\'invoquer. Elle se prescrit et peut être couverte par confirmation expresse ou tacite. Elle constitue le droit commun de la nullité contractuelle.'},
+      {lbl:'Cas de nullité relative',cls:'warn',items:[
+        'Erreur sur la substance (art. 40 DOC) — qualité déterminante méconnue',
+        'Dol principal (art. 52–53 DOC) — manœuvres frauduleuses décisives',
+        'Violence physique ou morale (art. 46–51 DOC) — crainte raisonnée d\'un mal grave',
+        'Lésion >1/3 de la valeur réelle (art. 55–56 DOC) — délai d\'action : 1 an',
+        'Incapacité partielle : mineur non autorisé, prodigue, faible d\'esprit',
+        'Non-respect d\'un formalisme ad validitatem (ex. double exemplaire contrat de travail)',
+        'Défaut d\'information précontractuelle en B2C (Loi 31-08 art. 3–15)',
+      ]},
+      {lbl:'Régime juridique',cls:'green',items:[
+        'Invocable uniquement par la partie protégée (ou ses héritiers/représentants)',
+        'Prescription : 5 ans à compter de la découverte du vice (art. 388 DOC)',
+        'Prescription spéciale lésion : 1 an à compter de la connaissance',
+        'Confirmable : renonciation expresse ou exécution volontaire en connaissance de cause',
+        'Effet : restitution des prestations sauf bonne foi du cocontractant',
+      ]},
+      {lbl:'Confirmation & renonciation',cls:'blue',txt:'La confirmation purge rétroactivement la nullité — elle doit être postérieure à la cessation du vice, expresse ou tacite (exécution volontaire). Le juge ne peut pas prononcer la nullité relative d\'office — il doit attendre que la partie protégée l\'invoque.'},
+    ],
+    arts:['Art. 40 DOC','Art. 46 DOC','Art. 52 DOC','Art. 55 DOC','Art. 388 DOC'],
+  },
+  null_sect:{
+    icon:'🔵',title:'Limites sectorielles',cat:'sect',
+    ref:'Loi 67-12 · Loi 31-08 · Décret 2-12-349 · Loi 65-99 · DOC art. 2-1',
+    type:'null',
+    sections:[
+      {lbl:'Définition',cls:'',txt:'Au-delà du régime général du DOC, des lois sectorielles imposent des règles spéciales de validité et de nullité pour certaines catégories de contrats. Ces règles sont souvent d\'ordre public — leur violation entraîne nullité absolue ou inopposabilité.'},
+      {lbl:'Bail d\'habitation — Loi 67-12',cls:'blue',items:[
+        'Contrat écrit obligatoire pour les baux d\'habitation > 1 an',
+        'Révision de loyer : interdite pendant les 3 premières années, plafonnée ensuite',
+        'Expulsion : procédure judiciaire obligatoire — interdiction d\'expulsion de fait',
+        'Préavis : 3 mois pour congé donné par le bailleur (logement principal)',
+        'Clauses abusives réputées non écrites (ex. clause exonérant le bailleur de tout entretien)',
+      ]},
+      {lbl:'Contrats B2C — Loi 31-08',cls:'warn',items:[
+        'Droit de rétractation 7 jours (vente à distance, démarchage)',
+        'Information précontractuelle obligatoire : prix, caractéristiques, identité du professionnel',
+        'Taux effectif global (TEG) obligatoire dans tout crédit à la consommation',
+        'Taux maximum fixé par BAM — dépassement = nullité de la stipulation d\'intérêts',
+        'Clauses abusives : liste noire fixée par décret — réputées non écrites de plein droit',
+      ]},
+      {lbl:'Marchés publics — Décret 2-12-349',cls:'green',items:[
+        'Formalisme strict : passation par appel d\'offres ou procédure négociée',
+        'Cautionnement provisoire (75 jours) + définitif (3% dans 30 jours post-notification)',
+        'Nantissement de marché admis : cession de créance au profit d\'un établissement bancaire',
+        'CCAG-T/CCAG-Études : clauses réglementaires intégrées de plein droit',
+        'Nullité : tout marché passé en violation des règles de mise en concurrence',
+      ]},
+      {lbl:'Exclusions du régime électronique (art. 2-1 DOC)',cls:'red',items:[
+        'Actes de famille et de droit personnel (mariage, divorce, adoption)',
+        'Sûretés personnelles et réelles sous seing privé non numérique',
+        'Actes soumis à l\'intervention d\'une autorité publique (notaire, adoul)',
+        'Contrats immobiliers exigeant la forme authentique',
+      ]},
+    ],
+    arts:['Loi 67-12','Loi 31-08','Décret 2-12-349','Loi 65-99','Art. 2-1 DOC'],
+  },
+  null_solid:{
+    icon:'🟢',title:'Solidarité & prescription',cat:'solid',
+    ref:'Art. 165 DOC · Art. 5 C.Com · Art. 387 DOC · Art. 334 C.Com',
+    type:'null',
+    sections:[
+      {lbl:'Solidarité commerciale de droit',cls:'green',txt:'L\'art. 165 DOC dispose que la solidarité est présumée de droit dans les obligations contractées entre commerçants pour faits de commerce. Cette règle déroge au droit civil où la solidarité doit être stipulée expressément. Elle constitue un avantage majeur pour le créancier commercial.'},
+      {lbl:'Régime de la solidarité',cls:'',items:[
+        'Présomption légale : aucune stipulation expresse requise entre commerçants',
+        'Le créancier peut poursuivre n\'importe lequel des codébiteurs pour la totalité',
+        'Recours contributoire entre codébiteurs selon leur part respective',
+        'Solidarité active (entre créanciers) : doit être stipulée expressément',
+        'Caution solidaire commerciale : engagement immédiat sans bénéfice de discussion',
+      ]},
+      {lbl:'Délais de prescription',cls:'warn',items:[
+        'Prescription civile générale : 15 ans (art. 387 DOC) — point de départ : exigibilité',
+        'Prescription commerciale : 5 ans (art. 5 C.Com) — actes de commerce entre commerçants',
+        'Action en rescision pour lésion : 1 an (art. 55–56 DOC)',
+        'Ratification d\'une convention par le tiers : 15 jours (art. 31 DOC)',
+        'Opposition créanciers vente fonds de commerce : 15 jours après publication (art. 81 C.Com)',
+        'Nantissement fonds de commerce : renouvellement tous les 5 ans (art. 109 C.Com)',
+        'Conservation documents électroniques : 15 ans (art. 387 DOC + Loi 53-05)',
+        'Droit de rétractation consommateur : 7 jours (Loi 31-08)',
+      ]},
+      {lbl:'Preuve et arbitrage commerciaux',cls:'blue',items:[
+        'Liberté de la preuve entre commerçants — tous moyens admis (art. 334 C.Com)',
+        'Livres de commerce : valeur probatoire entre commerçants (art. 21 C.Com)',
+        'Clause compromissoire : valide entre commerçants — arbitrage CIMAC ou international',
+        'Correspondance électronique : admissible comme preuve si intégrité garantie (Loi 53-05)',
+      ]},
+    ],
+    arts:['Art. 165 DOC','Art. 387 DOC','Art. 5 C.Com','Art. 334 C.Com','Art. 31 DOC','Art. 81 C.Com','Art. 109 C.Com'],
+  },
+};
+
+function selectCond(id, el){
+  const d=CONDITIONS_DATA[id];
+  if(!d) return;
+  document.querySelectorAll('.cond-nav-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const panel=document.getElementById('condDetailPanel');
+  const headColor=d.type==='cond'
+    ?{cap:'rgba(30,77,107,.9)',cons:'rgba(192,88,32,.85)',obj:'rgba(26,107,60,.85)',cau:'rgba(80,20,20,.85)'}[d.cat]
+    :'rgba(14,14,12,.92)';
+  panel.innerHTML=`<div class="cond-det-anim">
+    <div class="cond-det-head" style="background:${headColor}">
+      <div class="cond-det-icon">${d.icon}</div>
+      <div class="cond-det-title">${d.type==='cond'?'Condition de validité : ':'Cause de nullité : '}${d.title}</div>
+      <div class="cond-det-ref">${d.ref}</div>
+    </div>
+    <div class="cond-det-body">
+      ${d.sections.map(s=>`
+        <div class="cond-det-sec">
+          <div class="cond-det-lbl ${s.cls||''}">${s.lbl}</div>
+          ${s.txt?`<div class="cond-det-txt">${s.txt}</div>`:''}
+          ${s.items?`<ul class="cond-det-ul ${s.cls||''}">${s.items.map(i=>`<li>${i}</li>`).join('')}</ul>`:''}
+        </div>`).join('')}
+      <div class="cond-det-foot">
+        ${d.arts.map(a=>`<span class="cond-det-art">${a}</span>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════
+   RENDU — CONDITIONS (prescriptions)
+══════════════════════════════════════════════════ */
+function renderPrescriptions(){
+  document.getElementById('prescTable').innerHTML=PRESCRIPTIONS.map((r,i)=>`
+    <tr><td style="${i%2?'background:var(--bg)':''}">${r[0]}</td>
+    <td style="font-family:var(--fm);font-weight:700;color:var(--gold);${i%2?'background:var(--bg)':''}">${r[1]}</td>
+    <td style="font-family:var(--fm);color:var(--ac);${i%2?'background:var(--bg)':''}">${r[2]}</td>
+    <td style="color:var(--sm);${i%2?'background:var(--bg)':''}">${r[3]}</td></tr>`).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   RENDU — ARTICLES
+══════════════════════════════════════════════════ */
+function searchArt(){
+  const q=(document.getElementById('artSearch').value||'').toLowerCase().trim();
+  const c=document.getElementById('artResults');
+  if(!q){c.innerHTML='<div style="color:var(--sm);font-size:13px;text-align:center;padding:24px">Saisissez un mot-clé pour rechercher dans les articles du DOC et du Code de Commerce.</div>';return;}
+  const res=ARTS.filter(a=>a.ref.toLowerCase().includes(q)||a.title.toLowerCase().includes(q)||a.text.toLowerCase().includes(q)||a.tags.some(t=>t.toLowerCase().includes(q)));
+  if(!res.length){c.innerHTML=`<div style="color:var(--sm);font-size:13px;text-align:center;padding:24px">Aucun article trouvé pour "${q}".</div>`;return;}
+  const esc=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  c.innerHTML=res.map(a=>{
+    const hi=s=>s.replace(new RegExp(`(${esc})`,'gi'),'<span class="highlight">$1</span>');
+    return `<div class="art-result">
+      <div class="ar-ref">${hi(a.ref)}</div>
+      <div class="ar-title">${hi(a.title)}</div>
+      <div class="ar-text" id="art-${a.ref.replace(/\s/g,'')}">${hi(a.text)}</div>
+      <span class="ar-more" onclick="expandArt(this,'art-${a.ref.replace(/\s/g,'')}')">Voir plus ▾</span>
+      <div class="ar-tags">${a.tags.map(t=>`<span class="ar-tag">${hi(t)}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+function expandArt(btn,id){
+  document.getElementById(id).classList.toggle('expanded');
+  btn.textContent=document.getElementById(id).classList.contains('expanded')?'Réduire ▴':'Voir plus ▾';
+}
+
+/* ══════════════════════════════════════════════════
+   RENDU — SOURCES
+══════════════════════════════════════════════════ */
+function renderSources(){
+  ['legal','db'].forEach(key=>{
+    const elId='src'+(key==='legal'?'Legal':'Db');
+    document.getElementById(elId).innerHTML=SOURCES[key].map(s=>`
+      <div class="src-item">
+        <div class="s-type">${s.t}</div>
+        <div class="s-title">${s.n}</div>
+        <div class="s-ref">${s.r}</div>
+      </div>`).join('');
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   ONGLETS
+══════════════════════════════════════════════════ */
+function switchTab(id,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+  if(id==='legal') filterLegal();
+  if(id==='articles') searchArt();
+}
+
+/* ══════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════ */
+renderList(LD);
+renderPrescriptions();
+renderSources();
+calc();
+searchArt();
+</script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forme Juridique — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.header{position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(184,134,42,0.2)}
+.header-left{display:flex;align-items:center;gap:16px}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.module-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,0.12);border:1px solid rgba(184,134,42,0.25);padding:4px 10px;border-radius:100px}
+
+.page{max-width:1100px;margin:0 auto;padding:32px 32px 80px}
+.page-hero{text-align:center;margin-bottom:40px}
+.page-label{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px}
+.page-title{font-family:var(--font-title);font-size:36px;font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:10px}
+.page-sub{font-size:15px;color:var(--smoke);max-width:520px;margin:0 auto;line-height:1.7}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--bg2);border-radius:12px;padding:4px;width:fit-content;margin:0 auto 40px}
+.tab{padding:10px 22px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--smoke);transition:all 0.2s;font-family:var(--font-body)}
+.tab.active{background:var(--white);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+
+/* QUESTIONNAIRE */
+.quiz-wrap{max-width:640px;margin:0 auto}
+.q-progress{margin-bottom:24px}
+.q-progress-bar{height:3px;background:var(--bg2);border-radius:2px;overflow:hidden}
+.q-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.4s ease}
+.q-progress-label{font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:6px;text-align:right}
+
+.q-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:32px;animation:slideIn 0.3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+.q-num{font-family:var(--font-mono);font-size:10px;color:var(--gold);letter-spacing:0.1em;margin-bottom:10px}
+.q-text{font-family:var(--font-title);font-size:20px;font-weight:700;margin-bottom:24px;line-height:1.3}
+
+.q-options{display:flex;flex-direction:column;gap:10px}
+.q-opt{
+  padding:14px 18px;border:1.5px solid var(--border);border-radius:10px;
+  cursor:pointer;text-align:left;background:var(--bg);font-family:var(--font-body);
+  font-size:14px;color:var(--ink-soft);transition:all 0.2s;display:flex;align-items:center;gap:12px;
+}
+.q-opt:hover{border-color:var(--gold);color:var(--ink);background:var(--gold-pale)}
+.q-opt.selected{border-color:var(--gold);background:var(--gold-pale);color:var(--ink);font-weight:600}
+.q-opt-key{font-family:var(--font-mono);font-size:11px;width:22px;height:22px;border-radius:5px;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--smoke);transition:all 0.2s}
+.q-opt.selected .q-opt-key,.q-opt:hover .q-opt-key{background:var(--gold);color:var(--ink)}
+
+.q-nav{display:flex;justify-content:space-between;margin-top:20px}
+.btn-prev{padding:10px 20px;border:1.5px solid var(--border);border-radius:9px;background:none;cursor:pointer;font-family:var(--font-body);font-size:13.5px;color:var(--ink-soft);transition:all 0.2s}
+.btn-prev:hover{border-color:var(--ink)}
+.btn-next{padding:10px 24px;border-radius:9px;background:var(--gold);border:none;cursor:pointer;font-family:var(--font-body);font-size:13.5px;font-weight:600;color:var(--ink);transition:all 0.2s}
+.btn-next:hover{background:var(--gold-light)}
+.btn-next:disabled{opacity:0.35;cursor:not-allowed}
+
+/* RÉSULTAT */
+.result-wrap{max-width:800px;margin:0 auto}
+.result-hero{background:var(--ink);border-radius:20px;padding:32px;margin-bottom:24px;display:flex;gap:24px;align-items:flex-start}
+.result-badge{font-family:var(--font-title);font-size:48px;font-weight:800;color:var(--gold-light);line-height:1;flex-shrink:0}
+.result-name{font-family:var(--font-title);font-size:28px;font-weight:800;color:var(--white);margin-bottom:6px}
+.result-fullname{font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:14px}
+.result-score{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--gold-light)}
+.score-bar{height:6px;background:rgba(255,255,255,0.1);border-radius:3px;flex:1;overflow:hidden}
+.score-fill{height:100%;background:var(--gold);border-radius:3px}
+
+.result-details{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.detail-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px}
+.detail-title{font-family:var(--font-mono);font-size:10px;color:var(--smoke);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px}
+.detail-item{font-size:13.5px;color:var(--ink-soft);margin-bottom:8px;display:flex;gap:6px}
+.detail-item::before{content:'→';color:var(--gold);flex-shrink:0;font-family:var(--font-mono)}
+.detail-item.pro{color:var(--success)} .detail-item.pro::before{content:'✓'}
+.detail-item.con{color:#dc2626} .detail-item.con::before{content:'✗'}
+.source-ref{font-family:var(--font-mono);font-size:10px;background:var(--gold-pale);color:var(--gold);padding:4px 10px;border-radius:4px;display:inline-block;margin-top:4px}
+
+.alts-title{font-family:var(--font-title);font-size:16px;font-weight:700;margin-bottom:14px}
+.alts-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.alt-chip{padding:8px 16px;border:1.5px solid var(--border);border-radius:100px;font-size:13px;color:var(--ink-soft);cursor:pointer;transition:all 0.2s}
+.alt-chip:hover{border-color:var(--gold);color:var(--gold)}
+
+.restart-btn{padding:11px 22px;border-radius:9px;border:1.5px solid var(--border);background:none;cursor:pointer;font-family:var(--font-body);font-size:13.5px;color:var(--ink-soft);transition:all 0.2s}
+.restart-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* COMPARATEUR */
+.comp-table-wrap{overflow-x:auto}
+table.comp{width:100%;border-collapse:collapse;font-size:13px}
+table.comp th{background:var(--ink);color:var(--gold-light);font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:10px 12px;text-align:left;white-space:nowrap;cursor:pointer}
+table.comp th:first-child{border-radius:8px 0 0 0}
+table.comp th:last-child{border-radius:0 8px 0 0}
+table.comp th:hover{background:var(--ink-mid)}
+table.comp td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--ink-soft);vertical-align:top}
+table.comp tr:hover td{background:var(--gold-pale)}
+table.comp .label-col{font-weight:600;color:var(--ink);width:180px;font-size:12px}
+.check{color:var(--success);font-weight:700} .cross{color:#dc2626;font-weight:700}
+.tag-free2{font-family:var(--font-mono);font-size:9px;background:rgba(26,107,60,0.1);color:var(--success);padding:2px 6px;border-radius:3px}
+.tag-prem2{font-family:var(--font-mono);font-size:9px;background:rgba(184,134,42,0.1);color:var(--gold);padding:2px 6px;border-radius:3px}
+
+/* CHECKLIST */
+.checklist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.progress-ring-wrap{display:flex;align-items:center;gap:12px}
+.progress-ring-label{font-family:var(--font-mono);font-size:13px;color:var(--smoke)}
+.progress-ring-label strong{color:var(--gold);font-size:16px}
+
+.step-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:12px;transition:all 0.2s;cursor:pointer}
+.step-card:hover{border-color:var(--gold)}
+.step-card.done{background:rgba(26,107,60,0.04);border-color:rgba(26,107,60,0.2)}
+.step-card.doing{border-color:var(--gold);background:var(--gold-pale)}
+.step-header{display:flex;align-items:flex-start;gap:14px}
+.step-checkbox{
+  width:24px;height:24px;border-radius:6px;border:2px solid var(--border);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;cursor:pointer;margin-top:2px;
+}
+.step-card.done .step-checkbox{background:var(--success);border-color:var(--success);color:white}
+.step-card.doing .step-checkbox{border-color:var(--gold);background:var(--gold-pale)}
+.step-num{font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-bottom:3px}
+.step-title{font-family:var(--font-title);font-size:15px;font-weight:700}
+.step-meta{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
+.step-org{font-size:12px;color:var(--accent);font-weight:500}
+.step-delai{font-family:var(--font-mono);font-size:11px;color:var(--smoke);background:var(--bg2);padding:2px 8px;border-radius:4px}
+.step-cout{font-family:var(--font-mono);font-size:11px;color:var(--gold);background:var(--gold-pale);padding:2px 8px;border-radius:4px}
+.step-docs{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:none}
+.step-card.open .step-docs{display:block}
+.step-docs ul{list-style:none;padding:0}
+.step-docs li{font-size:12.5px;color:var(--ink-soft);padding:4px 0;display:flex;gap:6px}
+.step-docs li::before{content:'📄';font-size:11px}
+.step-link{font-size:11.5px;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:6px;transition:color 0.2s}
+.step-link:hover{color:var(--gold)}
+
+.status-btn{margin-top:12px;display:flex;gap:6px}
+.sbtn{font-size:11px;font-family:var(--font-mono);padding:4px 10px;border-radius:5px;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;background:none}
+.sbtn:hover{border-color:var(--gold)}
+.sbtn.active{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:600}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="landing.html" class="back-btn">← Retour</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="module-badge">Module 05 · Forme Juridique</div>
+  </div>
+</header>
+
+<div class="page">
+  <div class="page-hero">
+    <div class="page-label">Droit des sociétés marocain</div>
+    <h1 class="page-title">Choisissez votre forme juridique</h1>
+    <p class="page-sub">Questionnaire intelligent · Comparateur complet · Checklist de création pas à pas</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('quiz',this)">Questionnaire IA</button>
+    <button class="tab" onclick="switchTab('comp',this)">Comparateur</button>
+    <button class="tab" onclick="switchTab('checklist',this)">Checklist Création</button>
+  </div>
+
+  <!-- ══ QUESTIONNAIRE ══ -->
+  <div id="tab-quiz">
+    <div class="quiz-wrap">
+      <div class="q-progress">
+        <div class="q-progress-bar"><div class="q-progress-fill" id="qprogress" style="width:12.5%"></div></div>
+        <div class="q-progress-label" id="qprogress-label">Question 1 / 8</div>
+      </div>
+      <div id="quiz-area"></div>
+      <div id="quiz-result" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- ══ COMPARATEUR ══ -->
+  <div id="tab-comp" style="display:none">
+    <div class="comp-table-wrap">
+      <table class="comp" id="comp-table">
+        <thead>
+          <tr>
+            <th>Critère</th>
+            <th>SARL</th>
+            <th>SARLU</th>
+            <th>SA</th>
+            <th>SAS</th>
+            <th>Succursale</th>
+            <th>Auto-Entr.</th>
+            <th>SNC</th>
+          </tr>
+        </thead>
+        <tbody id="comp-body"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px;font-size:11px;color:var(--smoke);font-family:var(--font-mono)">Sources : Loi n°5-96 (SARL/SNC) · Loi n°17-95 (SA) · Loi n°5-96 mod. Loi n°21-19 · Loi 114-13 (Auto-entrepreneur)</div>
+  </div>
+
+  <!-- ══ CHECKLIST ══ -->
+  <div id="tab-checklist" style="display:none">
+    <div class="checklist-header">
+      <div>
+        <div style="font-family:var(--font-title);font-size:22px;font-weight:700">Checklist — Création d'entreprise au Maroc</div>
+        <div style="font-size:13px;color:var(--smoke);margin-top:4px">10 étapes officielles · Guide AMDIE 2020 + CRI</div>
+      </div>
+      <div class="progress-ring-wrap">
+        <div>
+          <div class="progress-ring-label">Complété : <strong id="done-count">0</strong>/10</div>
+          <div style="height:4px;width:160px;background:var(--bg2);border-radius:2px;margin-top:4px;overflow:hidden">
+            <div id="check-progress" style="height:100%;background:var(--success);border-radius:2px;width:0%;transition:width 0.4s"></div>
+          </div>
+        </div>
+        <button onclick="resetChecklist()" style="font-size:11px;color:var(--smoke);background:none;border:none;cursor:pointer;font-family:var(--font-mono)">↺ Réinitialiser</button>
+      </div>
+    </div>
+    <div id="checklist-items"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// MODULE 05 — Forme Juridique
+// ══════════════════════════════════════════
+
+// ── TABS ──
+function switchTab(tab, btn) {
+  ['quiz','comp','checklist'].forEach(t => document.getElementById('tab-'+t).style.display = t===tab?'block':'none');
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab==='comp') renderComparateur();
+  if(tab==='checklist') renderChecklist();
+}
+
+// ══ QUESTIONNAIRE ══
+const QUESTIONS = [
+  { id:'nationalite', text:'Nationalité des associés / actionnaires ?', opts:[{k:'A',v:'Tous marocains'},{k:'B',v:'Mixte marocains + étrangers'},{k:'C',v:'Tous étrangers'},{k:'D',v:'Je suis seul (associé unique)'}] },
+  { id:'nb_associes', text:'Nombre d\'associés / actionnaires envisagé ?', opts:[{k:'A',v:'Je suis seul (1 personne)'},{k:'B',v:'2 à 5 personnes'},{k:'C',v:'6 à 50 personnes'},{k:'D',v:'Plus de 50 (actionnariat large)'}] },
+  { id:'capital', text:'Capital social envisagé ?', opts:[{k:'A',v:'Moins de 100 000 MAD'},{k:'B',v:'100 000 – 300 000 MAD'},{k:'C',v:'300 000 – 2 000 000 MAD'},{k:'D',v:'Plus de 2 000 000 MAD'}] },
+  { id:'secteur', text:'Secteur d\'activité principal ?', opts:[{k:'A',v:'Commerce / Services courants'},{k:'B',v:'Industrie / Production / Export'},{k:'C',v:'Finance / Assurance / Banque'},{k:'D',v:'Professions libérales'},{k:'E',v:'Numérique / Offshore / TIC'}] },
+  { id:'objectif', text:'Objectif principal de la structure ?', opts:[{k:'A',v:'Activité personnelle / Freelance'},{k:'B',v:'Entreprise de croissance pérenne'},{k:'C',v:'Filiale d\'un groupe étranger'},{k:'D',v:'Joint-venture entre entreprises'},{k:'E',v:'Holding / Structure d\'investissement'}] },
+  { id:'bourse', text:'Accès futur aux marchés financiers (cotation Bourse) ?', opts:[{k:'A',v:'Non, pas prévu'},{k:'B',v:'Peut-être à terme'},{k:'C',v:'Oui, objectif à moyen terme'}] },
+  { id:'gouvernance', text:'Gouvernance acceptable ?', opts:[{k:'A',v:'Simple — 1 ou 2 gérants suffit'},{k:'B',v:'Standard — CA, DG, assemblées'},{k:'C',v:'Avancée — Directoire, conseil de surveillance'}] },
+  { id:'confidentialite', text:'Besoin de confidentialité sur l\'identité des associés ?', opts:[{k:'A',v:'Non, transparence totale'},{k:'B',v:'Partielle'},{k:'C',v:'Oui, confidentialité importante'}] },
+];
+
+let answers = {};
+let currentQ = 0;
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const pct = ((currentQ+1)/8)*100;
+  document.getElementById('qprogress').style.width = pct+'%';
+  document.getElementById('qprogress-label').textContent = `Question ${currentQ+1} / 8`;
+  
+  document.getElementById('quiz-area').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">QUESTION ${currentQ+1} / 8</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">
+        ${q.opts.map(o => `
+          <button class="q-opt ${answers[q.id]===o.k?'selected':''}" onclick="selectOpt('${q.id}','${o.k}',this)">
+            <span class="q-opt-key">${o.k}</span>${o.v}
+          </button>`).join('')}
+      </div>
+      <div class="q-nav">
+        ${currentQ>0?`<button class="btn-prev" onclick="prevQ()">← Retour</button>`:'<div></div>'}
+        ${currentQ<7
+          ? `<button class="btn-next" onclick="nextQ()" id="qbtn-next" ${answers[q.id]?'':'disabled'}>Suivant →</button>`
+          : `<button class="btn-next" onclick="showResult()" id="qbtn-next" ${answers[q.id]?'':'disabled'}>Voir ma recommandation →</button>`
+        }
+      </div>
+    </div>`;
+}
+
+function selectOpt(qid, val, btn) {
+  answers[qid] = val;
+  btn.closest('.q-options').querySelectorAll('.q-opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const nb = document.getElementById('qbtn-next');
+  if(nb) nb.disabled = false;
+}
+function nextQ() { if(currentQ<7){currentQ++;renderQuestion();} }
+function prevQ() { if(currentQ>0){currentQ--;renderQuestion();} }
+
+// ── MOTEUR DE RECOMMANDATION ──
+function computeRecommendation() {
+  const a = answers;
+  const scores = { SARL:0, SARLU:0, SA:0, SAS:0, Succursale:0, AutoEntrepreneur:0, SNC:0 };
+
+  // Nationalité
+  if(a.nationalite==='D'||a.nb_associes==='A') { scores.SARLU+=30; scores.AutoEntrepreneur+=20; }
+  if(a.nationalite==='C') { scores.Succursale+=40; scores.SA+=20; }
+  if(a.nationalite==='B') { scores.SARL+=20; scores.SA+=30; }
+  if(a.nationalite==='A') { scores.SARL+=25; scores.SNC+=10; }
+
+  // Nb associés
+  if(a.nb_associes==='A') { scores.SARLU+=40; scores.AutoEntrepreneur+=30; }
+  if(a.nb_associes==='B') { scores.SARL+=35; }
+  if(a.nb_associes==='C') { scores.SARL+=25; scores.SA+=20; }
+  if(a.nb_associes==='D') { scores.SA+=40; }
+
+  // Capital
+  if(a.capital==='A') { scores.SARL+=20; scores.AutoEntrepreneur+=25; }
+  if(a.capital==='B') { scores.SARL+=25; }
+  if(a.capital==='C') { scores.SA+=20; scores.SARL+=15; }
+  if(a.capital==='D') { scores.SA+=30; scores.SAS+=25; }
+
+  // Secteur
+  if(a.secteur==='C') { scores.SA+=30; } // Finance
+  if(a.secteur==='E') { scores.SARL+=15; scores.SA+=15; } // Numérique
+  if(a.secteur==='D') { scores.SARL+=15; } // Libéral
+
+  // Objectif
+  if(a.objectif==='A') { scores.AutoEntrepreneur+=40; scores.SARLU+=25; }
+  if(a.objectif==='B') { scores.SARL+=30; }
+  if(a.objectif==='C') { scores.Succursale+=45; scores.SA+=20; }
+  if(a.objectif==='D') { scores.SAS+=35; scores.SA+=25; }
+  if(a.objectif==='E') { scores.SA+=30; scores.SAS+=20; }
+
+  // Bourse
+  if(a.bourse==='C') { scores.SA+=40; }
+  if(a.bourse==='B') { scores.SA+=15; }
+
+  // Gouvernance
+  if(a.gouvernance==='A') { scores.SARL+=20; scores.SARLU+=15; scores.AutoEntrepreneur+=15; }
+  if(a.gouvernance==='B') { scores.SARL+=10; scores.SA+=15; }
+  if(a.gouvernance==='C') { scores.SA+=20; }
+
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  return { best: sorted[0][0], bestScore: sorted[0][1], all: sorted };
+}
+
+const FORMES_DATA = {
+  SARL: { abbr:'SARL', nom:'Société à Responsabilité Limitée', icon:'⚖️',
+    capital:'Libre (aucun minimum légal depuis 2018)', associes:'2 à 50', responsabilite:'Limitée aux apports', gouvernance:'Gérant(s) personne physique', bourse:'Non', cout:'5 000 – 15 000 MAD', delai:'15 – 30 jours', loi:'Loi n°5-96 mod. 21-19',
+    pros:['Flexibilité maximale','Coût de création faible','Pas de capital minimum','Protection responsabilité','Idéale PME marocaine'],
+    cons:['Cession de parts soumise à accord 3/4','Pas d\'appel public à l\'épargne','Max 50 associés'],
+    etrangers:'Oui, avec détention partielle ou totale possible' },
+  SARLU: { abbr:'SARLU', nom:'Société à Responsabilité Limitée à associé Unique', icon:'👤',
+    capital:'Libre', associes:'1 seul', responsabilite:'Limitée aux apports', gouvernance:'Gérant unique', bourse:'Non', cout:'3 000 – 10 000 MAD', delai:'10 – 20 jours', loi:'Loi n°5-96',
+    pros:['Idéale pour solo-entrepreneur','Capital libre','Responsabilité protégée','Gestion simple'],
+    cons:['Un seul associé possible','Pas de cotation','Limites sur certains secteurs réglementés'],
+    etrangers:'Oui, personne physique étrangère possible' },
+  SA: { abbr:'SA', nom:'Société Anonyme', icon:'🏢',
+    capital:'300 000 MAD (3 M MAD si appel public)', associes:'5 minimum', responsabilite:'Limitée aux apports', gouvernance:'CA + DG + AG ou Directoire + CS', bourse:'Possible (cotation)', cout:'20 000 – 50 000 MAD', delai:'30 – 60 jours', loi:'Loi n°17-95 mod. 20-19',
+    pros:['Crédibilité maximale','Accès à la Bourse de Casablanca','Structure adaptée aux grands projets','Financement par actions'],
+    cons:['Capital minimum 300k MAD','Commissaire aux comptes obligatoire','Gouvernance complexe','Coût de création élevé'],
+    etrangers:'Oui, actionnaires étrangers autorisés sans restriction' },
+  SAS: { abbr:'SAS', nom:'Société Anonyme Simplifiée', icon:'🤝',
+    capital:'Libre (chaque associé ≥ 2M MAD)', associes:'Uniquement entre sociétés', responsabilite:'Limitée aux apports', gouvernance:'Très flexible (défini par statuts)', bourse:'Non', cout:'15 000 – 40 000 MAD', delai:'25 – 45 jours', loi:'Loi n°5-96',
+    pros:['Flexibilité statutaire maximale','Idéale JV et holdings','Gouvernance sur mesure','Capital librement défini'],
+    cons:['Réservée aux personnes morales uniquement','Chaque associé doit apporter ≥ 2M MAD','Peu connue au Maroc'],
+    etrangers:'Oui — entre entreprises étrangères et marocaines' },
+  Succursale: { abbr:'Succ.', nom:'Succursale d\'une Entreprise Étrangère', icon:'🌐',
+    capital:'Aucun minimum', associes:'N/A (dépend maison-mère)', responsabilite:'Illimitée (maison-mère solidaire)', gouvernance:'Représentant légal au Maroc', bourse:'Non', cout:'5 000 – 15 000 MAD', delai:'15 – 30 jours', loi:'CNRC / Office des Changes',
+    pros:['Pas de capital minimum','Opérationnelle rapidement','Idéale pour tester le marché','Pas de personnalité morale propre'],
+    cons:['Responsabilité de la maison-mère','Rapatriement de bénéfices réglementé','Pas adaptée à long terme'],
+    etrangers:'Exclusivement pour groupes étrangers' },
+  AutoEntrepreneur: { abbr:'Auto-Entr.', nom:'Auto-Entrepreneur', icon:'🚀',
+    capital:'Aucun', associes:'1 seul (personne physique)', responsabilite:'Illimitée (patrimoine personnel)', gouvernance:'Individuel', bourse:'Non', cout:'0 – 500 MAD', delai:'24 – 72h (DGI)', loi:'Loi 114-13',
+    pros:['Création quasi-instantanée','Coût nul ou minime','IR libératoire 0,5% ou 1%','Idéal pour tester une activité'],
+    cons:['CA plafonné (500k MAD commerce, 200k MAD services)','Pas de protection patrimoine personnel','Difficile d\'accès aux marchés B2B larges'],
+    etrangers:'Non disponible pour étrangers non-résidents' },
+  SNC: { abbr:'SNC', nom:'Société en Nom Collectif', icon:'🤲',
+    capital:'Libre', associes:'2 minimum', responsabilite:'Illimitée et solidaire', gouvernance:'Gérants associés', bourse:'Non', cout:'3 000 – 8 000 MAD', delai:'20 – 30 jours', loi:'Loi n°5-96',
+    pros:['Souplesse de gestion','Pas de capital minimum','Fiscalité transparente (IR par défaut)'],
+    cons:['Responsabilité illimitée et solidaire','Peu recommandée en général','Risque patrimonial élevé'],
+    etrangers:'Déconseillé pour étrangers (responsabilité illimitée)' },
+};
+
+function showResult() {
+  const { best, bestScore, all } = computeRecommendation();
+  const f = FORMES_DATA[best];
+  const alts = all.slice(1,3).map(([k]) => k);
+
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('qprogress').parentElement.parentElement.style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+
+  document.getElementById('quiz-result').innerHTML = `
+    <div class="result-wrap">
+      <div class="result-hero">
+        <div class="result-badge">${f.icon}</div>
+        <div style="flex:1">
+          <div class="result-name">${f.abbr}</div>
+          <div class="result-fullname">${f.nom}</div>
+          <div class="result-score">
+            Score d'adéquation <div class="score-bar"><div class="score-fill" style="width:${Math.min(100,bestScore)}%"></div></div> ${bestScore}pts
+          </div>
+          <div style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.3)">Source légale : ${f.loi}</div>
+        </div>
+      </div>
+
+      <div class="result-details">
+        <div class="detail-card">
+          <div class="detail-title">Caractéristiques clés</div>
+          <div class="detail-item">Capital : <strong>${f.capital}</strong></div>
+          <div class="detail-item">Associés : <strong>${f.associes}</strong></div>
+          <div class="detail-item">Responsabilité : <strong>${f.responsabilite}</strong></div>
+          <div class="detail-item">Gouvernance : <strong>${f.gouvernance}</strong></div>
+          <div class="detail-item">Délai création : <strong>${f.delai}</strong></div>
+          <div class="detail-item">Coût estimé : <strong>${f.cout}</strong></div>
+          <div class="detail-item">Investisseurs étrangers : ${f.etrangers}</div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-title">Avantages</div>
+          ${f.pros.map(p=>`<div class="detail-item pro">${p}</div>`).join('')}
+          <div class="detail-title" style="margin-top:14px">Points d'attention</div>
+          ${f.cons.map(c=>`<div class="detail-item con">${c}</div>`).join('')}
+        </div>
+      </div>
+
+      <div class="alts-title">Alternatives à considérer</div>
+      <div class="alts-grid">
+        ${alts.map(k=>`<div class="alt-chip" onclick="switchTab('comp',document.querySelectorAll('.tab')[1])">${k.replace('AutoEntrepreneur','Auto-Entrepreneur')} →</div>`).join('')}
+        <div class="alt-chip" onclick="switchTab('comp',document.querySelectorAll('.tab')[1])">Voir comparateur complet →</div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="restart-btn" onclick="restartQuiz()">↺ Recommencer le questionnaire</button>
+        <button class="restart-btn" onclick="switchTab('checklist',document.querySelectorAll('.tab')[2])" style="background:var(--gold);border-color:var(--gold);color:var(--ink)">📋 Voir checklist de création →</button>
+      </div>
+    </div>`;
+}
+
+function restartQuiz() {
+  answers = {}; currentQ = 0;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('qprogress').parentElement.parentElement.style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQuestion();
+}
+
+// ══ COMPARATEUR ══
+const COMP_DATA = [
+  { label:'Nombre associés (min/max)', vals:['2 / 50','1 / 1','5 / illimité','Entre soc. uniquement','N/A','1 / 1','2 / illimité'] },
+  { label:'Capital minimum légal', vals:['Libre','Libre','300 000 MAD','Libre (≥2M/assoc.)','Aucun','Aucun','Libre'] },
+  { label:'Responsabilité', vals:['Limitée','Limitée','Limitée','Limitée','Illimitée (m-m)','Illimitée (perso)','Illimitée solidaire'] },
+  { label:'Appel public à l\'épargne', vals:['<span class="cross">✗</span>','<span class="cross">✗</span>','<span class="check">✓</span>','<span class="cross">✗</span>','<span class="cross">✗</span>','<span class="cross">✗</span>','<span class="cross">✗</span>'] },
+  { label:'Cotation Bourse', vals:['<span class="cross">✗</span>','<span class="cross">✗</span>','<span class="check">✓</span>','<span class="cross">✗</span>','<span class="cross">✗</span>','<span class="cross">✗</span>','<span class="cross">✗</span>'] },
+  { label:'Commissaire aux comptes', vals:['Si CA>50M MAD','Non','<span class="check">Obligatoire</span>','Si CA>50M MAD','Non','Non','Non'] },
+  { label:'Associés étrangers', vals:['<span class="check">✓</span>','<span class="check">✓</span>','<span class="check">✓</span>','<span class="check">✓</span>','Groupes étrangers','<span class="cross">Non-résidents</span>','Déconseillé'] },
+  { label:'Coût création estimé', vals:['5–15k MAD','3–10k MAD','20–50k MAD','15–40k MAD','5–15k MAD','0–500 MAD','3–8k MAD'] },
+  { label:'Délai création (jours)', vals:['15–30 j','10–20 j','30–60 j','25–45 j','15–30 j','1–3 j','20–30 j'] },
+  { label:'Régime fiscal défaut', vals:['IS','IS','IS','IS','IS (résultat)','IR 0,5/1%','IS ou IR option'] },
+  { label:'Complexité gouvernance', vals:['Faible','Très faible','Élevée','Flexible','Faible','Minimale','Faible'] },
+  { label:'Idéale pour', vals:['<span class="tag-free2">PME</span>','<span class="tag-free2">Solo</span>','<span class="tag-prem2">Grande entr.</span>','<span class="tag-prem2">JV/Holding</span>','<span class="tag-prem2">Multinat.</span>','<span class="tag-free2">Freelance</span>','<span class="tag-free2">Trad.</span>'] },
+  { label:'Loi applicable', vals:['Loi 5-96 mod.21-19','Loi 5-96','Loi 17-95 mod.20-19','Loi 5-96','CNRC+OC','Loi 114-13','Loi 5-96'] },
+];
+
+function renderComparateur() {
+  document.getElementById('comp-body').innerHTML = COMP_DATA.map(row => `
+    <tr>
+      <td class="label-col">${row.label}</td>
+      ${row.vals.map(v=>`<td>${v}</td>`).join('')}
+    </tr>`).join('');
+}
+
+// ══ CHECKLIST ══
+const CHECKLIST_STEPS = [
+  { num:1, title:'Certificat Négatif (OMPIC)', org:'OMPIC / CRI — directinfo.ma', lien:'https://www.directinfo.ma', delai:'J+24h', cout:'~170 MAD', docs:['Formulaire de demande CN','Copie pièce d\'identité','3 propositions de dénomination sociale'] },
+  { num:2, title:'Établissement des statuts', org:'Notaire / Avocat / Rédaction libre', lien:'https://www.cri.ma', delai:'3–10 jours', cout:'3 000–15 000 MAD', docs:['Projet de statuts','Copie CNI/passeport des associés','Certificat négatif','Acte d\'apport en nature (si applicable)'] },
+  { num:3, title:'Bulletins de souscription (SA/SAS)', org:'Cabinet juridique / Notaire', lien:'#', delai:'Simultané étape 2', cout:'Inclus honoraires', docs:['Formulaire bulletin de souscription','Statuts signés','Bulletins signés par chaque souscripteur'] },
+  { num:4, title:'Blocage du capital libéré (banque)', org:'Banque de l\'entreprise', lien:'https://www.bankassurance.ma', delai:'Dans les 8 jours de réception fonds', cout:'Frais bancaires variables', docs:['Projet de statuts','Certificat négatif','CNI/passeport','Bulletins de souscription (SA)'] },
+  { num:5, title:'Déclaration de souscription et versement (SA/SAS)', org:'Notaire', lien:'#', delai:'Après blocage capital', cout:'Inclus honoraires', docs:['Bulletins signés','Attestation de blocage bancaire'] },
+  { num:6, title:'Enregistrement des actes — Droits d\'enregistrement', org:'CRI (Guichet Unique) / DGI', lien:'https://www.cri.ma', delai:'J+2', cout:'1% augmentation capital ou 200 MAD (droit fixe)', docs:['Statuts originaux','Certificat négatif','Formulaires enregistrement'] },
+  { num:7, title:'Inscription Taxe Professionnelle + Identifiant Fiscal', org:'DGI (Direction Générale des Impôts)', lien:'https://www.tax.gov.ma', delai:'J','cout':'Gratuit', docs:['Statuts enregistrés','CNI gérant','Formulaire TP/IF'] },
+  { num:8, title:'Immatriculation Registre de Commerce (RC)', org:'Tribunal de Commerce via CRI', lien:'https://www.cri.ma', delai:'J+5', cout:'400–600 MAD', docs:['Statuts enregistrés','Certificat négatif','IF + TP','Attestation blocage capital','CNI gérant + extrait casier judiciaire'] },
+  { num:9, title:'Affiliation CNSS', org:'Caisse Nationale de Sécurité Sociale', lien:'https://www.cnss.ma', delai:'J (obligatoire dès 1er employé)', cout:'Gratuit', docs:['Extrait RC (immatriculation)','CNI gérant','Formulaire d\'affiliation CNSS'] },
+  { num:10, title:'Publication Journal Légal + Bulletin Officiel', org:'Journal d\'Annonces Légales + Imprimerie Officielle', lien:'https://www.bulletin-officiel.ma', delai:'Dans le mois suivant RC', cout:'1 500–3 000 MAD (JAL) + ~500 MAD (BO)', docs:['Extrait RC','Mentions légales rédigées (objet, siège, capital, gérant)'] },
+];
+
+function renderChecklist() {
+  const saved = JSON.parse(localStorage.getItem('Smart-Invest_checklist')||'{}');
+  let doneCount = 0;
+  
+  document.getElementById('checklist-items').innerHTML = CHECKLIST_STEPS.map(s => {
+    const status = saved[s.num] || 'todo';
+    if(status==='done') doneCount++;
+    return `
+      <div class="step-card ${status==='done'?'done':status==='doing'?'doing':''}" id="sc${s.num}" onclick="toggleStep(${s.num},event)">
+        <div class="step-header">
+          <div class="step-checkbox">${status==='done'?'✓':''}</div>
+          <div style="flex:1">
+            <div class="step-num">ÉTAPE ${s.num} / 10</div>
+            <div class="step-title">${s.title}</div>
+            <div class="step-meta">
+              <span class="step-org">${s.org}</span>
+              <span class="step-delai">⏱ ${s.delai}</span>
+              <span class="step-cout">💰 ${s.cout}</span>
+            </div>
+            <div class="status-btn">
+              <button class="sbtn ${status==='todo'?'active':''}" onclick="setStatus(${s.num},'todo',event)">À faire</button>
+              <button class="sbtn ${status==='doing'?'active':''}" onclick="setStatus(${s.num},'doing',event)">En cours</button>
+              <button class="sbtn ${status==='done'?'active':''}" onclick="setStatus(${s.num},'done',event)">✓ Fait</button>
+            </div>
+            <div class="step-docs">
+              <strong style="font-size:12px;font-family:var(--font-mono);color:var(--smoke);letter-spacing:0.06em">DOCUMENTS REQUIS</strong>
+              <ul style="margin-top:8px">${s.docs.map(d=>`<li>${d}</li>`).join('')}</ul>
+              <a href="${s.lien}" target="_blank" class="step-link">→ Accéder à l'organisme officiel</a>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  
+  updateChecklistProgress();
+}
+
+function toggleStep(num, e) {
+  if(e.target.tagName==='BUTTON') return;
+  const card = document.getElementById('sc'+num);
+  card.classList.toggle('open');
+}
+
+function setStatus(num, status, e) {
+  e.stopPropagation();
+  const saved = JSON.parse(localStorage.getItem('Smart-Invest_checklist')||'{}');
+  saved[num] = status;
+  localStorage.setItem('Smart-Invest_checklist', JSON.stringify(saved));
+  renderChecklist();
+}
+
+function updateChecklistProgress() {
+  const saved = JSON.parse(localStorage.getItem('Smart-Invest_checklist')||'{}');
+  const done = Object.values(saved).filter(v=>v==='done').length;
+  document.getElementById('done-count').textContent = done;
+  document.getElementById('check-progress').style.width = (done/10*100)+'%';
+}
+
+function resetChecklist() {
+  if(confirm('Réinitialiser toute la checklist ?')) {
+    localStorage.removeItem('Smart-Invest_checklist');
+    renderChecklist();
+  }
+}
+
+// ── INIT ──
+renderQuestion();
+renderComparateur();
+</script>
+
+<!-- ═══ Scripts Smart-Invest.ia ═══ -->
+<script src='lib/auth.js'></script>
+<script src='lib/demo-mode.js'></script>
+<script src='lib/upgrade-modal.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

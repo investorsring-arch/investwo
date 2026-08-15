@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global MondoScope — Intelligence Stratégique</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F3EE;--bg2:#EEEBE4;--bg3:#E6E2D8;
+  --wh:#FFFFFF;--wh2:#FAFAF8;
+  --ink:#1A1510;--ink2:#2E2820;--ink3:#504840;--ink4:#7A706A;--ink5:#A89D98;
+  --border:rgba(26,21,16,.1);--border2:rgba(26,21,16,.18);
+  --amber:#C07818;--amber2:#E89830;--amber3:#FBF0DC;--amber4:rgba(192,120,24,.15);
+  --red:#C01820;--red2:#E02830;--red3:#FDECED;--red4:rgba(192,24,32,.14);
+  --green:#1A6830;--green2:#28A048;--green3:#EAF5EC;--green4:rgba(26,104,48,.12);
+  --blue:#1640A0;--blue2:#2860D8;--blue3:#EBF0FB;--blue4:rgba(22,64,160,.12);
+  --teal:#0A7878;--teal3:#E4F6F6;
+  --orange:#C04808;--orange3:#FEF0E8;--orange4:rgba(192,72,8,.12);
+  --ff:'Libre Baskerville',Georgia,serif;
+  --fb:'Outfit',sans-serif;
+  --fm:'JetBrains Mono','Courier New',monospace;
+  --shadow:0 1px 4px rgba(26,21,16,.08);
+  --shadow2:0 2px 12px rgba(26,21,16,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── MASTHEAD ── */
+.masthead{background:var(--wh);border-bottom:2px solid var(--amber);position:sticky;top:0;z-index:200;box-shadow:var(--shadow)}
+.mast-inner{max-width:1560px;margin:0 auto;display:flex;align-items:center;gap:14px;height:56px;padding:0 20px}
+.logo{font-family:var(--ff);font-size:16px;font-weight:700;color:var(--ink);letter-spacing:-.01em;white-space:nowrap;line-height:1.2}
+.logo em{font-style:italic;color:var(--amber)}
+.logo small{display:block;font-family:var(--fm);font-size:8px;color:var(--ink4);font-style:normal;font-weight:400;letter-spacing:.10em;text-transform:uppercase;margin-top:1px}
+.sep{width:1px;height:28px;background:var(--border2);flex-shrink:0}
+.tagline{font-family:var(--fm);font-size:8.5px;color:var(--ink4);letter-spacing:.09em;text-transform:uppercase;line-height:1.65;flex-shrink:0}
+.mast-right{margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.live{display:flex;align-items:center;gap:5px;font-family:var(--fm);font-size:10px;color:var(--red);letter-spacing:.06em;cursor:pointer;padding:4px 8px;border-radius:100px;border:1px solid transparent;transition:all .18s}
+.live:hover{border-color:var(--red);background:var(--red3)}
+.live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:pp 1.8s ease infinite;flex-shrink:0}
+.live.loading::before{background:var(--amber);animation:pp .6s ease infinite}
+@keyframes pp{0%,100%{opacity:1}50%{opacity:.25}}
+.mdate{font-family:var(--fm);font-size:10px;color:var(--ink4)}
+.nav-pills{display:flex;gap:3px}
+.npill{font-family:var(--fm);font-size:9px;padding:5px 11px;border:1px solid var(--border2);border-radius:100px;color:var(--ink4);cursor:pointer;letter-spacing:.06em;transition:all .18s;background:none;text-transform:uppercase}
+.npill:hover{border-color:var(--amber);color:var(--amber)}
+.npill.on{background:var(--amber3);border-color:var(--amber);color:var(--amber)}
+.upd-badge{font-family:var(--fm);font-size:8.5px;color:var(--ink5);white-space:nowrap}
+
+/* ── TICKER ── */
+.ticker{background:var(--ink2);overflow:hidden;height:32px;display:flex;align-items:center}
+.ticker-inner{display:flex;animation:tick 110s linear infinite;white-space:nowrap}
+.ticker-inner:hover{animation-play-state:paused}
+.ti{display:inline-flex;align-items:center;gap:7px;padding:0 22px;border-right:1px solid rgba(255,255,255,.1);font-family:var(--fm);font-size:11px;height:32px}
+.ti-sym{color:rgba(255,255,255,.9);font-weight:500}
+.ti-val{color:rgba(255,255,255,.6)}
+.ti-up{color:#5FDB8A}.ti-dn{color:#FF7070}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── LAYOUT ── */
+.page{max-width:1560px;margin:0 auto;padding:18px 24px 60px}
+
+/* ── VIEW SECTIONS ── */
+.view-section{display:block}
+.view-section.hidden{display:none!important}
+
+/* ── ALERT ── */
+.alert{display:flex;align-items:center;gap:10px;padding:9px 16px;margin-bottom:16px;border-radius:6px;border:1px solid var(--amber);background:var(--amber3)}
+.alert-pill{font-family:var(--fm);font-size:8.5px;background:var(--amber);color:var(--wh);padding:3px 9px;border-radius:100px;font-weight:500;flex-shrink:0;letter-spacing:.06em}
+.alert-txt{font-family:var(--fb);font-size:13px;color:var(--amber);font-weight:600;flex:1;transition:opacity .22s}
+.alert-btn{color:var(--amber);cursor:pointer;font-size:18px;padding:0 4px;opacity:.7;transition:opacity .2s;background:none;border:none;line-height:1}
+.alert-btn:hover{opacity:1}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+.gmap{display:grid;grid-template-columns:3fr 1.3fr;gap:14px;margin-bottom:14px}
+.gevents{display:grid;grid-template-columns:2fr 1.2fr;gap:14px;margin-bottom:14px}
+
+/* ── SECTION HEADER ── */
+.sh{display:flex;align-items:center;gap:12px;margin:18px 0 12px}
+.sh::after{content:'';flex:1;height:1px;background:var(--border2)}
+.sh-label{font-family:var(--fm);font-size:9px;color:var(--ink4);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+
+/* ── CARD ── */
+.card{background:var(--wh);border:1px solid var(--border2);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.card.amber{border-top:3px solid var(--amber)}
+.card.red{border-top:3px solid var(--red)}
+.card.green{border-top:3px solid var(--green)}
+.card.blue{border-top:3px solid var(--blue)}
+.card.teal{border-top:3px solid var(--teal)}
+.card.orange{border-top:3px solid var(--orange)}
+.card-hd{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border)}
+.card-title{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--ink2);display:flex;align-items:center;gap:7px}
+.card-sub{font-family:var(--fm);font-size:9px;color:var(--ink5);letter-spacing:.06em;text-transform:uppercase}
+.card-body{padding:13px 15px}
+
+/* ── API STATUS ── */
+.api-tag{font-family:var(--fm);font-size:7.5px;padding:2px 6px;border-radius:3px;letter-spacing:.06em}
+.api-live{background:var(--green4);color:var(--green)}
+.api-sim{background:var(--amber4);color:var(--amber)}
+.api-err{background:var(--red4);color:var(--red)}
+
+/* ── CLOCKS ── */
+.clocks{display:flex;gap:8px;padding:12px 14px;flex-wrap:wrap}
+.clock{flex:1;min-width:70px;text-align:center;padding:9px 6px;background:var(--bg2);border-radius:7px;border:1px solid var(--border);transition:all .2s}
+.clock:hover{border-color:var(--amber);background:var(--amber3)}
+.clock.me{background:var(--amber3);border-color:var(--amber)}
+.ck-city{font-family:var(--fm);font-size:7.5px;color:var(--ink4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.ck-time{font-family:var(--fm);font-size:18px;font-weight:500;color:var(--ink);line-height:1}
+.ck-tz{font-family:var(--fm);font-size:8px;color:var(--ink5);margin-top:3px}
+.clock.me .ck-time{color:var(--amber)}
+
+/* ── FX TABLE ── */
+.fx{width:100%;border-collapse:collapse}
+.fx th{font-family:var(--fm);font-size:8.5px;color:var(--ink4);padding:5px 10px;text-align:left;border-bottom:1px solid var(--border);letter-spacing:.06em;text-transform:uppercase;background:var(--bg2)}
+.fx td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:12.5px;vertical-align:middle}
+.fx tr:last-child td{border-bottom:none}
+.fx tr:hover td{background:var(--amber3)}
+.fx-pair{font-family:var(--fm);font-size:11.5px;font-weight:500;color:var(--ink2)}
+.fx-rate{font-family:var(--fm);font-size:13.5px;font-weight:500;transition:color .4s}
+.fx-chg{font-family:var(--fm);font-size:11px;font-weight:500}
+.up{color:var(--green2)}.dn{color:var(--red2)}
+
+/* ── COMMO ── */
+.commo{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;border:1px solid var(--border);background:var(--wh2);margin-bottom:6px;transition:all .15s}
+.commo:hover{background:var(--amber3);border-color:var(--amber)}
+.commo-ico{font-size:15px;width:22px;flex-shrink:0}
+.commo-name{font-family:var(--fb);font-size:12px;font-weight:500;flex:1}
+.commo-unit{font-family:var(--fm);font-size:8.5px;color:var(--ink4)}
+.commo-val{font-family:var(--fm);font-size:13.5px;font-weight:500;text-align:right;transition:color .4s}
+.commo-chg{font-family:var(--fm);font-size:10.5px;font-weight:500;text-align:right}
+.pbar{height:3px;background:var(--bg3);border-radius:2px;margin-top:3px;width:48px}
+.pbar-fill{height:100%;border-radius:2px;transition:width .5s}
+
+/* ── INDICES ── */
+.idx-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border)}
+.idx-row:last-child{border-bottom:none}
+.idx-flag{font-size:15px}
+.idx-name{font-family:var(--ff);font-size:12.5px;font-weight:700;color:var(--ink2)}
+.idx-sub{font-family:var(--fm);font-size:8.5px;color:var(--ink4)}
+.idx-val{font-family:var(--fm);font-size:14px;font-weight:500;margin-left:auto;text-align:right;transition:color .4s}
+.idx-chg{font-family:var(--fm);font-size:11px;text-align:right}
+
+/* ── MAP ── */
+.map-wrap{background:var(--wh);border:1px solid var(--border2);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+.map-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:9px 14px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.mf{font-family:var(--fm);font-size:8.5px;padding:4px 10px;border:1px solid var(--border2);border-radius:100px;cursor:pointer;background:var(--wh);letter-spacing:.05em;transition:all .18s}
+.mf:hover{border-color:var(--amber)}
+.mf.on.war{background:var(--red4);border-color:var(--red);color:var(--red)}
+.mf.on.tension{background:var(--amber4);border-color:var(--amber);color:var(--amber)}
+.mf.on.watch{background:var(--blue4);border-color:var(--blue);color:var(--blue)}
+.map-svg{display:block;width:100%}
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;padding:7px 14px;border-top:1px solid var(--border);background:var(--wh2)}
+.ml-item{display:flex;align-items:center;gap:4px;font-family:var(--fm);font-size:9px;color:var(--ink4)}
+.ml-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── ZONE LIST ── */
+.zone-item{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .15s}
+.zone-item:last-child{border-bottom:none}
+.zone-item:hover{padding-left:6px;background:var(--amber3);padding:9px 6px;border-radius:6px}
+.zdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.zsev{font-family:var(--fm);font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:2px}
+.zname{font-family:var(--ff);font-size:12.5px;font-weight:700;color:var(--ink)}
+.zdesc{font-family:var(--fb);font-size:11px;color:var(--ink4);line-height:1.5;margin-top:2px}
+.ztag{display:inline-block;font-family:var(--fm);font-size:8px;padding:2px 7px;border-radius:3px;margin-top:4px}
+
+/* ── EVENTS ── */
+.ev{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);transition:opacity .2s}
+.ev:last-child{border-bottom:none}
+.ev.filtered-out{display:none}
+.ev-time{font-family:var(--fm);font-size:9px;color:var(--ink5);white-space:nowrap;margin-top:2px;min-width:52px}
+.ev-cat{font-family:var(--fm);font-size:8px;padding:2px 7px;border-radius:3px;flex-shrink:0;margin-top:2px;font-weight:500;white-space:nowrap;cursor:pointer;transition:opacity .18s}
+.ev-cat:hover{opacity:.7}
+.cs{background:var(--red4);color:var(--red)}.ce{background:var(--green4);color:var(--green)}
+.cg{background:var(--blue4);color:var(--blue)}.cc{background:var(--amber4);color:var(--amber)}
+.cn{background:var(--orange4);color:var(--orange)}
+.ev-title{font-family:var(--ff);font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:2px}
+.ev-src{font-family:var(--fm);font-size:9px;color:var(--ink5)}
+
+/* ── EVENT FILTER PILLS ── */
+.ev-filters{display:flex;gap:5px;flex-wrap:wrap}
+.ef-pill{font-family:var(--fm);font-size:8px;padding:3px 9px;border-radius:100px;border:1px solid var(--border2);cursor:pointer;transition:all .18s;background:none;color:var(--ink4);letter-spacing:.05em}
+.ef-pill:hover{border-color:var(--amber);color:var(--amber)}
+.ef-pill.active-cs{background:var(--red4);border-color:var(--red);color:var(--red)}
+.ef-pill.active-ce{background:var(--green4);border-color:var(--green);color:var(--green)}
+.ef-pill.active-cg{background:var(--blue4);border-color:var(--blue);color:var(--blue)}
+.ef-pill.active-cc{background:var(--amber4);border-color:var(--amber);color:var(--amber)}
+.ef-pill.active-all{background:var(--bg3);border-color:var(--border2);color:var(--ink3)}
+
+/* ── BARO ── */
+.baro{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.baro-lbl{font-family:var(--fb);font-size:12px;color:var(--ink3);width:138px;flex-shrink:0}
+.baro-track{flex:1;height:9px;background:var(--bg3);border-radius:5px;overflow:hidden}
+.baro-fill{height:100%;border-radius:5px;transition:width .8s}
+.baro-val{font-family:var(--fm);font-size:11px;font-weight:500;width:30px;text-align:right;flex-shrink:0}
+
+/* ── MACRO ── */
+.macro-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.macro-row:last-child{border-bottom:none}
+.macro-lbl{font-family:var(--fb);font-size:12px;color:var(--ink3)}
+.macro-val{font-family:var(--fm);font-size:12.5px;font-weight:500}
+
+/* ── STAT CARDS ── */
+.stat{background:var(--wh);border:1px solid var(--border2);border-radius:10px;padding:14px 16px;text-align:center;box-shadow:var(--shadow)}
+.stat-n{font-family:var(--fm);font-size:26px;font-weight:500;line-height:1;margin-bottom:5px}
+.stat-l{font-family:var(--fb);font-size:11px;color:var(--ink4)}
+.stat-d{font-family:var(--fm);font-size:9.5px;margin-top:3px}
+
+/* ── ENERGY SECTION ── */
+.energy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.en-card{background:var(--wh2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;transition:all .15s}
+.en-card:hover{border-color:var(--orange);background:var(--orange3)}
+.en-ico{font-size:22px;margin-bottom:6px}
+.en-name{font-family:var(--fb);font-size:12px;font-weight:600;color:var(--ink2)}
+.en-unit{font-family:var(--fm);font-size:8px;color:var(--ink5);margin-bottom:4px}
+.en-val{font-family:var(--fm);font-size:20px;font-weight:500;transition:color .4s}
+.en-chg{font-family:var(--fm);font-size:10px;font-weight:500;margin-top:2px}
+
+/* ── CLIMATE SECTION ── */
+.clim-alert{display:flex;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--wh2);margin-bottom:8px;cursor:default;transition:background .15s}
+.clim-alert:hover{background:var(--teal3);border-color:var(--teal)}
+.clim-sev{font-family:var(--fm);font-size:8px;padding:2px 7px;border-radius:3px;flex-shrink:0;margin-top:2px;font-weight:500}
+.clim-sev.high{background:var(--red4);color:var(--red)}
+.clim-sev.med{background:var(--amber4);color:var(--amber)}
+.clim-sev.low{background:var(--green4);color:var(--green)}
+.clim-title{font-family:var(--ff);font-size:12.5px;font-weight:700;color:var(--ink)}
+.clim-desc{font-family:var(--fb);font-size:11px;color:var(--ink4);margin-top:2px}
+
+/* ── SPARK ── */
+.spark-svg{display:block}
+
+/* ── FLASH ── */
+@keyframes flash{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
+.data-flash{animation:flash .5s ease}
+
+/* ── FOOTER ── */
+.foot{background:var(--ink2);color:rgba(255,255,255,.4);padding:13px 24px;display:flex;align-items:center;justify-content:space-between;font-family:var(--fm);font-size:9.5px;flex-wrap:wrap;gap:10px}
+
+/* ── ANIM ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card,.map-wrap,.stat,.en-card{animation:fadeUp .3s ease both}
+.view-section{animation:fadeIn .25s ease both}
+
+@media(max-width:1200px){.gmap,.gevents{grid-template-columns:1fr}.g3{grid-template-columns:1fr 1fr}.energy-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.g2,.g3,.g4{grid-template-columns:1fr}.page{padding:12px 12px 40px}.mast-inner{padding:0 12px}.nav-pills{display:none}.energy-grid{grid-template-columns:1fr 1fr}}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="mast-inner">
+    <a href="#" style="font-family:var(--fm);font-size:10px;color:var(--ink4);text-decoration:none;padding:4px 10px;border:1px solid var(--border2);border-radius:100px;white-space:nowrap;transition:all .18s;flex-shrink:0" onmouseover="this.style.color='var(--amber)';this.style.borderColor='var(--amber)'" onmouseout="this.style.color='var(--ink4)';this.style.borderColor='var(--border2)'">← Accueil</a>
+    <div class="logo">Global <em>MondoScope</em><small>Votre outil d'intelligence stratégique</small></div>
+    <div class="sep"></div>
+    <div class="tagline">Marchés · Géopolitique<br>Matières premières · Événements</div>
+    <div class="nav-pills">
+      <button class="npill on" onclick="setView('global',this)">Vue globale</button>
+      <button class="npill" onclick="setView('marches',this)">Marchés</button>
+      <button class="npill" onclick="setView('conflits',this)">Conflits</button>
+      <button class="npill" onclick="setView('energie',this)">Énergie</button>
+      <button class="npill" onclick="setView('climat',this)">Climat</button>
+    </div>
+    <div class="mast-right">
+      <div class="upd-badge" id="updBadge">—</div>
+      <button class="live" id="liveBtn" onclick="refreshAllData()" title="Cliquer pour actualiser">EN DIRECT</button>
+      <div class="mdate" id="mdate">—</div>
+    </div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true"><div class="ticker-inner" id="ticker"></div></div>
+
+<div class="page" id="mainPage">
+
+  <!-- ALERT (global) -->
+  <div class="alert view-section" id="sec-alert">
+    <span class="alert-pill">⚡ FLASH</span>
+    <span class="alert-txt" id="alertTxt">Chargement des informations...</span>
+    <button class="alert-btn" onclick="nextAlert()">›</button>
+  </div>
+
+  <!-- HORLOGES (global + marchés) -->
+  <div class="card amber view-section" id="sec-clocks" style="margin-bottom:14px">
+    <div class="card-hd"><span class="card-title">🕐 Horloges mondiales</span><span class="card-sub" id="utc">UTC —</span></div>
+    <div class="clocks" id="clocks"></div>
+  </div>
+
+  <!-- ─── VUE MARCHÉS ─── -->
+  <div class="view-section" id="sec-marches">
+    <div class="sh"><span class="sh-label">Marchés financiers mondiaux</span></div>
+    <div class="g3">
+      <div class="card blue">
+        <div class="card-hd">
+          <span class="card-title">💱 Taux de change</span>
+          <span id="fxApiTag" class="api-tag api-sim">Simulation</span>
+        </div>
+        <div style="padding:0"><table class="fx"><thead><tr><th>Paire</th><th>Taux</th><th>Var. 24h</th><th>52 sem.</th></tr></thead><tbody id="fxBody"></tbody></table></div>
+      </div>
+      <div class="card amber">
+        <div class="card-hd">
+          <span class="card-title">🛢 Matières premières</span>
+          <span class="api-tag api-sim">Simulation</span>
+        </div>
+        <div class="card-body" id="commoBody"></div>
+      </div>
+      <div class="card green">
+        <div class="card-hd">
+          <span class="card-title">📈 Indices boursiers</span>
+          <span class="api-tag api-sim">Simulation</span>
+        </div>
+        <div class="card-body" id="idxBody"></div>
+      </div>
+    </div>
+
+    <!-- Stats macro -->
+    <div class="sh"><span class="sh-label">En chiffres — Économie mondiale</span></div>
+    <div class="g4">
+      <div class="stat"><div class="stat-n" style="color:var(--green)">+3.2%</div><div class="stat-l">Croissance PIB mondial</div><div class="stat-d" style="color:var(--green)">Prévision FMI 2026</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--amber)">4.2%</div><div class="stat-l">Inflation mondiale moy.</div><div class="stat-d" style="color:var(--amber)">En baisse vs 2025</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--blue)">5.25%</div><div class="stat-l">Taux directeur Fed</div><div class="stat-d" style="color:var(--blue)">Inchangé — mai 2026</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--teal)">3.65%</div><div class="stat-l">Taux directeur BCE</div><div class="stat-d" style="color:var(--teal)">Après 2 baisses en 2026</div></div>
+    </div>
+
+    <!-- Indicateurs macro détaillés -->
+    <div class="g2">
+      <div class="card blue">
+        <div class="card-hd"><span class="card-title">🔢 Indicateurs macro</span><span class="card-sub">FMI · OCDE · BAM · 2026</span></div>
+        <div class="card-body" id="macroBody"></div>
+      </div>
+      <div class="card amber">
+        <div class="card-hd"><span class="card-title">🌡 Baromètre financier</span><span class="card-sub">Score / 100</span></div>
+        <div class="card-body" id="baroFinBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── VUE CONFLITS ─── -->
+  <div class="view-section" id="sec-conflits">
+    <div class="sh"><span class="sh-label">Carte mondiale des tensions géopolitiques</span></div>
+    <div class="gmap">
+      <div class="map-wrap">
+        <div class="map-controls">
+          <span style="font-family:var(--fm);font-size:9px;color:var(--ink4);letter-spacing:.06em">AFFICHER :</span>
+          <button class="mf war on" onclick="toggleMapFilter(this,'war')">🔴 Conflits actifs</button>
+          <button class="mf tension on" onclick="toggleMapFilter(this,'tension')">🟡 Zones de tension</button>
+          <button class="mf watch on" onclick="toggleMapFilter(this,'watch')">🔵 Sous surveillance</button>
+          <span style="margin-left:auto;font-family:var(--fm);font-size:9px;color:var(--ink5)">Cliquer un marqueur pour les détails</span>
+        </div>
+        <div id="mapContainer" style="width:100%;background:#C8DFF0;position:relative;min-height:420px">
+          <div id="mapLoading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:11px;color:var(--ink4)">Chargement de la carte mondiale…</div>
+          <svg id="worldSvg" style="width:100%;display:block"></svg>
+        </div>
+        <div class="map-legend">
+          <div class="ml-item"><div class="ml-dot" style="background:var(--red)"></div>Conflit armé actif</div>
+          <div class="ml-item"><div class="ml-dot" style="background:var(--amber)"></div>Zone de tension</div>
+          <div class="ml-item"><div class="ml-dot" style="background:var(--blue)"></div>Sous surveillance</div>
+          <div style="margin-left:auto;font-family:var(--fm);font-size:9px;color:var(--ink5)">Sources : ACLED · ONU · OSCE · ICG</div>
+        </div>
+      </div>
+      <div class="card red">
+        <div class="card-hd"><span class="card-title">⚠️ Zones actives</span><span class="card-sub" id="zcount">10 zones</span></div>
+        <div class="card-body" style="max-height:490px;overflow-y:auto" id="zonePanel"></div>
+      </div>
+    </div>
+
+    <!-- Stats conflits -->
+    <div class="g4">
+      <div class="stat"><div class="stat-n" style="color:var(--red)">58</div><div class="stat-l">Conflits armés actifs</div><div class="stat-d" style="color:var(--red)">↑ +5 vs 2024</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--amber)">122M</div><div class="stat-l">Personnes déplacées</div><div class="stat-d" style="color:var(--amber)">Record historique — HCR 2026</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--blue)">4</div><div class="stat-l">Crises nucléaires actives</div><div class="stat-d" style="color:var(--blue)">Iran · Corée · Russie · Pakistan</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--green)">38</div><div class="stat-l">Missions ONU de paix</div><div class="stat-d" style="color:var(--green)">86 000 casques bleus</div></div>
+    </div>
+  </div>
+
+  <!-- ─── VUE ÉNERGIE ─── -->
+  <div class="view-section" id="sec-energie">
+    <div class="sh"><span class="sh-label">Marchés de l'énergie mondiale</span></div>
+    <div class="g2">
+      <div class="card orange">
+        <div class="card-hd"><span class="card-title">⚡ Prix de l'énergie</span><span class="card-sub">Données indicatives · Mai 2026</span></div>
+        <div class="card-body">
+          <div class="energy-grid" id="energyGrid"></div>
+        </div>
+      </div>
+      <div class="card blue">
+        <div class="card-hd"><span class="card-title">🌐 Flux & Dépendances</span><span class="card-sub">Géopolitique énergétique</span></div>
+        <div class="card-body" id="energyGeoBody"></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card teal">
+        <div class="card-hd"><span class="card-title">☀️ Énergies renouvelables</span><span class="card-sub">Capacité installée mondiale</span></div>
+        <div class="card-body" id="renewBody"></div>
+      </div>
+      <div class="card red">
+        <div class="card-hd"><span class="card-title">🌡 Stress énergétique</span><span class="card-sub">Score / 100 par région</span></div>
+        <div class="card-body" id="energyStressBody"></div>
+      </div>
+    </div>
+    <div class="g4">
+      <div class="stat"><div class="stat-n" style="color:var(--orange)">89.4</div><div class="stat-l">Pétrole mondial (Mb/j)</div><div class="stat-d" style="color:var(--ink5)">Production OPEP+ + hors OPEP</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--amber)">$88.60</div><div class="stat-l">Brent spot ($/bbl)</div><div class="stat-d" style="color:var(--amber)">Indicatif — ICE Londres</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--green)">38%</div><div class="stat-l">Part des renouvelables</div><div class="stat-d" style="color:var(--green)">Production électrique mondiale</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--blue)">440</div><div class="stat-l">Réacteurs nucléaires actifs</div><div class="stat-d" style="color:var(--blue)">+18 en construction</div></div>
+    </div>
+  </div>
+
+  <!-- ─── VUE CLIMAT ─── -->
+  <div class="view-section" id="sec-climat">
+    <div class="sh"><span class="sh-label">Surveillance climatique & alertes environnementales</span></div>
+    <div class="g3">
+      <div class="card teal" style="grid-column:span 2">
+        <div class="card-hd"><span class="card-title">🌪 Alertes météo & catastrophes actives</span><span class="card-sub">WMO · OCHA · Copernicus · Mai 2026</span></div>
+        <div class="card-body" id="climateAlerts"></div>
+      </div>
+      <div class="card blue">
+        <div class="card-hd"><span class="card-title">🌡 Indicateurs planétaires</span><span class="card-sub">NASA · GIEC · NOAA</span></div>
+        <div class="card-body" id="climateStats"></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card red">
+        <div class="card-hd"><span class="card-title">🌍 Baromètre climatique</span><span class="card-sub">Score / 100</span></div>
+        <div class="card-body" id="baroClimBody"></div>
+      </div>
+      <div class="card amber">
+        <div class="card-hd"><span class="card-title">📉 Impact économique du climat</span><span class="card-sub">Banque Mondiale · Swiss Re 2026</span></div>
+        <div class="card-body" id="climEcoBody"></div>
+      </div>
+    </div>
+    <div class="g4">
+      <div class="stat"><div class="stat-n" style="color:var(--red)">+1.38°C</div><div class="stat-l">Anomalie temp. globale</div><div class="stat-d" style="color:var(--red)">vs préind. — NASA GISS 2026</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--amber)">426 ppm</div><div class="stat-l">CO₂ atmosphérique</div><div class="stat-d" style="color:var(--amber)">Record — NOAA Mauna Loa</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--blue)">-3.1 M km²</div><div class="stat-l">Glace Arctique perdue</div><div class="stat-d" style="color:var(--blue)">vs moyenne 1981-2010</div></div>
+      <div class="stat"><div class="stat-n" style="color:var(--teal)">$340 Md</div><div class="stat-l">Pertes climat 2025</div><div class="stat-d" style="color:var(--teal)">Swiss Re Institute</div></div>
+    </div>
+  </div>
+
+  <!-- ─── SECTION ÉVÉNEMENTS (global + conflits + énergie + climat) ─── -->
+  <div class="view-section" id="sec-events">
+    <div class="sh"><span class="sh-label">Événements & Analyse mondiale</span></div>
+    <div class="gevents">
+      <div class="card teal">
+        <div class="card-hd">
+          <span class="card-title">📰 Événements marquants</span>
+          <div class="ev-filters">
+            <button class="ef-pill active-all" onclick="filterEvents('all',this)">Tout</button>
+            <button class="ef-pill" onclick="filterEvents('cs',this)">🔴 Sécurité</button>
+            <button class="ef-pill" onclick="filterEvents('ce',this)">🟢 Économie</button>
+            <button class="ef-pill" onclick="filterEvents('cg',this)">🔵 Géopo.</button>
+            <button class="ef-pill" onclick="filterEvents('cc',this)">🟡 Climat</button>
+            <button class="ef-pill" onclick="filterEvents('cn',this)">🟠 Énergie</button>
+          </div>
+        </div>
+        <div class="card-body" id="evList"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card red">
+          <div class="card-hd"><span class="card-title">🌡 Baromètre mondial</span><span class="card-sub">Score / 100</span></div>
+          <div class="card-body" id="baroBody"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<footer class="foot">
+  <span>© 2026 Global MondoScope · Intelligence Stratégique · Smart-Invest.ia</span>
+  <span>Données indicatives · Sources : BCE/Frankfurter, FMI, OCDE, ONU, ACLED, Reuters, AFP, WMO · Forex : actualisation BCE quotidienne · Autres : simulation réaliste</span>
+  <span id="ftime">—</span>
+</footer>
+
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+
+// ═══════════════════════════════════════════
+// ── NAVIGATION PAR VUES ──
+// ═══════════════════════════════════════════
+const VIEW_MAP = {
+  global:   ['sec-alert','sec-clocks','sec-marches','sec-conflits','sec-energie','sec-climat','sec-events'],
+  marches:  ['sec-alert','sec-clocks','sec-marches','sec-events'],
+  conflits: ['sec-alert','sec-conflits','sec-events'],
+  energie:  ['sec-alert','sec-energie','sec-events'],
+  climat:   ['sec-alert','sec-climat','sec-events'],
+};
+const ALL_SECTIONS = ['sec-alert','sec-clocks','sec-marches','sec-conflits','sec-energie','sec-climat','sec-events'];
+let currentView = 'global';
+
+function setView(view, btn) {
+  currentView = view;
+  // Update nav pills
+  document.querySelectorAll('.npill').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  // Show/hide sections with animation
+  const toShow = VIEW_MAP[view] || ALL_SECTIONS;
+  ALL_SECTIONS.forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    if (toShow.includes(id)) {
+      el.classList.remove('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  });
+  // Filter events by view context
+  if (view === 'conflits') filterEvents('cs', null, true);
+  else if (view === 'climat') filterEvents('cc', null, true);
+  else if (view === 'energie') filterEvents('cn', null, true);
+  else filterEvents('all', null, true);
+
+  // Scroll : Vue globale → Événements · Autres vues → haut de page
+  setTimeout(() => {
+    if (view === 'global') {
+      const target = $('sec-events');
+      if (target) {
+        const offset = target.getBoundingClientRect().top + window.scrollY - 70;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, 60);
+}
+
+// ═══════════════════════════════════════════
+// ── TEMPS & HORLOGES ──
+// ═══════════════════════════════════════════
+function updateTime() {
+  const n = new Date();
+  $('mdate').textContent = n.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  $('utc').textContent = 'UTC '+pad(n.getUTCHours())+':'+pad(n.getUTCMinutes())+':'+pad(n.getUTCSeconds());
+  $('ftime').textContent = n.toLocaleString('fr-FR');
+}
+updateTime(); setInterval(updateTime, 1000);
+
+const CITIES = [
+  {c:'Rabat',tz:'Africa/Casablanca',me:true},
+  {c:'Paris',tz:'Europe/Paris'},{c:'Londres',tz:'Europe/London'},
+  {c:'Moscou',tz:'Europe/Moscow'},{c:'Riyad',tz:'Asia/Riyadh'},
+  {c:'Mumbai',tz:'Asia/Kolkata'},{c:'Pékin',tz:'Asia/Shanghai'},
+  {c:'Tokyo',tz:'Asia/Tokyo'},{c:'New York',tz:'America/New_York'},
+  {c:'São Paulo',tz:'America/Sao_Paulo'},
+];
+function renderClocks() {
+  const n = new Date();
+  $('clocks').innerHTML = CITIES.map(ct => {
+    try {
+      const t = n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:ct.tz});
+      const tz = n.toLocaleTimeString('fr-FR',{timeZoneName:'short',timeZone:ct.tz}).split(' ').pop();
+      const h = parseInt(n.toLocaleString('fr-FR',{hour:'2-digit',hour12:false,timeZone:ct.tz}));
+      const ico = h<6||h>=22?'🌙':h<12?'🌅':'☀️';
+      return `<div class="clock${ct.me?' me':''}" title="${ct.tz}">
+        <div class="ck-city">${ct.c}</div>
+        <div class="ck-time">${t.substring(0,5)}</div>
+        <div class="ck-tz">${tz} ${ico}</div>
+      </div>`;
+    } catch { return ''; }
+  }).join('');
+}
+renderClocks(); setInterval(renderClocks, 10000);
+
+// ═══════════════════════════════════════════
+// ── ALERTES FLASH ──
+// ═══════════════════════════════════════════
+const ALERTS = [
+  'Fed maintient ses taux à 5,25% — prochaine réunion FOMC : 11 juin 2026 · Mercado laboral robuste, désinflation plus lente que prévu',
+  'BCE : Lagarde confirme une 3e baisse potentielle en juillet — taux à 3,65% depuis mars · Zone euro : croissance +1,4% Q1 2026',
+  'OPEP+ : prolongation des coupes de production de 1,7 Mb/j jusqu\'à fin 2026 — réunion Vienne · Brent au-dessus de 88$ le baril',
+  'G7 Finances Stresa : accord sur mécanisme de dette souveraine pour pays vulnérables · 120 Mds $ mobilisés',
+  'FMI : croissance mondiale 2026 révisée à +3,2% — résilience inattendue malgré tensions commerciales USA-Chine',
+  'Conflit Ukraine : nouvelle offensive russe dans le Donetsk — OTAN en réunion d\'urgence à Bruxelles · Réponse diplomatique attendue',
+  'Or historique : 3 312 $/oz — valeur refuge portée par incertitudes géopolitiques et achats des banques centrales émergentes',
+];
+let ai = 0;
+$('alertTxt').textContent = ALERTS[0];
+function nextAlert() {
+  const el = $('alertTxt');
+  el.style.opacity = '0';
+  setTimeout(() => { ai = (ai+1) % ALERTS.length; el.textContent = ALERTS[ai]; el.style.opacity = '1'; }, 220);
+}
+setInterval(nextAlert, 10000);
+
+// ═══════════════════════════════════════════
+// ── DONNÉES DE BASE (fallback statique 2026) ──
+// ═══════════════════════════════════════════
+let FX_DATA = [
+  {p:'EUR / USD',r:1.0823,c:'+0.12%',v:0.12,rng:'1.045–1.125'},
+  {p:'USD / MAD',r:9.9752,c:'-0.08%',v:-0.08,rng:'9.82–10.18'},
+  {p:'EUR / MAD',r:10.8020,c:'+0.04%',v:0.04,rng:'10.45–11.12'},
+  {p:'GBP / USD',r:1.2634,c:'+0.21%',v:0.21,rng:'1.21–1.29'},
+  {p:'USD / JPY',r:154.82,c:'+0.34%',v:0.34,rng:'140–160'},
+  {p:'USD / CHF',r:0.9025,c:'-0.15%',v:-0.15,rng:'0.870–0.935'},
+  {p:'USD / CNY',r:7.238,c:'+0.06%',v:0.06,rng:'7.09–7.28'},
+  {p:'XAU / USD',r:3312,c:'+0.88%',v:0.88,rng:'2 800–3 500'},
+];
+
+// ═══════════════════════════════════════════
+// ── FRANKFURTER API (BCE) — FOREX RÉEL ──
+// ═══════════════════════════════════════════
+async function fetchForexFrankfurter() {
+  try {
+    $('fxApiTag').className = 'api-tag api-sim';
+    $('fxApiTag').textContent = 'Chargement…';
+    const res = await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD,GBP,JPY,CHF,CNY,MAD');
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const rates = data.rates;
+    // Update FX_DATA with real rates
+    FX_DATA[0].r = parseFloat((rates.USD).toFixed(4));
+    FX_DATA[1].r = parseFloat((rates.MAD / rates.USD).toFixed(4));  // USD/MAD
+    FX_DATA[2].r = parseFloat((rates.MAD).toFixed(4));               // EUR/MAD
+    FX_DATA[3].r = parseFloat((rates.GBP).toFixed(4));               // EUR/GBP → adjust
+    FX_DATA[4].r = parseFloat((rates.JPY / rates.USD).toFixed(2));   // USD/JPY
+    FX_DATA[5].r = parseFloat((rates.CHF / rates.USD).toFixed(4));   // USD/CHF
+    FX_DATA[6].r = parseFloat((rates.CNY / rates.USD).toFixed(3));   // USD/CNY
+    $('fxApiTag').className = 'api-tag api-live';
+    $('fxApiTag').textContent = '● BCE ' + (data.date || 'Live');
+    renderFX();
+    return true;
+  } catch(e) {
+    console.warn('Frankfurter API indisponible:', e.message);
+    $('fxApiTag').className = 'api-tag api-err';
+    $('fxApiTag').textContent = 'API hors ligne';
+    renderFX();
+    return false;
+  }
+}
+
+// ═══════════════════════════════════════════
+// ── RENDER FOREX ──
+// ═══════════════════════════════════════════
+function sparkLine(vals, up, w=50, h=18) {
+  const mn = Math.min(...vals), mx = Math.max(...vals), r = mx-mn||1;
+  const pts = vals.map((v,i) => `${(i/(vals.length-1))*w},${h-((v-mn)/r)*(h-2)-1}`).join(' ');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="${up?'var(--green2)':'var(--red2)'}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+}
+
+function renderFX() {
+  $('fxBody').innerHTML = FX_DATA.map(f => {
+    const up = f.v >= 0;
+    const pts = Array.from({length:7}, (_, i) => f.r + (Math.random()-.5) * f.r * 0.003);
+    const disp = f.r > 100 ? f.r.toFixed(2) : f.r > 10 ? f.r.toFixed(3) : f.r.toFixed(4);
+    return `<tr><td><span class="fx-pair">${f.p}</span></td>
+      <td><span class="fx-rate ${up?'up':'dn'}" id="fxr-${f.p.replace(/[\s\/]/g,'')}">${disp}</span></td>
+      <td><span class="fx-chg ${up?'up':'dn'}">${up?'▲':'▼'} ${f.c}</span></td>
+      <td>${sparkLine(pts,up)}<div style="font-family:var(--fm);font-size:8px;color:var(--ink5)">${f.rng}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// ── COMMODITÉS ──
+// ═══════════════════════════════════════════
+let COMMO = [
+  {ico:'🛢',n:'Pétrole WTI',u:'$/bbl',p:84.20,c:'-0.92%',v:-0.92,up:false,pct:56},
+  {ico:'🛢',n:'Pétrole Brent',u:'$/bbl',p:88.60,c:'-0.78%',v:-0.78,up:false,pct:59},
+  {ico:'⚜️',n:'Or',u:'$/oz',p:3312,c:'+0.88%',v:0.88,up:true,pct:92},
+  {ico:'🪙',n:'Argent',u:'$/oz',p:31.80,c:'+1.12%',v:1.12,up:true,pct:73},
+  {ico:'🔥',n:'Gaz naturel',u:'$/MMBtu',p:2.92,c:'+2.80%',v:2.80,up:true,pct:40},
+  {ico:'🌾',n:'Blé',u:'$/bu',p:608,c:'-0.65%',v:-0.65,up:false,pct:47},
+  {ico:'🌽',n:'Maïs',u:'$/bu',p:482,c:'+0.44%',v:0.44,up:true,pct:53},
+  {ico:'🔧',n:'Cuivre',u:'$/lb',p:4.88,c:'-0.48%',v:-0.48,up:false,pct:79},
+  {ico:'🍫',n:'Cacao',u:'$/t',p:9840,c:'+1.94%',v:1.94,up:true,pct:96},
+  {ico:'⚡',n:'Aluminium',u:'$/t',p:2442,c:'+0.28%',v:0.28,up:true,pct:64},
+];
+
+function renderCommo() {
+  $('commoBody').innerHTML = COMMO.map(c => {
+    const disp = c.p >= 1000 ? c.p.toLocaleString('fr-FR') : c.p.toFixed(2);
+    return `<div class="commo">
+      <span class="commo-ico">${c.ico}</span>
+      <div style="flex:1;min-width:0"><div class="commo-name">${c.n}</div><div class="commo-unit">${c.u}</div></div>
+      <div style="text-align:right">
+        <div class="commo-val ${c.up?'up':'dn'}">${disp}</div>
+        <div class="commo-chg ${c.up?'up':'dn'}">${c.up?'▲':'▼'} ${c.c}</div>
+        <div class="pbar"><div class="pbar-fill" style="width:${c.pct}%;background:${c.up?'var(--green2)':'var(--red2)'}"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// ── INDICES BOURSIERS ──
+// ═══════════════════════════════════════════
+let IDX = [
+  {f:'🇺🇸',n:'S&P 500',s:'New York',v:5418,c:'+0.24%',up:true,pts:[0.1,-0.1,0.3,0.2,0.4,0.1,0.24]},
+  {f:'🇫🇷',n:'CAC 40',s:'Paris',v:7842,c:'+0.62%',up:true,pts:[0.2,0.5,0.8,0.4,0.7,0.5,0.62]},
+  {f:'🇩🇪',n:'DAX',s:'Francfort',v:18680,c:'+0.48%',up:true,pts:[0.1,0.4,0.7,0.3,0.6,0.4,0.48]},
+  {f:'🇯🇵',n:'Nikkei 225',s:'Tokyo',v:39120,c:'-0.18%',up:false,pts:[0.2,-0.1,-0.3,-0.2,-0.1,-0.2,-0.18]},
+  {f:'🇨🇳',n:'CSI 300',s:'Shanghai',v:3218,c:'-0.42%',up:false,pts:[-0.1,-0.4,-0.2,-0.5,-0.3,-0.4,-0.42]},
+  {f:'🇬🇧',n:'FTSE 100',s:'Londres',v:8124,c:'+0.18%',up:true,pts:[0.1,0.2,0.3,0.1,0.2,0.1,0.18]},
+];
+
+function iSpark(pts, up) {
+  const mn = Math.min(...pts), mx = Math.max(...pts), r = mx-mn||1;
+  const p = pts.map((v,i) => `${i*(52/6)},${16-((v-mn)/r)*13}`).join(' ');
+  return `<svg class="spark-svg" width="54" height="18" viewBox="0 0 54 18"><polyline points="${p}" fill="none" stroke="${up?'var(--green2)':'var(--red2)'}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+}
+
+function renderIdx() {
+  $('idxBody').innerHTML = IDX.map(d => `
+    <div class="idx-row">
+      <span class="idx-flag">${d.f}</span>
+      <div><div class="idx-name">${d.n}</div><div class="idx-sub">${d.s}</div></div>
+      ${iSpark(d.pts, d.up)}
+      <div><div class="idx-val ${d.up?'up':'dn'}">${d.v.toLocaleString('fr-FR')}</div><div class="idx-chg ${d.up?'up':'dn'}">${d.up?'▲':'▼'} ${d.c}</div></div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// ── TICKER ──
+// ═══════════════════════════════════════════
+function buildTicker() {
+  const items = [
+    {s:'EUR/USD',v:FX_DATA[0].r.toFixed(4),up:FX_DATA[0].v>=0,c:FX_DATA[0].c},
+    {s:'USD/MAD',v:FX_DATA[1].r.toFixed(4),up:FX_DATA[1].v>=0,c:FX_DATA[1].c},
+    {s:'EUR/MAD',v:FX_DATA[2].r.toFixed(4),up:FX_DATA[2].v>=0,c:FX_DATA[2].c},
+    {s:'GBP/USD',v:FX_DATA[3].r.toFixed(4),up:FX_DATA[3].v>=0,c:FX_DATA[3].c},
+    {s:'USD/JPY',v:FX_DATA[4].r.toFixed(2),up:FX_DATA[4].v>=0,c:FX_DATA[4].c},
+    {s:'XAU/USD',v:'3 312',up:true,c:'+0.88%'},
+    {s:'BRENT',v:'88.60$',up:false,c:'-0.78%'},
+    {s:'WTI',v:'84.20$',up:false,c:'-0.92%'},
+    {s:'CAC 40',v:'7 842',up:true,c:'+0.62%'},
+    {s:'S&P 500',v:'5 418',up:true,c:'+0.24%'},
+    {s:'DAX',v:'18 680',up:true,c:'+0.48%'},
+    {s:'NIKKEI',v:'39 120',up:false,c:'-0.18%'},
+    {s:'BITCOIN',v:'94 200$',up:true,c:'+1.84%'},
+    {s:'CUIVRE',v:'4.88$/lb',up:false,c:'-0.48%'},
+    {s:'GAZ NAT.',v:'2.92$',up:true,c:'+2.80%'},
+    {s:'CACAO',v:'9 840$/t',up:true,c:'+1.94%'},
+    {s:'OR',v:'3 312$/oz',up:true,c:'+0.88%'},
+    {s:'DXY',v:'104.8',up:true,c:'+0.18%'},
+  ];
+  const th = items.map(t => `<span class="ti"><span class="ti-sym">${t.s}</span><span class="ti-val">${t.v}</span><span class="${t.up?'ti-up':'ti-dn'}">${t.c}</span></span>`).join('');
+  $('ticker').innerHTML = th + th;
+}
+
+// ═══════════════════════════════════════════
+// ── ZONES & CARTE ──
+// ═══════════════════════════════════════════
+const ZONES = [
+  {id:'ukraine',sev:'war',n:'Ukraine · Russie',d:'Front actif Donetsk/Zaporijjia. Frappes sur infrastructures énergétiques. Offensive printanière en cours.',tag:'Guerre conventionnelle'},
+  {id:'gaza',sev:'war',n:'Proche-Orient · Gaza',d:'Conflit intensif. Crise humanitaire extrême. Négociations à Doha bloquées. Risque extension régionale.',tag:'Conflit urbain'},
+  {id:'soudan',sev:'war',n:'Soudan',d:'Guerre civile SAF vs RSF. 8,5 millions de déplacés. Accès humanitaire bloqué. Risque famine généralisée.',tag:'Guerre civile'},
+  {id:'sahel',sev:'war',n:'Sahel · Afrique de l\'Ouest',d:'Instabilité persistante Mali, Burkina, Niger. Alliance AES. Retrait forces françaises. Présence Wagner.',tag:'Insurrection armée'},
+  {id:'myanmar',sev:'war',n:'Myanmar · Birmanie',d:'Junte vs forces résistance. 2,4 millions de déplacés. Offensive rebelle au nord.',tag:'Guerre civile'},
+  {id:'taiwan',sev:'tension',n:'Détroit de Taïwan',d:'Exercices militaires chinois intensifiés suite aux élections. Route commerciale stratégique mondiale.',tag:'Rivalité grandes puissances'},
+  {id:'scs',sev:'tension',n:'Mer de Chine méridionale',d:'Incidents navals Philippines-Chine. Arbitrage de La Haye ignoré. Patrouilles USA renforcées.',tag:'Dispute maritime'},
+  {id:'venezuela',sev:'tension',n:'Venezuela · Guyane-Esequibo',d:'Crise post-électorale Maduro. Pression migratoire. Revendications territoriales actives.',tag:'Crise politique'},
+  {id:'coree',sev:'watch',n:'Corée du Nord',d:'Essais balistiques ICBM. Rapprochement Pyongyang-Moscou. Transfert d\'armements. AIEA exclue.',tag:'Prolifération nucléaire'},
+  {id:'iran',sev:'watch',n:'Iran · Programme nucléaire',d:'Enrichissement à 60%. JCPOA mort. Tensions Israël-Iran. Proxies actifs Gaza/Yémen/Irak.',tag:'Nucléaire · Proxies'},
+];
+const SC = {war:['var(--red)','CONFLIT ACTIF'],tension:['var(--amber)','TENSION'],watch:['var(--blue)','SURVEILLANCE']};
+
+$('zonePanel').innerHTML = ZONES.map(z => `
+  <div class="zone-item" onclick="highlightZone('${z.id}')">
+    <div class="zdot" style="background:${SC[z.sev][0]}"></div>
+    <div>
+      <div class="zsev" style="color:${SC[z.sev][0]}">${SC[z.sev][1]}</div>
+      <div class="zname">${z.n}</div>
+      <div class="zdesc">${z.d}</div>
+      <span class="ztag" style="background:${SC[z.sev][0]}20;color:${SC[z.sev][0]}">${z.tag}</span>
+    </div>
+  </div>`).join('');
+
+// ═══════════════════════════════════════════
+// ── ÉVÉNEMENTS avec horodatage relatif ──
+// ═══════════════════════════════════════════
+const now = new Date();
+function minsAgo(m) {
+  const d = new Date(now - m*60000);
+  return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) + ` (il y a ${m < 60 ? m+'min' : Math.floor(m/60)+'h'+(m%60?String(m%60).padStart(2,'0'):'')})`;
+}
+
+const EVS = [
+  {t:minsAgo(12),cat:'cs',cl:'Sécurité',ti:'Ukraine : frappe massive sur réseau énergétique de Kharkiv — panne partielle rapportée',src:'Reuters · AFP'},
+  {t:minsAgo(48),cat:'ce',cl:'Économie',ti:'BCE : Lagarde confirme la cible 2% — possibilité d\'une 3e baisse des taux en juillet 2026',src:'Financial Times'},
+  {t:minsAgo(72),cat:'cg',cl:'Géopo.',ti:'Xi Jinping reçoit délégation américaine à Pékin — commerce et Taïwan au centre des négociations',src:'South China Morning Post'},
+  {t:minsAgo(98),cat:'cc',cl:'Climat',ti:'Cyclone catégorie 4 : alerte rouge Bangladesh — 8 millions de personnes exposées, évacuations en cours',src:'WMO · ReliefWeb'},
+  {t:minsAgo(134),cat:'ce',cl:'Économie',ti:'Fed : minutes du FOMC révèlent débat sur calendrier de désinflation — dollar sous pression ce soir',src:'Wall Street Journal'},
+  {t:minsAgo(178),cat:'cs',cl:'Sécurité',ti:'Sahel : attaque terroriste au nord du Burkina Faso — 24 victimes civiles selon l\'ONU',src:'Le Monde · AFP'},
+  {t:minsAgo(204),cat:'cg',cl:'Géopo.',ti:'G7 Finances : accord sur mécanisme d\'aide à l\'Ukraine via intérêts des actifs russes gelés',src:'Reuters · Politico'},
+  {t:minsAgo(248),cat:'cc',cl:'Climat',ti:'GIEC : fonte arctique 40% plus rapide que prévu — scénario 1,5°C compromis avant 2035',src:'Nature Climate Change'},
+  {t:minsAgo(290),cat:'ce',cl:'Économie',ti:'Chine : déflation persistante — IPP à -2.6% pour le 22e mois consécutif',src:'NBS · Bloomberg'},
+  {t:minsAgo(360),cat:'cn',cl:'Énergie',ti:'OPEP+ prolonge les coupes de production de 1,7 Mb/j jusqu\'à fin 2026 — brent au-dessus 88$',src:'Reuters Commodities · OPEC'},
+  {t:minsAgo(420),cat:'cg',cl:'Géopo.',ti:'ONU : rapport Soudan — 8,5 millions de déplacés, pire crise humanitaire depuis le Rwanda',src:'OCHA · MSF'},
+  {t:minsAgo(480),cat:'cn',cl:'Énergie',ti:'IEA : demande mondiale de pétrole revue à la hausse à 102,4 Mb/j pour 2026 — regain Asie',src:'AIE · Bloomberg'},
+];
+
+function renderEvents() {
+  $('evList').innerHTML = EVS.map(e => `
+    <div class="ev" data-cat="${e.cat}">
+      <span class="ev-time">${e.t}</span>
+      <span class="ev-cat ${e.cat}">${e.cl}</span>
+      <div>
+        <div class="ev-title">${e.ti}</div>
+        <div class="ev-src">Sources : ${e.src}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// ── FILTRE ÉVÉNEMENTS ──
+// ═══════════════════════════════════════════
+let activeFilter = 'all';
+function filterEvents(cat, btn, silent=false) {
+  activeFilter = cat;
+  if (!silent) {
+    document.querySelectorAll('.ef-pill').forEach(b => {
+      b.className = 'ef-pill';
+      if (b.textContent.toLowerCase().includes(cat) || (cat==='all' && b.textContent==='Tout')) {
+        b.classList.add(`active-${cat}`);
+      }
+    });
+    if (btn) {
+      document.querySelectorAll('.ef-pill').forEach(b => b.className = 'ef-pill');
+      btn.classList.add(`active-${cat}`);
+    }
+  }
+  document.querySelectorAll('.ev').forEach(el => {
+    el.classList.toggle('filtered-out', cat !== 'all' && el.dataset.cat !== cat);
+  });
+}
+
+// ═══════════════════════════════════════════
+// ── BAROMÈTRE MONDIAL ──
+// ═══════════════════════════════════════════
+const BARO = [
+  {l:'Tensions géopolitiques',v:76,c:'var(--red)'},
+  {l:'Stress énergétique',v:64,c:'#D47810'},
+  {l:'Instabilité climatique',v:72,c:'var(--teal)'},
+  {l:'Risque financier',v:48,c:'var(--amber)'},
+  {l:'Commerce mondial',v:36,c:'var(--green)'},
+  {l:'Stabilité politique',v:42,c:'var(--blue)'},
+];
+function baroHtml(items) {
+  return items.map(b => `
+    <div class="baro">
+      <div class="baro-lbl">${b.l}</div>
+      <div class="baro-track"><div class="baro-fill" style="width:${b.v}%;background:${b.c}"></div></div>
+      <div class="baro-val" style="color:${b.v>65?'var(--red)':b.v>45?'var(--amber)':'var(--green)'}">${b.v}</div>
+    </div>`).join('');
+}
+$('baroBody').innerHTML = baroHtml(BARO);
+
+// ── Baromètre financier
+const BARO_FIN = [
+  {l:'Stress financier global',v:48,c:'var(--amber)'},
+  {l:'Volatilité marchés (VIX)',v:38,c:'#D47810'},
+  {l:'Pression USD (DXY)',v:62,c:'var(--blue)'},
+  {l:'Appétit pour le risque',v:55,c:'var(--green)'},
+];
+$('baroFinBody') && ($('baroFinBody').innerHTML = baroHtml(BARO_FIN));
+
+// ── Baromètre climatique
+const BARO_CLIM = [
+  {l:'Anomalies thermiques',v:82,c:'var(--red)'},
+  {l:'Événements extrêmes',v:74,c:'#D47810'},
+  {l:'Stress hydrique mondial',v:68,c:'var(--teal)'},
+  {l:'Sécurité alimentaire',v:56,c:'var(--amber)'},
+  {l:'Émissions GES (trend)',v:70,c:'var(--orange)'},
+  {l:'Pression biodiversité',v:79,c:'var(--green)'},
+];
+$('baroClimBody') && ($('baroClimBody').innerHTML = baroHtml(BARO_CLIM));
+
+// ═══════════════════════════════════════════
+// ── MACRO ──
+// ═══════════════════════════════════════════
+const MACRO = [
+  {l:'Croissance PIB mondial 2026',v:'+3.2%',up:true},
+  {l:'Inflation mondiale moyenne',v:'4.2%',up:null},
+  {l:'Taux directeur Fed',v:'5.25%',up:null},
+  {l:'Taux directeur BCE',v:'3.65%',up:null},
+  {l:'Taux BAM (Maroc)',v:'2.75%',up:null},
+  {l:'Balance commerciale Chine',v:'+$74.2 Mds',up:true},
+  {l:'Réserves d\'or mondiales',v:'36 200 t',up:true},
+  {l:'Dette publique mondiale/PIB',v:'94.8%',up:false},
+  {l:'Indice Dollar DXY',v:'104.8',up:true},
+  {l:'PIB Maroc 2026 (prév.)',v:'+4.1%',up:true},
+];
+$('macroBody').innerHTML = MACRO.map(m => `
+  <div class="macro-row">
+    <div class="macro-lbl">${m.l}</div>
+    <div class="macro-val" style="color:${m.up===true?'var(--green)':m.up===false?'var(--red2)':'var(--ink2)'}">${m.v}</div>
+  </div>`).join('');
+
+// ═══════════════════════════════════════════
+// ── SECTION ÉNERGIE ──
+// ═══════════════════════════════════════════
+const ENERGY_ITEMS = [
+  {ico:'🛢',n:'Pétrole Brent',u:'$/bbl',v:88.60,c:'-0.78%',up:false},
+  {ico:'🛢',n:'Pétrole WTI',u:'$/bbl',v:84.20,c:'-0.92%',up:false},
+  {ico:'🔥',n:'Gaz naturel',u:'$/MMBtu',v:2.92,c:'+2.80%',up:true},
+  {ico:'⚫',n:'Charbon (API2)',u:'$/t',v:128.40,c:'+0.34%',up:true},
+  {ico:'☢️',n:'Uranium',u:'$/lb',v:91.50,c:'+1.20%',up:true},
+  {ico:'⚡',n:'Électricité EU',u:'€/MWh',v:82.40,c:'-1.10%',up:false},
+];
+$('energyGrid') && ($('energyGrid').innerHTML = ENERGY_ITEMS.map(e => `
+  <div class="en-card">
+    <div class="en-ico">${e.ico}</div>
+    <div class="en-name">${e.n}</div>
+    <div class="en-unit">${e.u}</div>
+    <div class="en-val ${e.up?'up':'dn'}">${e.v}</div>
+    <div class="en-chg ${e.up?'up':'dn'}">${e.up?'▲':'▼'} ${e.c}</div>
+  </div>`).join(''));
+
+const ENERGY_GEO = [
+  {l:'Dépendance EU au GNL USA',v:'+38%',up:true},{l:'Pipeline TurkStream actif',v:'Oui',up:null},
+  {l:'Détroit d\'Ormuz trafic/jour',v:'21 Mb/j',up:null},{l:'Gazprom revenus (-)',v:'-62%',up:false},
+  {l:'GNL Qatar vers Asie',v:'+12%',up:true},{l:'Câbles sous-marins incidents',v:'4 en 2026',up:false},
+];
+$('energyGeoBody') && ($('energyGeoBody').innerHTML = ENERGY_GEO.map(m => `
+  <div class="macro-row">
+    <div class="macro-lbl">${m.l}</div>
+    <div class="macro-val" style="color:${m.up===true?'var(--green)':m.up===false?'var(--red2)':'var(--ink2)'}">${m.v}</div>
+  </div>`).join(''));
+
+const RENEW = [
+  {l:'Solaire mondial installé',v:'2 200 GW',up:true},{l:'Éolien terrestre',v:'1 120 GW',up:true},
+  {l:'Éolien offshore',v:'280 GW',up:true},{l:'Hydrogène vert (prod.)',v:'28 Mt/an',up:true},
+  {l:'Stockage batteries (GWh)',v:'480 GWh',up:true},{l:'Investissement ENR 2026',v:'$820 Mds',up:true},
+];
+$('renewBody') && ($('renewBody').innerHTML = RENEW.map(m => `
+  <div class="macro-row">
+    <div class="macro-lbl">${m.l}</div>
+    <div class="macro-val" style="color:var(--green)">${m.v}</div>
+  </div>`).join(''));
+
+const ENERGY_STRESS = [
+  {l:'Europe de l\'Est',v:72,c:'var(--red)'},
+  {l:'Asie du Sud',v:68,c:'#D47810'},
+  {l:'Afrique Sub-saharienne',v:84,c:'var(--red)'},
+  {l:'Europe occidentale',v:44,c:'var(--amber)'},
+  {l:'Amérique du Nord',v:28,c:'var(--green)'},
+  {l:'Maroc / Maghreb',v:52,c:'var(--amber)'},
+];
+$('energyStressBody') && ($('energyStressBody').innerHTML = baroHtml(ENERGY_STRESS));
+
+// ═══════════════════════════════════════════
+// ── SECTION CLIMAT ──
+// ═══════════════════════════════════════════
+const CLIMATE_ALERTS = [
+  {sev:'high',sl:'CRITIQUE',ico:'🌀',ti:'Cyclone Ampang Cat.4 — Golfe du Bengale',d:'8 millions de personnes en alerte. Vents 230 km/h. Bangladesh/Inde. Évacuations en cours.'},
+  {sev:'high',sl:'CRITIQUE',ico:'🌵',ti:'Sécheresse extrême — Corne de l\'Afrique',d:'5e saison des pluies déficitaire. 24 millions de personnes en insécurité alimentaire aiguë.'},
+  {sev:'med',sl:'ÉLEVÉ',ico:'🌊',ti:'Inondations Brésil Sud — Rio Grande do Sul',d:'2e épisode majeur en 12 mois. 280 000 personnes déplacées. Reconstruction difficile.'},
+  {sev:'med',sl:'ÉLEVÉ',ico:'🔥',ti:'Feux forêt Canada-Alberta',d:'180 000 ha brûlés depuis janvier. Saison 40% plus tôt que la normale. 12 000 évacués.'},
+  {sev:'low',sl:'VIGILANCE',ico:'❄️',ti:'Vague de froid tardive — Asie centrale',d:'Températures -25°C en mai dans certaines zones. Impact agriculture précoce Kazakhstan.'},
+];
+$('climateAlerts') && ($('climateAlerts').innerHTML = CLIMATE_ALERTS.map(a => `
+  <div class="clim-alert">
+    <span class="clim-sev ${a.sev}">${a.sl}</span>
+    <div>
+      <div class="clim-title">${a.ico} ${a.ti}</div>
+      <div class="clim-desc">${a.d}</div>
+    </div>
+  </div>`).join(''));
+
+const CLIM_STATS = [
+  {l:'Temp. globale anomalie 2026',v:'+1.38°C',up:false},{l:'CO₂ atm. (ppm)',v:'426 ppm',up:false},
+  {l:'Fonte glaces Antarctique',v:'-18%',up:false},{l:'Niveau mer (mm/an)',v:'+4.8 mm',up:false},
+  {l:'Acidification océan pH',v:'8.04',up:false},{l:'Albédo Arctique (perte)',v:'-12%',up:false},
+];
+$('climateStats') && ($('climateStats').innerHTML = CLIM_STATS.map(m => `
+  <div class="macro-row">
+    <div class="macro-lbl">${m.l}</div>
+    <div class="macro-val" style="color:var(--red2)">${m.v}</div>
+  </div>`).join(''));
+
+const CLIM_ECO = [
+  {l:'Pertes assurées climat 2025',v:'$340 Mds',up:false},{l:'Migrations climatiques/an',v:'26 millions',up:false},
+  {l:'PIB exposé risque côtier',v:'4.5% mondial',up:null},{l:'Coût adaptation 2030 (besoin)',v:'$400 Mds',up:null},
+  {l:'Financement vert mobilisé',v:'$180 Mds',up:true},{l:'Gap de financement',v:'-$220 Mds',up:false},
+];
+$('climEcoBody') && ($('climEcoBody').innerHTML = CLIM_ECO.map(m => `
+  <div class="macro-row">
+    <div class="macro-lbl">${m.l}</div>
+    <div class="macro-val" style="color:${m.up===true?'var(--green)':m.up===false?'var(--red2)':'var(--ink2)'}">${m.v}</div>
+  </div>`).join(''));
+
+// ═══════════════════════════════════════════
+// ── CARTE D3 + TOPOJSON ──
+// ═══════════════════════════════════════════
+const CONFLICT_POINTS = [
+  ['ukraine', 31.0, 49.0,'war','UKR'],['gaza',34.5,31.5,'war','GAZ'],
+  ['soudan',30.0,15.5,'war','SDN'],['sahel',-2.0,15.0,'war','SAH'],
+  ['myanmar',96.5,20.0,'war','MYM'],['taiwan',121.0,23.5,'tension','TWN'],
+  ['scs',114.0,12.0,'tension','SCS'],['venezuela',-66.0,8.0,'tension','VEN'],
+  ['coree',127.0,40.0,'watch','PRK'],['iran',53.5,32.5,'watch','IRN'],
+];
+const MAP_COLORS = {war:'#C01820',tension:'#C07818',watch:'#1640A0'};
+
+async function buildMap() {
+  try {
+    const resp = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    const world = await resp.json();
+    const container = $('mapContainer');
+    const W = container.clientWidth || 800;
+    const H = Math.round(W * 0.52);
+    const svg = $('worldSvg');
+    svg.setAttribute('width', W); svg.setAttribute('height', H);
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const projection = d3.geoNaturalEarth1().scale(W/6.2).translate([W/2, H/2]);
+    const path = d3.geoPath().projection(projection);
+    svg.innerHTML = '';
+    const ns = 'http://www.w3.org/2000/svg';
+    const ocean = document.createElementNS(ns,'rect');
+    ocean.setAttribute('width',W); ocean.setAttribute('height',H); ocean.setAttribute('fill','#C8DFF0');
+    svg.appendChild(ocean);
+    const gratPath = document.createElementNS(ns,'path');
+    gratPath.setAttribute('d',path(d3.geoGraticule()()));
+    gratPath.setAttribute('fill','none'); gratPath.setAttribute('stroke','#A8C8DC');
+    gratPath.setAttribute('stroke-width','0.35'); gratPath.setAttribute('opacity','0.7');
+    svg.appendChild(gratPath);
+    const eqPath = document.createElementNS(ns,'path');
+    eqPath.setAttribute('d',path({type:'LineString',coordinates:[[-180,0],[180,0]]}));
+    eqPath.setAttribute('fill','none'); eqPath.setAttribute('stroke','#80A8C0');
+    eqPath.setAttribute('stroke-width','0.8'); eqPath.setAttribute('stroke-dasharray','5,4');
+    svg.appendChild(eqPath);
+    const countries = topojson.feature(world, world.objects.countries);
+    const gLand = document.createElementNS(ns,'g');
+    countries.features.forEach(feat => {
+      const p = document.createElementNS(ns,'path');
+      p.setAttribute('d',path(feat)); p.setAttribute('fill','#E6DBC8');
+      p.setAttribute('stroke','#B4A07A'); p.setAttribute('stroke-width','0.5');
+      p.style.transition='fill .15s';
+      p.addEventListener('mouseenter',()=>p.setAttribute('fill','#D4C49A'));
+      p.addEventListener('mouseleave',()=>p.setAttribute('fill','#E6DBC8'));
+      gLand.appendChild(p);
+    });
+    svg.appendChild(gLand);
+    const borders = document.createElementNS(ns,'path');
+    borders.setAttribute('d',path(topojson.mesh(world,world.objects.countries,(a,b)=>a!==b)));
+    borders.setAttribute('fill','none'); borders.setAttribute('stroke','#A09070');
+    borders.setAttribute('stroke-width','0.35'); borders.setAttribute('opacity','0.8');
+    svg.appendChild(borders);
+    const seaLabels=[['Océan Atlantique',-28,15],['Pacifique Nord',-155,35],['Pacifique Sud',-140,-25],['Océan Indien',75,-15],['Méditerranée',16,36]];
+    seaLabels.forEach(([lbl,lon,lat])=>{
+      const [x,y]=projection([lon,lat])||[0,0];
+      if(x>0&&x<W&&y>0&&y<H){
+        const t=document.createElementNS(ns,'text');
+        t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('text-anchor','middle');
+        t.setAttribute('font-family',"'JetBrains Mono'");t.setAttribute('font-size',W<700?'7':'9');
+        t.setAttribute('fill','#5890B0');t.setAttribute('font-style','italic');t.setAttribute('opacity','0.85');
+        t.textContent=lbl;svg.appendChild(t);
+      }
+    });
+    const gMarkers=document.createElementNS(ns,'g');
+    gMarkers.setAttribute('id','markersLayer');
+    CONFLICT_POINTS.forEach(([id,lon,lat,type,lbl])=>{
+      const [cx,cy]=projection([lon,lat])||[0,0];
+      if(cx<=0||cx>=W||cy<=0||cy>=H)return;
+      const col=MAP_COLORS[type];
+      const r1=W<700?9:13,r2=W<700?5:8,r3=W<700?3:4.5,fs=W<700?6:8;
+      const g=document.createElementNS(ns,'g');
+      g.setAttribute('class',`conflict ${type}`);g.setAttribute('id',`mk-${id}`);g.style.cursor='pointer';
+      g.addEventListener('click',()=>showConflict(id));
+      const c1=document.createElementNS(ns,'circle');
+      c1.setAttribute('cx',cx);c1.setAttribute('cy',cy);c1.setAttribute('r',r1);
+      c1.setAttribute('fill',col);c1.setAttribute('fill-opacity','0.15');
+      const c2=document.createElementNS(ns,'circle');
+      c2.setAttribute('cx',cx);c2.setAttribute('cy',cy);c2.setAttribute('r',r2);
+      c2.setAttribute('fill',col);c2.setAttribute('fill-opacity','0.3');
+      const c3=document.createElementNS(ns,'circle');
+      c3.setAttribute('cx',cx);c3.setAttribute('cy',cy);c3.setAttribute('r',r3);
+      c3.setAttribute('fill',col);c3.setAttribute('stroke','white');c3.setAttribute('stroke-width','1.5');
+      const txt=document.createElementNS(ns,'text');
+      txt.setAttribute('x',cx);txt.setAttribute('y',cy-r1-3);txt.setAttribute('text-anchor','middle');
+      txt.setAttribute('font-family',"'JetBrains Mono'");txt.setAttribute('font-size',fs);
+      txt.setAttribute('font-weight','700');txt.setAttribute('fill',col);txt.textContent=lbl;
+      const anim=document.createElementNS(ns,'animate');
+      anim.setAttribute('attributeName','r');anim.setAttribute('from',r1);anim.setAttribute('to',r1+4);
+      anim.setAttribute('dur',type==='war'?'2s':'3s');anim.setAttribute('repeatCount','indefinite');
+      anim.setAttribute('values',`${r1};${r1+4};${r1}`);c1.appendChild(anim);
+      const anim2=document.createElementNS(ns,'animate');
+      anim2.setAttribute('attributeName','fill-opacity');anim2.setAttribute('from','0.18');
+      anim2.setAttribute('to','0.05');anim2.setAttribute('dur',type==='war'?'2s':'3s');
+      anim2.setAttribute('repeatCount','indefinite');c1.appendChild(anim2);
+      g.appendChild(c1);g.appendChild(c2);g.appendChild(c3);g.appendChild(txt);
+      gMarkers.appendChild(g);
+    });
+    svg.appendChild(gMarkers);
+    $('mapLoading').style.display='none';
+  } catch(e) {
+    console.error('Carte:',e);
+    $('mapLoading').textContent='Carte non disponible — connexion requise';
+  }
+}
+
+function loadMapLibs() {
+  const s1=document.createElement('script');
+  s1.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js';
+  s1.onload=()=>{
+    const s2=document.createElement('script');
+    s2.src='https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js';
+    s2.onload=()=>buildMap();
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s1);
+}
+loadMapLibs();
+
+function toggleMapFilter(btn, type) {
+  btn.classList.toggle('on');
+  const show = btn.classList.contains('on');
+  document.querySelectorAll('.conflict.'+type).forEach(el => {
+    el.style.opacity = show?'1':'0';
+    el.style.pointerEvents = show?'auto':'none';
+  });
+}
+
+function showConflict(id) {
+  const z = ZONES.find(z => z.id===id);
+  if (!z) return;
+  const el = $('alertTxt'), ab = document.querySelector('.alert');
+  el.style.opacity='0';
+  setTimeout(()=>{el.textContent=`${z.n} — ${z.d}`;el.style.opacity='1';},200);
+}
+function highlightZone(id) { showConflict(id); }
+
+// ═══════════════════════════════════════════
+// ── LIVE PULSE — simulation réaliste ──
+// ═══════════════════════════════════════════
+function microUpdate() {
+  // Forex micro-variations
+  FX_DATA.forEach(f => {
+    if (f.p.includes('XAU')) return;
+    const drift = (Math.random()-.5) * 0.0004 * f.r;
+    f.r = Math.max(0.001, f.r + drift);
+    const el = document.getElementById('fxr-' + f.p.replace(/[\s\/]/g,''));
+    if (el) {
+      const newVal = f.r > 100 ? f.r.toFixed(2) : f.r > 10 ? f.r.toFixed(3) : f.r.toFixed(4);
+      if (el.textContent !== newVal) {
+        el.textContent = newVal;
+        el.style.color = drift >= 0 ? 'var(--green2)' : 'var(--red2)';
+        setTimeout(() => { el.style.color = ''; }, 800);
+      }
+    }
+  });
+  // Commodities micro-variations
+  COMMO.forEach(c => {
+    const drift = (Math.random()-.5) * 0.002 * c.p;
+    c.p = Math.max(0.01, c.p + drift);
+  });
+  // Indices micro-variations
+  IDX.forEach(d => {
+    const drift = (Math.random()-.5) * 0.001 * d.v;
+    d.v = Math.round((d.v + drift) * 10) / 10;
+  });
+}
+setInterval(microUpdate, 12000);
+setInterval(renderCommo, 25000);
+setInterval(renderIdx, 30000);
+
+// ═══════════════════════════════════════════
+// ── REFRESH BUTTON ──
+// ═══════════════════════════════════════════
+async function refreshAllData() {
+  const btn = $('liveBtn');
+  btn.classList.add('loading');
+  btn.textContent = 'Actualisation…';
+  $('updBadge').textContent = 'Mise à jour…';
+  await fetchForexFrankfurter();
+  renderCommo();
+  renderIdx();
+  buildTicker();
+  const now = new Date();
+  $('updBadge').textContent = 'MAJ ' + now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  btn.classList.remove('loading');
+  btn.textContent = 'EN DIRECT';
+}
+
+// ═══════════════════════════════════════════
+// ── INITIALISATION ──
+// ═══════════════════════════════════════════
+async function init() {
+  // Render static data first (instant)
+  renderFX();
+  renderCommo();
+  renderIdx();
+  renderEvents();
+  buildTicker();
+  // Then fetch live forex
+  const ok = await fetchForexFrankfurter();
+  const n = new Date();
+  $('updBadge').textContent = (ok ? '● BCE ' : '⚠ ') + n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  renderFX(); // re-render with live data
+  buildTicker();
+}
+
+init();
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

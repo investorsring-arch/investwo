@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuel Opérationnel de l'Investisseur — Maroc</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F5EFE7; --bg2:#EDE5D8; --bg3:#E3D8C8; --white:#FEFCF9;
+  --gold:#9B7B2F; --gold2:#C4A052; --gold3:#F0E5CC; --gold4:rgba(155,123,47,.10);
+  --ink:#1E1812; --ink2:#4A3F31; --ink3:#8C7B66; --ink4:#BAA898;
+  --border:rgba(155,123,47,.15); --border2:rgba(155,123,47,.30);
+  --green:#236B4B; --green2:rgba(35,107,75,.10);
+  --red:#9B2B2B; --red2:rgba(155,43,43,.09);
+  --blue:#1E5C8A; --blue2:rgba(30,92,138,.09);
+  --violet:#5C3D8A; --violet2:rgba(92,61,138,.09);
+  --amber:#8A5B1E; --amber2:rgba(138,91,30,.10);
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Source Sans 3',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --r:8px; --shadow:0 2px 12px rgba(30,24,18,.07); --shadow2:0 6px 24px rgba(30,24,18,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--gold2);border-radius:3px}
+
+/* TOPBAR */
+.topbar{background:var(--ink);height:52px;display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:300;border-bottom:2px solid var(--gold)}
+.tb-brand{font-family:var(--serif);font-size:14px;color:var(--gold2);white-space:nowrap;font-style:italic}
+.tb-sep{color:rgba(255,255,255,.2);font-size:20px;font-weight:100}
+.tb-year{background:var(--gold);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:.14em;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.tb-search{flex:1;max-width:440px;display:flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:30px;padding:0 14px;gap:8px;transition:.2s}
+.tb-search:focus-within{border-color:rgba(196,160,82,.5);background:rgba(255,255,255,.10)}
+.tb-search input{background:none;border:none;outline:none;color:#fff;font-family:var(--sans);font-size:13px;width:100%;padding:8px 0}
+.tb-search input::placeholder{color:rgba(255,255,255,.3)}
+.tb-search .ico{color:rgba(255,255,255,.3);font-size:16px}
+.tb-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:3px 10px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.4);white-space:nowrap}
+.chip strong{color:var(--gold2);font-weight:500}
+
+/* HERO */
+.hero{background:var(--white);border-bottom:1px solid var(--border);padding:40px 32px 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(155,123,47,.05) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.5}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.hero-line{width:28px;height:2px;background:var(--gold)}
+.hero-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.hero-title{font-family:var(--serif);font-size:clamp(22px,3.2vw,40px);font-weight:700;color:var(--ink);line-height:1.18;margin-bottom:10px}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-desc{font-size:13.5px;color:var(--ink3);max-width:660px;margin-bottom:24px;line-height:1.7}
+.kpis{display:flex;flex-wrap:wrap;gap:9px}
+.kpi{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:10px 16px;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold2)}
+.kpi-v{font-family:var(--serif);font-size:19px;font-weight:700;color:var(--gold);line-height:1.1}
+.kpi-l{font-size:10px;color:var(--ink3);margin-top:1px}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:240px 1fr;max-width:1380px;margin:0 auto}
+
+/* SIDEBAR */
+.sidebar{background:var(--white);border-right:1px solid var(--border);position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;padding:14px 0 24px;display:flex;flex-direction:column;gap:2px}
+.sb-label{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);padding:8px 16px 4px}
+.nb{display:flex;align-items:center;gap:9px;width:100%;padding:8px 16px;background:none;border:none;border-left:3px solid transparent;cursor:pointer;text-align:left;font-family:var(--sans);transition:.15s}
+.nb:hover{background:var(--gold4);border-left-color:var(--gold2)}
+.nb.active{background:var(--gold4);border-left-color:var(--gold)}
+.nb.active .nb-name{color:var(--gold);font-weight:600}
+.nb.active .nb-cnt{background:var(--gold);color:#fff}
+.nb-ico{width:26px;height:26px;border-radius:6px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.nb.active .nb-ico{background:var(--gold3);border-color:var(--border2)}
+.nb-name{font-size:12px;color:var(--ink2);flex:1;line-height:1.3}
+.nb-cnt{background:var(--bg2);color:var(--ink4);font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:10px;flex-shrink:0}
+.sb-div{margin:8px 16px;border:none;border-top:1px solid var(--border)}
+.sb-reset{width:calc(100% - 32px);margin:0 16px;padding:7px;background:none;border:1px solid var(--border2);border-radius:var(--r);color:var(--ink3);font-family:var(--sans);font-size:12px;cursor:pointer;transition:.15s;text-align:center}
+.sb-reset:hover{background:var(--gold4);color:var(--gold);border-color:var(--gold2)}
+
+/* MAIN */
+.main{padding:24px 28px 60px;min-width:0}
+.rbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.rtext{font-size:12px;color:var(--ink3)}
+.rtext strong{color:var(--ink2)}
+.no-res{text-align:center;padding:70px 20px}
+.no-res-ico{font-size:36px;margin-bottom:12px;opacity:.4}
+.no-res-t{font-family:var(--serif);font-size:18px;color:var(--ink2);margin-bottom:6px}
+.no-res-s{font-size:12px;color:var(--ink3)}
+
+/* AXIS GROUP */
+.ag{margin-bottom:40px}
+.ag-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border);position:relative}
+.ag-head::after{content:'';position:absolute;bottom:-2px;left:0;width:44px;height:2px;background:var(--acCol,var(--gold))}
+.ag-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;background:var(--acBg,var(--gold4));border:1px solid var(--border)}
+.ag-title{font-family:var(--serif);font-size:19px;font-weight:700;color:var(--ink)}
+.ag-pill{margin-left:auto;font-family:var(--mono);font-size:9px;letter-spacing:.1em;padding:3px 10px;border-radius:20px;color:#fff;background:var(--acCol,var(--gold));flex-shrink:0}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(355px,1fr));gap:13px}
+
+/* CARD */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s,border-color .2s}
+.card:hover{box-shadow:var(--shadow2);border-color:var(--border2)}
+.card-head{padding:13px 15px 11px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;border-top:3px solid var(--acCol,var(--gold));user-select:none;-webkit-user-select:none}
+.card-head:hover{background:rgba(155,123,47,.025)}
+.card-ht{flex:1;min-width:0}
+.card-title{font-family:var(--serif);font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.3}
+.card-sub{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.4}
+.arr{width:22px;height:22px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ink3);flex-shrink:0;transition:transform .22s,background .15s}
+.card.open .arr{transform:rotate(180deg);background:var(--gold3);color:var(--gold)}
+.card-tags{padding:0 15px 10px;display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-family:var(--mono);font-size:9px;letter-spacing:.04em;padding:2px 7px;border-radius:20px;background:var(--bg2);color:var(--ink3);border:1px solid var(--border)}
+.tag.m{background:var(--gold3);color:var(--gold);border-color:var(--border2)}
+
+/* CARD BODY */
+.card-body{border-top:1px solid var(--border);display:none}
+.card.open .card-body{display:block}
+
+/* TABS */
+.tabs{display:flex;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;font-family:var(--sans);font-size:11px;font-weight:500;color:var(--ink3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:.15s;flex-shrink:0}
+.tab:hover{color:var(--ink2);background:rgba(155,123,47,.04)}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold);background:var(--gold4)}
+.panel{display:none;padding:15px 16px}
+.panel.on{display:block}
+
+/* INSIDE PANEL COMPONENTS */
+.ph{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:9px}
+.ph+.ph{margin-top:13px}
+.dt{width:100%;border-collapse:collapse}
+.dt tr{border-bottom:1px solid var(--border)}
+.dt tr:last-child{border-bottom:none}
+.dt tr:nth-child(even) td{background:rgba(155,123,47,.03)}
+.dt td{padding:7px 8px 7px 0;vertical-align:top;font-size:12.5px;line-height:1.5;color:var(--ink)}
+.dt td:first-child{width:43%;font-weight:500;color:var(--ink2);font-size:11.5px;padding-right:10px}
+.rr{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--border)}
+.rr:last-child{border-bottom:none}
+.rb{font-family:var(--mono);font-size:11px;font-weight:500;padding:2px 9px;border-radius:4px;flex-shrink:0;min-width:50px;text-align:center;background:var(--gold4);color:var(--gold);border:1px solid var(--border2)}
+.rb.g{background:var(--green2);color:var(--green);border-color:rgba(35,107,75,.2)}
+.rb.r{background:var(--red2);color:var(--red);border-color:rgba(155,43,43,.2)}
+.rb.b{background:var(--blue2);color:var(--blue);border-color:rgba(30,92,138,.2)}
+.rb.v{background:var(--violet2);color:var(--violet);border-color:rgba(92,61,138,.2)}
+.rr-t{font-size:12.5px;color:var(--ink2);line-height:1.5}
+.rr-t small{display:block;font-size:10.5px;color:var(--ink3);margin-top:2px}
+.step{display:flex;gap:11px;padding:8px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.sn{width:24px;height:24px;border-radius:50%;background:var(--gold3);border:1.5px solid var(--gold2);color:var(--gold);font-family:var(--mono);font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.st{font-size:13px;font-weight:600;color:var(--ink)}
+.so{font-size:11px;color:var(--ink3);margin-top:2px}
+.snote{font-size:10.5px;color:var(--green);margin-top:2px;font-family:var(--mono)}
+.sdelay{font-size:10.5px;color:var(--amber);margin-top:2px;font-family:var(--mono)}
+.pc{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:11px 13px;margin-bottom:7px}
+.pc:last-child{margin-bottom:0}
+.pc-n{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.pc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:5px}
+.pt{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px}
+.pt.gd{background:var(--gold3);color:var(--gold);border:1px solid var(--border2)}
+.pt.gn{background:var(--green2);color:var(--green);border:1px solid rgba(35,107,75,.2)}
+.pt.bl{background:var(--blue2);color:var(--blue);border:1px solid rgba(30,92,138,.2)}
+.pt.vl{background:var(--violet2);color:var(--violet);border:1px solid rgba(92,61,138,.2)}
+.pc-t{font-size:12px;color:var(--ink2);line-height:1.55}
+.ibox{display:flex;gap:10px;padding:10px 13px;border-radius:6px;font-size:12px;color:var(--ink2);line-height:1.55;margin-bottom:11px}
+.ibox .ii{font-size:15px;flex-shrink:0;margin-top:1px}
+.ibox.gd{background:var(--gold4);border:1px solid var(--border2)}
+.ibox.gn{background:var(--green2);border:1px solid rgba(35,107,75,.18)}
+.ibox.rd{background:var(--red2);border:1px solid rgba(155,43,43,.2)}
+.ibox.bl{background:var(--blue2);border:1px solid rgba(30,92,138,.18)}
+.ibox.vl{background:var(--violet2);border:1px solid rgba(92,61,138,.18)}
+.cl{}
+.ci{display:flex;gap:8px;padding:6px 0;font-size:12px;color:var(--ink2);border-bottom:1px solid var(--border);line-height:1.5}
+.ci:last-child{border-bottom:none}
+.ci-ok{color:var(--green);font-weight:700;flex-shrink:0;font-size:11px;margin-top:1px}
+.ct{width:100%;border-collapse:collapse;font-size:11.5px}
+.ct th{background:var(--bg2);color:var(--gold);font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:7px 9px;text-align:left;border-bottom:1px solid var(--border2);font-weight:500}
+.ct td{padding:7px 9px;color:var(--ink2);border-bottom:1px solid var(--border);vertical-align:top;line-height:1.4}
+.ct tbody tr:hover td{background:var(--gold4)}
+.ct tbody tr:last-child td{border-bottom:none}
+.ct-b{color:var(--gold);font-weight:600}
+.ct-g{color:var(--green);font-weight:600}
+.ct-r{color:var(--red)}
+.lawref{margin-top:13px;padding:8px 11px;background:var(--gold4);border-left:2px solid var(--gold2);border-radius:0 4px 4px 0;font-family:var(--mono);font-size:10px;color:var(--ink3);line-height:1.7}
+.lawref strong{color:var(--gold)}
+mark{background:rgba(155,123,47,.18);color:var(--gold);border-radius:2px;padding:0 2px}
+
+/* FOOTER */
+.footer{background:var(--ink);border-top:2px solid var(--gold);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.fl{font-family:var(--serif);font-size:13px;color:rgba(255,255,255,.45);font-style:italic}
+.fr{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.28)}
+.fr strong{color:var(--gold2)}
+
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}.grid{grid-template-columns:1fr}}
+@media(max-width:560px){.topbar,.main,.hero{padding-left:14px;padding-right:14px}.tb-search{max-width:170px}}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+<header class="topbar">
+  <div class="tb-brand">Manuel Opérationnel de l'Investisseur · Maroc</div>
+  <div class="tb-sep">|</div>
+  <div class="tb-year" id="tbYear">···</div>
+  <div class="tb-search"><span class="ico">⌕</span><input id="searchInput" type="text" placeholder="IS, TVA, SARL, ATPA, ZAI, Charte 2023, OEA, IDE…" autocomplete="off"></div>
+  <div class="tb-right">
+    <div class="chip">Actualisé : <strong id="yrChip">···</strong></div>
+    <div class="chip" id="totalChip"><strong>0</strong> fiches</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow"><div class="hero-line"></div><div class="hero-label">Référentiel Stratégique · Investissement &amp; Affaires · Maroc</div></div>
+  <h1 class="hero-title">Architecture des Projets :<br><em>le Manuel Opérationnel de l'Investisseur</em></h1>
+  <p class="hero-desc">Formes juridiques, fiscalité actualisée (IS 35%, Charte 2023), régimes économiques en douane, incitations, régime des changes, droit du travail et procédures d'installation — structurés pour décideurs, opérateurs et conseils.</p>
+  <div class="kpis">
+    <div class="kpi"><div class="kpi-v">10–35%</div><div class="kpi-l">IS progressif actualisé</div></div>
+    <div class="kpi"><div class="kpi-v">30%</div><div class="kpi-l">Prime max Charte 2023</div></div>
+    <div class="kpi"><div class="kpi-v">8</div><div class="kpi-l">Régimes éco. douane</div></div>
+    <div class="kpi"><div class="kpi-v">12+</div><div class="kpi-l">Accords libre-échange</div></div>
+    <div class="kpi"><div class="kpi-v">10</div><div class="kpi-l">Étapes de création</div></div>
+    <div class="kpi"><div class="kpi-v">27,83%</div><div class="kpi-l">Charges CNSS totales</div></div>
+  </div>
+</section>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sb-label">Navigation</div>
+    <button class="nb active" data-ax="all"><div class="nb-ico">⬡</div><span class="nb-name">Tous les axes</span><span class="nb-cnt" id="cntAll">0</span></button>
+    <div id="sbAxes"></div>
+    <hr class="sb-div">
+    <button class="sb-reset" id="resetBtn">↺ Réinitialiser</button>
+  </nav>
+  <main class="main">
+    <div class="rbar"><div class="rtext" id="rtext"><strong>—</strong></div></div>
+    <div id="results"></div>
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="fl">Architecture des Projets — Manuel Opérationnel de l'Investisseur · Maroc</div>
+  <div class="fr">Données <strong id="ftYear">···</strong> · Usage professionnel exclusif · Vérifier auprès des autorités compétentes</div>
+</footer>
+<script>
+const DB=[
+{id:"profil",t:"Profil Économique",ic:"🌐",col:"#236B4B",bg:"rgba(35,107,75,.08)",s:[
+{id:"pe-macro",t:"Macro-Économie & Position internationale",sub:"PIB · Échanges · IDE · Compétitivité",tags:["PIB","croissance","IDE","exportations","ALE","compétitivité","devises"],
+tabs:[
+{l:"Indicateurs",b:`<div class="ph">Données Fondamentales (estimations 2024)</div><table class="dt"><tbody><tr><td>PIB nominal</td><td>~145 milliards USD</td></tr><tr><td>PIB / Habitant</td><td>~3 800 USD</td></tr><tr><td>Croissance</td><td>~3,2% (HCP 2024)</td></tr><tr><td>Inflation</td><td>~4–6% (variable selon conjoncture)</td></tr><tr><td>Population</td><td>~37,5 millions (RGPH 2024)</td></tr><tr><td>Population active</td><td>~12,5 millions</td></tr><tr><td>Devise</td><td>Dirham Marocain (MAD) — panier EUR/USD géré par BAM</td></tr><tr><td>Exportations (2023)</td><td>>350 milliards MAD</td></tr><tr><td>Importations (2023)</td><td>>600 milliards MAD</td></tr><tr><td>Flux IDE</td><td>2e–3e rang Afrique selon les années</td></tr></tbody></table>`},
+{l:"Accords ALE",b:`<div class="ph">Accords de Libre-Échange Actifs</div><div class="rr"><div class="rb g">UE 2000</div><div class="rr-t">Accord d'Association Maroc-UE — démantèlement tarifaire progressif industriel et agricole<small>Protocoles pêche, produits agricoles, accord services en cours de négociation</small></div></div><div class="rr"><div class="rb g">USA 2006</div><div class="rr-t">ALE Maroc-USA — 95% des produits à 0% de droit de douane</div></div><div class="rr"><div class="rb g">Turquie</div><div class="rr-t">ALE Maroc-Turquie — taux préférentiels industriels (avenant textile en négociation)</div></div><div class="rr"><div class="rb g">GAFTA</div><div class="rr-t">Zone Arabe de Libre-Échange — 0% entre États membres<small>Égypte, Jordanie, Tunisie, EAU, Arabie Saoudite, Irak, Liban…</small></div></div><div class="rr"><div class="rb g">Agadir</div><div class="rr-t">Maroc · Tunisie · Égypte · Jordanie — cumul d'origine EUR-MED possible</div></div><div class="rr"><div class="rb g">AELE</div><div class="rr-t">Suisse, Norvège, Islande, Liechtenstein</div></div><div class="rr"><div class="rb g">ZLECAf</div><div class="rr-t">Zone de Libre-Échange Continentale Africaine — Maroc signataire, déploiement progressif<small>Accès potentiel à 54 marchés africains</small></div></div>`},
+{l:"Infrastructures",b:`<div class="ph">Atouts Logistiques & Événements Structurants</div><table class="dt"><tbody><tr><td>Ports majeurs</td><td>Tanger Med (1er port Afrique/Méditerranée), Casablanca, Nador West Med (en développement)</td></tr><tr><td>Aéroports</td><td>Mohammed V, Marrakech-Menara, Agadir, Tanger, Fès, Rabat, Dakhla…</td></tr><tr><td>Autoroutes</td><td>>1 800 km (ADM)</td></tr><tr><td>LGV Al-Boraq</td><td>Casablanca–Tanger — 1ère ligne à grande vitesse d'Afrique</td></tr><tr><td>Zones industrielles</td><td>>60 ZAI et parcs industriels aménagés</td></tr><tr><td>Énergie renouvelable</td><td>Objectif 52% du mix électrique en 2030</td></tr><tr><td>Coupe du Monde 2030</td><td>Co-organisation Maroc/Espagne/Portugal — programme d'infrastructure accéléré</td></tr></tbody></table>`}
+]},
+{id:"pe-zones",t:"Zones Spéciales & Régimes Préférentiels",sub:"ZAI · CFC · Tanger Med · Offshoring",tags:["ZAI","zone franche","CFC","Tanger Med","IS 15%","exonération","régimes spéciaux"],
+tabs:[
+{l:"ZAI",b:`<div class="ibox gn"><div class="ii">🏭</div><div>Ex-zones franches d'exportation. Régime douanier et fiscal ultra-favorable pour entreprises à vocation exportatrice ou industrielle.</div></div><div class="ph">Régime Douanier</div><div class="rr"><div class="rb g">0%</div><div class="rr-t">Droits d'importation — matières premières, intrants, équipements</div></div><div class="rr"><div class="rb g">Suspendue</div><div class="rr-t">TVA sur achats intérieurs et importations — opérations entre zones qualifiées</div></div><div class="ph">Régime Fiscal IS</div><div class="rr"><div class="rb g">0%</div><div class="rr-t">IS — 5 premières années d'exploitation</div></div><div class="rr"><div class="rb">15%</div><div class="rr-t">IS — au-delà de 5 ans (taux réduit permanent)</div></div><div class="rr"><div class="rb g">Exonérée</div><div class="rr-t">Taxe professionnelle — 15 premières années</div></div><div class="rr"><div class="rb g">Exonérés</div><div class="rr-t">Droits d'enregistrement — constitution capital et acquisitions foncières</div></div><div class="rr"><div class="rb">≤30%</div><div class="rr-t">Ventes marché local autorisées dans la limite de 30% du CA à l'export (EIF) ou 15% selon le type d'opérateur</div></div>`},
+{l:"CFC",b:`<div class="ibox bl"><div class="ii">🏦</div><div>Casablanca Finance City — hub financier international pour l'Afrique. Statut accordé aux banques, assurances, asset management, holdings régionales.</div></div><table class="dt"><tbody><tr><td>IS — 5 premières années</td><td class="ct-g">Exonération totale</td></tr><tr><td>IS — au-delà</td><td>15% (taux réduit permanent)</td></tr><tr><td>IR salariaux</td><td>20% pendant 10 ans à compter de la prise de fonction</td></tr><tr><td>Dividendes distribués par CFC</td><td class="ct-g">Exonérés de retenue à la source</td></tr><tr><td>Droits d'enregistrement constitution</td><td class="ct-g">Exonérés</td></tr></tbody></table>`}
+]}
+]},
+{id:"formes",t:"Formes Juridiques",ic:"⚖️",col:"#1E5C8A",bg:"rgba(30,92,138,.08)",s:[
+{id:"fj-comp",t:"Tableau Comparatif des Formes Sociales",sub:"SARL · SA · SAS · SNC · Auto-Entrepreneur",tags:["SA","SARL","SAS","SNC","auto-entrepreneur","capital minimum","responsabilité","comparatif"],
+tabs:[
+{l:"Comparatif",b:`<table class="ct"><thead><tr><th>Forme</th><th>Capital min.</th><th>Associés</th><th>Responsabilité</th><th>Idéale pour</th></tr></thead><tbody><tr><td class="ct-b">SARL</td><td>Libre</td><td>1–50</td><td>Limitée aux apports</td><td>PME, startups, projets en équipe restreinte</td></tr><tr><td class="ct-b">SA</td><td>300 000 MAD</td><td>≥ 5</td><td>Limitée aux apports</td><td>Grandes entreprises, levée de fonds</td></tr><tr><td class="ct-b">SA (appel public)</td><td>3 000 000 MAD</td><td>≥ 5</td><td>Limitée aux apports</td><td>Sociétés cotées, émissions publiques</td></tr><tr><td class="ct-b">SAS</td><td>2 M MAD/associé</td><td>≥ 2 sociétés</td><td>Limitée aux apports</td><td>Joint-ventures, holdings, filiales communes</td></tr><tr><td class="ct-b">SNC</td><td>Libre</td><td>≥ 2</td><td>Illimitée et solidaire</td><td>Professions réglementées, structures familiales</td></tr><tr><td class="ct-b">Auto-Entrepreneur</td><td>Néant</td><td>1 (PP)</td><td>Patrimoine personnel</td><td>Freelance, micro-activité — CA &lt; 500k MAD</td></tr></tbody></table>`},
+{l:"SARL",b:`<div class="ph">Société à Responsabilité Limitée</div><table class="dt"><tbody><tr><td>Capital social</td><td>Librement fixé — divisé en parts sociales de valeur égale</td></tr><tr><td>Nombre d'associés</td><td>1 à 50 — SARL à associé unique possible</td></tr><tr><td>Libération numéraire</td><td>Au moins 1/4 lors de la constitution</td></tr><tr><td>Blocage capital > 100k MAD</td><td>Compte bancaire bloqué dans les 8 jours</td></tr><tr><td>Cession parts à tiers</td><td>Consentement de la majorité représentant ≥ 3/4 des parts</td></tr><tr><td>Commissaire aux comptes</td><td>Obligatoire si CA > 50 millions MAD à la clôture</td></tr><tr><td>Gérant</td><td>1 ou plusieurs personnes physiques — révocable (≥ 3/4 des parts)</td></tr></tbody></table><div class="lawref"><strong>Base légale :</strong> Loi n°21-19 modifiant Loi n°5-96 — Dahir n°1-19-79 du 26 avril 2019</div>`},
+{l:"SA",b:`<div class="ph">Société Anonyme</div><table class="dt"><tbody><tr><td>Actionnaires minimum</td><td>5</td></tr><tr><td>Capital hors appel public</td><td>300 000 MAD minimum</td></tr><tr><td>Capital appel public</td><td>3 000 000 MAD minimum</td></tr><tr><td>Valeur nominale min.</td><td>50 MAD (10 MAD pour sociétés cotées)</td></tr><tr><td>Libération souscription</td><td>≥ 1/4 de la valeur nominale (numéraire)</td></tr><tr><td>Gouvernance option 1</td><td>Conseil d'administration (3–12 membres) + PDG ou PCA + DG</td></tr><tr><td>Gouvernance option 2</td><td>Directoire (max 5 membres) + Conseil de Surveillance (3–12 membres)</td></tr><tr><td>Durée maximale</td><td>99 ans (prorogeable)</td></tr></tbody></table><div class="lawref"><strong>Base légale :</strong> Loi n°20-19 modifiant Loi n°17-95 — Dahir n°1-19-78 du 26 avril 2019</div>`},
+{l:"Auto-Entrepreneur",b:`<div class="ph">Statut Auto-Entrepreneur — Loi 114-13</div><table class="dt"><tbody><tr><td>Activités éligibles</td><td>Industrielle, commerciale, artisanale, prestations de services</td></tr><tr><td>Plafond CA commercial/artisanal</td><td>500 000 MAD</td></tr><tr><td>Plafond CA services</td><td>200 000 MAD</td></tr><tr><td>IR libératoire</td><td>0,5% du CA (commercial) · 1% (services)</td></tr><tr><td>Comptabilité</td><td>Dispense de tenue de comptabilité obligatoire</td></tr><tr><td>Cotisations CNSS</td><td>Forfait mensuel adapté</td></tr><tr><td>Création</td><td>En ligne — www.ae.gov.ma — immédiat</td></tr></tbody></table>`}
+]}
+]},
+{id:"creation",t:"Création d'Entreprise",ic:"🚀",col:"#7A4F1A",bg:"rgba(122,79,26,.08)",s:[
+{id:"ce-etapes",t:"Les 10 Étapes Officielles de Création",sub:"Parcours complet via CRI — 3 à 7 jours ouvrables",tags:["création","CRI","OMPIC","registre du commerce","CNSS","Bulletin Officiel","formulaire unique","ICE"],
+tabs:[
+{l:"Parcours",b:`<div class="ibox gn"><div class="ii">💡</div><div>Les étapes 6 à 9 sont centralisées au CRI via un formulaire unique. Délai global : 3 à 7 jours ouvrables selon la forme juridique choisie.</div></div><div class="step"><div class="sn">1</div><div><div class="st">Certificat Négatif</div><div class="so">OMPIC — www.directinfo.ma ou guichet CRI</div><div class="sdelay">⏱ Délivré immédiatement en ligne — validité 90 jours</div></div></div><div class="step"><div class="sn">2</div><div><div class="st">Établissement des Statuts</div><div class="so">Cabinet juridique (notaire, fiduciaire, avocat)</div><div class="snote">✓ Acte notarié ou sous seing privé selon la forme</div></div></div><div class="step"><div class="sn">3</div><div><div class="st">Bulletins de Souscription &amp; Actes d'Apport</div><div class="so">Cabinet juridique</div><div class="snote">✓ SA, SAS et SCA uniquement</div></div></div><div class="step"><div class="sn">4</div><div><div class="st">Blocage du Capital Libéré en Banque</div><div class="so">Banque agréée intermédiaire</div><div class="sdelay">⏱ Dans les 8 jours de réception des fonds</div><div class="snote">✓ Obligatoire si capital SARL > 100 000 MAD</div></div></div><div class="step"><div class="sn">5</div><div><div class="st">Déclaration de Souscription et de Versement</div><div class="so">Cabinet juridique — SA, SAS et SCA uniquement</div></div></div><div class="step"><div class="sn">6</div><div><div class="st">Enregistrement des Actes</div><div class="so">CRI / Direction Régionale des Impôts</div><div class="snote">✓ Droit fixe : 1 000 MAD (constitution de capital)</div></div></div><div class="step"><div class="sn">7</div><div><div class="st">Inscription Taxe Professionnelle &amp; Identifiants Fiscaux</div><div class="so">CRI / DRI — Attribution de l'ICE (Identifiant Commun de l'Entreprise)</div></div></div><div class="step"><div class="sn">8</div><div><div class="st">Immatriculation au Registre de Commerce</div><div class="so">CRI / Tribunal de Commerce</div><div class="snote">✓ Acte de naissance légal de l'entreprise</div></div></div><div class="step"><div class="sn">9</div><div><div class="st">Affiliation à la CNSS</div><div class="so">CRI / Caisse Nationale de Sécurité Sociale</div><div class="snote">✓ Numéro d'affiliation délivré immédiatement</div></div></div><div class="step"><div class="sn">10</div><div><div class="st">Publication JAL &amp; Bulletin Officiel</div><div class="so">Journal d'Annonces Légales + Bulletin Officiel</div><div class="sdelay">⏱ Dans le mois suivant l'immatriculation</div></div></div>`},
+{l:"Plateformes",b:`<div class="pc"><div class="pc-n">🖥 CRI-Invest — www.cri-invest.ma</div><div class="pc-t">Guichet unique régional. Suivi de projet, procédures, autorisations, Commission Régionale d'Investissement (Loi 47-18).</div></div><div class="pc"><div class="pc-n">🔍 DirectInfo — www.directinfo.ma</div><div class="pc-t">Portail OMPIC : certificat négatif en ligne, consultation RC, informations légales sur les sociétés marocaines.</div></div><div class="pc"><div class="pc-n">💻 SIMPL-DGI</div><div class="pc-t">Télédéclarations IS, IR, TVA, droits d'enregistrement. Obligatoire pour toutes personnes morales et physiques professionnelles.</div></div><div class="pc"><div class="pc-n">🔒 Damancom — www.damancom.ma</div><div class="pc-t">Déclarations et paiements des cotisations CNSS en ligne. Gratuit pour les affiliés.</div></div><div class="pc"><div class="pc-n">🚢 PortNet — www.portnet.ma</div><div class="pc-t">Guichet unique du commerce extérieur. Domiciliation des titres d'importation/exportation, suivi des opérations douanières.</div></div><div class="pc"><div class="pc-n">📋 BADR — Douane Maroc</div><div class="pc-t">Système électronique de dédouanement. Dépôt des DUM, régimes économiques, cautions bancaires en ligne.</div></div>`},
+{l:"Coûts",b:`<div class="ph">Estimation des Frais de Constitution (SARL type)</div><table class="dt"><tbody><tr><td>Certificat Négatif</td><td>~230 MAD (en ligne) / ~170 MAD (guichet)</td></tr><tr><td>Statuts sous seing privé</td><td>500 – 1 500 MAD (fiduciaire)</td></tr><tr><td>Droits d'enregistrement statuts</td><td>1 000 MAD (droit fixe si capital ≤ 500 000 MAD)</td></tr><tr><td>Immatriculation RC</td><td>350 – 500 MAD</td></tr><tr><td>Publication JAL + Bulletin Officiel</td><td>600 – 1 200 MAD</td></tr><tr><td>Honoraires fiduciaire (complet)</td><td>2 000 – 5 000 MAD</td></tr><tr><td style="color:var(--gold);font-weight:600">TOTAL ESTIMATIF SARL</td><td style="color:var(--gold);font-weight:600">4 000 – 9 000 MAD</td></tr></tbody></table><div class="ibox gd"><div class="ii">ℹ️</div><div>Pour une SA, compter 15 000 – 40 000 MAD selon le capital, en raison de l'acte notarié obligatoire et de la publicité renforcée.</div></div>`}
+]}
+]},
+{id:"charte",t:"Charte de l'Investissement 2023",ic:"🏆",col:"#9B7B2F",bg:"rgba(155,123,47,.08)",s:[
+{id:"ch-primes",t:"Nouveau Système de Primes — Loi-Cadre n°03-22",sub:"Dahir n°1-22-74 du 4 mai 2022 — Objectif 550 Mds MAD",tags:["charte 2023","prime investissement","prime territoriale","prime sectorielle","prime PME","CNI","CRI","30%"],
+tabs:[
+{l:"Architecture",b:`<div class="ibox gd"><div class="ii">🎯</div><div>La Charte 2023 remplace la charte de 1995. Elle vise 550 Mds MAD d'investissements sur 2022–2026 via un système de primes modulables cumulables, plafonné à 30%.</div></div><div class="rr"><div class="rb">10–15%</div><div class="rr-t">Prime de base à l'investissement<small>Taux variable selon le montant d'investissement et la catégorie du projet</small></div></div><div class="rr"><div class="rb b">+5–15%</div><div class="rr-t">Prime territoriale<small>Maximale pour les régions prioritaires : Provinces du Sud, zones enclavées…</small></div></div><div class="rr"><div class="rb g">+5%</div><div class="rr-t">Prime sectorielle<small>Industrie manufacturière, agroalimentaire, IT, EnR, tourisme, santé, éducation</small></div></div><div class="rr"><div class="rb g">+5%</div><div class="rr-t">Prime PME<small>Pour les petites et moyennes entreprises selon les critères de taille définis</small></div></div><div class="rr" style="margin-top:10px;padding:10px;background:var(--gold4);border-radius:6px;border:1px solid var(--border2)"><div class="rb" style="font-size:14px;padding:5px 14px">30%</div><div class="rr-t" style="font-size:13px;font-weight:600;color:var(--gold)">CUMUL MAXIMUM — Plafond absolu non dépassable<small style="color:var(--ink3)">Sauf dispositions spéciales pour projets stratégiques</small></div></div>`},
+{l:"Catégories",b:`<div class="pc"><div class="pc-n">⬛ Projet Stratégique</div><div class="pc-tags"><span class="pt gd">≥ 2 Milliards MAD</span><span class="pt gn">OU ≥ 500 emplois</span></div><div class="pc-t">Convention avec l'État — Commission Nationale des Investissements (CNI) présidée par le Chef du Gouvernement — Primes négociées au cas par cas.</div></div><div class="pc"><div class="pc-n">🔷 Projet Structurant</div><div class="pc-tags"><span class="pt gd">≥ 200 M MAD</span><span class="pt gn">OU ≥ 200 emplois</span></div><div class="pc-t">Convention d'investissement avec l'État — Suivi par la CNI.</div></div><div class="pc"><div class="pc-n">🔹 Développement Régional</div><div class="pc-tags"><span class="pt bl">≥ 20 M MAD</span><span class="pt gn">OU ≥ 50 emplois</span></div><div class="pc-t">Convention avec le président du CRI concerné — Prime territoriale maximisée.</div></div><div class="pc"><div class="pc-n">🔸 Projet PME</div><div class="pc-tags"><span class="pt bl">≥ 1 M MAD</span><span class="pt gn">OU ≥ 10 emplois</span></div><div class="pc-t">Accès simplifié via guichet CRI — Prime PME additionnelle de 5%.</div></div>`},
+{l:"Dépenses Éligibles",b:`<div class="ph">Assiette de Calcul des Primes</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Acquisition ou location du foncier professionnel aménagé</div></div><div class="ci"><div class="ci-ok">✓</div><div>Construction et aménagement des bâtiments professionnels</div></div><div class="ci"><div class="ci-ok">✓</div><div>Acquisition d'équipements et matériels de production neufs</div></div><div class="ci"><div class="ci-ok">✓</div><div>Frais d'assistance technique et d'ingénierie</div></div><div class="ci"><div class="ci-ok">✓</div><div>Dépenses de R&D et d'innovation directement liées au projet</div></div><div class="ci"><div class="ci-ok">✓</div><div>Formation professionnelle initiale et continue des salariés</div></div><div class="ci"><div class="ci-ok">✓</div><div>Frais d'amorçage des 3 premières années</div></div></div><div class="ph">Obligations</div><table class="dt"><tbody><tr><td>Durée minimale</td><td>Maintien de l'investissement et des emplois pendant 5 ans minimum</td></tr><tr><td>Formation</td><td>Plan de formation défini dans la convention</td></tr><tr><td>Non-respect</td><td>Restitution partielle ou totale des primes perçues</td></tr></tbody></table>`}
+]},
+{id:"ch-hassan2",t:"Aides Fonds Hassan II",sub:"Industrie ciblée · Aides à l'équipement et au foncier",tags:["Hassan II","automobile","aéronautique","pharmaceutique","tourisme","équipements","bâtiments"],
+tabs:[
+{l:"Industrie",b:`<div class="ph">Critères d'Éligibilité</div><table class="dt"><tbody><tr><td>Investissement total minimum</td><td>> 10 M MAD HT</td></tr><tr><td>Équipements minimum</td><td>> 5 M MAD HT</td></tr><tr><td>Forme juridique</td><td>Société (personne morale uniquement)</td></tr></tbody></table><div class="ph">Niveaux d'Aide</div><div class="rr"><div class="rb g">10%</div><div class="rr-t">Bâtiments professionnels — acquisition ou construction<small>Ou 100% du loyer (6 ans foncier / 2 ans bâtiments) pour projets en espaces industriels agréés</small></div></div><div class="rr"><div class="rb g">20%</div><div class="rr-t">Biens d'équipement neufs (hors droits d'importation et taxes)</div></div><div class="ph">Secteurs Éligibles</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Automobile et équipementiers</div></div><div class="ci"><div class="ci-ok">✓</div><div>Aéronautique — fabrication, maintenance, démantèlement</div></div><div class="ci"><div class="ci-ok">✓</div><div>Composants et sous-ensembles électroniques</div></div><div class="ci"><div class="ci-ok">✓</div><div>Pharmacie — innovants, génériques, biosimilaires</div></div><div class="ci"><div class="ci-ok">✓</div><div>Chimie-parachimique : cosmétiques, recyclage métaux/plastiques</div></div><div class="ci"><div class="ci-ok">✓</div><div>Valorisation phosphates · Nanotechnologie · Biotechnologie</div></div></div>`},
+{l:"Tourisme",b:`<table class="dt"><tbody><tr><td>Aide foncier touristique</td><td>50% du coût du m² — plafond 500 MAD/m²</td></tr><tr><td>Littoral M'diq-Fnideq</td><td>250 MAD/m² de superficie construite au sol</td></tr><tr><td>Projets éligibles</td><td>Établissements d'hébergement classés dans nouvelles stations touristiques</td></tr><tr><td>Cumul Charte 2023</td><td>Possible — sauf double comptage sur le poste foncier</td></tr></tbody></table>`}
+]}
+]},
+{id:"financement",t:"Financement & Garanties",ic:"💎",col:"#5C3D8A",bg:"rgba(92,61,138,.08)",s:[
+{id:"fin-ccg",t:"Garanties CCG — Caisse Centrale de Garantie",sub:"Partage du risque · Accès facilité au crédit bancaire",tags:["CCG","Damane Intelak","Start-TPE","Mezzanine PME","capital risque","Innov Invest","TPME","garantie"],
+tabs:[
+{l:"Garanties TPME",b:`<div class="pc"><div class="pc-n">Damane Intelak</div><div class="pc-tags"><span class="pt gd">Plafond : 1,2 M MAD</span><span class="pt gn">Quotité : 80%</span></div><div class="pc-t">TPME CA ≤ 200 M MAD — crédits investissement et exploitation, primo-accédants. Tous secteurs sauf promotion immobilière et pêche hauturière.</div></div><div class="pc"><div class="pc-n">Intelak Al Moustatmir Al Qarawi</div><div class="pc-tags"><span class="pt gd">Plafond : 1,2 M MAD</span><span class="pt gn">Quotité : 80%</span></div><div class="pc-t">Entreprises du monde rural, exploitations agricoles, projets de melkisation des terres soulaliyates.</div></div><div class="pc"><div class="pc-n">Start-TPE — Prêt d'Honneur</div><div class="pc-tags"><span class="pt gd">Max : 50 000 MAD</span><span class="pt bl">Taux : 0%</span><span class="pt gn">Franchise : 5 ans</span></div><div class="pc-t">Financement BFR lié à un crédit bancaire MLT garanti Damane Intelak. Aucune sûreté exigée. Remboursement en une seule fois après la franchise.</div></div><div class="pc"><div class="pc-n">Mezzanine PME</div><div class="pc-tags"><span class="pt gd">Max : 10 M MAD</span><span class="pt bl">10 ans · 5 ans différé</span></div><div class="pc-t">Prêt subordonné pour entreprises industrielles ou exportateurs (CA export ≥ 20%). Taux : TMB 5 ans + 250 bps. Aucune garantie réelle exigée.</div></div><div class="pc"><div class="pc-n">Damane Capital Risque</div><div class="pc-tags"><span class="pt gd">60% innovants</span><span class="pt bl">50% autres</span></div><div class="pc-t">Garantie des apports en fonds propres réalisés par les sociétés de capital-risque agréées dans des PME marocaines non cotées.</div></div>`},
+{l:"Innov Invest",b:`<div class="ibox vl"><div class="ii">🔬</div><div>Fonds dédié aux startups innovantes — géré par la CCG avec appui Banque Mondiale — Dotation : 700 millions MAD pour ~300 startups.</div></div><div class="pc"><div class="pc-n">Innov IDEA — Subvention</div><div class="pc-tags"><span class="pt gn">100k MAD (1 porteur)</span><span class="pt gn">200k MAD (2+ associés)</span><span class="pt bl">Non remboursable</span></div><div class="pc-t">Porteurs validés par structure labélisée CCG. Frais liés au projet : communication, déplacements, abonnements…</div></div><div class="pc"><div class="pc-n">Innov START — Prêt d'Honneur</div><div class="pc-tags"><span class="pt gn">250k – 500k MAD</span><span class="pt bl">0% · Sans sûretés</span><span class="pt gd">Différé 2 ans</span></div><div class="pc-t">Prototypage, tests, études de marché, business plan. Remboursement sur 5 ans après différé de 2 ans.</div></div><div class="pc"><div class="pc-n">Innov RISK — Avance Remboursable</div><div class="pc-tags"><span class="pt gn">Max 2 M MAD (50% apports externes)</span></div><div class="pc-t">Startups ayant réalisé une levée de fonds. Différé 1 an + remboursement 5 ans.</div></div><div class="pc"><div class="pc-n">Innov DEV — Prêt Participatif</div><div class="pc-tags"><span class="pt gn">Max 3 M MAD</span><span class="pt bl">Taux 2% HT · 8 ans</span><span class="pt gd">2 ans différé</span></div><div class="pc-t">PME en croissance. Nouvelles installations, marchés à l'export, nouveaux produits.</div></div>`},
+{l:"MDM Invest",b:`<div class="ph">Cofinancement Marocains Résidant à l'Étranger</div><table class="dt"><tbody><tr><td>Montant minimum du projet</td><td>1 000 000 MAD</td></tr><tr><td>Apport MRE obligatoire</td><td>25% minimum du total — en devises étrangères</td></tr><tr><td>Contribution MDM Invest</td><td>10% de la quote-part MRE — non remboursable — plafond 5 M MAD</td></tr><tr><td>Secteurs éligibles</td><td>Industrie et services · Éducation · Hôtellerie · Santé</td></tr><tr><td>Condition MRE</td><td>Titre de séjour valide OU retour définitif ≤ 1 an avant dépôt</td></tr></tbody></table>`}
+]},
+{id:"fin-pme",t:"Programmes Maroc PME",sub:"Compétitivité · Innovation · Export",tags:["Maroc PME","IMTIAZ","ISTITMAR","lean","INMAA","digital","export","subvention","consortium"],
+tabs:[
+{l:"Investissement",b:`<div class="pc"><div class="pc-n">IMTIAZ — Croissance PME</div><div class="pc-tags"><span class="pt gd">Prime : 20%</span><span class="pt bl">Plafond : 10 M MAD</span><span class="pt gn">CA ≤ 200 M MAD</span></div><div class="pc-t">Projets matériels et immatériels visant la croissance, la montée en gamme, les nouveaux modèles d'affaires.</div></div><div class="pc"><div class="pc-n">ISTITMAR — Croissance TPE</div><div class="pc-tags"><span class="pt gd">Prime : 30%</span><span class="pt bl">Plafond : 2 M MAD</span><span class="pt gn">CA ≤ 10 M MAD</span></div><div class="pc-t">Transformation industrielle, valorisation des ressources, innovation répondant aux opportunités de marché.</div></div><div class="pc"><div class="pc-n">Transformation Digitale</div><div class="pc-tags"><span class="pt gd">70% mode propriétaire</span><span class="pt gn">80% mode cloud</span></div><div class="pc-t">SI industriels incluant infrastructure. Entreprises industrielles, CA < 200 M MAD.</div></div>`},
+{l:"Compétitivité",b:`<div class="pc"><div class="pc-n">INMAA — Lean Manufacturing</div><div class="pc-tags"><span class="pt gd">60% de la prestation prise en charge</span></div><div class="pc-t">Formation et accompagnement Lean (5S, VSM, Kaizen, SMED, TPM…). Entreprises industrielles CA < 200 M MAD.</div></div><div class="pc"><div class="pc-n">Catégorisation Douanière</div><div class="pc-tags"><span class="pt gd">70% individuel</span><span class="pt gn">80% plan triennal</span></div><div class="pc-t">Assistance technique pour se préparer au processus de catégorisation ADII/DGI. Avantages en circuits de dédouanement.</div></div>`},
+{l:"Export",b:`<div class="pc"><div class="pc-n">Programme Primo-Exportateurs</div><div class="pc-tags"><span class="pt gd">Plafond : 3 M MAD sur 3 ans</span><span class="pt bl">1 M MAD / an</span></div><div class="pc-t">Accompagnement 3 ans. 80% des frais de prospection et promotion. Éligible : CA moyen export ≤ 5 M MAD sur 3 ans.</div></div><div class="pc"><div class="pc-n">Export Synergia — Consortiums</div><div class="pc-tags"><span class="pt gd">Plafond : 1,5 M MAD</span><span class="pt bl">État 65% · Consortium 35%</span></div><div class="pc-t">≥ 3 entreprises de droit marocain, CA ≤ 175 M MAD/an. Actions promotionnelles internationales, durée 24 mois.</div></div>`}
+]}
+]},
+{id:"fiscal",t:"Régime Fiscal",ic:"📐",col:"#8A1E1E",bg:"rgba(138,30,30,.08)",s:[
+{id:"fisc-is",t:"Impôt sur les Sociétés (IS)",sub:"Barème progressif actualisé — LF 2023 & LF 2024",tags:["IS","taux IS","cotisation minimale","exonération IS","barème progressif","35%","40%","LF2023"],
+tabs:[
+{l:"Barème & Taux",b:`<div class="ibox rd"><div class="ii">⚠️</div><div>La LF 2023 a relevé le taux marginal de 31% à <strong>35%</strong> (bénéfice > 1 M MAD) et le taux banques/assurances de 37% à <strong>40%</strong>.</div></div><div class="rr"><div class="rb g">10%</div><div class="rr-t">Bénéfice net ≤ 300 000 MAD — tranche de base</div></div><div class="rr"><div class="rb b">20%</div><div class="rr-t">Bénéfice net de 300 001 à 1 000 000 MAD</div></div><div class="rr"><div class="rb r">35%</div><div class="rr-t">Bénéfice net > 1 000 000 MAD (relevé de 31% par LF 2023)</div></div><div class="rr"><div class="rb r">40%</div><div class="rr-t">Banques, assurances, BAM, CDG, réassurance Takaful (relevé de 37% par LF 2023)</div></div><div class="rr"><div class="rb">20%</div><div class="rr-t">Taux plafonné à 20% pour bénéfice > 1 M MAD (secteurs ciblés)<small>Exportateurs · Hôteliers · Mines · Artisanat · Enseignement privé · Sport · Agriculture · Externalisation services</small></div></div><div class="rr"><div class="rb b">15%</div><div class="rr-t">ZAI (au-delà des 5 ans d'exonération) · Sociétés CFC (au-delà des 5 ans)</div></div><div class="rr"><div class="rb g">8%</div><div class="rr-t">IS forfaitaire — sociétés non-résidentes adjudicataires de marchés de construction/montage (sur option)</div></div>`},
+{l:"Retenues à la Source",b:`<div class="rr"><div class="rb b">10%</div><div class="rr-t">Produits bruts perçus par personnes morales non-résidentes</div></div><div class="rr"><div class="rb">15%</div><div class="rr-t">Dividendes, parts sociales et revenus assimilés</div></div><div class="rr"><div class="rb">20%</div><div class="rr-t">Produits de placements à revenu fixe (PPRF) et revenus des certificats de Sukuk</div></div><div class="ibox gn" style="margin-top:10px"><div class="ii">✅</div><div>Exonérés de RAS : dividendes entre sociétés marocaines soumises à l'IS, dividendes perçus par OPCVM/OPCR/OPCI, dividendes distribués par sociétés CFC.</div></div>`},
+{l:"Exonérations",b:`<div class="ph">Exonération 5 ans + Taux Réduit au-delà</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Hôteliers et résidences touristiques (sur CA en devises rapatriées)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Sociétés CFC — Casablanca Finance City</div></div><div class="ci"><div class="ci-ok">✓</div><div>Sociétés sportives (Loi n°30-09)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Entreprises dans les Zones d'Accélération Industrielle</div></div><div class="ci"><div class="ci-ok">✓</div><div>Agence Tanger-Med et sociétés opérant dans les ZAI liées</div></div></div><div class="ph">Autres Exonérations</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>10 ans : concessions d'exploitation des gisements d'hydrocarbures</div></div><div class="ci"><div class="ci-ok">✓</div><div>5 ans : sociétés industrielles (activités fixées par voie réglementaire)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Permanente : associations et organismes à but non lucratif (opérations statutaires)</div></div></div>`},
+{l:"Cotisation Minimale",b:`<table class="dt"><tbody><tr><td>Taux normal</td><td>0,50% du CA HT</td></tr><tr><td>Taux majoré</td><td>0,60% si résultat courant négatif pendant 2 exercices consécutifs après exonération</td></tr><tr><td>Certaines professions</td><td>6%</td></tr><tr><td>Minimum absolu</td><td>3 000 MAD même en l'absence de CA</td></tr><tr><td>Exonération CM</td><td>36 premiers mois suivant le début d'exploitation (max 60 mois après constitution)</td></tr></tbody></table>`}
+]},
+{id:"fisc-ir",t:"Impôt sur le Revenu (IR)",sub:"Barème progressif — Salaires · Revenus pro · Fonciers",tags:["IR","barème IR","revenus professionnels","salaires","revenus fonciers","abattements","38%"],
+tabs:[
+{l:"Barème IR",b:`<div class="rr"><div class="rb g">0%</div><div class="rr-t">0 à 30 000 MAD / an</div></div><div class="rr"><div class="rb b">10%</div><div class="rr-t">30 001 à 50 000 MAD / an</div></div><div class="rr"><div class="rb">20%</div><div class="rr-t">50 001 à 60 000 MAD / an</div></div><div class="rr"><div class="rb">30%</div><div class="rr-t">60 001 à 80 000 MAD / an</div></div><div class="rr"><div class="rb r">34%</div><div class="rr-t">80 001 à 180 000 MAD / an</div></div><div class="rr"><div class="rb r">38%</div><div class="rr-t">Au-delà de 180 000 MAD / an</div></div><div class="ibox gd" style="margin-top:10px"><div class="ii">ℹ️</div><div>Déduction charges de famille : 360 MAD/enfant/an (max 6 enfants). Ce barème s'applique aux revenus professionnels, salariaux et fonciers globalisés.</div></div>`},
+{l:"Taux Spécifiques",b:`<div class="rr"><div class="rb g">0,5%</div><div class="rr-t">Auto-entrepreneur — CA commercial/artisanal ≤ 500 000 MAD (libératoire)</div></div><div class="rr"><div class="rb g">1%</div><div class="rr-t">Auto-entrepreneur — CA services ≤ 200 000 MAD (libératoire)</div></div><div class="rr"><div class="rb b">10%</div><div class="rr-t">Produits bruts non-résidents · Revenus fonciers &lt; 120 000 MAD · Plus-values actions cotées</div></div><div class="rr"><div class="rb b">15%</div><div class="rr-t">Plus-values nettes actions cotées · OPCVM autres</div></div><div class="rr"><div class="rb">20%</div><div class="rr-t">Placements à revenu fixe et Sukuk · Revenus fonciers ≥ 120 000 MAD · Salariés CFC (10 ans)</div></div><div class="rr"><div class="rb r">30%</div><div class="rr-t">Rémunérations occasionnelles · Cachets artistes · 1ère cession immeubles non bâtis en périmètre urbain</div></div>`},
+{l:"Abattements & Exo.",b:`<table class="dt"><tbody><tr><td>Frais professionnels (salariés)</td><td>17% à 45% selon la catégorie</td></tr><tr><td>Pensions ≤ 168 000 MAD</td><td>60%</td></tr><tr><td>Pensions > 168 000 MAD</td><td>40%</td></tr><tr><td>Part patronale CNSS + AMO</td><td>Exonérée totalement</td></tr><tr><td>Indemnités de stage ≤ 6 000 MAD/mois</td><td>Exonérées (24 mois)</td></tr><tr><td>ZAI — salariés</td><td>Exonération 5 ans + 20% au-delà</td></tr><tr><td>CFC — salariés</td><td>20% pendant 10 ans à compter de la prise de fonction</td></tr></tbody></table>`}
+]},
+{id:"fisc-tva",t:"Taxe sur la Valeur Ajoutée (TVA)",sub:"4 taux · Exonérations avec et sans droit à déduction",tags:["TVA","taux 20%","taux 10%","taux 7%","taux 14%","exonération TVA","régime suspensif"],
+tabs:[
+{l:"Taux",b:`<div class="rr"><div class="rb r">20%</div><div class="rr-t">Taux normal — intérieur et importation<small>Toute opération non visée par un taux réduit ou une exonération</small></div></div><div class="rr"><div class="rb">14%</div><div class="rr-t">Beurre (hors artisanal) · Transport voyageurs et marchandises (hors ferroviaire) · Électricité</div></div><div class="rr"><div class="rb b">10%</div><div class="rr-t">Hébergement &amp; restauration · Cafés · Locations touristiques · Huiles alimentaires (hors palme) · Sel · Riz · Pâtes · Gaz · Opérations bancaires · Mourabaha/Salam/Istisna'a · Avocats, notaires, adoul, huissiers · Matériels agricoles · Filets de pêche</div></div><div class="rr"><div class="rb g">7%</div><div class="rr-t">Eau · Assainissement · Médicaments · Fournitures scolaires · Sucre raffiné · Sardines en conserve · Lait en poudre · Savon ménage · Voiture économique (50–80 m², prix ≤ 250 000 MAD HT)</div></div>`},
+{l:"Exonérations",b:`<div class="ph">Avec Droit à Déduction</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Exportateurs — produits livrés et prestations à l'exportation</div></div><div class="ci"><div class="ci-ok">✓</div><div>Zones d'Accélération Industrielle — livraisons et prestations entre zones</div></div><div class="ci"><div class="ci-ok">✓</div><div>Biens d'investissement en immobilisation (36 premiers mois d'activité)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Transport international de voyageurs et de marchandises</div></div><div class="ci"><div class="ci-ok">✓</div><div>Marchés publics de travaux, fournitures et services de l'État</div></div></div><div class="ph">Sans Droit à Déduction</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Fabricants/prestataires PP avec CA ≤ 500 000 MAD</div></div><div class="ci"><div class="ci-ok">✓</div><div>Logements sociaux (50–80 m², prix ≤ 250 000 MAD HT)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Sociétés sportives (5 ans)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Activités agricoles — ventes directes sans boutique</div></div></div>`}
+]},
+{id:"fisc-autres",t:"Autres Taxes (DE · TP · TH · TSC)",sub:"Fiscalité locale · Taxes sur actes · Droits d'enregistrement",tags:["droits enregistrement","taxe professionnelle","taxe habitation","TSC","droits timbre","4%","6%"],
+tabs:[
+{l:"Droits d'Enregistrement",b:`<div class="rr"><div class="rb r">6%</div><div class="rr-t">Mutations FDC et clientèle · Cessions parts sociétés immobilières · Baux perpétuels</div></div><div class="rr"><div class="rb r">5%</div><div class="rr-t">Acquisition terrains nus ou constructions à démolir</div></div><div class="rr"><div class="rb">4%</div><div class="rr-t">Acquisition locaux construits (habitation, commercial, professionnel)</div></div><div class="rr"><div class="rb b">3%</div><div class="rr-t">Adjudications biens meubles · Logements sociaux (1ère vente) · Titres constitutifs de propriété</div></div><div class="rr"><div class="rb g">1,5%</div><div class="rr-t">Antichrèses · Hypothèques · Cessions à titre gratuit (ligne directe, époux, frères-sœurs)</div></div><div class="rr"><div class="rb g">1%</div><div class="rr-t">Cessions obligations · Constitution/augmentation de capital (apports nouveaux)</div></div><div class="rr"><div class="rb g">200 MAD</div><div class="rr-t">Droit fixe — baux, locations, dissolutions sans transmission</div></div><div class="rr"><div class="rb g">1 000 MAD</div><div class="rr-t">Droit fixe — constitution capital (≤ 500 000 MAD) · Restructurations de groupes</div></div>`},
+{l:"Taxe Professionnelle",b:`<div class="ph">Taux par Classe</div><div class="rr"><div class="rb b">10%</div><div class="rr-t">Classe 3 (C3) — activités à faible valeur locative</div></div><div class="rr"><div class="rb">20%</div><div class="rr-t">Classe 2 (C2)</div></div><div class="rr"><div class="rb r">30%</div><div class="rr-t">Classe 1 (C1) — activités à valeur locative élevée</div></div><div class="ph">Exonérations</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>5 premières années pour toute nouvelle activité professionnelle</div></div><div class="ci"><div class="ci-ok">✓</div><div>15 premières années pour entreprises en zones franches d'exportation</div></div><div class="ci"><div class="ci-ok">✓</div><div>Permanente pour investissements > 100 M MAD (partie excédant le seuil)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Ex-province de Tanger : réduction permanente de 50%</div></div></div>`},
+{l:"TH & TSC",b:`<div class="ph">Taxe d'Habitation</div><div class="rr"><div class="rb g">0%</div><div class="rr-t">Valeur locative annuelle de 0 à 5 000 MAD</div></div><div class="rr"><div class="rb g">10%</div><div class="rr-t">5 001 à 20 000 MAD</div></div><div class="rr"><div class="rb">20%</div><div class="rr-t">20 001 à 40 000 MAD</div></div><div class="rr"><div class="rb r">30%</div><div class="rr-t">> 40 000 MAD</div></div><table class="dt" style="margin-top:10px"><tbody><tr><td>Abattement habitation principale</td><td>75% de la valeur locative</td></tr><tr><td>Exonération construction neuve</td><td>5 ans (habitation principale)</td></tr></tbody></table><div class="ph">Taxe des Services Communaux (TSC)</div><div class="rr"><div class="rb">10,50%</div><div class="rr-t">Communes urbaines, centres délimités, stations thermales/estivales</div></div><div class="rr"><div class="rb b">6,50%</div><div class="rr-t">Zones périphériques des communes urbaines</div></div>`}
+]}
+]},
+{id:"douane",t:"Régime Douanier",ic:"⚓",col:"#3D1A6B",bg:"rgba(61,26,107,.08)",s:[
+{id:"dou-red",t:"Régimes Économiques en Douane (RED)",sub:"8 régimes suspensifs + Drawback + OEA",tags:["RED","ATPA","entrepôt douane","transit","drawback","EIF","exportation temporaire","suspension droits","OEA"],
+tabs:[
+{l:"8 Régimes",b:`<div class="ibox bl"><div class="ii">🔑</div><div>Condition commune : garantie des droits (caution bancaire) + acquit-à-caution + comptabilité matières tenue.</div></div><div class="pc"><div class="pc-n">A — Entrepôt de Stockage</div><div class="pc-tags"><span class="pt gd">Durée max : 2 ans</span><span class="pt bl">Public / Privé banal / Privé particulier</span></div><div class="pc-t">Placement en suspension en attente de destination définitive. Apurement : exportation, mise à la consommation (max 15% en EPP), cession sous autre régime.</div></div><div class="pc"><div class="pc-n">B1 — ATPA : Admission Temporaire Perfectionnement Actif</div><div class="pc-tags"><span class="pt gd">Durée max : 2 ans</span></div><div class="pc-t">Importation en suspension pour transformation, ouvraison ou main-d'œuvre, en vue de l'exportation des produits compensateurs.</div></div><div class="pc"><div class="pc-n">B2 — Transformation sous Douane</div><div class="pc-tags"><span class="pt gd">Durée max : 1 an</span></div><div class="pc-t">Importation en suspension pour modification de l'espèce — produits compensateurs bénéficiant d'une exonération à l'importation.</div></div><div class="pc"><div class="pc-n">B3 — ETPP : Exportation Temporaire Perfectionnement Passif</div><div class="pc-tags"><span class="pt gd">Durée max : 1 an</span></div><div class="pc-t">Exportation provisoire pour ouvraison à l'étranger. À la réimportation : droits calculés sur la seule valeur ajoutée à l'étranger.</div></div><div class="pc"><div class="pc-n">C1 — Admission Temporaire (AT)</div><div class="pc-tags"><span class="pt gd">6 mois à 2 ans</span></div><div class="pc-t">Matériels, produits et animaux en utilisation temporaire. Redevance trimestrielle = 1/10 des droits exigibles par trimestre.</div></div><div class="pc"><div class="pc-n">C2 — Exportation Temporaire (ET)</div><div class="pc-tags"><span class="pt gd">Durée max : 1 an</span></div><div class="pc-t">Export sans transformation — foires, travaux, usage professionnel. Réimportation en l'état en franchise totale.</div></div><div class="pc"><div class="pc-n">D — Entrepôt Industriel Franc (EIF)</div><div class="pc-tags"><span class="pt gd">Investissement min. : 50 M MAD</span></div><div class="pc-t">ATPA + AT + stockage combinés. Jusqu'à 15% des produits compensateurs commercialisables localement.</div></div><div class="pc"><div class="pc-n">E — Transit</div><div class="pc-tags"><span class="pt bl">Acquit-à-caution ou Carnet TIR/ATA</span></div><div class="pc-t">Transport sous douane en suspension totale de droits et taxes entre bureaux.</div></div>`},
+{l:"Drawback & Statuts",b:`<div class="ph">Drawback — Remboursement Forfaitaire</div><table class="dt"><tbody><tr><td>Objet</td><td>Remboursement forfaitaire des droits d'importation et TIC sur matières étrangères incorporées dans des produits exportés</td></tr><tr><td>Bénéficiaires</td><td>Exportateurs de marchandises éligibles et cédants sous ATPA</td></tr><tr><td>Délai réglementaire</td><td>2 ans — exportations antérieures non prises en compte</td></tr><tr><td>Liquidation</td><td>Fin de chaque trimestre</td></tr><tr><td>Drawback énergie</td><td>Combustibles, gaz, électricité consommés à la fabrication (textile et industrie)</td></tr></tbody></table><div class="ph">OEA — Opérateur Économique Agréé</div><table class="dt"><tbody><tr><td>Avantages directs</td><td>Passage plus rapide · Contrôles physiques réduits · Traitement personnalisé</td></tr><tr><td>Avantages indirects</td><td>Gage de fiabilité · Levier de compétitivité · Reconnaissance internationale</td></tr></tbody></table><div class="ph">Exportateur Agréé</div><table class="dt"><tbody><tr><td>Objet</td><td>Certification d'origine sans visa bureau de douane à chaque expédition</td></tr><tr><td>Accords couverts</td><td>UE (EUR.1/EUR-MED), AELE, Turquie, Accord d'Agadir</td></tr></tbody></table>`}
+]},
+{id:"dou-import",t:"Dédouanement à l'Importation",sub:"Système BADR · DUM · Circuit vert/jaune/rouge · ADIL",tags:["importation","DUM","BADR","engagement importation","mainlevée","crédit enlèvement","titre importation"],
+tabs:[
+{l:"Circuit Import",b:`<div class="ph">Pré-Requis</div><table class="dt"><tbody><tr><td>Inscription RC</td><td>Obligatoire — numéro figure sur tous les titres et DUM</td></tr><tr><td>Titre d'importation</td><td>Engagement d'importation (marchandises libres, validité 6 mois) OU Licence d'importation (marchandises soumises)</td></tr></tbody></table><div class="ph">Étapes Dédouanement</div><div class="step"><div class="sn">1</div><div><div class="st">Conduite des marchandises en douane</div><div class="so">Acheminement au premier bureau d'entrée</div></div></div><div class="step"><div class="sn">2</div><div><div class="st">Déclaration Sommaire</div><div class="so">Transporteur — dépôt informatique BADR</div></div></div><div class="step"><div class="sn">3</div><div><div class="st">DUM — Déclaration Unique des Marchandises</div><div class="so">Déclarant, transitaire ou importateur</div><div class="sdelay">⏱ 24h (mise à conso) · 5 jours (régime économique)</div></div></div><div class="step"><div class="sn">4</div><div><div class="st">Sélectivité automatique BADR</div><div class="snote">✓ Admis Conforme (AC) = passage rapide · Visite Physique (VP) = vérification · Visite Scanning (VS)</div></div></div><div class="step"><div class="sn">5</div><div><div class="st">Contrôle documentaire et/ou physique</div><div class="so">Agents ADII</div></div></div><div class="step"><div class="sn">6</div><div><div class="st">Mainlevée</div><div class="so">ADII — après paiement ou consignation</div><div class="snote">✓ Crédit d'enlèvement disponible — différé jusqu'à 180 jours</div></div></div><div class="ibox gd" style="margin-top:10px"><div class="ii">💻</div><div>ADIL sur www.douane.gov.ma — simulateur de fiscalité applicable par produit, avantages ALE, documents requis.</div></div>`},
+{l:"Documents DUM",b:`<table class="dt"><tbody><tr><td>Facture commerciale</td><td>Détail de la valeur par article</td></tr><tr><td>Attestation bancaire</td><td>Banque domiciliataire · montant devises · taux de change · références titres</td></tr><tr><td>Certificat d'origine</td><td>EUR.1, EUR-MED, Form A — pour bénéficier des taux préférentiels ALE</td></tr><tr><td>Titre d'importation</td><td>Engagement ou licence d'importation domicilié en banque</td></tr><tr><td>Certificats réglementaires</td><td>Sanitaire, vétérinaire, norme industrielle, contrôle technique selon la nature</td></tr><tr><td>Titre de transport</td><td>Connaissement (maritime) · LTA (aérien) · CMR (routier)</td></tr><tr><td>Liste de colisage</td><td>Poids, nombre et nature des marchandises par colis</td></tr></tbody></table>`}
+]},
+{id:"dou-export",t:"Dédouanement à l'Exportation",sub:"Franchise de droits · BAE · Rapatriement devises",tags:["exportation","DUM export","BADR","engagement de change","BAE","bon à embarquer","rapatriement","150 jours"],
+tabs:[
+{l:"Circuit Export",b:`<div class="ph">Pré-Requis Export</div><table class="dt"><tbody><tr><td>Engagement de change</td><td>Marchandises non soumises à licence — validité 3 mois</td></tr><tr><td>Licence d'exportation</td><td>Pour marchandises soumises — Ministère du Commerce Extérieur</td></tr></tbody></table><div class="ph">Étapes &amp; Coûts</div><table class="dt"><tbody><tr><td>Droits de douane à l'export</td><td class="ct-g">AUCUN — exportation en franchise totale</td></tr><tr><td>Redevance BADR</td><td>50 MAD par DUM exportée via procédé informatique</td></tr><tr><td>Fumigation végétaux</td><td>10 MAD / m³ de chambre de fumigation utilisée</td></tr><tr><td>BAE — Bon À Embarquer</td><td>Délivré par l'agent vérificateur ADII — indispensable pour l'embarquement</td></tr><tr><td>Rapatriement devises (biens)</td><td>Obligatoire — 150 jours à compter de la date d'enregistrement de la DUM</td></tr><tr><td>Rapatriement devises (services)</td><td>90 jours à compter de la date de réalisation de la prestation</td></tr><tr><td>Cession des devises reçues</td><td>Dans les 3 jours ouvrables suivant la réception des fonds</td></tr></tbody></table>`}
+]}
+]},
+{id:"emploi",t:"Emploi & Ressources Humaines",ic:"🤝",col:"#1A5C3D",bg:"rgba(26,92,61,.08)",s:[
+{id:"emp-couts",t:"Coût du Travail & Charges Sociales",sub:"SMIG · SMAG · CNSS actualisée · Prime d'ancienneté",tags:["SMIG","SMAG","salaire minimum","charges sociales","CNSS","AMO","TFP","27,83%"],
+tabs:[
+{l:"SMIG & CNSS",b:`<div class="ibox gd"><div class="ii">📌</div><div>Le SMIG est révisé périodiquement par décret. Consulter www.travail.gov.ma pour les valeurs exactes en vigueur.</div></div><table class="dt"><tbody><tr><td>SMIG — Industrie/Commerce</td><td>~15 à 17 MAD/heure (selon décret)</td></tr><tr><td>SMAG — Agriculture</td><td>~80 à 90 MAD/jour (selon décret)</td></tr></tbody></table><div class="ph">Cotisations CNSS</div><table class="dt"><tbody><tr><td>Prestations familiales (patronale)</td><td>6,40%</td></tr><tr><td>Prestations court terme (total)</td><td>1,57% — patronale 1,05% · salariale 0,52%</td></tr><tr><td>Prestations long terme (total)</td><td>11,89% — patronale 7,93% · salariale 3,96%</td></tr><tr><td>AMO — Assurance Maladie (total)</td><td>6,37% — patronale 4,11% · salariale 2,26%</td></tr><tr><td>Taxe Formation Professionnelle</td><td>1,60% (patronale)</td></tr><tr><td style="color:var(--gold);font-weight:600">TOTAL charge patronale</td><td style="color:var(--gold);font-weight:600">21,09%</td></tr><tr><td>TOTAL charge salariale</td><td>6,74%</td></tr><tr><td style="color:var(--red);font-weight:600">TOTAL global</td><td style="color:var(--red);font-weight:600">27,83%</td></tr></tbody></table>`},
+{l:"Prime d'Ancienneté",b:`<div class="rr"><div class="rb g">5%</div><div class="rr-t">Après 2 ans de service continu</div></div><div class="rr"><div class="rb g">10%</div><div class="rr-t">Après 5 ans de service</div></div><div class="rr"><div class="rb b">15%</div><div class="rr-t">Après 12 ans de service</div></div><div class="rr"><div class="rb">20%</div><div class="rr-t">Après 20 ans de service</div></div><div class="rr"><div class="rb r">25%</div><div class="rr-t">Après 25 ans de service</div></div><div class="ibox bl" style="margin-top:10px"><div class="ii">ℹ️</div><div>Applicable sauf si le salaire est déjà basé sur l'ancienneté via le contrat, le règlement intérieur ou une convention collective.</div></div>`},
+{l:"Code du Travail",b:`<div class="ph">Durée du Travail</div><table class="dt"><tbody><tr><td>Durée hebdomadaire</td><td>44 heures (Industrie/Commerce)</td></tr><tr><td>HS diurnes (6h–21h)</td><td>+25%</td></tr><tr><td>HS nocturnes (21h–6h)</td><td>+50%</td></tr><tr><td>HS jour de repos (diurne)</td><td>+50%</td></tr><tr><td>HS jour de repos (nocturne)</td><td>+100%</td></tr><tr><td>Congé annuel</td><td>1,5 jour/mois (minimum 6 mois ancienneté)</td></tr><tr><td>Âge minimum de travail</td><td>15 ans révolus</td></tr><tr><td>Retraite</td><td>60 ans (55 ans pour les mineurs au sens légal)</td></tr></tbody></table><div class="ph">Salariés Étrangers</div><table class="dt"><tbody><tr><td>Système dépôt</td><td>TAECHIR — www.taechir.travail.gov.ma</td></tr><tr><td>Attestation ANAPEC</td><td>20 jours ouvrables (48h si profil rare ou renouvellement)</td></tr><tr><td>Coût dossier avec annonce</td><td>5 000 MAD HT + 1 500 MAD HT par dossier supplémentaire</td></tr><tr><td>Réponse Administration</td><td>Maximum 10 jours ouvrables</td></tr></tbody></table>`}
+]}
+]},
+{id:"changes",t:"Régime des Changes",ic:"◈",col:"#5C3A1A",bg:"rgba(92,58,26,.08)",s:[
+{id:"chg-ide",t:"Investissements Étrangers & Convertibilité",sub:"Liberté totale de transfert pour IDE financés en devises",tags:["IDE","investissement étranger","convertibilité","dividendes","rapatriement","cession","liquidation","Office des Changes"],
+tabs:[
+{l:"Régime IDE",b:`<div class="ibox gn"><div class="ii">✅</div><div>Investissements étrangers financés en devises : régime de convertibilité garantissant la liberté totale de transfert des revenus et du produit de cession ou de liquidation.</div></div><div class="ph">Formes d'Investissement Éligibles</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Création de sociétés de droit marocain</div></div><div class="ci"><div class="ci-ok">✓</div><div>Prise de participation et souscription à l'augmentation de capital</div></div><div class="ci"><div class="ci-ok">✓</div><div>Création d'une succursale ou bureau de représentation</div></div><div class="ci"><div class="ci-ok">✓</div><div>Apport en compte courant d'associés (numéraire ou créances)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Octroi de prêts apparentés</div></div><div class="ci"><div class="ci-ok">✓</div><div>Acquisition de biens immobiliers ou droits de jouissance</div></div></div><div class="ph">Revenus Librement Transférables</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Dividendes et parts de bénéfices distribués</div></div><div class="ci"><div class="ci-ok">✓</div><div>Bénéfices réalisés par les succursales au Maroc</div></div><div class="ci"><div class="ci-ok">✓</div><div>Revenus locatifs · Intérêts prêts apparentés · Jetons de présence</div></div><div class="ci"><div class="ci-ok">✓</div><div>Produit de la cession ou de la liquidation de l'investissement</div></div></div>`},
+{l:"Investissements à l'Étranger",b:`<div class="ph">Conditions pour Personnes Morales Résidentes</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Inscrite au Registre de Commerce</div></div><div class="ci"><div class="ci-ok">✓</div><div>Ayant au moins 3 années d'activité</div></div><div class="ci"><div class="ci-ok">✓</div><div>Comptabilité certifiée sans réserve significative par un CAC externe</div></div><div class="ci"><div class="ci-ok">✓</div><div>Investir dans un domaine en rapport direct avec l'activité existante</div></div></div><div class="ph">Montants Autorisés (par PM résidente, par an)</div><div class="rr"><div class="rb g">100 M MAD</div><div class="rr-t">Investissements en Afrique<small>Priorité stratégique — montant majoré pour favoriser l'intégration africaine</small></div></div><div class="rr"><div class="rb">50 M MAD</div><div class="rr-t">Investissements dans les autres continents</div></div><table class="dt" style="margin-top:10px"><tbody><tr><td>Rapatriement revenus</td><td>Dans les 30 jours à compter de la mise en paiement</td></tr><tr><td>Rapatriement prêts/CC</td><td>Maximum 5 ans · Possibilité d'incorporation au capital</td></tr></tbody></table>`},
+{l:"Opérations Courantes",b:`<div class="ph">Importations — Règlements</div><table class="dt"><tbody><tr><td>Domiciliation</td><td>Titre d'importation souscrit sur PortNet — domicilié en banque agréée</td></tr><tr><td>Acompte avant imputation (règle générale)</td><td>30% de la valeur totale</td></tr><tr><td>Règlement par anticipation</td><td>Contrevaleur de 200 000 MAD (100% pour sociétés catégorisées)</td></tr></tbody></table><div class="ph">Exportations — Rapatriement</div><table class="dt"><tbody><tr><td>Obligation</td><td>Montant intégral du produit des exportations</td></tr><tr><td>Délai biens</td><td>150 jours à compter de la date de la DUM</td></tr><tr><td>Délai services</td><td>90 jours à compter de la réalisation de la prestation</td></tr><tr><td>Cession des devises</td><td>Dans les 3 jours ouvrables suivant la réception des fonds</td></tr></tbody></table>`}
+]}
+]},
+{id:"sinstaller",t:"S'installer au Maroc",ic:"🏡",col:"#3A3A5C",bg:"rgba(58,58,92,.08)",s:[
+{id:"si-immo",t:"Acquisition Immobilière",sub:"Ouvert aux étrangers — sauf terrains agricoles",tags:["immobilier","achat","terrains","notaire","conservation foncière","droits enregistrement","profit foncier"],
+tabs:[
+{l:"Droits à l'Acquisition",b:`<div class="ibox gn"><div class="ii">🔑</div><div>Acquisition ouverte à tout étranger (PP ou PM). Exception : terrains à vocation agricole — location uniquement pour les étrangers.</div></div><table class="dt"><tbody><tr><td>Droits d'enregistrement</td><td>4% du prix d'acquisition (locaux construits)</td></tr><tr><td>Droits de timbre</td><td>20 MAD par feuille ou par document électronique</td></tr><tr><td>Conservation foncière — ad valorem</td><td>1,5%</td></tr><tr><td>Conservation foncière — droit fixe</td><td>100 MAD</td></tr><tr><td>Honoraires notaire</td><td>0,5% à 1,5% du prix selon tranches — minimum 4 000 MAD</td></tr><tr><td>TVA sur honoraires notaire</td><td>10%</td></tr></tbody></table>`},
+{l:"IR sur Profit Foncier",b:`<div class="rr"><div class="rb">20%</div><div class="rr-t">Cession immeubles bâtis · Droits réels immobiliers · FDC · Actions sociétés immobilières</div></div><div class="rr"><div class="rb r">30%</div><div class="rr-t">1ère cession à titre onéreux d'immeubles non bâtis en périmètre urbain</div></div><div class="ph">Exonérations</div><div class="cl"><div class="ci"><div class="ci-ok">✓</div><div>Habitation principale occupée ≥ 6 ans (CM 3% si prix > 4 M MAD)</div></div><div class="ci"><div class="ci-ok">✓</div><div>Cessions ≤ 140 000 MAD de valeur totale dans l'année civile</div></div><div class="ci"><div class="ci-ok">✓</div><div>Logement social (50–80 m², prix ≤ 250 000 MAD HT) — habitation principale ≥ 4 ans</div></div><div class="ci"><div class="ci-ok">✓</div><div>Cessions à titre gratuit entre ascendants/descendants, époux, frères/sœurs, kafala</div></div></div>`}
+]},
+{id:"si-vehicules",t:"Effets Personnels & Véhicules",sub:"Franchise douanière · Admission temporaire · Résidence",tags:["déménagement","effets personnels","franchise douanière","véhicule","admission temporaire","carte immatriculation"],
+tabs:[
+{l:"Effets Personnels",b:`<div class="ph">Franchise Douanière — Déménagement</div><table class="dt"><tbody><tr><td>Franchise</td><td>Totale pour étrangers venant s'installer au Maroc</td></tr><tr><td>Inclus</td><td>Meubles personnels en usage · Animaux d'appartement · Provisions de ménage · Bicyclettes/vélomoteurs (1/membre de famille) · Outils de travail professionnels</td></tr><tr><td>Exclus</td><td>Matériels industriels/commerciaux · Mobiliers de bureau · Stocks de marchandises · Véhicules soumis à immatriculation</td></tr><tr><td>Documents requis</td><td>Inventaire détaillé + certificat de changement de résidence + attestation sur l'honneur</td></tr></tbody></table>`},
+{l:"Véhicules",b:`<div class="ph">Importation de Véhicules</div><table class="dt"><tbody><tr><td>Admission Temporaire</td><td>6 mois — accordée à tout résident à l'étranger s'installant au Maroc — aucune formalité préalable</td></tr><tr><td>Dédouanement sous AT</td><td>Bureau intérieur — certificat d'identification (2 ex.) + pièce d'identité + document AT</td></tr><tr><td>Calcul droits et taxes</td><td>Application MCV (simulateur) sur www.douane.gov.ma</td></tr></tbody></table><div class="ph">Carte d'Immatriculation (Étrangers)</div><table class="dt"><tbody><tr><td>Dépôt</td><td>Sûreté Nationale ou Gendarmerie Royale — dans les 90 jours de l'entrée</td></tr><tr><td>Coût</td><td>100 MAD par année de validité + 6 photos d'identité</td></tr><tr><td>Document requis (travail)</td><td>Contrat de travail homologué par le Ministère du Travail</td></tr></tbody></table>`}
+]}
+]}
+];
+
+// ═════ YEAR
+const Y=new Date().getFullYear();
+document.getElementById('tbYear').textContent='DONNÉES '+Y;
+document.getElementById('yrChip').textContent=Y;
+document.getElementById('ftYear').textContent=Y;
+
+// ═════ HELPERS
+const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function matches(s,q){
+  if(!q)return true;
+  const hay=norm([s.t,s.sub||'',(s.tags||[]).join(' '),JSON.stringify(s.tabs||[])].join(' '));
+  return norm(q).split(/\s+/).filter(Boolean).every(w=>hay.includes(w));
+}
+function hl(txt,q){
+  if(!q||!txt)return txt||'';
+  const ws=q.split(/\s+/).filter(Boolean).map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+  if(!ws.length)return txt;
+  try{return txt.replace(new RegExp('('+ws.join('|')+')','gi'),'<mark>$1</mark>')}catch{return txt}
+}
+
+// ═════ STATE
+let axis='all',query='';
+
+// ═════ SIDEBAR
+function buildSidebar(){
+  const total=DB.reduce((s,a)=>s+a.s.length,0);
+  document.getElementById('cntAll').textContent=total;
+  document.getElementById('totalChip').innerHTML='<strong>'+total+'</strong> fiches';
+  const wrap=document.getElementById('sbAxes');
+  DB.forEach(a=>{
+    const b=document.createElement('button');
+    b.className='nb';b.dataset.ax=a.id;
+    b.innerHTML='<div class="nb-ico">'+a.ic+'</div><span class="nb-name">'+a.t+'</span><span class="nb-cnt">'+a.s.length+'</span>';
+    b.onclick=()=>setAxis(a.id);
+    wrap.appendChild(b);
+  });
+  document.getElementById('resetBtn').onclick=()=>{
+    query='';document.getElementById('searchInput').value='';setAxis('all');
+  };
+}
+
+function setAxis(id){
+  axis=id;
+  document.querySelectorAll('.nb').forEach(b=>{
+    const isAll=id==='all'&&!b.dataset.ax;
+    b.classList.toggle('active',b.dataset.ax===id||isAll);
+  });
+  render();
+}
+
+// ═════ CARD TOGGLE
+function toggleCard(id){
+  const c=document.getElementById('c-'+id);
+  if(c)c.classList.toggle('open');
+}
+
+// ═════ TAB SWITCH — event delegation
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.tab');
+  if(!t)return;
+  const cid=t.dataset.cid,idx=t.dataset.idx;
+  document.querySelectorAll('.tab[data-cid="'+cid+'"]').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel[data-cid="'+cid+'"]').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  const p=document.querySelector('.panel[data-cid="'+cid+'"][data-idx="'+idx+'"]');
+  if(p)p.classList.add('on');
+});
+
+// ═════ RENDER
+function render(){
+  const q=query;
+  const axes=axis==='all'?DB:DB.filter(a=>a.id===axis);
+  let html='',total=0;
+  axes.forEach(a=>{
+    const ok=a.s.filter(s=>matches(s,q));
+    if(!ok.length)return;
+    total+=ok.length;
+    html+='<div class="ag" style="--acCol:'+a.col+';--acBg:'+a.bg+'"><div class="ag-head"><div class="ag-ico">'+a.ic+'</div><h2 class="ag-title">'+a.t+'</h2><span class="ag-pill">'+ok.length+' fiche'+(ok.length>1?'s':'')+'</span></div><div class="grid">';
+    ok.forEach(s=>{
+      const tags=(s.tags||[]).map(t=>'<span class="tag'+(q&&norm(t).includes(norm(q))?' m':'')+'">' +t+'</span>').join('');
+      const tabsBar=(s.tabs||[]).map((t,i)=>'<button class="tab'+(i===0?' on':'')+'" data-cid="'+s.id+'" data-idx="'+i+'">'+t.l+'</button>').join('');
+      const panels=(s.tabs||[]).map((t,i)=>'<div class="panel'+(i===0?' on':'')+'" data-cid="'+s.id+'" data-idx="'+i+'">'+t.b+'</div>').join('');
+      html+='<div class="card" id="c-'+s.id+'" style="--acCol:'+a.col+'">'
+        +'<div class="card-head" onclick="toggleCard(\''+s.id+'\')">'
+        +'<div class="card-ht"><div class="card-title">'+hl(s.t,q)+'</div>'+(s.sub?'<div class="card-sub">'+s.sub+'</div>':'')+'</div>'
+        +'<div class="arr">▾</div></div>'
+        +(tags?'<div class="card-tags">'+tags+'</div>':'')
+        +'<div class="card-body"><div class="tabs">'+tabsBar+'</div>'+panels+'</div>'
+        +'</div>';
+    });
+    html+='</div></div>';
+  });
+  if(!total)html='<div class="no-res"><div class="no-res-ico">◎</div><div class="no-res-t">Aucun résultat</div><div class="no-res-s">Essayez : IS, TVA, SARL, ATPA, ZAI, OEA, Charte…</div></div>';
+  document.getElementById('results').innerHTML=html;
+  document.getElementById('rtext').innerHTML='<strong>'+total+'</strong> fiche'+(total>1?'s':'')+' affichée'+(total>1?'s':'');
+}
+
+// ═════ SEARCH
+document.getElementById('searchInput').addEventListener('input',e=>{
+  query=e.target.value.trim();render();
+});
+
+// ═════ BOOT
+buildSidebar();
+render();
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

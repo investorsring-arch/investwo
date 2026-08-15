@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracker CRI — Création d'Entreprise · Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF0D0;
+  --ink:#0A0A08;--im:#1F1F18;--is:#3A3A30;--sm:#7A7A6A;
+  --bg:#F5F4EE;--b2:#ECEAE0;--b3:#E2E0D4;--wh:#FEFEFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--er:#B03030;--warn:#C87000;
+  --bd:rgba(0,0,0,.08);--bds:rgba(0,0,0,.14);
+  --ft:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+  --r:12px;--sh:0 2px 16px rgba(0,0,0,.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── Header ── */
+.hdr{position:sticky;top:0;z-index:100;height:56px;background:rgba(10,10,8,.97);
+  backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;border-bottom:1px solid rgba(184,134,42,.18)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.logo{font-family:var(--ft);font-size:15px;font-weight:800;color:#fff}
+.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:9px;color:var(--gl);background:rgba(184,134,42,.14);
+  border:1px solid rgba(184,134,42,.28);padding:3px 9px;border-radius:100px;letter-spacing:.04em}
+.save-indicator{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:5px}
+.save-dot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+
+/* ── Layout ── */
+.page{max-width:1200px;margin:0 auto;padding:28px 24px 80px}
+
+/* ── Hero ── */
+.hero{margin-bottom:28px}
+.hero-kicker{font-family:var(--fm);font-size:10px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.hero-title{font-family:var(--ft);font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.hero-sub{font-size:13.5px;color:var(--sm);max-width:600px;line-height:1.65}
+
+/* ── Progress global ── */
+.progress-bar-wrap{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);
+  padding:20px 24px;margin-bottom:24px;box-shadow:var(--sh)}
+.pb-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
+.pb-title{font-family:var(--ft);font-size:15px;font-weight:700}
+.pb-pct{font-family:var(--ft);font-size:26px;font-weight:800;color:var(--gold)}
+.pb-track{height:9px;border-radius:5px;background:var(--b2);overflow:hidden;margin-bottom:10px}
+.pb-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--ok),var(--gold));transition:width .5s ease}
+.pb-meta{display:flex;gap:20px;flex-wrap:wrap;font-size:11.5px;color:var(--sm)}
+.pb-stat{display:flex;align-items:center;gap:5px}
+.pb-dot{width:7px;height:7px;border-radius:50%}
+
+/* ── Main grid ── */
+.main-grid{display:grid;grid-template-columns:300px 1fr;gap:22px;align-items:start}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr}}
+
+/* ── Sidebar ── */
+.sidebar{display:flex;flex-direction:column;gap:14px;position:sticky;top:70px}
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);padding:20px;box-shadow:var(--sh)}
+.card-label{font-family:var(--fm);font-size:9px;color:var(--sm);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+
+/* ── Form fields ── */
+.fg{margin-bottom:11px}
+.fg label{display:block;font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--is);margin-bottom:4px;text-transform:uppercase;font-family:var(--fm)}
+.fg select,.fg input{width:100%;padding:8px 11px;border:1.5px solid var(--b3);border-radius:8px;
+  font-family:var(--fb);font-size:13px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .18s}
+.fg select:focus,.fg input:focus{border-color:var(--gold);background:var(--wh)}
+
+/* ── Stats box ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.stat-box{background:var(--b2);border-radius:8px;padding:10px 12px;text-align:center}
+.stat-val{font-family:var(--ft);font-size:18px;font-weight:800;color:var(--gold)}
+.stat-lbl{font-size:9px;color:var(--sm);font-family:var(--fm);margin-top:1px}
+
+/* ── CRI contacts ── */
+.cri-contact-box{background:var(--im);border-radius:var(--r);padding:16px;color:#fff;margin-top:4px}
+.cri-contact-name{font-family:var(--ft);font-size:13px;font-weight:700;color:var(--gl);margin-bottom:10px}
+.cri-row{font-size:11px;color:rgba(255,255,255,.5);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;gap:8px;align-items:center}
+.cri-row:last-child{border:none}
+.cri-row a{color:var(--gl);text-decoration:none}
+.cri-row a:hover{text-decoration:underline}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:8px;background:transparent;padding:0;margin-bottom:18px}
+.tab{flex:1;padding:10px 14px;border:none;border-radius:9px;
+  font-family:var(--fb);font-size:12px;font-weight:700;cursor:pointer;
+  text-align:center;transition:all .22s;position:relative;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.tab::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .22s;
+  background:rgba(255,255,255,.18)}
+.tab:hover::after{opacity:1}
+.tab:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(0,0,0,.18)}
+.tab:active{transform:translateY(0)}
+
+/* Tab 1 — Étapes (bleu ardoise → bleu nuit) */
+.tab:nth-child(1){
+  background:linear-gradient(135deg,#1E4D6B 0%,#163A52 100%);
+  color:#fff}
+.tab:nth-child(1).active{
+  background:linear-gradient(135deg,#2A6B92 0%,#1E4D6B 100%);
+  box-shadow:0 4px 18px rgba(30,77,107,.45)}
+.tab:nth-child(1):not(.active):hover{
+  background:linear-gradient(135deg,#2A6B92 0%,#1E4D6B 100%)}
+
+/* Tab 2 — Autorisations (vert olive → vert forêt) */
+.tab:nth-child(2){
+  background:linear-gradient(135deg,#2A6B3C 0%,#1A4D2A 100%);
+  color:#fff}
+.tab:nth-child(2).active{
+  background:linear-gradient(135deg,#38924F 0%,#2A6B3C 100%);
+  box-shadow:0 4px 18px rgba(26,107,60,.45)}
+.tab:nth-child(2):not(.active):hover{
+  background:linear-gradient(135deg,#38924F 0%,#2A6B3C 100%)}
+
+/* Tab 3 — Base de connaissances (or → ambre) */
+.tab:nth-child(3){
+  background:linear-gradient(135deg,#B8862A 0%,#8A6018 100%);
+  color:#fff}
+.tab:nth-child(3).active{
+  background:linear-gradient(135deg,#D4A030 0%,#B8862A 100%);
+  box-shadow:0 4px 18px rgba(184,134,42,.5)}
+.tab:nth-child(3):not(.active):hover{
+  background:linear-gradient(135deg,#D4A030 0%,#B8862A 100%)}
+
+@media(max-width:600px){
+  .tabs{flex-direction:column;gap:6px}
+  .tab{font-size:11.5px;padding:9px 10px}
+}
+
+/* ── Step item ── */
+.steps-wrap{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:0;align-items:stretch;position:relative}
+.step-left{display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0}
+.step-num{width:34px;height:34px;border-radius:50%;border:2px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fm);font-size:11px;font-weight:700;
+  background:var(--wh);color:var(--sm);transition:all .25s;flex-shrink:0;
+  cursor:pointer;position:relative;z-index:1}
+.step-num.done{border-color:var(--ok);background:var(--ok);color:#fff}
+.step-num.blocked{border-color:var(--er);background:rgba(176,48,48,.08);color:var(--er)}
+.step-line{width:2px;background:var(--b3);flex:1;min-height:16px;margin:3px 0;transition:background .3s}
+.step-line.done{background:var(--ok)}
+.step:last-child .step-line{display:none}
+
+.step-body{flex:1;background:var(--wh);border:1px solid var(--bd);border-radius:12px;
+  padding:14px 16px;margin-bottom:10px;transition:all .25s;cursor:pointer}
+.step-body:hover{border-color:rgba(184,134,42,.3);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.step-body.done{border-color:rgba(26,107,60,.25);background:rgba(26,107,60,.015)}
+.step-body.blocked{border-color:rgba(176,48,48,.3);background:rgba(176,48,48,.015)}
+.step-body.active-expand{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,42,.07)}
+
+.step-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.step-title{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.35;flex:1}
+.step-chips{display:flex;gap:5px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.chip{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px;white-space:nowrap}
+.chip-days{background:rgba(30,77,107,.08);color:var(--ac);border:1px solid rgba(30,77,107,.15)}
+.chip-cost{background:rgba(184,134,42,.1);color:var(--gold);border:1px solid rgba(184,134,42,.2)}
+.chip-done{background:rgba(26,107,60,.1);color:var(--ok);border:1px solid rgba(26,107,60,.2)}
+.chip-blocked{background:rgba(176,48,48,.1);color:var(--er);border:1px solid rgba(176,48,48,.2)}
+.chip-online{background:rgba(30,77,107,.08);color:var(--ac);border:1px solid rgba(30,77,107,.15)}
+
+/* ── Step detail ── */
+.step-detail{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--b3)}
+.step-detail.open{display:block}
+
+.doc-check-list{margin-bottom:12px}
+.doc-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12.5px;color:var(--is)}
+.chk{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--b3);cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;background:var(--bg);font-size:10px}
+.chk.checked{background:var(--ok);border-color:var(--ok);color:#fff}
+
+.step-note{font-size:12px;color:var(--is);line-height:1.65;background:var(--b2);
+  border-radius:8px;padding:10px 12px;margin-bottom:12px}
+.step-note a{color:var(--gold);text-decoration:none}
+.step-note a:hover{text-decoration:underline}
+
+/* ── Sector tag ── */
+.sector-badge{display:inline-block;font-size:10px;font-family:var(--fm);padding:3px 9px;
+  border-radius:100px;background:rgba(30,77,107,.08);color:var(--ac);border:1px solid rgba(30,77,107,.15);
+  margin-top:6px}
+
+/* ── Actions ── */
+.step-actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn-s{padding:6px 13px;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;
+  font-family:var(--fb);transition:all .18s;border:1.5px solid}
+.btn-done{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn-done:hover{background:#1D7A43}
+.btn-undo{background:var(--b2);border-color:var(--bd);color:var(--sm)}
+.btn-undo:hover{border-color:var(--gold);color:var(--ink)}
+.btn-block{background:rgba(176,48,48,.07);border-color:rgba(176,48,48,.3);color:var(--er)}
+.btn-block:hover{background:rgba(176,48,48,.14)}
+.btn-ai{background:linear-gradient(135deg,#1E4D6B,#2A6B90);border-color:transparent;color:#fff}
+.btn-ai:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(30,77,107,.35)}
+
+/* ── Blocked resolution ── */
+.blocker-box{background:rgba(176,48,48,.04);border:1px solid rgba(176,48,48,.2);border-left:3px solid var(--er);
+  border-radius:8px;padding:12px;margin-top:10px;font-size:12px;color:var(--is);line-height:1.6}
+.blocker-title{font-family:var(--fm);font-size:9px;color:var(--er);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px}
+
+/* ── Cost recap ── */
+.cost-recap{background:var(--gp);border:1px solid rgba(184,134,42,.2);border-radius:var(--r);padding:16px 18px;margin-top:14px}
+.cost-row{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;border-bottom:1px solid rgba(184,134,42,.12)}
+.cost-row:last-child{border:none;font-weight:700;font-size:13.5px;color:var(--gold);padding-top:8px}
+
+/* ── Calendar estimate ── */
+.cal-box{background:var(--im);border-radius:var(--r);padding:16px 18px;color:#fff;margin-top:14px}
+.cal-title{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cal-item .cal-lbl{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:3px}
+.cal-item .cal-val{font-family:var(--ft);font-size:15px;font-weight:700;color:var(--gl)}
+
+/* ── AI Assistant ── */
+/* ── FAQ Knowledge Base ── */
+.faq-wrap{display:flex;flex-direction:column;gap:14px}
+.faq-searchbar{display:flex;gap:10px;align-items:center}
+.faq-search{flex:1;padding:10px 14px;border:1.5px solid var(--b3);border-radius:9px;
+  font-family:var(--fb);font-size:13px;color:var(--ink);background:var(--wh);outline:none;transition:border-color .18s}
+.faq-search:focus{border-color:var(--gold);background:var(--wh)}
+.faq-search::placeholder{color:var(--sm)}
+.faq-clear{padding:9px 13px;border:1.5px solid var(--b3);border-radius:8px;background:var(--b2);
+  font-family:var(--fb);font-size:12px;color:var(--sm);cursor:pointer;transition:all .18s;white-space:nowrap}
+.faq-clear:hover{border-color:var(--gold);color:var(--ink)}
+
+.faq-cats{display:flex;gap:7px;flex-wrap:wrap}
+.faq-cat{font-family:var(--fm);font-size:10px;padding:6px 13px;border-radius:100px;cursor:pointer;
+  transition:all .2s;border:none;white-space:nowrap;font-weight:600;
+  box-shadow:0 1px 5px rgba(0,0,0,.12);letter-spacing:.02em}
+.faq-cat:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.2);filter:brightness(1.12)}
+.faq-cat:active{transform:translateY(0)}
+
+/* Toutes */
+.faq-cat[data-cat="all"]{background:linear-gradient(135deg,#1F1F18,#3A3A30);color:var(--gl)}
+.faq-cat[data-cat="all"].all{background:linear-gradient(135deg,#3A3A30,#1F1F18);box-shadow:0 3px 12px rgba(0,0,0,.35)}
+
+/* Formes juridiques — or */
+.faq-cat[data-cat="formes"]{background:linear-gradient(135deg,#B8862A,#8A6018);color:#fff}
+.faq-cat[data-cat="formes"].all{box-shadow:0 3px 12px rgba(184,134,42,.4);filter:brightness(1.12)}
+
+/* Procédures CRI — bleu */
+.faq-cat[data-cat="procedure"]{background:linear-gradient(135deg,#1E4D6B,#163A52);color:#fff}
+.faq-cat[data-cat="procedure"].all{box-shadow:0 3px 12px rgba(30,77,107,.4);filter:brightness(1.12)}
+
+/* Blocages — rouge */
+.faq-cat[data-cat="blocage"]{background:linear-gradient(135deg,#B03030,#7A1E1E);color:#fff}
+.faq-cat[data-cat="blocage"].all{box-shadow:0 3px 12px rgba(176,48,48,.4);filter:brightness(1.12)}
+
+/* Coûts — vert */
+.faq-cat[data-cat="cout"]{background:linear-gradient(135deg,#1A6B3C,#104526);color:#fff}
+.faq-cat[data-cat="cout"].all{box-shadow:0 3px 12px rgba(26,107,60,.4);filter:brightness(1.12)}
+
+/* Fiscal — violet */
+.faq-cat[data-cat="fiscal"]{background:linear-gradient(135deg,#5A3A8A,#3A2260);color:#fff}
+.faq-cat[data-cat="fiscal"].all{box-shadow:0 3px 12px rgba(90,58,138,.4);filter:brightness(1.12)}
+
+/* En ligne — teal */
+.faq-cat[data-cat="online"]{background:linear-gradient(135deg,#0D6E6E,#084848);color:#fff}
+.faq-cat[data-cat="online"].all{box-shadow:0 3px 12px rgba(13,110,110,.4);filter:brightness(1.12)}
+
+/* Délais — ambre */
+.faq-cat[data-cat="delai"]{background:linear-gradient(135deg,#C87000,#904E00);color:#fff}
+.faq-cat[data-cat="delai"].all{box-shadow:0 3px 12px rgba(200,112,0,.4);filter:brightness(1.12)}
+
+/* Inactive state: desaturate slightly but keep color */
+.faq-cat.inactive{opacity:.72}
+.faq-cat.inactive:hover{opacity:1}
+
+.faq-stats{font-family:var(--fm);font-size:10px;color:var(--sm);padding:3px 0}
+.faq-results{display:flex;flex-direction:column;gap:8px}
+.faq-empty{text-align:center;padding:40px 20px;color:var(--sm);font-size:13px}
+.faq-empty span{font-size:32px;display:block;margin-bottom:10px}
+
+.faq-card{background:var(--wh);border:1px solid var(--bd);border-radius:10px;overflow:hidden;transition:all .2s}
+.faq-card:hover{border-color:rgba(184,134,42,.3);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.faq-card.open{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,42,.07)}
+.faq-q{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer}
+.faq-q-icon{font-size:15px;flex-shrink:0}
+.faq-q-text{flex:1;font-size:13px;font-weight:600;color:var(--ink);line-height:1.35}
+.faq-q-cat{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px;flex-shrink:0}
+.faq-q-arr{color:var(--sm);font-size:11px;flex-shrink:0;transition:transform .2s}
+.faq-card.open .faq-q-arr{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 16px 14px;font-size:12.5px;line-height:1.7;color:var(--is);border-top:1px solid var(--b3);padding-top:13px}
+.faq-card.open .faq-a{display:block}
+.faq-a strong{color:var(--ink)}
+.faq-a ul{padding-left:16px;margin:6px 0}
+.faq-a li{margin-bottom:4px}
+.faq-a .ref{font-family:var(--fm);font-size:10px;color:var(--gold);background:rgba(184,134,42,.08);
+  border:1px solid rgba(184,134,42,.18);border-radius:4px;padding:2px 7px;display:inline-block;margin-top:8px}
+.faq-a .tip{background:rgba(26,107,60,.05);border-left:3px solid var(--ok);border-radius:0 6px 6px 0;
+  padding:8px 11px;margin:8px 0;font-size:12px;color:var(--ok)}
+.faq-a .warn-box{background:rgba(200,112,0,.05);border-left:3px solid var(--warn);border-radius:0 6px 6px 0;
+  padding:8px 11px;margin:8px 0;font-size:12px;color:var(--is)}
+.faq-highlight{background:rgba(240,196,96,.35);border-radius:2px;padding:0 2px}
+
+.btn-ai{background:linear-gradient(135deg,#1E4D6B,#2A6B90);border-color:transparent;color:#fff}
+.btn-ai:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(30,77,107,.35)}
+
+/* ── Alert ── */
+.alert{border-radius:8px;padding:10px 13px;font-size:12px;margin-top:10px;line-height:1.5}
+.alert.ok{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.2);border-left:3px solid var(--ok);color:var(--ok)}
+.alert.info{background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.2);border-left:3px solid var(--ac);color:var(--ac)}
+.alert.warn{background:rgba(200,112,0,.06);border:1px solid rgba(200,112,0,.2);border-left:3px solid var(--warn);color:var(--is)}
+
+/* ── Buttons ── */
+.btn-primary{padding:10px 18px;background:var(--gold);border:none;border-radius:8px;
+  font-family:var(--fb);font-size:13px;font-weight:700;cursor:pointer;color:var(--ink);transition:all .18s}
+.btn-primary:hover{background:var(--gl);transform:translateY(-1px)}
+.btn-secondary{padding:9px 16px;background:var(--b2);border:1px solid var(--bd);border-radius:8px;
+  font-family:var(--fb);font-size:12.5px;font-weight:600;cursor:pointer;color:var(--is);transition:all .18s}
+.btn-secondary:hover{border-color:var(--gold);color:var(--ink)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* ── Sector guide ── */
+.sector-guide{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.sector-guide-title{font-family:var(--ft);font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.autorisation-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--b3);font-size:12.5px}
+.autorisation-item:last-child{border:none}
+.aut-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.aut-body .aut-name{font-weight:600;color:var(--ink);margin-bottom:2px}
+.aut-body .aut-info{font-size:11px;color:var(--sm);line-height:1.45}
+
+/* ── Export ── */
+.export-banner{background:linear-gradient(135deg,var(--im),#1A1A12);border:1px solid rgba(184,134,42,.2);
+  border-radius:var(--r);padding:18px 20px;color:#fff;margin-top:20px;display:flex;align-items:center;gap:16px}
+.export-text{flex:1}
+.export-title{font-family:var(--ft);font-size:14px;font-weight:700;color:var(--gl);margin-bottom:4px}
+.export-sub{font-size:11.5px;color:rgba(255,255,255,.4)}
+
+/* ── Source ── */
+.sources{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.src-badge{font-family:var(--fm);font-size:9px;background:rgba(184,134,42,.1);border:1px solid rgba(184,134,42,.2);
+  color:var(--gold);padding:3px 8px;border-radius:4px}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .hdr{padding:0 14px}
+  .page{padding:16px 12px 60px}
+  .cal-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="badge">MODULE 21 · TRACKER CRI</span>
+  </div>
+  <div class="save-indicator">
+    <div class="save-dot" id="saveDot"></div>
+    <span id="saveLabel">Progression sauvegardée</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-kicker">Création d'entreprise · Guichet Unique CRI Maroc</div>
+    <h1 class="hero-title">Guide Opérationnel de Création</h1>
+    <p class="hero-sub">Checklist personnalisée par profil, coordonnées réelles de votre CRI, guide sectoriel des autorisations, et assistant IA pour débloquer chaque étape. Votre progression est sauvegardée automatiquement.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap">
+    <div class="pb-header">
+      <div>
+        <div class="pb-title">Progression de votre dossier</div>
+        <div style="font-size:11.5px;color:var(--sm);margin-top:2px" id="pb-sub">0 étape complétée sur 10</div>
+      </div>
+      <div class="pb-pct" id="pb-pct">0%</div>
+    </div>
+    <div class="pb-track"><div class="pb-fill" id="pb-fill" style="width:0%"></div></div>
+    <div class="pb-meta">
+      <div class="pb-stat"><div class="pb-dot" style="background:var(--ok)"></div><span id="cnt-done">0 complétée(s)</span></div>
+      <div class="pb-stat"><div class="pb-dot" style="background:var(--er)"></div><span id="cnt-blocked">0 bloquée(s)</span></div>
+      <div class="pb-stat" style="margin-left:auto">⏱ Jours restants : <strong id="cnt-days" style="color:var(--gold);margin-left:4px">—</strong></div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- ══ SIDEBAR ══ -->
+    <div class="sidebar">
+
+      <!-- Config -->
+      <div class="card">
+        <div class="card-label">Configuration dossier</div>
+        <div class="fg">
+          <label>Centre Régional d'Investissement</label>
+          <select id="criSel" onchange="onCriChange()">
+            <option value="casa">CRI Casablanca-Settat</option>
+            <option value="rabat">CRI Rabat-Salé-Kénitra</option>
+            <option value="tanger">CRI Tanger-Tétouan-Al Hoceïma</option>
+            <option value="marrakech">CRI Marrakech-Safi</option>
+            <option value="fes">CRI Fès-Meknès</option>
+            <option value="souss">CRI Souss-Massa</option>
+            <option value="oriental">CRI Oriental</option>
+            <option value="beni">CRI Béni Mellal-Khénifra</option>
+            <option value="guelmim">CRI Guelmim-Oued Noun</option>
+            <option value="laayoune">CRI Laâyoune-Sakia El Hamra</option>
+            <option value="dakhla">CRI Dakhla-Oued Eddahab</option>
+            <option value="draa">CRI Drâa-Tafilalet</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Forme juridique</label>
+          <select id="formeSel" onchange="onFormeChange()">
+            <option value="sarl">SARL — Société à Responsabilité Limitée</option>
+            <option value="sa">SA — Société Anonyme</option>
+            <option value="sas">SAS — Société par Actions Simplifiée</option>
+            <option value="auto">Auto-Entrepreneur</option>
+            <option value="succursale">Succursale société étrangère</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Secteur d'activité</label>
+          <select id="secteurSel" onchange="onSecteurChange()">
+            <option value="commerce">Commerce général</option>
+            <option value="industrie">Industrie / Manufacturing</option>
+            <option value="agro">Agroalimentaire / Agriculture</option>
+            <option value="tourisme">Tourisme / Hôtellerie</option>
+            <option value="tech">Tech / Digital / Telecom</option>
+            <option value="sante">Santé / Pharmacie</option>
+            <option value="education">Éducation / Formation</option>
+            <option value="finance">Finance / Assurance</option>
+            <option value="logistique">Logistique / Transport</option>
+            <option value="energie">Énergie / Environnement</option>
+            <option value="immobilier">Immobilier / Construction</option>
+            <option value="restauration">Restauration / Café</option>
+            <option value="import_export">Import-Export</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Date de démarrage prévue</label>
+          <input type="date" id="startDate" oninput="updateCalendar()">
+        </div>
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="resetAll()" style="flex:1">↺ Réinitialiser</button>
+          <button class="btn-primary" onclick="exportDossier()" style="flex:1">⬇ Exporter</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="card">
+        <div class="card-label">Estimations</div>
+        <div class="stats-grid">
+          <div class="stat-box"><div class="stat-val" id="st-delai">25–45j</div><div class="stat-lbl">Délai total</div></div>
+          <div class="stat-box"><div class="stat-val" id="st-cout">—</div><div class="stat-lbl">Coût estimé</div></div>
+          <div class="stat-box"><div class="stat-val" id="st-capital">1 000</div><div class="stat-lbl">Capital min (MAD)</div></div>
+          <div class="stat-box"><div class="stat-val">4/10</div><div class="stat-lbl">Démarches online</div></div>
+        </div>
+      </div>
+
+      <!-- CRI Contact -->
+      <div class="card">
+        <div class="card-label">Coordonnées CRI</div>
+        <div class="cri-contact-box" id="criContact">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+      <!-- Calendar -->
+      <div class="cal-box">
+        <div class="cal-title">Calendrier estimé</div>
+        <div class="cal-grid">
+          <div class="cal-item"><div class="cal-lbl">Dépôt dossier</div><div class="cal-val" id="cal-depot">—</div></div>
+          <div class="cal-item"><div class="cal-lbl">Immatriculation</div><div class="cal-val" id="cal-immat">—</div></div>
+          <div class="cal-item"><div class="cal-lbl">Identifiant fiscal</div><div class="cal-val" id="cal-if">—</div></div>
+          <div class="cal-item"><div class="cal-lbl">Opérationnel</div><div class="cal-val" id="cal-ops">—</div></div>
+        </div>
+      </div>
+
+      <!-- Sources -->
+      <div class="sources">
+        <span class="src-badge">OMPIC 2025</span>
+        <span class="src-badge">DGI</span>
+        <span class="src-badge">CNSS</span>
+        <span class="src-badge">Tribunal Commerce</span>
+        <span class="src-badge">AMDIE</span>
+        <span class="src-badge">Inforisk</span>
+      </div>
+
+    </div>
+
+    <!-- ══ MAIN CONTENT ══ -->
+    <div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('steps',this)">📋 Étapes & Documents</button>
+        <button class="tab" onclick="showTab('secteur',this)">🏭 Autorisations sectorielles</button>
+        <button class="tab" onclick="showTab('ai',this)">📚 Base de connaissances</button>
+      </div>
+
+      <!-- TAB: STEPS -->
+      <div id="tab-steps">
+        <div class="steps-wrap" id="stepsContainer"></div>
+        <!-- Cost recap -->
+        <div class="cost-recap" id="costRecap"></div>
+      </div>
+
+      <!-- TAB: SECTEUR -->
+      <div id="tab-secteur" style="display:none">
+        <div class="sector-guide" id="sectorGuide"></div>
+      </div>
+
+      <!-- TAB: BASE DE CONNAISSANCES -->
+      <div id="tab-ai" style="display:none">
+        <div class="faq-wrap">
+
+          <!-- Header -->
+          <div style="background:var(--im);border-radius:var(--r);padding:16px 20px;border:1px solid rgba(184,134,42,.2)">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+              <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gl));display:flex;align-items:center;justify-content:center;font-size:14px">📚</div>
+              <div>
+                <div style="font-family:var(--ft);font-size:13px;font-weight:700;color:#fff">Base de connaissances CRI</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.35)">65 réponses · Procédures 2025 · Droit des sociétés marocain</div>
+              </div>
+              <div style="margin-left:auto;font-family:var(--fm);font-size:9px;color:var(--ok);background:rgba(26,107,60,.15);border:1px solid rgba(26,107,60,.25);padding:2px 8px;border-radius:100px">● Hors ligne · Données locales</div>
+            </div>
+          </div>
+
+          <!-- Search -->
+          <div class="faq-searchbar">
+            <input class="faq-search" id="faqSearch" type="text" placeholder="Rechercher : capital, dénomination, RC, CNSS, délai, blocage…" oninput="faqFilter()">
+            <button class="faq-clear" onclick="faqClear()">✕ Effacer</button>
+          </div>
+
+          <!-- Categories -->
+          <div class="faq-cats" id="faqCats">
+            <span class="faq-cat all" data-cat="all" onclick="faqCat(this)">Toutes (65)</span>
+            <span class="faq-cat inactive" data-cat="formes" onclick="faqCat(this)">🏢 Formes juridiques</span>
+            <span class="faq-cat inactive" data-cat="procedure" onclick="faqCat(this)">📋 Procédures CRI</span>
+            <span class="faq-cat inactive" data-cat="blocage" onclick="faqCat(this)">⚠️ Blocages</span>
+            <span class="faq-cat inactive" data-cat="cout" onclick="faqCat(this)">💰 Coûts & Capital</span>
+            <span class="faq-cat inactive" data-cat="fiscal" onclick="faqCat(this)">🏛️ Fiscal & CNSS</span>
+            <span class="faq-cat inactive" data-cat="online" onclick="faqCat(this)">🌐 Démarches en ligne</span>
+            <span class="faq-cat inactive" data-cat="delai" onclick="faqCat(this)">📅 Délais</span>
+          </div>
+
+          <!-- Stats + Results -->
+          <div class="faq-stats" id="faqStats">65 questions disponibles</div>
+          <div class="faq-results" id="faqResults"></div>
+
+        </div>
+      </div>
+
+    </div><!-- end main content -->
+
+  </div><!-- end main-grid -->
+</div><!-- end page -->
+
+<script>
+/* ══════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════ */
+const CRI_DATA = {
+  casa:    { name:'CRI Casablanca-Settat', addr:'3 rue Azilal, Casablanca 20000', tel:'0522 477 447', email:'cri@casablanca-invest.ma', web:'https://www.casablanca-invest.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  rabat:   { name:'CRI Rabat-Salé-Kénitra', addr:'Rue Tensift, Hay Riad, Rabat', tel:'0537 568 800', email:'contact@rskagri.gov.ma', web:'https://www.cri-rsk.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  tanger:  { name:'CRI Tanger-Tétouan-Al Hoceïma', addr:'Avenue de FES, Tanger 90000', tel:'0539 394 040', email:'cri@tanger-tetouan.ma', web:'https://www.invest-tanger.com', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  marrakech:{ name:'CRI Marrakech-Safi', addr:'Rue Abou Bakr Seddik, Marrakech', tel:'0524 388 020', email:'contact@marrakech-invest.ma', web:'https://www.marrakech-invest.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  fes:     { name:'CRI Fès-Meknès', addr:'Avenue My Youssef, Fès 30000', tel:'0535 659 039', email:'cri@fes-meknes.ma', web:'https://www.cri-fesmeknes.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  souss:   { name:'CRI Souss-Massa', addr:'Avenue Hassan II, Agadir 80000', tel:'0528 843 500', email:'cri@souss-massa.ma', web:'https://www.cri-soussmassa.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  oriental:{ name:'CRI Oriental', addr:'Rue Farabi, Oujda 60000', tel:'0536 510 310', email:'cri@oriental.ma', web:'https://www.oriental-invest.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  beni:    { name:'CRI Béni Mellal-Khénifra', addr:'Avenue Hassan II, Béni Mellal', tel:'0523 423 000', email:'cri@beni-mellal.ma', web:'https://www.cri-bm.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  guelmim: { name:'CRI Guelmim-Oued Noun', addr:'Avenue Mohammed V, Guelmim', tel:'0528 872 000', email:'cri@guelmim.ma', web:'https://www.cri-guelmim.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  laayoune:{ name:'CRI Laâyoune-Sakia El Hamra', addr:'Boulevard Mekka, Laâyoune', tel:'0528 990 000', email:'cri@laayoune.ma', web:'https://www.cri-laayoune.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  dakhla:  { name:'CRI Dakhla-Oued Eddahab', addr:'Avenue des FAR, Dakhla', tel:'0528 935 200', email:'cri@dakhla.ma', web:'https://www.cri-dakhla.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+  draa:    { name:'CRI Drâa-Tafilalet', addr:'Avenue Moulay Rachid, Errachidia', tel:'0535 574 000', email:'cri@draa-tafilalet.ma', web:'https://www.cri-draa.ma', online:'https://www.ompic.ma', horaires:'Lun-Ven 8h30–16h30' },
+};
+
+const FORME_DATA = {
+  sarl:       { capital:'1 000 MAD', delai:'20–35j', c1:500, c2:3000, c3:1200, c4:0, c5:300 },
+  sa:         { capital:'300 000 MAD', delai:'30–50j', c1:1500, c2:8000, c3:2500, c4:0, c5:600 },
+  sas:        { capital:'1 MAD (libre)', delai:'20–35j', c1:500, c2:5000, c3:1200, c4:0, c5:400 },
+  auto:       { capital:'Aucun', delai:'3–7j', c1:100, c2:0, c3:0, c4:0, c5:100 },
+  succursale: { capital:'Variable', delai:'30–60j', c1:1000, c2:6000, c3:1500, c4:200, c5:800 },
+};
+
+const SECTOR_AUTH = {
+  commerce:    { icon:'🏪', title:'Commerce général', items:[
+    { icon:'🏢', name:'Registre de Commerce', info:'OMPIC — obligatoire. Délai 3–7j. Gratuit via guichet unique CRI.' },
+    { icon:'📋', name:'Patente (Taxe Professionnelle)', info:'Exonération 5 ans (CGI Art.144). Déclaration obligatoire même exonéré.' },
+  ]},
+  industrie:   { icon:'🏭', title:'Industrie & Manufacturing', items:[
+    { icon:'🏢', name:'Registre de Commerce', info:'OMPIC — obligatoire. Délai 3–7j.' },
+    { icon:'⚙️', name:'Autorisation d\'exploitation industrielle', info:'Ministère de l\'Industrie. Délai 15–30j. Dossier technique requis.' },
+    { icon:'🌿', name:'Étude d\'impact environnemental', info:'Département Environnement si activité classée. Délai 30–90j.' },
+    { icon:'🔥', name:'Permis d\'utilisation des installations classées', info:'Ministère de l\'Environnement pour activités polluantes.' },
+    { icon:'💧', name:'Autorisation d\'utilisation d\'eau (ABHS)', info:'Agence du Bassin Hydraulique si consommation importante.' },
+  ]},
+  agro:        { icon:'🌾', title:'Agroalimentaire & Agriculture', items:[
+    { icon:'🍽️', name:'Agrément ONSSA', info:'Office National de Sécurité Sanitaire des Produits Alimentaires. Obligatoire pour toute transformation alimentaire.' },
+    { icon:'📜', name:'Autorisation d\'ouverture établissement alimentaire', info:'Commune + ONSSA. Délai 15–30j.' },
+    { icon:'🌿', name:'Certification phytosanitaire', info:'Pour importation/exportation de produits végétaux.' },
+    { icon:'🌊', name:'Autorisation captage eau agricole', info:'ABHS si irrigation ou transformation.' },
+  ]},
+  tourisme:    { icon:'🏨', title:'Tourisme & Hôtellerie', items:[
+    { icon:'⭐', name:'Classement hôtelier', info:'Ministère du Tourisme — classement 1 à 5 étoiles. Dossier technique complet.' },
+    { icon:'🍷', name:'Licence alcool', info:'Préfecture + Ministère de l\'Intérieur. Délai 30–60j. Difficile en zone résidentielle.' },
+    { icon:'🔥', name:'Autorisation anti-incendie', info:'Protection Civile. Obligatoire avant ouverture. Délai 7–15j.' },
+    { icon:'🍽️', name:'Agrément restaurant (ONSSA)', info:'Pour restauration collective. Délai 15j.' },
+    { icon:'🎵', name:'Autorisation spectacles / animation', info:'Ministère de la Communication si animation régulière.' },
+  ]},
+  tech:        { icon:'💻', title:'Tech & Digital', items:[
+    { icon:'📡', name:'Agrément ANRT', info:'Pour opérateurs télécom, FAI, fréquences. Selon activité.' },
+    { icon:'🔐', name:'Autorisation CNDP', info:'Protection des données personnelles si collecte de données. Déclaration ou autorisation selon type.' },
+    { icon:'💳', name:'Agrément Bank Al-Maghrib', info:'Pour services de paiement, e-commerce avec wallet ou fintech.' },
+    { icon:'📱', name:'Agrément ANRT pour applications mobiles', info:'Si fourniture de services de communications électroniques.' },
+  ]},
+  sante:       { icon:'🏥', title:'Santé & Pharmacie', items:[
+    { icon:'🏥', name:'Autorisation d\'ouverture (Ministère Santé)', info:'Obligatoire pour tout établissement de soin. Dossier d\'accréditation. Délai 30–90j.' },
+    { icon:'💊', name:'Autorisation MAPI (pharmacie)', info:'Ministère de la Santé — Autorisation de Mise sur le Marché pour tout médicament.' },
+    { icon:'🔬', name:'Autorisation laboratoire analyse', info:'Ministère de la Santé. Accréditation LPEE/IMANOR si analyses officielles.' },
+    { icon:'🚑', name:'Agrément transport sanitaire', info:'Ministère de la Santé + Commune pour ambulances.' },
+  ]},
+  education:   { icon:'🎓', title:'Éducation & Formation', items:[
+    { icon:'📚', name:'Agrément Ministère Éducation Nationale', info:'Pour établissements d\'enseignement privé. Dossier pédagogique + technique. Délai 60–90j.' },
+    { icon:'🏫', name:'Autorisation ouverture établissement formation', info:'OFPPT ou Ministère selon niveau. Délai 30–60j.' },
+    { icon:'✅', name:'Accréditation académique', info:'Ministère de l\'Enseignement Supérieur pour diplômes reconnus.' },
+  ]},
+  finance:     { icon:'🏦', title:'Finance & Assurance', items:[
+    { icon:'🏦', name:'Agrément Bank Al-Maghrib', info:'Pour établissements bancaires, sociétés de financement, bureaux de change. Délai 6–18 mois.' },
+    { icon:'📊', name:'Agrément ACAPS', info:'Autorité de Contrôle des Assurances et de la Prévoyance Sociale. Délai 3–6 mois.' },
+    { icon:'📈', name:'Agrément AMMC', info:'Autorité Marocaine des Marchés de Capitaux pour activités boursières/gestion d\'actifs.' },
+  ]},
+  logistique:  { icon:'🚛', title:'Logistique & Transport', items:[
+    { icon:'🚛', name:'Autorisation transport routier', info:'Ministère du Transport. Permis de transport public ou privé selon activité.' },
+    { icon:'✈️', name:'Agrément transitaire douanier', info:'ADII — Agrément déclarant en douane si activités import/export pour compte de tiers.' },
+    { icon:'🏪', name:'Autorisation entrepôt douanier', info:'ADII — Pour création d\'entrepôt sous douane ou zone franche logistique.' },
+    { icon:'🚢', name:'Agrément consignataire maritime', info:'Ministère du Transport Maritime si activité portuaire.' },
+  ]},
+  energie:     { icon:'⚡', title:'Énergie & Environnement', items:[
+    { icon:'⚡', name:'Autorisation ANRE', info:'Autorité Nationale de Régulation de l\'Électricité pour production/distribution.' },
+    { icon:'🌞', name:'Autorisation MASEN / IRESEN', info:'Pour projets ENR (solaire, éolien). Appel d\'offres ou autorisation directe.' },
+    { icon:'🌿', name:'Étude impact environnement (EIE)', info:'Ministère Environnement. Obligatoire pour tout projet énergie. Délai 3–6 mois.' },
+    { icon:'🛢️', name:'Autorisation hydrocarbures ONHYM', info:'Pour activités pétrolières et gazières.' },
+  ]},
+  immobilier:  { icon:'🏗️', title:'Immobilier & Construction', items:[
+    { icon:'🏗️', name:'Permis de construire', info:'Commune / Wilaya. Délai 2–6 mois selon commune. Plan cadastral + permis lotissement requis.' },
+    { icon:'📐', name:'Agrément promoteur immobilier', info:'Ministère de l\'Habitat. Délai 30–60j. Garantie financière requise.' },
+    { icon:'🔐', name:'Garantie d\'achèvement (Tamwilcom)', info:'Garantie bancaire obligatoire pour vente sur plan (VEFA).' },
+    { icon:'🏘️', name:'Certificat conformité', info:'Commune après achèvement travaux.' },
+  ]},
+  restauration:{ icon:'🍽️', title:'Restauration & Café', items:[
+    { icon:'🍽️', name:'Autorisation ouverture restaurant (Commune)', info:'Formulaire + plan local + casier judiciaire gérant. Délai 7–21j selon commune.' },
+    { icon:'🍷', name:'Licence débit de boissons', info:'Préfecture + Commune. Délai 30–60j. Zone et catégorie de licence à préciser.' },
+    { icon:'🔥', name:'Autorisation Protection Civile', info:'Obligatoire avant ouverture si capacité > 20 couverts. Délai 7–15j.' },
+    { icon:'🌿', name:'Agrément ONSSA (hygiène alimentaire)', info:'Office National Sécurité Sanitaire. Déclaration obligatoire. Contrôle HACCP.' },
+    { icon:'🎵', name:'Autorisation sonorisation (BMDA)', info:'Bureau Marocain du Droit d\'Auteur si diffusion musicale.' },
+  ]},
+  import_export:{ icon:'🚢', title:'Import-Export', items:[
+    { icon:'🔑', name:'Agrément importateur ADII', info:'Obtenir un compte BADR + code importateur. Délai 3–7j. Gratuit.' },
+    { icon:'📋', name:'Inscription PORTNET', info:'Plateforme nationale gestion dossiers douaniers. Obligatoire pour tout opérateur import/export.' },
+    { icon:'✅', name:'Agrément OEA (optionnel)', info:'Opérateur Économique Agréé — facilite les contrôles douaniers. Délai 3–6 mois.' },
+    { icon:'📦', name:'Autorisation import produits réglementés', info:'Selon nature : ONSSA (alimentaire), EACCE (agro), ONHYM (chimiques), IMANOR (normes).' },
+    { icon:'💱', name:'Déclaration Office des Changes', info:'Obligatoire pour paiements > 100 000 MAD à l\'étranger. Formulaire M (importation).' },
+  ]},
+};
+
+const STEPS_BASE = [
+  {
+    id:1, title:'Réservation de la dénomination sociale',
+    days:1, cost:0,
+    tags:['1 jour','Gratuit','En ligne ✓'],
+    docs:{
+      all:['Formulaire réservation dénomination (OMPIC)','3 propositions de noms par ordre de préférence','Copie CIN ou passeport du demandeur'],
+    },
+    note:'Réservez en ligne sur <a href="https://www.ompic.ma" target="_blank">ompic.ma</a> ou au guichet OMPIC. La dénomination est valable 90 jours. Évitez les noms géographiques, patronymes, et noms déjà réservés. Vérifiez aussi sur INFORISK et OMPIC simultanément.',
+    online:true, link:'https://www.ompic.ma',
+    blockers:['Dénomination refusée : proposez des variantes orthographiques ou ajoutez un qualificatif (ex: "Maroc", "Services", année). Évitez les noms d\'organismes publics.']
+  },
+  {
+    id:2, title:'Rédaction et légalisation des statuts',
+    days:4, cost:0,
+    tags:['2–5 jours','Variable'],
+    docs:{
+      sarl:['Statuts SARL (modèle OMPIC ou notaire)','Décision nomination gérant','Liste associés avec parts sociales et CIN','Procuration notariée si signature à distance'],
+      sa:['Statuts SA (notaire obligatoire)','Liste des fondateurs + souscriptions','PV assemblée constitutive','Contrat de souscription actions'],
+      sas:['Statuts SAS librement rédigés','Pacte d\'actionnaires (optionnel)','Décision nomination Président'],
+      auto:['Formulaire inscription AE (OMPIC)'],
+      succursale:['Statuts société mère apostillés et traduits','Procuration gérant succursale','Extrait K-Bis ou équivalent apostillé'],
+      all:['Statuts sociaux signés par tous les associés'],
+    },
+    note:'Pour une SARL simple, utilisez les modèles gratuits sur ompic.ma. Pour une SA ou SAS complexe, un notaire (2 000–8 000 MAD) est recommandé. Assurez-vous que l\'objet social couvre toutes vos activités futures.',
+    online:false,
+    blockers:['Statuts rejetés au greffe : vérifier la conformité de l\'objet social avec l\'activité déclarée, la répartition des parts (doit totaliser 100%), et la mention du siège social.']
+  },
+  {
+    id:3, title:'Libération et blocage du capital social',
+    days:1, cost:0,
+    tags:['1–2 jours','Dépôt bancaire'],
+    docs:{
+      sarl:['Statuts signés','Attestation dépôt capital (25% minimum, soit 250 MAD pour 1000 MAD capital)','Relevé bancaire compte bloqué','Certificat de blocage fonds'],
+      sa:['Statuts signés','Attestation libération 25% du capital souscrit','Certificat de blocage','Liste souscripteurs'],
+      sas:['Attestation dépôt si capital > 0'],
+      auto:['Aucun capital requis'],
+      succursale:['Attestation de dotation en capital (Office des Changes si > 1M MAD)'],
+      all:['Attestation bancaire de dépôt de capital'],
+    },
+    note:'Pour une SARL au capital de 1 000 MAD, déposez 250 MAD (25%) minimum. Toutes les grandes banques (Attijariwafa, CIH, BMCE, BCP, Société Générale) proposent ce service en 24h. Le capital est débloqué après obtention du RC définitif.',
+    online:false,
+    blockers:['Banque refuse le compte bloqué : préparez une lettre explicative avec l\'objet social et les coordonnées des associés. Certaines banques exigent un rendez-vous préalable.']
+  },
+  {
+    id:4, title:'Dépôt au Registre de Commerce (RC) via CRI',
+    days:5, cost:900,
+    tags:['3–7 jours','500–1 500 MAD','Guichet unique'],
+    docs:{
+      sarl:['Formulaire M0 de création (OMPIC)','Statuts authentifiés (2 exemplaires)','Attestation libération capital','Copie CIN gérant + associés','Certificat de résidence gérant (< 3 mois)','Contrat de bail ou titre propriété du siège social','Extrait acte de naissance gérant'],
+      sa:['Formulaire M0','Statuts notariés','Rapport commissaire aux comptes (si capital > 1M MAD)','Liste membres CA'],
+      auto:['Formulaire simplifié AE','CIN','Justificatif domicile'],
+      succursale:['Statuts apostillés + traduction arabe/français','Décision nomination responsable succursale','Attestation siège social étranger'],
+      all:['Formulaire M0','CIN du gérant/dirigeant','Justificatif du siège social'],
+    },
+    note:'Le guichet unique CRI traite simultanément : RC (OMPIC), IF (DGI), CNSS et patente. Délai réel sur le terrain : 3 à 7 jours ouvrables à Casa et Rabat, jusqu\'à 10 jours dans d\'autres régions. Gardez 3 copies de chaque document.',
+    online:true, link:'https://www.ompic.ma',
+    blockers:['Dossier incomplet au guichet : exigez une liste exhaustive écrite des documents manquants. Refus verbal sans justification écrite = adressez une réclamation au Directeur du CRI.','Délai dépassé sans réponse : relancez par email en copiant la direction régionale OMPIC.']
+  },
+  {
+    id:5, title:'Obtention de l\'Identifiant Fiscal (IF)',
+    days:2, cost:0,
+    tags:['1–3 jours','Gratuit'],
+    docs:{
+      all:['Copie RC obtenu à l\'étape 4','Formulaire identification fiscale (DGI)','CIN gérant / dirigeant','Contrat de bail ou titre propriété (siège social)'],
+    },
+    note:'Depuis 2022, l\'IF est généralement attribué automatiquement lors de l\'immatriculation via le guichet unique CRI. Si ce n\'est pas le cas, déposez directement à la Direction des Impôts de votre circonscription. Site: <a href="https://www.tax.gov.ma" target="_blank">tax.gov.ma</a>.',
+    online:true, link:'https://www.tax.gov.ma',
+    blockers:['IF non reçu après 5 jours : contactez directement la brigade DGI de votre secteur avec la copie RC. Le guichet unique a peut-être omis la transmission automatique.']
+  },
+  {
+    id:6, title:'Affiliation CNSS (Sécurité Sociale)',
+    days:3, cost:0,
+    tags:['2–5 jours','Gratuit','En ligne ✓'],
+    docs:{
+      all:['Formulaire affiliation CNSS (ADH 004)','Copie RC','Copie IF','CIN gérant','Liste nominative salariés si recrutement immédiat','Contrat de travail(s) si applicable'],
+    },
+    note:'Obligatoire avant tout recrutement. Affiliation en ligne sur <a href="https://www.damancom.ma" target="_blank">damancom.ma</a>. Numéro CNSS reçu sous 48–72h. Les cotisations (gérant assimilé salarié ou non) varient selon le statut : gérant majoritaire SARL = TNS (travailleur non salarié).',
+    online:true, link:'https://www.cnss.ma',
+    blockers:['Affiliation refusée — activité non couverte : certains secteurs (agriculture, pêche artisanale) ont des régimes spéciaux. Contactez la CNSS pour orientation.']
+  },
+  {
+    id:7, title:'Inscription Taxe Professionnelle (Patente)',
+    days:2, cost:0,
+    tags:['1–3 jours','Gratuit','Exo. 5 ans'],
+    docs:{
+      all:['Formulaire déclaration d\'existence (DGI)','RC','IF','Contrat de bail ou titre propriété','Liste des équipements professionnels (si applicable)'],
+    },
+    note:'Exonération totale de la Taxe Professionnelle pendant 5 ans pour les nouvelles entreprises (CGI Art.144). La déclaration reste obligatoire même en période d\'exonération. Déposez à la subdivision des impôts de votre arrondissement.',
+    online:false,
+    blockers:['Local partagé / coworking : joignez une attestation du propriétaire ou bailleur confirmant l\'usage professionnel à votre adresse.']
+  },
+  {
+    id:8, title:'Publication légale (BALO + Journal agréé)',
+    days:5, cost:1200,
+    tags:['3–7 jours','800–2 500 MAD'],
+    docs:{
+      sarl:['Extrait statuts (dénomination, objet, capital, gérant, siège)','Bon de commande journal agréé','Récépissé dépôt RC'],
+      sa:['Publication BALO obligatoire','Journal agréé + BALO','Mention commissaire aux comptes'],
+      sas:['Extrait statuts simplifié','Journal agréé'],
+      auto:['Non applicable pour AE'],
+      succursale:['Publication siège social + mandataire','Journal agréé + BALO'],
+      all:['Annonce légale à publier dans journal agréé'],
+    },
+    note:'Obligatoire pour SARL, SA et SAS. Publiez dans le BALO (Bulletin Officiel des Annonces Légales) ET dans un journal d\'annonces légales agréé de la région. Coût moyen : 800–2 500 MAD selon longueur. Liste des journaux agréés disponible au greffe du tribunal de commerce.',
+    online:false,
+    blockers:['Journal refuse publication sans récépissé RC : joignez le récépissé provisoire de dépôt émis par le CRI. Légalement suffisant pour la publication.']
+  },
+  {
+    id:9, title:'Ouverture compte bancaire professionnel définitif',
+    days:5, cost:0,
+    tags:['2–7 jours','Selon banque'],
+    docs:{
+      all:['RC définitif','IF','Statuts définitifs (signés + certifiés)','CIN gérant','Attestation libération capital','Annonce légale publiée (extrait journal)','Résolution CA ou AG pour ouverture de compte (SA/SAS)'],
+    },
+    note:'Débloquez le capital immobilisé à l\'étape 3 en présentant le RC définitif. Comparez les offres bancaires : Attijariwafa "Business Start", BMCE "Business Pack", BCP "Hissab Maal". Exigez l\'absence de frais de tenue pour les 12 premiers mois. Négociez les commissions de virement international dès l\'ouverture.',
+    online:false,
+    blockers:['Banque exige un chiffre d\'affaires prévisionnel : préparez un prévisionnel sur 12 mois (simple tableur suffit). Certaines banques exigent un historique de relations — commencez par votre banque personnelle.']
+  },
+  {
+    id:10, title:'Autorisations sectorielles spécifiques',
+    days:30, cost:0,
+    tags:['Variable','Selon secteur'],
+    docs:{
+      all:['Agrément sectoriel selon activité (voir onglet Autorisations)','Certificat de conformité local / technique','Autorisation d\'exploitation (commune)','Permis d\'importation si activité import-export'],
+    },
+    note:'Cette étape est <strong>spécifique à votre secteur</strong>. Consultez l\'onglet "Autorisations sectorielles" pour la liste complète des agréments requis pour votre activité. Certains agréments (santé, finance, télécom) peuvent prendre 3 à 18 mois — anticipez !',
+    online:false,
+    blockers:['Autorisation sectorielle bloquée : contactez directement le ministère de tutelle. Le CRI peut faciliter certaines démarches via son guichet d\'accompagnement des investisseurs.']
+  }
+];
+
+/* ══════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════ */
+let stepState = {};
+let docState = {};
+STEPS_BASE.forEach(s => { stepState[s.id] = 'pending'; });
+
+/* ══════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('startDate').valueAsDate = new Date();
+  loadFromStorage();
+  renderCRI();
+  renderSteps();
+  renderCosts();
+  renderSectorGuide();
+  updateStats();
+  updateCalendar();
+  updateFormeStats();
+});
+
+/* ══════════════════════════════════════════════════════
+   STORAGE
+══════════════════════════════════════════════════════ */
+function saveToStorage() {
+  const data = {
+    stepState, docState,
+    cri: document.getElementById('criSel').value,
+    forme: document.getElementById('formeSel').value,
+    secteur: document.getElementById('secteurSel').value,
+    startDate: document.getElementById('startDate').value,
+    ts: Date.now()
+  };
+  try { localStorage.setItem('cri_tracker_v2', JSON.stringify(data)); } catch(e){}
+  const dot = document.getElementById('saveDot');
+  dot.style.background = 'var(--gl)';
+  setTimeout(() => { dot.style.background = 'var(--ok)'; }, 800);
+}
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem('cri_tracker_v2');
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.stepState) stepState = d.stepState;
+    if (d.docState) docState = d.docState;
+    if (d.cri) document.getElementById('criSel').value = d.cri;
+    if (d.forme) document.getElementById('formeSel').value = d.forme;
+    if (d.secteur) document.getElementById('secteurSel').value = d.secteur;
+    if (d.startDate) document.getElementById('startDate').value = d.startDate;
+    document.getElementById('saveLabel').textContent = 'Dernière sauvegarde: ' + new Date(d.ts).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  } catch(e){}
+}
+
+/* ══════════════════════════════════════════════════════
+   RENDER CRI CONTACT
+══════════════════════════════════════════════════════ */
+function renderCRI() {
+  const cri = CRI_DATA[document.getElementById('criSel').value];
+  document.getElementById('criContact').innerHTML = `
+    <div class="cri-contact-name">${cri.name}</div>
+    <div class="cri-row">📍 ${cri.addr}</div>
+    <div class="cri-row">📞 <a href="tel:${cri.tel}">${cri.tel}</a></div>
+    <div class="cri-row">✉️ <a href="mailto:${cri.email}">${cri.email}</a></div>
+    <div class="cri-row">🌐 <a href="${cri.web}" target="_blank">${cri.web.replace('https://','')}</a></div>
+    <div class="cri-row">💻 <a href="${cri.online}" target="_blank">ompic.ma (guichet en ligne)</a></div>
+    <div class="cri-row">🕐 ${cri.horaires}</div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════
+   RENDER STEPS
+══════════════════════════════════════════════════════ */
+function getStepDocs(step) {
+  const forme = document.getElementById('formeSel').value;
+  const specific = step.docs[forme] || step.docs.all || [];
+  const all = step.docs.all || [];
+  const merged = [...new Set([...specific, ...all])];
+  return merged.slice(0, 7);
+}
+
+function renderSteps() {
+  const container = document.getElementById('stepsContainer');
+  container.innerHTML = '';
+  STEPS_BASE.forEach((s, idx) => {
+    const st = stepState[s.id] || 'pending';
+    const docs = getStepDocs(s);
+    const html = `
+      <div class="step" id="step_${s.id}">
+        <div class="step-left">
+          <div class="step-num ${st}" id="snum_${s.id}">${st === 'done' ? '✓' : s.id}</div>
+          <div class="step-line ${st==='done'?'done':''}" id="sline_${s.id}"></div>
+        </div>
+        <div class="step-body ${st}" id="sbody_${s.id}" onclick="toggleDetail(${s.id})">
+          <div class="step-header">
+            <div class="step-title">${s.title}</div>
+            <div class="step-chips">
+              ${s.tags.map(t=>`<span class="chip ${t.includes('ligne')?'chip-online':t.includes('jour')?'chip-days':'chip-cost'}">${t}</span>`).join('')}
+              ${st==='done'?'<span class="chip chip-done">✓ Fait</span>':''}
+              ${st==='blocked'?'<span class="chip chip-blocked">⚠ Bloqué</span>':''}
+            </div>
+          </div>
+          <div class="step-detail" id="sdetail_${s.id}">
+            <div style="font-family:var(--fm);font-size:9px;color:var(--sm);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Documents requis</div>
+            <div class="doc-check-list">
+              ${docs.map((d,i)=>`
+                <div class="doc-item">
+                  <div class="chk ${docState[s.id+'_'+i]?'checked':''}" id="chk_${s.id}_${i}" onclick="event.stopPropagation();toggleDoc(${s.id},${i})">${docState[s.id+'_'+i]?'✓':''}</div>
+                  <span>${d}</span>
+                </div>`).join('')}
+            </div>
+            <div class="step-note">${s.note}</div>
+            ${st==='blocked' && s.blockers ? `<div class="blocker-box"><div class="blocker-title">💡 Solutions déblocage</div>${s.blockers.map(b=>`<div style="margin-bottom:5px">• ${b}</div>`).join('')}</div>` : ''}
+            <div class="step-actions" onclick="event.stopPropagation()">
+              <button class="btn-s btn-done" onclick="markStep(${s.id},'done')">✓ Fait</button>
+              <button class="btn-s btn-undo" onclick="markStep(${s.id},'pending')">↩ En attente</button>
+              <button class="btn-s btn-block" onclick="markStep(${s.id},'blocked')">⚠ Bloquer</button>
+              <button class="btn-s btn-ai" onclick="event.stopPropagation();openFaqForStep(${s.id})">📚 Guide</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    container.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+function toggleDetail(id) {
+  const d = document.getElementById('sdetail_'+id);
+  const b = document.getElementById('sbody_'+id);
+  const wasOpen = d.classList.contains('open');
+  // close all
+  document.querySelectorAll('.step-detail').forEach(el => el.classList.remove('open'));
+  document.querySelectorAll('.step-body').forEach(el => el.classList.remove('active-expand'));
+  if (!wasOpen) {
+    d.classList.add('open');
+    b.classList.add('active-expand');
+  }
+}
+
+function toggleDoc(stepId, idx) {
+  const key = stepId+'_'+idx;
+  docState[key] = !docState[key];
+  const el = document.getElementById('chk_'+stepId+'_'+idx);
+  if(docState[key]) { el.classList.add('checked'); el.textContent='✓'; }
+  else { el.classList.remove('checked'); el.textContent=''; }
+  saveToStorage();
+}
+
+function markStep(id, state) {
+  stepState[id] = state;
+  const num = document.getElementById('snum_'+id);
+  const body = document.getElementById('sbody_'+id);
+  const line = document.getElementById('sline_'+id);
+  ['done','blocked','pending'].forEach(c=>{ num.classList.remove(c); body.classList.remove(c); });
+  num.classList.add(state);
+  body.classList.add(state);
+  num.textContent = state === 'done' ? '✓' : id;
+  if(line){ line.classList.remove('done'); if(state==='done') line.classList.add('done'); }
+  // refresh detail for blocker info
+  renderSteps();
+  toggleDetail(id);
+  updateStats();
+  saveToStorage();
+}
+
+/* ══════════════════════════════════════════════════════
+   STATS + CALENDAR
+══════════════════════════════════════════════════════ */
+function updateStats() {
+  const done = STEPS_BASE.filter(s=>stepState[s.id]==='done').length;
+  const blocked = STEPS_BASE.filter(s=>stepState[s.id]==='blocked').length;
+  const pct = Math.round(done/10*100);
+  document.getElementById('pb-pct').textContent = pct+'%';
+  document.getElementById('pb-fill').style.width = pct+'%';
+  document.getElementById('pb-sub').textContent = done+' étape'+(done>1?'s':'')+' complétée'+(done>1?'s':'')+' sur 10';
+  document.getElementById('cnt-done').textContent = done+' complétée'+(done>1?'s':'');
+  document.getElementById('cnt-blocked').textContent = blocked+' bloquée'+(blocked>1?'s':'');
+  const remaining = STEPS_BASE.filter(s=>stepState[s.id]!=='done').reduce((a,b)=>a+b.days,0);
+  document.getElementById('cnt-days').textContent = remaining > 0 ? '~'+remaining+'j' : '✓ Terminé';
+}
+
+function updateCalendar() {
+  const val = document.getElementById('startDate').value;
+  if(!val) return;
+  const d0 = new Date(val);
+  const fmt = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}); };
+  document.getElementById('cal-depot').textContent = fmt(d0,3);
+  document.getElementById('cal-immat').textContent = fmt(d0,8);
+  document.getElementById('cal-if').textContent = fmt(d0,10);
+  document.getElementById('cal-ops').textContent = fmt(d0,45);
+}
+
+function updateFormeStats() {
+  const f = FORME_DATA[document.getElementById('formeSel').value];
+  document.getElementById('st-delai').textContent = f.delai;
+  const total = f.c1+f.c2+f.c3+f.c4+f.c5;
+  document.getElementById('st-cout').textContent = total.toLocaleString('fr-FR')+'';
+  document.getElementById('st-capital').textContent = f.capital;
+}
+
+/* ══════════════════════════════════════════════════════
+   COSTS
+══════════════════════════════════════════════════════ */
+function renderCosts() {
+  const f = FORME_DATA[document.getElementById('formeSel').value];
+  const total = f.c1+f.c2+f.c3+f.c4+f.c5;
+  document.getElementById('costRecap').innerHTML = `
+    <div style="font-family:var(--fm);font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Récapitulatif des coûts — ${document.getElementById('formeSel').options[document.getElementById('formeSel').selectedIndex].text.split(' — ')[0]}</div>
+    <div class="cost-row"><span>Frais de greffe (RC)</span><span style="font-family:var(--fm)">${f.c1.toLocaleString('fr-FR')} MAD</span></div>
+    <div class="cost-row"><span>Légalisation / notaire</span><span style="font-family:var(--fm)">${f.c2 ? f.c2.toLocaleString('fr-FR')+' MAD' : 'Non requis'}</span></div>
+    <div class="cost-row"><span>Publication BALO + journal agréé</span><span style="font-family:var(--fm)">${f.c3 ? f.c3.toLocaleString('fr-FR')+' MAD' : 'Non requis'}</span></div>
+    <div class="cost-row"><span>Frais DGI</span><span style="font-family:var(--fm)">${f.c4 ? f.c4.toLocaleString('fr-FR')+' MAD' : 'Inclus / Gratuit'}</span></div>
+    <div class="cost-row"><span>Frais divers (copies, apostilles)</span><span style="font-family:var(--fm)">${f.c5.toLocaleString('fr-FR')} MAD</span></div>
+    <div class="cost-row"><span>TOTAL ESTIMÉ</span><span style="font-family:var(--fm)">${total.toLocaleString('fr-FR')} MAD</span></div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════
+   SECTOR GUIDE
+══════════════════════════════════════════════════════ */
+function renderSectorGuide() {
+  const secteur = document.getElementById('secteurSel').value;
+  const guide = SECTOR_AUTH[secteur] || SECTOR_AUTH.commerce;
+  document.getElementById('sectorGuide').innerHTML = `
+    <div class="sector-guide-title">${guide.icon} Autorisations requises — ${guide.title}</div>
+    <div class="alert info" style="margin-bottom:14px">ℹ Ces autorisations s'ajoutent aux 10 étapes de création standard. Certaines doivent être obtenues <strong>avant</strong> le démarrage commercial. Anticipez les délais.</div>
+    ${guide.items.map(item=>`
+      <div class="autorisation-item">
+        <div class="aut-icon">${item.icon}</div>
+        <div class="aut-body">
+          <div class="aut-name">${item.name}</div>
+          <div class="aut-info">${item.info}</div>
+        </div>
+      </div>`).join('')}
+    <div class="alert warn" style="margin-top:16px">⚠ Cette liste est indicative. Les exigences peuvent évoluer. Consultez votre CRI ou un juriste spécialisé pour une vérification à jour.</div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════ */
+function showTab(tab, btn) {
+  ['steps','secteur','ai'].forEach(t => { document.getElementById('tab-'+t).style.display='none'; });
+  document.getElementById('tab-'+tab).style.display='block';
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ══════════════════════════════════════════════════════
+   EVENTS
+══════════════════════════════════════════════════════ */
+function onCriChange() { renderCRI(); saveToStorage(); }
+function onFormeChange() { renderSteps(); renderCosts(); updateFormeStats(); saveToStorage(); }
+function onSecteurChange() { renderSectorGuide(); saveToStorage(); }
+
+function resetAll() {
+  if(!confirm('Réinitialiser toute la progression ?')) return;
+  STEPS_BASE.forEach(s => { stepState[s.id]='pending'; });
+  Object.keys(docState).forEach(k => delete docState[k]);
+  renderSteps();
+  updateStats();
+  saveToStorage();
+}
+
+/* ══════════════════════════════════════════════════════
+   EXPORT (simple print)
+══════════════════════════════════════════════════════ */
+function exportDossier() {
+  const forme = document.getElementById('formeSel').value;
+  const cri = CRI_DATA[document.getElementById('criSel').value];
+  const secteur = document.getElementById('secteurSel').value;
+  const done = STEPS_BASE.filter(s=>stepState[s.id]==='done').length;
+  const pct = Math.round(done/10*100);
+  const f = FORME_DATA[forme];
+
+  let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Dossier CRI — Smart-Invest.ia</title>
+  <style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;color:#222;font-size:13px}
+  h1{font-size:22px;color:#B8862A;border-bottom:2px solid #B8862A;padding-bottom:8px}
+  h2{font-size:15px;color:#1E4D6B;margin:20px 0 8px}
+  .kv{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #eee}
+  .kv span:last-child{font-weight:700}
+  .step-row{margin:10px 0;padding:10px;border:1px solid #ddd;border-radius:6px}
+  .done{background:#f0fff4;border-color:#1A6B3C}.blocked{background:#fff5f5;border-color:#B03030}
+  .badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:100px;background:#FBF0D0;color:#B8862A;margin-left:8px}
+  .footer{margin-top:40px;font-size:10px;color:#aaa;border-top:1px solid #eee;padding-top:12px}
+  @media print{body{margin:20px}}</style></head><body>
+  <h1>Dossier Création d'Entreprise — Smart-Invest.ia</h1>
+  <div style="font-size:11px;color:#888;margin-bottom:20px">Généré le ${new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div>
+  <h2>Informations dossier</h2>
+  <div class="kv"><span>Centre Régional d'Investissement</span><span>${cri.name}</span></div>
+  <div class="kv"><span>Forme juridique</span><span>${document.getElementById('formeSel').options[document.getElementById('formeSel').selectedIndex].text}</span></div>
+  <div class="kv"><span>Secteur d'activité</span><span>${document.getElementById('secteurSel').options[document.getElementById('secteurSel').selectedIndex].text}</span></div>
+  <div class="kv"><span>Capital minimum requis</span><span>${f.capital}</span></div>
+  <div class="kv"><span>Délai estimé</span><span>${f.delai}</span></div>
+  <div class="kv"><span>Progression</span><span>${pct}% (${done}/10 étapes)</span></div>
+  <h2>Contacts CRI</h2>
+  <div class="kv"><span>Adresse</span><span>${cri.addr}</span></div>
+  <div class="kv"><span>Téléphone</span><span>${cri.tel}</span></div>
+  <div class="kv"><span>Email</span><span>${cri.email}</span></div>
+  <h2>Étapes & progression</h2>`;
+
+  STEPS_BASE.forEach(s => {
+    const st = stepState[s.id] || 'pending';
+    const docs = getStepDocs(s);
+    html += `<div class="step-row ${st}">
+      <strong>${s.id}. ${s.title}</strong>
+      <span class="badge">${st === 'done' ? '✓ Complété' : st === 'blocked' ? '⚠ Bloqué' : '○ En attente'}</span>
+      <div style="margin-top:6px;font-size:11px;color:#555"><strong>Documents :</strong><br>${docs.map(d=>'• '+d).join('<br>')}</div>
+    </div>`;
+  });
+
+  html += `<div class="footer">Smart-Invest.ia · Outil indicatif · Informations CRI 2024-2025 · Pour usage personnel uniquement.</div>
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body></html>`;
+
+  const w = window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(() => w.print(), 500);
+}
+
+/* ══════════════════════════════════════════════════════
+   BASE DE CONNAISSANCES — 65 entrées · Loi 09-08 compliant
+   Données 100% locales — aucun appel externe
+══════════════════════════════════════════════════════ */
+const FAQ = [
+  {id:1,cat:'formes',icon:'🏢',q:'Quelle est la différence entre SARL et SAS au Maroc ?',
+   a:`<strong>SARL (Loi 5-96)</strong> : forme la plus courante. Capital minimum 1 000 MAD, parts sociales non librement cessibles, gérant obligatoire. Idéale PME et structures familiales.<br><br><strong>SAS (Loi 78-12)</strong> : liberté statutaire maximale, capital libre dès 1 MAD, gouvernance flexible (Président + DG). Idéale startups et structures avec investisseurs.<br><br><div class="tip">✓ La SARL reste dominante au Maroc. Les greffes et banques la traitent en priorité. La SAS est recommandée uniquement si vous avez des investisseurs ou des tours de financement prévus.</div><span class="ref">Loi 5-96 (SARL) · Loi 78-12 (SAS)</span>`,
+   tags:['sarl','sas','forme','différence']},
+  {id:2,cat:'formes',icon:'🏛️',q:'Quand est-il obligatoire de créer une SA plutôt qu\'une SARL ?',
+   a:`La SA (Loi 17-95) est obligatoire pour : <strong>appel public à l'épargne</strong> (cotation, émission titres), <strong>secteurs réglementés</strong> (banques BAM, assurances ACAPS, gestion actifs AMMC), <strong>marchés publics importants</strong> exigeant la forme SA.<br><br><div class="warn-box">⚠ Capital minimum SA : 300 000 MAD libéré à 25% à la création. Commissaire aux comptes obligatoire.</div><span class="ref">Loi 17-95 art. 1</span>`,
+   tags:['sa','société anonyme','obligatoire','capital']},
+  {id:3,cat:'formes',icon:'🚀',q:'Statut Auto-Entrepreneur : qui est éligible et comment s\'inscrire ?',
+   a:`<strong>Conditions (Loi 114-13)</strong> : personne physique, CA ≤ 500 000 MAD (commerce) ou ≤ 200 000 MAD (services). Exclusions : professions réglementées, agriculture, pêche.<br><br><strong>Inscription</strong> : auto-entrepreneur.ma, délai 3–7 jours, gratuit.<br><br><strong>Fiscalité</strong> : 0,5% CA (commerce) ou 1% (services). Aucune TVA. Aucune comptabilité formelle.<br><br><div class="tip">✓ Idéal pour tester une activité avant de créer une société. Transformation en SARL possible à tout moment.</div><span class="ref">Loi 114-13 · CGI Art.42 bis</span>`,
+   tags:['auto-entrepreneur','ae','éligible','inscription','seuil']},
+  {id:4,cat:'formes',icon:'🌍',q:'Comment créer une succursale de société étrangère au Maroc ?',
+   a:`Documents spécifiques : <strong>statuts société mère apostillés</strong> + traduction certifiée, extrait RC étranger apostillé &lt; 3 mois, décision CA nommant le responsable, procuration notariée, justificatif domiciliation Maroc.<br><br>Délai : 30–60 jours. Pas de capital minimum.<br><br><div class="warn-box">⚠ Dotation initiale &gt; 1M MAD → déclaration préalable Office des Changes requise.</div><span class="ref">Loi 15-95 · Circulaire OC 2020</span>`,
+   tags:['succursale','étrangère','apostille','international']},
+  {id:5,cat:'formes',icon:'👥',q:'Peut-on créer une SARL avec un seul associé (SARL-AU) ?',
+   a:`<strong>Oui</strong>, la SARL unipersonnelle est prévue par la Loi 5-96. L'associé unique peut être une personne physique ou morale. Procédure CRI identique à une SARL classique.<br><br><div class="tip">✓ Forme recommandée pour les entrepreneurs individuels voulant protéger leur patrimoine personnel. Responsabilité limitée à l'apport.</div><span class="ref">Loi 5-96 art. 44 bis</span>`,
+   tags:['sarl','unipersonnelle','seul','associé']},
+  {id:6,cat:'formes',icon:'💼',q:'Quelle forme juridique pour une activité de conseil / consulting ?',
+   a:`<strong>AE</strong> : si CA &lt; 200K MAD/an. Rapide, fiscal simplifié. Impossible de facturer TVA ou d'avoir des salariés.<br><strong>SARL-AU</strong> : si CA &gt; 200K ou clients corporate exigeant RC. Protection patrimoniale. Comptabilité obligatoire.<br><strong>SAS</strong> : si levée de fonds prévue.<br><br><div class="tip">✓ 80% des consultants démarrent en AE puis basculent en SARL dès 150K MAD/an pour optimiser la charge fiscale.</div>`,
+   tags:['conseil','consulting','freelance','quelle forme']},
+  {id:7,cat:'procedure',icon:'📋',q:'Peut-on tout faire en ligne sans se déplacer au CRI ?',
+   a:`<strong>100% en ligne ✅</strong> : réservation dénomination (ompic.ma), dépôt RC certains CRI, affiliation CNSS (damancom.ma), inscription AE.<br><br><strong>Encore physique ❌</strong> : légalisation notariale, dépôt capital bancaire, publication journal agréé, certains CRI régionaux.<br><br><div class="warn-box">⚠ Casablanca et Rabat ont le meilleur taux de digitalisation. Dans les CRI secondaires, le guichet physique reste plus fiable.</div>`,
+   tags:['ligne','online','digital','déplacer','guichet']},
+  {id:8,cat:'procedure',icon:'📄',q:'Qu\'est-ce que le formulaire M0 et où le trouver ?',
+   a:`Le <strong>formulaire M0</strong> est le document central de création : identification société, objet social, associés et gérant, régime fiscal choisi.<br><br><strong>Téléchargement</strong> : ompic.ma → "Téléchargements" → "Formulaires de création".<br><br><div class="tip">✓ Remplissez au stylo noir, lettres capitales. Un M0 raturé est refusé. Préparez 3 exemplaires.</div><span class="ref">OMPIC · Circulaire CRI 2022</span>`,
+   tags:['m0','formulaire','création','ompic','télécharger']},
+  {id:9,cat:'procedure',icon:'🏦',q:'Comment fonctionne le guichet unique CRI ?',
+   a:`Un seul dépôt CRI déclenche en théorie : RC (OMPIC) + IF (DGI) + CNSS + patente simultanément.<br><br><strong>En pratique 2025</strong> : RC + IF traités ensemble (3–7j), CNSS parfois séparé, patente transmise automatiquement à la brigade DGI.<br><br><div class="tip">✓ Arrivez dès l'ouverture (8h30). Exigez un récépissé numéroté à chaque dépôt. Ce récépissé permet de relancer si délai dépassé.</div>`,
+   tags:['guichet unique','cri','dépôt','fonctionnement']},
+  {id:10,cat:'procedure',icon:'🔍',q:'Comment vérifier la disponibilité d\'un nom d\'entreprise ?',
+   a:`<strong>3 vérifications</strong> : (1) ompic.ma → "Recherche de dénomination" (gratuit, immédiat), (2) ompic.ma → "Recherche de marques", (3) inforisk.ma → recherche RC existants.<br><br><strong>Noms refusés</strong> : patronymes seuls, noms d'organismes publics, noms géographiques seuls.<br><br><div class="tip">✓ La dénomination est réservée 90 jours. Préparez 3 propositions par ordre de préférence.</div>`,
+   tags:['dénomination','nom','vérifier','disponible','marque']},
+  {id:11,cat:'procedure',icon:'📜',q:'Faut-il obligatoirement un notaire pour créer une SARL ?',
+   a:`<strong>Non, pas obligatoire</strong> pour une SARL simple sous seing privé si : pas d'apport immobilier, tous les associés présents pour signer ensemble.<br><br><strong>Notaire obligatoire</strong> : SA, apports immobiliers, signatures à distance (procuration).<br><br><div class="warn-box">⚠ Coût notaire SARL : 2 000–5 000 MAD. SA : 6 000–12 000 MAD.</div><span class="ref">Loi 5-96 art. 50 · Loi 17-95 art. 14</span>`,
+   tags:['notaire','obligatoire','statuts','acte']},
+  {id:12,cat:'procedure',icon:'🏭',q:'Qu\'est-ce que l\'objet social et comment bien le rédiger ?',
+   a:`L'objet social décrit les activités légalement autorisées. Il doit être <strong>large mais précis</strong>.<br><br>Exemple SARL commerce : <em>"Commerce de gros et de détail de [produit]. Conseil et assistance en [domaine]. Et toutes opérations commerciales, industrielles et financières se rattachant à l'objet social."</em><br><br><div class="tip">✓ Un objet bien rédigé évite une modification statutaire ultérieure (50–200 MAD au greffe + nouvelle publication).</div>`,
+   tags:['objet social','rédiger','activité','statuts','exemple']},
+  {id:13,cat:'procedure',icon:'🏠',q:'Peut-on domicilier une société chez soi (domicile personnel) ?',
+   a:`<strong>Oui, légalement possible</strong> pour 2 ans maximum. Documents : contrat de bail à votre nom + attestation de domiciliation signée.<br><br><strong>Après 2 ans</strong> : transfert obligatoire vers local commercial ou société de domiciliation agréée (à partir de 500 MAD/mois).<br><br><div class="warn-box">⚠ Certaines activités réglementées exigent un local commercial dédié dès la création.</div>`,
+   tags:['domiciliation','domicile','siège','local']},
+  {id:14,cat:'blocage',icon:'⚠️',q:'Mon dossier RC est refusé au guichet, que faire exactement ?',
+   a:`<strong>Protocole</strong> :<br>1. Exiger un refus <strong>écrit</strong> listant les pièces manquantes ou non conformes<br>2. Identifier la cause exacte : document manquant, expiré, illisible, M0 mal rempli, objet social problématique<br>3. Corriger et représenter dans les 24h<br>4. Si blocage injustifié : email AR au Directeur du CRI + copie AMDIE (contact.amdie@amdie.gov.ma)<br><br><div class="tip">✓ Le juriste du CRI peut relire votre dossier gratuitement avant dépôt.</div>`,
+   tags:['refus','rejet','blocage','rc','guichet','dossier']},
+  {id:15,cat:'blocage',icon:'🏦',q:'La banque refuse d\'ouvrir un compte bloqué pour le capital, que faire ?',
+   a:`Causes et solutions : <strong>dossier incomplet</strong> (demandez la liste écrite), <strong>profil risqué</strong> (commencez par votre banque personnelle), <strong>activité sensible</strong> (essayez CIH ou Al Barid Bank).<br><br><div class="warn-box">⚠ Pour une SARL à 1 000 MAD de capital, 250 MAD minimum à déposer (25%). Certains conseillers l'ignorent — citez l'Art. 50 Loi 5-96.</div>`,
+   tags:['banque','compte bloqué','capital','refus']},
+  {id:16,cat:'blocage',icon:'🔑',q:'L\'identifiant fiscal n\'a pas été reçu après l\'immatriculation, que faire ?',
+   a:`Causes : (1) CRI n'a pas transmis automatiquement → déposez directement à votre brigade DGI avec le RC, (2) mauvaise brigade → vérifiez sur tax.gov.ma "Trouver votre brigade", (3) erreur de saisie → présentez-vous physiquement avec RC + CIN.<br><br><div class="tip">✓ Vous pouvez facturer avec le RC en attendant l'IF. Mentionnez "IF en cours d'attribution".</div><span class="ref">CGI Art.148</span>`,
+   tags:['if','identifiant fiscal','dgi','manquant']},
+  {id:17,cat:'blocage',icon:'📰',q:'Quel journal agréé choisir pour la publication légale et quel est le coût ?',
+   a:`Journaux agréés courants : Al Massae, L'Économiste, Aujourd'hui Le Maroc, Le Matin. Liste officielle au greffe du Tribunal de Commerce ou au CRI.<br><br><strong>Coûts 2025</strong> : SARL 800–1 200 MAD, SA 1 500–2 500 MAD.<br><br><strong>Contenu obligatoire</strong> : dénomination, forme, capital, objet social, siège, gérant, durée.<br><br><div class="tip">✓ Comparez les tarifs entre 2–3 journaux. Écart jusqu'à 40%. Demandez un devis par email.</div>`,
+   tags:['journal','publication','annonce légale','balo','coût']},
+  {id:18,cat:'blocage',icon:'📋',q:'Mon dossier est bloqué depuis plus de 10 jours, comment escalader ?',
+   a:`Escalade progressive : J1–3 relance téléphonique avec N° récépissé → J4–7 email AR au responsable guichet + Directeur CRI → J8–14 email AMDIE + Wali région → Au-delà : Médiateur du Royaume (médiateur.ma, gratuit, délai 15j).<br><br>Dans tout email d'escalade : N° récépissé + date dépôt + dénomination + forme + copie récépissé en PJ.<span class="ref">Loi 80-03 Médiateur</span>`,
+   tags:['bloqué','délai','retard','escalade','médiateur']},
+  {id:19,cat:'blocage',icon:'🔒',q:'La CNSS refuse mon affiliation, quelles solutions ?',
+   a:`Causes : <strong>documents incomplets</strong> (ADH 004 + RC + IF + CIN + bail), <strong>activité non couverte</strong> (agriculture → régime spécial), <strong>statut gérant flou</strong> (TNS vs assimilé salarié → clarifiez).<br><br><div class="tip">✓ L'affiliation en ligne sur damancom.ma est souvent plus rapide. Numéro reçu sous 48h.</div><span class="ref">Dahir 1-72-184 CNSS</span>`,
+   tags:['cnss','affiliation','refus','social']},
+  {id:20,cat:'blocage',icon:'📝',q:'Les statuts ont été rejetés au greffe, comment les corriger ?',
+   a:`Causes fréquentes : (1) répartition des parts ≠ capital (recalculez), (2) adresse siège non conforme au justificatif, (3) objet social trop vague, (4) signatures manquantes ou non légalisées, (5) date d'effet incohérente.<br><br><div class="tip">✓ Le juriste du CRI relit gratuitement vos statuts avant dépôt dans la plupart des CRI.</div>`,
+   tags:['statuts','rejetés','correction','greffe']},
+  {id:21,cat:'cout',icon:'💰',q:'Quel est le coût total réel pour créer une SARL au Maroc en 2025 ?',
+   a:`Dénomination : <strong>Gratuit</strong> · Statuts seing privé : <strong>Gratuit</strong> (ou 2–5K MAD notaire) · Capital (25% de 1 000 MAD) : <strong>250 MAD</strong> · Greffe RC : <strong>350–500 MAD</strong> · Publication légale : <strong>800–1 200 MAD</strong> · IF/CNSS : <strong>Gratuit</strong> · Divers : <strong>200–400 MAD</strong><br><br><strong>Total sans notaire : 1 600–2 300 MAD<br>Total avec notaire : 4 000–8 000 MAD</strong><br><br><div class="tip">✓ Comptez 500–1 500 MAD pour l'expert-comptable de la première déclaration.</div>`,
+   tags:['coût','prix','frais','total','sarl']},
+  {id:22,cat:'cout',icon:'💳',q:'Quel capital minimum faut-il déposer réellement à la création ?',
+   a:`SARL : minimum légal 1 000 MAD, à déposer 250 MAD (25%). · SA : 300 000 MAD minimum, 25% à déposer soit 75 000 MAD. · SAS : aucun minimum (1 MAD suffit). · AE : zéro. · Succursale : pas de minimum légal.<br><br><div class="warn-box">⚠ Un capital de 1 000 MAD donne une image fragile. 50 000–100 000 MAD est conseillé pour les relations banques/clients, même si non obligatoire.</div><span class="ref">Loi 5-96 art. 50 · Loi 17-95 art. 37</span>`,
+   tags:['capital','minimum','déposer','combien']},
+  {id:23,cat:'cout',icon:'📊',q:'Peut-on augmenter le capital après la création, et comment ?',
+   a:`Oui. <strong>Apport en numéraire</strong> : AGE → modification statuts → dépôt fonds → M2 au CRI (300–500 MAD) → publication (500–1 000 MAD). <strong>Incorporation de réserves</strong> : résultat positif → AGE → M2 + publication. Délai total : 10–20 jours.<br><br><div class="tip">✓ Augmentez avant une demande de financement bancaire pour renforcer les capitaux propres.</div>`,
+   tags:['augmentation capital','apport','réserves']},
+  {id:24,cat:'cout',icon:'🔄',q:'Combien coûte une modification statutaire (gérant, siège, capital) ?',
+   a:`Changement gérant → M3 + publication : <strong>500–800 MAD</strong> · Siège social → M2 + publication : <strong>500–800 MAD</strong> · Augmentation capital : <strong>800–1 500 MAD</strong> · Cession de parts → acte + enregistrement DGI : <strong>1 500–3 000 MAD</strong><br><br><div class="tip">✓ Groupez les modifications pour une seule publication → économie sur les frais.</div>`,
+   tags:['modification','changer','gérant','siège','coût']},
+  {id:25,cat:'fiscal',icon:'🏛️',q:'Quelle est l\'exonération fiscale pour une nouvelle entreprise au Maroc ?',
+   a:`<strong>Taxe Professionnelle</strong> : exonération totale 5 ans pour TOUTES nouvelles entreprises (CGI Art.144). Déclaration obligatoire même en exonération.<br><br><strong>IS</strong> : exonération 5 ans pour exportateurs, ZF/ZAI, secteur touristique (CA en devises).<br><br><strong>TVA</strong> : régime suspensif possible pour exportateurs.<br><br><div class="tip">✓ Ces exonérations doivent être déclarées. Consultez un comptable agréé pour en bénéficier correctement.</div><span class="ref">CGI Art.6 I-A · CGI Art.144 · LF 2025</span>`,
+   tags:['exonération','fiscale','is','taxe','avantage']},
+  {id:26,cat:'fiscal',icon:'📊',q:'Quelle est la différence entre RNR et RNS pour l\'IR ?',
+   a:`<strong>RNR</strong> (Résultat Net Réel) : comptabilité complète, charges réelles déductibles, obligatoire si CA &gt; 2M MAD (services) ou &gt; 10M (commerce).<br><strong>RNS</strong> (Résultat Net Simplifié) : comptabilité allégée, charges forfaitaires 25% du CA, CA ≤ seuils RNR.<br><br><div class="tip">✓ Pour une nouvelle SARL, c'est l'IS (pas l'IR) qui s'applique. RNR/RNS concerne les personnes physiques et entreprises individuelles.</div><span class="ref">CGI Art.38 (RNR) · CGI Art.40 (RNS)</span>`,
+   tags:['rnr','rns','ir','régime','fiscal']},
+  {id:27,cat:'fiscal',icon:'💼',q:'Quel est le statut social du gérant d\'une SARL ? CNSS ou non ?',
+   a:`<strong>Gérant majoritaire (&gt;50%)</strong> : TNS (Travailleur Non Salarié). Cotisation CNSS 6,37% des revenus pro (plafond 6 000 MAD/mois). Couverture retraite + décès-invalidité.<br><br><strong>Gérant minoritaire (≤50%)</strong> : peut être salarié de sa société → contrat de travail + bulletins de paie + couverture CNSS complète.<br><br><div class="warn-box">⚠ L'optimisation du statut gérant (salaire vs dividendes) a un impact fiscal majeur. Consultez un expert-comptable.</div><span class="ref">Dahir 1-72-184 CNSS · Loi 5-96 art. 62</span>`,
+   tags:['gérant','cnss','statut social','salarié','tns']},
+  {id:28,cat:'fiscal',icon:'📅',q:'Quelles déclarations fiscales doit faire une nouvelle société dans la première année ?',
+   a:`<strong>À la création</strong> : déclaration d'existence DGI + déclaration Taxe Professionnelle.<br><strong>Mensuel</strong> (CA &gt;1M) : TVA mensuelle avant le 20 du mois suivant.<br><strong>Trimestriel</strong> (régime simplifié) : TVA trimestrielle avant le 20 du mois suivant le trimestre.<br><strong>Annuel</strong> : IS avant le 31 mars + liasse fiscale DGI + déclaration employeur CNSS avant 31 janvier.<br><br><div class="tip">✓ Accompagnement expert-comptable agréé (OECM) la 1re année : 3 000–8 000 MAD/an.</div>`,
+   tags:['déclarations','fiscales','calendrier','tva','annuelle']},
+  {id:29,cat:'online',icon:'🌐',q:'Comment créer son entreprise sur ompic.ma étape par étape ?',
+   a:`1. ompic.ma → "Créer mon entreprise" → créer un compte<br>2. Réservation dénomination (3 propositions)<br>3. Formulaire M0 en ligne<br>4. Upload documents (CIN, statuts, attestation capital) en PDF qualité 300 DPI minimum<br>5. Paiement en ligne des frais de greffe<br>6. Suivi tableau de bord en temps réel<br><br><div class="warn-box">⚠ Photos de téléphone mal cadrées → rejets automatiques. Utilisez un scanner ou PDF haute qualité.</div>`,
+   tags:['ompic','ligne','portail','étape','comment']},
+  {id:30,cat:'online',icon:'💻',q:'Damancom.ma : comment s\'affilier à la CNSS en ligne ?',
+   a:`1. damancom.ma → "Créer votre espace" → saisir RC + email<br>2. Formulaire affiliation : activité, effectif prévu, adresse<br>3. Upload : RC + CIN gérant + IF<br>4. Numéro CNSS par email sous 24–72h<br><br>Fonctions après affiliation : déclaration mensuelle salaires, bordereaux paiement, attestations CNSS, vignettes AMO.<br><br><div class="tip">✓ Conservez vos identifiants Damancom — récupération uniquement en agence avec justificatifs.</div>`,
+   tags:['damancom','cnss','affiliation','ligne']},
+  {id:31,cat:'online',icon:'📱',q:'Comment payer les impôts en ligne via simpl.tax.gov.ma ?',
+   a:`SIMPL (Système Intégré de Taxation en Ligne) : accès avec IF + mot de passe (transmis par DGI à la création).<br><br>Fonctions : déclaration TVA (mensuelle/trimestrielle), IS + acomptes, IR employeur, historique paiements, attestations fiscales.<br><br>Paiement : virement bancaire ou carte.<br><br><div class="tip">✓ Activez SIMPL dès réception de l'IF. L'activation peut prendre 2–3 jours.</div>`,
+   tags:['simpl','impôts','ligne','payer','dgi','tva']},
+  {id:32,cat:'online',icon:'🔐',q:'Portnet.ma : à quoi sert ce portail et comment s\'inscrire ?',
+   a:`PortNet : plateforme nationale import/export. Obligatoire pour toute entreprise important ou exportant des marchandises.<br><br>Inscription : portnet.ma → "Espace opérateur" → formulaire avec RC + IF + RIB. Activation : 3–5 jours.<br><br>Fonctions : dépôt DUM, suivi douanier, paiement droits et taxes, accès BADR.<br><br><div class="warn-box">⚠ PortNet est indépendant du CRI. S'inscrit après obtention du RC et IF.</div>`,
+   tags:['portnet','douane','import','export','inscription']},
+  {id:33,cat:'delai',icon:'📅',q:'Quels sont les délais réels (pas théoriques) par CRI en 2025 ?',
+   a:`CRI Casablanca-Settat : <strong>5–10j</strong> ouvrables (le plus digitalisé).<br>CRI Rabat-Salé-Kénitra : <strong>5–8j</strong>.<br>CRI Tanger-Tétouan : <strong>7–12j</strong>.<br>CRI Marrakech : <strong>6–10j</strong>.<br>CRI Fès-Meknès : <strong>7–14j</strong>.<br>CRI Souss-Massa : <strong>7–12j</strong>.<br>CRI régionaux (Oriental, Béni Mellal…) : <strong>10–20j</strong>.<br><br><div class="tip">✓ Ces délais valent pour un dossier complet et conforme. Un dossier incomplet peut tripler le délai.</div>`,
+   tags:['délai','réel','cri','jours','durée']},
+  {id:34,cat:'delai',icon:'⏱️',q:'Peut-on accélérer la procédure de création ?',
+   a:`1. <strong>Dossier complet dès le premier dépôt</strong> (évite les allers-retours).<br>2. <strong>Auto-Entrepreneur</strong> : 3–7 jours en ligne, le plus rapide.<br>3. <strong>Service investisseur CRI</strong> : projets &gt;1M MAD → priorité 24–48h dans certains CRI.<br>4. <strong>Fiduciaire agréée</strong> : 500–1 500 MAD pour accélération dossier.<br>5. <strong>Notaire réactif</strong> : le goulot est souvent la légalisation notariale.<br><br><div class="tip">✓ Record terrain : création SARL en 4 jours (dossier parfait + fiduciaire + CRI Casablanca).</div>`,
+   tags:['accélérer','express','rapide','vite']},
+  {id:35,cat:'delai',icon:'📆',q:'Combien de temps pour les autorisations sectorielles après la création ?',
+   a:`Commerce/restaurant (commune) : <strong>7–21j</strong> · ONSSA alimentaire : <strong>15–45j</strong> · Protection Civile : <strong>7–15j</strong> · Licence alcool (préfecture) : <strong>30–60j</strong> · Agrément BAM (finance) : <strong>6–18 mois</strong> · Ministère Santé (clinique) : <strong>3–12 mois</strong> · ANRT (télécom) : <strong>1–6 mois</strong> · Permis construire : <strong>2–6 mois</strong>.<br><br><div class="warn-box">⚠ Anticipez les autorisations longues AVANT de signer un bail ou de recruter.</div>`,
+   tags:['autorisations','sectorielles','délai','attente']},
+  {id:36,cat:'procedure',icon:'🔄',q:'Comment transformer une activité de personne physique (IP) en société ?',
+   a:`1. Évaluation du fonds de commerce par expert-comptable ou commissaire aux apports.<br>2. Création de la société (procédure CRI normale, apport en nature dans les statuts).<br>3. Cession du fonds de commerce : acte notarié + publication + enregistrement DGI (droits mutation 2,5%).<br>4. Radiation entreprise individuelle : formulaire M5 au CRI.<br><br><div class="tip">✓ Alternative : créez la société, transférez progressivement les contrats, radiez l'ancienne après 6–12 mois.</div>`,
+   tags:['transformer','individuelle','ip','société','apport']},
+  {id:37,cat:'formes',icon:'🌿',q:'Quels sont les avantages fiscaux pour une entreprise en Zone ZAI ?',
+   a:`IS : exonération totale 5 ans → taux réduit 20% années 6–20. TVA : suspension totale. Droits de douane : exemption importations. Taxe professionnelle : exonération permanente. Dividendes vers l'étranger : exonération retenue à la source.<br><br>Contrainte : activité majoritairement exportatrice (&gt;70% CA à l'export).<br><br><div class="tip">✓ ZAI principales : Tanger Free Zone, Kénitra Atlantic Free Zone, CFC (services financiers), Dakhla Atlantic.</div><span class="ref">Loi 68-17 ZAI · CGI Art.6 I-B</span>`,
+   tags:['zai','zone franche','avantages','fiscaux','is']},
+  {id:38,cat:'procedure',icon:'👤',q:'Un étranger non-résident peut-il créer une société au Maroc ?',
+   a:`<strong>Oui</strong>, sans restriction de nationalité. Documents spécifiques : passeport valide (traduit si nécessaire), certificat résidence pays d'origine, casier judiciaire apostillé, acte de naissance apostillé.<br><br>Transfert capital depuis l'étranger → déclaration automatique Office des Changes.<br><br>Gérant étranger non-résident : possible. Mais exercer en présentiel peut nécessiter titre de séjour + carte de travail.<span class="ref">Loi 5-96 · Instruction OC 2020</span>`,
+   tags:['étranger','non-résident','international','créer']},
+  {id:39,cat:'blocage',icon:'💡',q:'Comment débloquer une attestation DGI quand l\'entreprise a des impôts en retard ?',
+   a:`1. Identifier le montant exact via SIMPL ou brigade DGI.<br>2. Négocier un échéancier (6–36 mois) : demande écrite au Directeur régional DGI.<br>3. Une fois l'échéancier signé + 1er versement effectué → attestation "sous réserve de régularisation" délivrable.<br>4. Désaccord sur le montant → saisir la Commission Locale de Taxation (CLT).<br><br><div class="tip">✓ LF 2024 et LF 2025 ont prévu des amnisties fiscales avec réductions de pénalités. Vérifiez les conditions en cours.</div>`,
+   tags:['attestation','dgi','impôts retard','régularisation']},
+  {id:40,cat:'fiscal',icon:'⚖️',q:'Quelle est la cotisation minimale en IS et quand s\'applique-t-elle ?',
+   a:`Taux standard : <strong>0,5% du CA HT</strong>. Taux réduit 0,25% : eau, électricité, hydrocarbures, pharmaceutiques. Montant minimum : <strong>3 000 MAD/an</strong>.<br><br>Exonérations : 3 premiers exercices + entreprises en zone franche + liquidation.<br><br><div class="warn-box">⚠ La CM est due même si l'entreprise est en perte. C'est la charge fiscale plancher de toute société active.</div><span class="ref">CGI Art.144 · LF 2025</span>`,
+   tags:['cotisation minimale','cm','is','plancher']},
+  {id:41,cat:'procedure',icon:'🏠',q:'Comment changer le siège social d\'une entreprise ?',
+   a:`1. Décision AGO ou AGE → PV actant le changement.<br>2. Modification des statuts (article siège).<br>3. Dépôt M2 au CRI + PV + nouveau justificatif domiciliation.<br>4. Publication légale (ancien + nouvel adresse).<br>5. Mise à jour DGI (changement brigade), CNSS, banques.<br><br>Coût total : <strong>500–900 MAD</strong>.<br><br><div class="tip">✓ Changement CRI vers une autre région → transfert dossier entre CRI, délai +5–10 jours.</div>`,
+   tags:['siège social','changer','adresse','déménager']},
+  {id:42,cat:'cout',icon:'💸',q:'Combien coûte un expert-comptable pour une PME marocaine ?',
+   a:`Tenue comptabilité mensuelle : CA &lt;500K : <strong>800–1 500 MAD/mois</strong> · CA 500K–3M : <strong>1 500–3 500 MAD/mois</strong>.<br>Déclarations fiscales seules : <strong>3 000–8 000 MAD/an</strong>.<br>Commissariat aux comptes SA : <strong>8 000–25 000 MAD/an</strong>.<br>Mission création + 1re déclaration : <strong>1 500–4 000 MAD</strong>.<br><br><div class="tip">✓ Négociez un forfait mensuel incluant TVA, IR employeur et bilan annuel.</div>`,
+   tags:['comptable','expert-comptable','coût','tarif','honoraires']},
+  {id:43,cat:'online',icon:'📲',q:'Peut-on obtenir une attestation fiscale en ligne sans se déplacer ?',
+   a:`<strong>Oui</strong> via SIMPL (simpl.tax.gov.ma) : attestation de régularité fiscale, attestation de situation fiscale, certificat IS retenu à la source.<br><br>Procédure : SIMPL → "Mes attestations" → sélectionner → PDF signé électroniquement (signature numérique DGI).<br><br><div class="warn-box">⚠ Certains appels d'offres privés exigent encore une attestation originale avec tampon humide → déplacez-vous à votre brigade DGI.</div>`,
+   tags:['attestation','fiscale','ligne','simpl','télécharger']},
+  {id:44,cat:'formes',icon:'🔄',q:'Comment dissoudre et radier une société au Maroc ?',
+   a:`1. Décision de dissolution : AGE, PV signé par tous les associés.<br>2. Nomination liquidateur : peut être le gérant.<br>3. Publication dissolution : journal agréé + BALO.<br>4. Clôture comptes + bilan liquidation (expert-comptable recommandé).<br>5. Radiation RC : formulaire M5 + PV + bilan + publication, frais 300–500 MAD.<br>6. Clôture fiscale DGI : déclaration cessation d'activité.<br><br>Durée : 1–3 mois si pas de litiges.<span class="ref">Loi 5-96 art. 106–115</span>`,
+   tags:['dissolution','liquidation','radier','fermer','cessation']},
+  {id:45,cat:'procedure',icon:'🏆',q:'Qu\'est-ce que le label OEA (Opérateur Économique Agréé) et comment l\'obtenir ?',
+   a:`OEA = statut douanier ADII pour entreprises fiables → circuit vert (levée sans inspection), dispense garantie régimes suspensifs, reconnaissance mutuelle UE.<br><br>Éligibilité : 3 ans d'ancienneté minimum + situation fiscale/douanière régulière + historique opérations douanières + système contrôle interne documenté.<br><br>Délai : 3–6 mois. Dossier à la direction régionale ADII.<span class="ref">Circulaire ADII n°5800</span>`,
+   tags:['oea','opérateur agréé','douane','adii']},
+  {id:46,cat:'delai',icon:'📋',q:'Comment suivre l\'avancement de son dossier au CRI en temps réel ?',
+   a:`1. Portail OMPIC (si dépôt en ligne) : tableau de bord avec statut en temps réel.<br>2. SMS : certains CRI envoient une notification à chaque changement de statut.<br>3. Email : vérifiez l'adresse saisie au dépôt.<br>4. Guichet physique avec récépissé de dépôt.<br>5. Téléphone CRI avec N° récépissé (évitez les fins de journée).<br><br><div class="tip">✓ Photographiez votre récépissé dès réception. C'est votre seule preuve en cas de perte de dossier.</div>`,
+   tags:['suivi','dossier','avancement','état','tracker']},
+  {id:47,cat:'blocage',icon:'🏛️',q:'Comment contester une décision administrative du CRI ou de la DGI ?',
+   a:`Niveau 1 : recours gracieux interne → lettre recommandée AR au Directeur CRI ou brigade DGI (réponse légale : 60j).<br>Niveau 2 : Tribunal Administratif → 60j après la décision contestée.<br>Niveau 3 : Médiateur du Royaume (médiateur.ma, gratuit, 15–30j).<br>Niveau 4 : Commission des Investissements pour litiges investissements étrangers.<br><br><div class="tip">✓ Le juriste du CRI résout beaucoup de blocages en 24h gratuitement.</div>`,
+   tags:['contester','recours','administratif','appel']},
+  {id:48,cat:'formes',icon:'💡',q:'SARL vs SAS : laquelle choisir pour attirer des investisseurs ?',
+   a:`<strong>SAS préférée par les investisseurs</strong> : capital 1 MAD, classes d'actions libres (ordinaires/préférentielles/sans vote), gouvernance contractuelle (drag-along, tag-along, BSPCE).<br><br><strong>Inconvénients pratiques SAS Maroc</strong> : moins de jurisprudence, certains greffes moins familiers, banques moins habituées.<br><br><div class="tip">✓ Créez une SARL, transformez en SAS avant le 1er tour de financement : procédure simple, 1 500–3 000 MAD.</div><span class="ref">Loi 78-12 SAS</span>`,
+   tags:['investisseurs','sarl','sas','startup','levée de fonds']},
+  {id:49,cat:'cout',icon:'💱',q:'Comment rapatrier des bénéfices vers l\'étranger depuis une société marocaine ?',
+   a:`Les dividendes sont librement transférables pour les non-résidents. Retenue à la source : <strong>15%</strong> (réduit par convention fiscale bilatérale).<br><br>Documents pour transfert bancaire : PV AG distribution + attestation fiscale DGI + quittance retenue à la source.<br><br>Maroc a des conventions avec France, Espagne, Allemagne, USA, EAU et +50 pays.<br><br><div class="warn-box">⚠ Toute sortie de capital &gt; capital investi → autorisation préalable Office des Changes.</div><span class="ref">Instruction OC 2020 · CGI Art.13</span>`,
+   tags:['rapatrier','bénéfices','étranger','dividendes','office des changes']},
+  {id:50,cat:'procedure',icon:'📑',q:'Qu\'est-ce que la Charte de l\'Investissement 2023 et qui peut en bénéficier ?',
+   a:`Seuil structurant : investissement ≥ <strong>20M MAD</strong> OU ≥ <strong>50 emplois directs</strong>.<br><br>Primes cumulables (max 30%) : base 10–15% + territoriale 5–15% + sectorielle +5% + PME +5%.<br><br>Engagement : cahier des charges signé avec l'État sur emplois et montant.<br><br><div class="tip">✓ Dépôt auprès du CRI ou Commission des Investissements (AMDIE) selon taille du projet.</div><span class="ref">Dahir n°1-22-74 · Décret 2-23-335</span>`,
+   tags:['charte investissement','prime','2023','amdie','éligible']},
+  {id:51,cat:'procedure',icon:'🔑',q:'Qu\'est-ce que l\'extrait de RC et comment l\'obtenir rapidement ?',
+   a:`L'extrait RC atteste l'existence légale de votre société : dénomination, forme, capital, gérant, siège, objet, date de création.<br><br>Obtention : guichet OMPIC/CRI ou ompic.ma. Coût : 30–50 MAD. Disponible immédiatement après immatriculation. Validité 3 mois.<br><br><div class="tip">✓ Commandez 5–10 exemplaires dès l'immatriculation : banque, DGI, CNSS, clients, fournisseurs, appels d'offres.</div>`,
+   tags:['extrait rc','registre commerce','obtenir','attestation']},
+  {id:52,cat:'fiscal',icon:'📋',q:'Qu\'est-ce que la TVA et comment s\'y inscrire au Maroc ?',
+   a:`TVA = impôt indirect collecté sur ventes et reversé à la DGI. Taux marocains 2025 : <strong>20%</strong> (standard), 14% (électricité/transports), 10% (restauration/banques), 7% (eau/médicaments), 0% (exportations).<br><br>Inscription automatique via guichet unique CRI. Seuil : CA &gt;500K MAD. Déclaration mensuelle ou trimestrielle via SIMPL.<span class="ref">CGI Art.87–125</span>`,
+   tags:['tva','taxe valeur ajoutée','inscription','taux']},
+  {id:53,cat:'cout',icon:'🏢',q:'Quels sont les frais de greffe exacts au Tribunal de Commerce pour une SARL ?',
+   a:`Inscription principale RC : <strong>350 MAD</strong> · Inscription dirigeant : <strong>50 MAD</strong> · Légalisation M0 : <strong>20–30 MAD</strong> · Extrait RC (1 exemplaire) : <strong>30–50 MAD</strong> · Copie statuts certifiée : <strong>50 MAD</strong>.<br><br><strong>Total greffe SARL ≈ 500–600 MAD</strong>.<br><br><div class="warn-box">⚠ Ces montants varient légèrement selon les tribunaux.</div>`,
+   tags:['frais greffe','tribunal','coût','rc','inscription']},
+  {id:54,cat:'online',icon:'🔒',q:'Qu\'est-ce que la légalisation des signatures et est-elle encore requise ?',
+   a:`Légalisation = certification qu'une signature est bien celle de la personne mentionnée (notaire, greffe, commune). Coût : 20–50 MAD par signature.<br><br>Encore requise pour : statuts sociaux, procurations, certains M0.<br><br><strong>Tendance 2025</strong> : CRI Casablanca accepte la signature directe au guichet sans légalisation préalable. Vérifiez avec votre CRI.<br><br><div class="tip">✓ La signature numérique n'est pas encore généralisée pour les actes de création.</div>`,
+   tags:['légalisation','signature','notaire','requis']},
+  {id:55,cat:'delai',icon:'⏳',q:'Quel est le délai légal de traitement du dossier RC par le CRI ?',
+   a:`Délai légal : <strong>24 heures ouvrables</strong> (décret n°2-17-346 de 2018). En pratique : 3–7 jours à Casablanca/Rabat, 5–15 jours CRI régionaux.<br><br>Si délai 24h non respecté : en théorie, silence = accord (Loi 55-19). En pratique, exigez un accusé de réception écrit et relancez par email.<span class="ref">Décret n°2-17-346 · Loi 55-19</span>`,
+   tags:['délai légal','24h','traitement','rc','loi']},
+  {id:56,cat:'blocage',icon:'🚧',q:'Mon associé refuse de signer les statuts, que faire légalement ?',
+   a:`Option 1 : négociation (identifiez le motif : parts, objet, gérant). Option 2 : si &lt;50% des parts, modification structurelle possible. Option 3 : rachat de ses parts à valeur convenue → acte cession + enregistrement DGI. Option 4 : dissolution à l'amiable avant immatriculation = abandon sans frais.<br><br><div class="warn-box">⚠ Un associé bloquant avant création est un signal d'alarme pour la gouvernance future.</div>`,
+   tags:['associé','refus','signer','blocage','conflit']},
+  {id:57,cat:'formes',icon:'🌱',q:'Qu\'est-ce qu\'une coopérative et comment la créer au Maroc ?',
+   a:`Coopérative (Loi 112-12) : société de personnes à capital variable, 1 membre = 1 voix, finalité non lucrative ou à lucrativité limitée. Secteurs : agriculture, artisanat, pêche, logement, transport.<br><br>Création : minimum 5 membres fondateurs, dépôt auprès de l'<strong>ODCO</strong> (pas le CRI). Accompagnement gratuit ODCO.<br><br>Avantages fiscaux : exonération IS sous certains seuils.<span class="ref">Loi 112-12 · odco.gov.ma</span>`,
+   tags:['coopérative','odco','créer','agricole','artisanat']},
+  {id:58,cat:'procedure',icon:'📊',q:'Faut-il une étude de marché pour créer son entreprise au CRI ?',
+   a:`<strong>Non</strong>, le CRI ne l'exige pas pour une création standard.<br><br>Elle devient obligatoire pour : financement bancaire (business plan avec projections), prime Charte 2023 (dossier AMDIE), certains agréments sectoriels (justification économique).<br><br><div class="tip">✓ Même non obligatoire, 3–5 pages suffisent pour valider la viabilité. Sources : HCP (hcp.ma), AMDIE, rapports Bank Al-Maghrib.</div>`,
+   tags:['étude marché','business plan','requis','financement']},
+  {id:59,cat:'fiscal',icon:'💡',q:'Quelle est la différence entre IS et IR pour les sociétés marocaines ?',
+   a:`<strong>IS</strong> (personnes morales SARL/SA/SAS) : taux progressif 2025 : ≤1M MAD → 20%, &gt;1M MAD → 35%.<br><strong>IR</strong> (personnes physiques) : salaires du gérant, dividendes perçus par associés, bénéfices entreprises individuelles. Taux progressif 0–37%.<br><br>Double imposition : société paie IS → associé paie IR sur dividendes (retenue 15%).<br><br><div class="tip">✓ L'optimisation du ratio salaire/dividendes est un levier fiscal majeur. Expert-comptable recommandé.</div><span class="ref">CGI Art.19 (IS) · CGI Art.73 (IR)</span>`,
+   tags:['is','ir','impôt','sociétés','différence']},
+  {id:60,cat:'online',icon:'📧',q:'Y a-t-il un dossier unique numérique pour créer son entreprise au Maroc ?',
+   a:`"Créer mon Entreprise" sur ompic.ma couvre en un dépôt : dénomination + M0 + transmission DGI (IF) + CNSS + tribunal.<br><br>Ne couvre pas encore : publication journal agréé, légalisation notariale, compte bancaire, autorisations sectorielles.<br><br><div class="tip">✓ Objectif gouvernemental 2026 : délai de création à 24h via refonte du guichet unique numérique.</div>`,
+   tags:['dossier unique','numérique','portail','ompic']},
+  {id:61,cat:'delai',icon:'🗓️',q:'La société peut-elle facturer avant d\'avoir tous les documents finalisés ?',
+   a:`Légalement : oui dès le récépissé de dépôt RC (provisoire). Mentionnez RC provisoire ou "IF en cours d'attribution" sur les premières factures.<br><br><strong>Non possible avant RC</strong> : compte bancaire professionnel définitif, appels d'offres publics, plateformes marchés publics.<br><br><div class="tip">✓ En pratique, beaucoup d'entreprises émettent dès J+3 avec le récépissé. Aucun problème si délais courts.</div>`,
+   tags:['facturer','avant','rc','provisoire','démarrer']},
+  {id:62,cat:'blocage',icon:'🏗️',q:'Mon activité nécessite un permis de construire, comment s\'y prendre ?',
+   a:`Dépôt : commune ou préfecture (pas le CRI). Dossier : plans architecturaux (architecte agréé ONAP) + titre propriété ou bail longue durée + certificat propriété + note de calcul structure + EIE si &gt;1 000 m².<br><br>Délai légal : 60 jours. Pratique : 2–6 mois selon commune. Coût : 0,5–1% du coût construction + honoraires architecte 3–6%.<br><br><div class="warn-box">⚠ Ne jamais construire sans permis. Démolition ordonnée par tribunal administratif.</div>`,
+   tags:['permis construire','commune','architecte','construction']},
+  {id:63,cat:'formes',icon:'🤝',q:'Qu\'est-ce qu\'un pacte d\'actionnaires et est-il légalement contraignant au Maroc ?',
+   a:`Accord privé entre associés complétant les statuts. Clauses courantes : droit de préemption, clause d'agrément, tag-along, drag-along, non-concurrence.<br><br>Valeur légale au Maroc : contrat civil contraignant entre signataires. Non opposable aux tiers. Non déposé au greffe.<span class="ref">DOC · Loi 5-96</span>`,
+   tags:['pacte actionnaires','accord','clause','tag-along']},
+  {id:64,cat:'cout',icon:'📉',q:'Peut-on créer une société avec un capital en nature (équipements, stock) ?',
+   a:`Oui. Procédure : évaluation par <strong>commissaire aux apports</strong> (obligatoire si &gt;100K MAD pour SARL) + rapport annexé aux statuts + description précise des biens.<br><br>Avantage : évite de mobiliser du cash. Permet de valoriser des actifs existants.<br><br><div class="warn-box">⚠ Surévaluation des apports en nature = délit pénal (abus de biens sociaux).</div><span class="ref">Loi 5-96 art. 52</span>`,
+   tags:['capital nature','apport','équipements','stock','commissaire']},
+  {id:65,cat:'procedure',icon:'🔐',q:'Comment protéger son nom de marque au Maroc ? OMPIC vs CRI',
+   a:`<strong>Une dénomination réservée au CRI n'est PAS une marque protégée.</strong><br><br>Dépôt marque OMPIC : ompic.ma, coût 2 000 MAD par classe (10 ans), délai examen 3–6 mois. Protection nationale dans 45 classes (Classification de Nice).<br><br>Protection internationale : Maroc membre Système de Madrid (WIPO) pour dépôt multi-pays depuis ompic.ma.<br><br><div class="tip">✓ Déposez votre marque DÈS la création, avant toute communication publique.</div><span class="ref">Loi 17-97 PI · Accord de Madrid</span>`,
+   tags:['marque','ompic','protection','nom','dépôt']},
+];
+
+/* ════════════════════════════════════════════════════
+   MOTEUR FAQ — Recherche + Filtres + Navigation
+════════════════════════════════════════════════════ */
+let faqActiveCat = 'all';
+let faqOpenId = null;
+
+const CAT_COLORS = {
+  formes:   { bg:'rgba(184,134,42,.1)',  color:'#B8862A', label:'Formes juridiques' },
+  procedure:{ bg:'rgba(30,77,107,.09)', color:'#1E4D6B', label:'Procédures CRI' },
+  blocage:  { bg:'rgba(176,48,48,.08)', color:'#B03030', label:'Blocages' },
+  cout:     { bg:'rgba(26,107,60,.08)', color:'#1A6B3C', label:'Coûts & Capital' },
+  fiscal:   { bg:'rgba(90,58,138,.09)', color:'#6B48A0', label:'Fiscal & CNSS' },
+  online:   { bg:'rgba(0,100,120,.08)', color:'#0D6E6E', label:'En ligne' },
+  delai:    { bg:'rgba(200,112,0,.09)', color:'#C87000', label:'Délais' },
+};
+
+function faqRender(items) {
+  const container = document.getElementById('faqResults');
+  if (!container) return;
+  const n = items.length;
+  document.getElementById('faqStats').textContent = n + ' question' + (n !== 1 ? 's' : '') + ' — cliquez pour développer';
+  if (n === 0) {
+    container.innerHTML = '<div class="faq-empty"><span>🔍</span>Aucun résultat. Essayez des termes différents ou parcourez les catégories.</div>';
+    return;
+  }
+  const query = (document.getElementById('faqSearch').value || '').toLowerCase().trim();
+  container.innerHTML = items.map(item => {
+    const c = CAT_COLORS[item.cat] || { bg:'#eee', color:'#888', label:item.cat };
+    const isOpen = faqOpenId === item.id;
+    let qText = item.q;
+    if (query.length > 2) {
+      const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+      qText = qText.replace(re, '<mark class="faq-highlight">$1</mark>');
+    }
+    return '<div class="faq-card' + (isOpen?' open':'') + '" id="fcard_' + item.id + '">' +
+      '<div class="faq-q" onclick="faqToggle(' + item.id + ')">' +
+      '<div class="faq-q-icon">' + item.icon + '</div>' +
+      '<div class="faq-q-text">' + qText + '</div>' +
+      '<span class="faq-q-cat" style="background:' + c.bg + ';color:' + c.color + ';border:1px solid ' + c.color + '33">' + c.label + '</span>' +
+      '<span class="faq-q-arr">▾</span>' +
+      '</div>' +
+      '<div class="faq-a">' + item.a + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+function faqToggle(id) {
+  faqOpenId = (faqOpenId === id) ? null : id;
+  faqFilter();
+  if (faqOpenId) {
+    setTimeout(function() {
+      var el = document.getElementById('fcard_'+faqOpenId);
+      if (el) el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    }, 80);
+  }
+}
+
+function getFiltered(query, cat) {
+  return FAQ.filter(function(item) {
+    if (cat !== 'all' && item.cat !== cat) return false;
+    if (!query || query.length < 2) return true;
+    var searchable = (item.q + ' ' + item.tags.join(' ') + ' ' + item.a.replace(/<[^>]+>/g,'')).toLowerCase();
+    return searchable.includes(query);
+  });
+}
+
+function faqFilter() {
+  var query = (document.getElementById('faqSearch').value || '').toLowerCase().trim();
+  faqRender(getFiltered(query, faqActiveCat));
+}
+
+function faqCat(btn) {
+  faqActiveCat = btn.getAttribute('data-cat');
+  document.querySelectorAll('.faq-cat').forEach(function(b) {
+    b.className = 'faq-cat ' + (b === btn ? 'all' : 'inactive');
+  });
+  faqOpenId = null;
+  faqFilter();
+}
+
+function faqClear() {
+  document.getElementById('faqSearch').value = '';
+  faqActiveCat = 'all';
+  faqOpenId = null;
+  document.querySelectorAll('.faq-cat').forEach(function(b, i) {
+    b.className = 'faq-cat ' + (i === 0 ? 'all' : 'inactive');
+  });
+  faqRender(FAQ);
+}
+
+function openFaqForStep(stepId) {
+  var stepFaqMap = {1:[10],2:[11,12,20],3:[15,22],4:[8,9,14,18],5:[16],6:[19],7:[25],8:[17],9:[15,42],10:[35,45]};
+  var targets = stepFaqMap[stepId] || [];
+  showTab('ai', document.querySelectorAll('.tab')[2]);
+  faqActiveCat = 'all';
+  document.querySelectorAll('.faq-cat').forEach(function(b, i) {
+    b.className = 'faq-cat ' + (i === 0 ? 'all' : 'inactive');
+  });
+  if (targets.length > 0) {
+    faqOpenId = targets[0];
+    var step = STEPS_BASE.find(function(s){ return s.id === stepId; });
+    if (step) document.getElementById('faqSearch').value = step.title.split(' ').slice(0,3).join(' ');
+    faqFilter();
+  } else {
+    faqRender(FAQ);
+  }
+  setTimeout(function() {
+    if (faqOpenId) {
+      var el = document.getElementById('fcard_'+faqOpenId);
+      if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  }, 120);
+}
+
+// Init FAQ quand le DOM est prêt
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() { faqRender(FAQ); });
+} else {
+  faqRender(FAQ);
+}
+
+</script>
+</body>
+</html>

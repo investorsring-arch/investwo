@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réglementation Urbanisme & Construction — Maroc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;font-weight:400;color:#1c1c1c;background:#f8f6f1;line-height:1.7;font-size:16px}
+
+/* ── Design Tokens ── */
+:root{
+  --green-900:#062b22;
+  --green-800:#084d3b;
+  --green-700:#0a6b52;
+  --green-600:#0d8a68;
+  --green-400:#1db585;
+  --green-200:#7adcbf;
+  --green-100:#b8f0e0;
+  --green-50:#e8faf4;
+  --gold-900:#5c3a00;
+  --gold-700:#8a5a00;
+  --gold-500:#c4860a;
+  --gold-400:#d4960e;
+  --gold-200:#f0c84a;
+  --gold-100:#f8e298;
+  --gold-50:#fdf5dc;
+  --cream:#f8f6f1;
+  --cream-dark:#edeae2;
+  --ink:#1c1c1c;
+  --ink-60:#6b6860;
+  --ink-30:#b5b2aa;
+  --white:#ffffff;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.07);
+  --shadow-md:0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.13);
+  --r-sm:6px;
+  --r-md:10px;
+  --r-lg:16px;
+  --r-xl:24px;
+}
+
+/* ── Typography ── */
+h1,h2,h3,h4{font-family:'Playfair Display',serif;font-weight:500;line-height:1.25}
+.display{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:600;letter-spacing:-.02em}
+.lead{font-size:1.1rem;color:var(--ink-60);font-weight:300;line-height:1.8}
+
+/* ── Layout ── */
+.container{max-width:1140px;margin:0 auto;padding:0 24px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:var(--green-900);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-mark{width:32px;height:32px;background:var(--gold-400);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--green-900)}
+.nav-logo-text{color:var(--white);font-size:15px;font-weight:500;letter-spacing:.01em}
+.nav-logo-sub{color:var(--green-200);font-size:11px;display:block;margin-top:-2px;font-weight:300}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:13.5px;padding:6px 14px;border-radius:var(--r-sm);transition:.15s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.1)}
+.nav-cta{background:var(--gold-400)!important;color:var(--green-900)!important;font-weight:600!important}
+.nav-cta:hover{background:var(--gold-200)!important}
+.nav-mobile-btn{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px}
+
+/* ── HERO ── */
+.hero{background:var(--green-900);padding:80px 0 64px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 50%,rgba(13,138,104,.25) 0%,transparent 70%)}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--green-200);letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px}
+.hero h1{color:#fff;margin-bottom:16px}
+.hero .lead{color:rgba(255,255,255,.65);max-width:640px;margin-bottom:36px}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+.stat{border-left:2px solid var(--gold-400);padding-left:14px}
+.stat-num{font-size:1.8rem;font-weight:600;color:#fff;font-family:'Playfair Display',serif;line-height:1}
+.stat-label{font-size:12px;color:rgba(255,255,255,.55);margin-top:3px;font-weight:300}
+.hero-pattern{position:absolute;right:0;top:0;bottom:0;width:42%;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5}
+
+/* ── SEARCH SECTION ── */
+.search-section{background:var(--white);border-bottom:1px solid var(--cream-dark);padding:28px 0;position:sticky;top:60px;z-index:90;box-shadow:var(--shadow-sm)}
+.search-wrap{display:flex;gap:12px;align-items:center}
+.search-box{flex:1;position:relative}
+.search-box input{width:100%;padding:13px 48px 13px 18px;font-size:15px;border:1.5px solid var(--cream-dark);border-radius:var(--r-md);background:var(--cream);color:var(--ink);font-family:'Source Sans 3',sans-serif;transition:.2s;outline:none}
+.search-box input:focus{border-color:var(--green-600);background:#fff;box-shadow:0 0 0 3px rgba(13,138,104,.1)}
+.search-box input::placeholder{color:var(--ink-30)}
+.search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--ink-30);font-size:16px;pointer-events:none}
+.search-count{white-space:nowrap;font-size:13px;color:var(--ink-60);font-weight:500}
+
+/* ── FILTERS ── */
+.filters-section{padding:20px 0;background:var(--cream)}
+.filters-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:12px;color:var(--ink-60);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.filter-chip{padding:6px 14px;font-size:13px;border:1px solid rgba(0,0,0,.13);border-radius:20px;background:transparent;color:var(--ink-60);cursor:pointer;transition:.15s;font-family:'Source Sans 3',sans-serif;white-space:nowrap}
+.filter-chip:hover{border-color:var(--green-600);color:var(--green-700)}
+.filter-chip.active{background:var(--green-700);border-color:var(--green-700);color:#fff}
+
+/* ── QUICK ACCESS ── */
+.quick-section{padding:40px 0 0}
+.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px}
+.section-title{font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-60)}
+.section-link{font-size:13px;color:var(--green-600);text-decoration:none;font-weight:500}
+.section-link:hover{text-decoration:underline}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.quick-card{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--r-lg);padding:18px 16px;cursor:pointer;text-decoration:none;transition:.2s;display:block;text-align:left;font-family:'Source Sans 3',sans-serif;width:100%;outline:none}
+.quick-card:hover{border-color:var(--green-400);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.quick-icon{font-size:24px;margin-bottom:8px;display:block}
+.quick-name{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:3px}
+.quick-cat{font-size:11px;color:var(--ink-60)}
+
+/* ── RESULTS ── */
+.results-section{padding:32px 0 60px}
+.results-grid{display:flex;flex-direction:column;gap:12px}
+
+/* ── CARD ── */
+.law-card{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--r-lg);overflow:hidden;transition:.2s;animation:fadeIn .3s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.law-card:hover{box-shadow:var(--shadow-md);border-color:#c8c4ba}
+.law-card.expanded{border-color:var(--green-600);box-shadow:0 0 0 2px rgba(13,138,104,.12),var(--shadow-md)}
+.card-header{display:flex;align-items:flex-start;gap:14px;padding:18px 20px;cursor:pointer}
+.card-icon-wrap{width:44px;height:44px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;margin-top:2px}
+.card-icon-wrap.cat-urbanisme{background:#e8f5e9}
+.card-icon-wrap.cat-construction{background:#e3f2fd}
+.card-icon-wrap.cat-parasismique{background:#fce4ec}
+.card-icon-wrap.cat-incendie{background:#fff3e0}
+.card-icon-wrap.cat-professions{background:#ede7f6}
+.card-icon-wrap.cat-accessibilite{background:#e0f7fa}
+.card-icon-wrap.cat-environnement{background:#f1f8e9}
+.card-icon-wrap.cat-energie{background:#fffde7}
+.card-icon-wrap.cat-collectivites{background:#e8eaf6}
+.card-icon-wrap.cat-marches{background:#f3e5f5}
+.card-icon-wrap.cat-controle{background:#ffebee}
+.card-icon-wrap.cat-rural{background:#efebe9}
+.card-icon-wrap.cat-investissement{background:#e0f2f1}
+.card-meta{flex:1;min-width:0}
+.card-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;letter-spacing:.03em;text-transform:uppercase}
+.badge-type{background:var(--green-50);color:var(--green-800)}
+.badge-cat{background:var(--gold-50);color:var(--gold-900)}
+.badge-active{background:#e8f5e9;color:#1b5e20}
+.badge-partial{background:#fff8e1;color:#6d4c00}
+.card-title{font-size:15px;font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:4px}
+.card-ref{font-size:12px;color:var(--ink-60)}
+.card-chevron{margin-left:auto;padding-left:8px;flex-shrink:0;color:var(--ink-30);font-size:18px;transition:transform .2s}
+.law-card.expanded .card-chevron{transform:rotate(180deg);color:var(--green-600)}
+
+/* ── CARD BODY ── */
+.card-body{display:none;border-top:1px solid var(--cream-dark);padding:0 20px 20px}
+.law-card.expanded .card-body{display:block}
+.card-resume{font-size:14px;color:var(--ink-60);line-height:1.75;padding:18px 0 16px;border-bottom:1px solid var(--cream-dark)}
+.info-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:14px 0;border-bottom:1px solid var(--cream-dark)}
+.info-item{background:var(--cream);border-radius:var(--r-sm);padding:10px 12px}
+.info-item-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-30);margin-bottom:3px;font-weight:600}
+.info-item-val{font-size:13px;color:var(--ink);font-weight:500}
+.card-sections{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--cream-dark)}
+.card-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--green-700);margin-bottom:8px}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:12px;padding:3px 9px;background:var(--cream);border:1px solid var(--cream-dark);border-radius:var(--r-sm);color:var(--ink-60)}
+.tag.highlight{background:var(--green-50);border-color:var(--green-200);color:var(--green-800)}
+.faq-list{list-style:none}
+.faq-item{font-size:13px;color:var(--ink-60);padding:5px 0;border-top:1px dashed var(--cream-dark);display:flex;align-items:baseline;gap:7px;cursor:pointer;transition:.15s}
+.faq-item:first-child{border-top:none}
+.faq-item::before{content:'→';color:var(--green-400);flex-shrink:0;font-size:12px}
+.faq-item:hover{color:var(--green-700)}
+.card-links{padding:14px 0 0;display:flex;gap:10px;flex-wrap:wrap}
+.btn-primary{padding:9px 20px;background:var(--green-700);color:#fff;border:none;border-radius:var(--r-sm);font-size:13px;font-weight:600;cursor:pointer;font-family:'Source Sans 3',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.btn-primary:hover{background:var(--green-600)}
+.btn-outline{padding:9px 20px;background:transparent;color:var(--green-700);border:1.5px solid var(--green-700);border-radius:var(--r-sm);font-size:13px;font-weight:600;cursor:pointer;font-family:'Source Sans 3',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.btn-outline:hover{background:var(--green-50)}
+
+/* ── RELATED LINKS ── */
+.related-section{padding:14px 0 0;border-top:1px solid var(--cream-dark);margin-top:4px}
+.related-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-60);margin-bottom:8px}
+.related-chips{display:flex;gap:6px;flex-wrap:wrap}
+.related-chip{font-size:12px;padding:4px 10px;background:var(--gold-50);border:1px solid var(--gold-200);border-radius:var(--r-sm);color:var(--gold-900);cursor:pointer;transition:.15s;font-weight:500}
+.related-chip:hover{background:var(--gold-100)}
+
+/* ── DETAIL MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(6,43,34,.7);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:var(--r-xl);max-width:720px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.modal-header{padding:24px 28px 20px;border-bottom:1px solid var(--cream-dark);position:sticky;top:0;background:var(--white);border-radius:var(--r-xl) var(--r-xl) 0 0;z-index:10;display:flex;align-items:flex-start;gap:14px}
+.modal-close{margin-left:auto;background:var(--cream);border:none;border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer;color:var(--ink-60);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.modal-close:hover{background:var(--cream-dark);color:var(--ink)}
+.modal-body{padding:24px 28px}
+.modal-section{margin-bottom:24px}
+.modal-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--green-700);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.modal-section-title::after{content:'';flex:1;height:1px;background:var(--cream-dark)}
+.chapter-list{list-style:none;counter-reset:ch}
+.chapter-item{counter-increment:ch;font-size:14px;color:var(--ink-60);padding:6px 0;border-bottom:1px solid var(--cream-dark);display:flex;gap:10px}
+.chapter-item::before{content:counter(ch,decimal-leading-zero);color:var(--green-400);font-weight:600;font-size:12px;flex-shrink:0;padding-top:2px}
+.article-box{background:var(--green-50);border-left:3px solid var(--green-600);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:10px 14px;margin-bottom:6px;font-size:13px}
+.article-ref{font-weight:700;color:var(--green-800);font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.article-text{color:var(--ink-60);line-height:1.6}
+
+/* ── GLOSSARY ── */
+.glossary-section{background:var(--green-900);padding:60px 0 56px;color:#fff}
+.glossary-section h2{color:#fff;margin-bottom:8px}
+.glossary-section .lead{color:rgba(255,255,255,.55);margin-bottom:32px}
+
+/* Split panel */
+.glos-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+@media(max-width:700px){.glos-layout{grid-template-columns:1fr}}
+
+/* Left — search + list */
+.glos-left{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);overflow:hidden}
+.glos-search{padding:10px;border-bottom:1px solid rgba(255,255,255,.1);position:relative}
+.glos-search input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--r-sm);padding:9px 36px 9px 12px;font-size:13px;color:#fff;font-family:'Source Sans 3',sans-serif;outline:none;transition:.15s}
+.glos-search input::placeholder{color:rgba(255,255,255,.35)}
+.glos-search input:focus{border-color:var(--green-400);background:rgba(255,255,255,.12)}
+.glos-search-icon{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:13px;color:rgba(255,255,255,.35);pointer-events:none}
+.glos-cats{display:flex;gap:5px;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
+.glos-cat{font-size:11px;padding:3px 9px;border-radius:12px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55);cursor:pointer;background:transparent;font-family:'Source Sans 3',sans-serif;transition:.15s}
+.glos-cat:hover,.glos-cat.active{background:var(--gold-400);border-color:var(--gold-400);color:var(--green-900)}
+.glos-list{list-style:none;max-height:480px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent}
+.glos-list::-webkit-scrollbar{width:4px}
+.glos-list::-webkit-scrollbar-track{background:transparent}
+.glos-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
+.glos-list-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;gap:8px;transition:.12s}
+.glos-list-item:last-child{border-bottom:none}
+.glos-list-item:hover{background:rgba(255,255,255,.07)}
+.glos-list-item.selected{background:rgba(255,255,255,.12);border-left:3px solid var(--gold-400)}
+.glos-list-term{font-size:13px;font-weight:600;color:var(--gold-200)}
+.glos-list-cat{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.glos-list-empty{padding:24px 14px;text-align:center;font-size:13px;color:rgba(255,255,255,.35)}
+
+/* Right — display panel */
+.glos-panel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:28px 28px 24px;min-height:340px;position:sticky;top:140px}
+.glos-panel-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:260px;color:rgba(255,255,255,.25);text-align:center;gap:10px}
+.glos-panel-empty-icon{font-size:36px;opacity:.4}
+.glos-panel-empty-text{font-size:13px;line-height:1.6}
+.glos-panel-term{font-size:2rem;font-family:'Playfair Display',serif;font-weight:600;color:var(--gold-200);margin-bottom:6px;letter-spacing:-.01em}
+.glos-panel-cat-badge{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);margin-bottom:16px}
+.glos-panel-full{font-size:15px;font-weight:500;color:#fff;margin-bottom:14px;line-height:1.5}
+.glos-panel-def{font-size:14px;color:rgba(255,255,255,.65);line-height:1.85;border-top:1px solid rgba(255,255,255,.1);padding-top:14px}
+.glos-panel-source{margin-top:16px;font-size:12px;color:rgba(255,255,255,.35);font-style:italic;display:flex;align-items:center;gap:6px}
+.glos-panel-source::before{content:'📄';font-style:normal}
+.glos-count{font-size:11px;color:rgba(255,255,255,.35);padding:8px 10px;text-align:right;border-top:1px solid rgba(255,255,255,.08)}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:40px 0 28px}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px;margin-bottom:32px}
+.footer-brand{color:#fff;font-size:15px;font-weight:500;margin-bottom:8px}
+.footer-brand-sub{font-size:13px;color:rgba(255,255,255,.4);line-height:1.7}
+.footer-col-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-bottom:12px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:7px}
+.footer-links a{color:rgba(255,255,255,.55);text-decoration:none;font-size:13px;transition:.15s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.footer-legal{font-size:12px;color:rgba(255,255,255,.3)}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:64px 24px;color:var(--ink-60)}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:.4}
+.empty-title{font-size:18px;font-weight:500;color:var(--ink);margin-bottom:8px}
+.empty-sub{font-size:14px}
+
+/* ── SCROLL TOP ── */
+#scrollTop{position:fixed;bottom:28px;right:28px;width:44px;height:44px;background:var(--green-700);border:none;border-radius:50%;color:#fff;font-size:18px;cursor:pointer;box-shadow:var(--shadow-md);transition:.2s;opacity:0;pointer-events:none;z-index:200}
+#scrollTop.visible{opacity:1;pointer-events:auto}
+#scrollTop:hover{background:var(--green-600);transform:translateY(-2px)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .hero{padding:56px 0 44px}
+  .nav-links{display:none}
+  .nav-mobile-btn{display:block}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .card-sections{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .hero-pattern{display:none}
+  .search-wrap{flex-wrap:wrap}
+  .search-count{width:100%;text-align:right}
+  .modal-header{flex-wrap:wrap}
+  .modal-body{padding:20px}
+  .modal-header{padding:20px}
+}
+@media(max-width:480px){
+  .quick-grid{grid-template-columns:repeat(2,1fr)}
+  .glossary-grid{grid-template-columns:1fr}
+}
+
+/* ── ANIMATIONS ── */
+@keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.card-body{animation:slideIn .2s ease}
+
+/* ── PRINT ── */
+@media print{nav,#scrollTop,.search-section,.filters-section,.quick-section{display:none}.law-card.expanded{break-inside:avoid}}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-mark">OAC</div>
+      <div>
+        <span class="nav-logo-text">Réglementation Juridique</span>
+        <span class="nav-logo-sub">Urbanisme & Construction — Maroc</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#search-anchor">Recherche</a>
+      <a href="#glossaire">Glossaire</a>
+      <a href="#quick-access">Accès rapide</a>
+      <a href="https://ordrearchicentre.org/lois-et-reglementation/" target="_blank" class="nav-cta">OAC ↗</a>
+    </div>
+    <button class="nav-mobile-btn" onclick="document.querySelector('.nav-links').style.display=document.querySelector('.nav-links').style.display==='flex'?'none':'flex'">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-pattern" aria-hidden="true"></div>
+  <div class="container" style="position:relative">
+    <div class="hero-badge">
+      <span>●</span> Base documentaire 2026 — Ordre des Architectes du Centre
+    </div>
+    <h1 class="display">Lois & Réglementations<br>de la Construction</h1>
+    <p class="lead">Textes officiels en vigueur — lois, décrets, règlements et arrêtés relatifs à l'urbanisme, la construction, l'environnement et les professions au Maroc.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">34</div><div class="stat-label">Textes juridiques</div></div>
+      <div class="stat"><div class="stat-num">14</div><div class="stat-label">Catégories</div></div>
+      <div class="stat"><div class="stat-num">1960</div><div class="stat-label">Texte le plus ancien</div></div>
+      <div class="stat"><div class="stat-num">2026</div><div class="stat-label">Mise à jour</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<div id="search-anchor" class="search-section">
+  <div class="container">
+    <div class="search-wrap">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Rechercher : permis de construire, RPS, ERP, accessibilité, architecte, littoral..." autocomplete="off">
+        <span class="search-icon">🔍</span>
+      </div>
+      <div class="search-count" id="searchCount">34 textes</div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-section">
+  <div class="container">
+    <div class="filters-row">
+      <span class="filter-label">Filtrer :</span>
+      <div id="filterChips"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK ACCESS -->
+<div id="quick-access" class="quick-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-title">Accès rapide</span>
+    </div>
+    <div class="quick-grid" id="quickGrid"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="results-section">
+  <div class="container">
+    <div class="results-grid" id="resultsList"></div>
+  </div>
+</div>
+
+<!-- GLOSSARY -->
+<div id="glossaire" class="glossary-section">
+  <div class="container">
+    <h2 style="font-size:1.8rem">Glossaire spécialisé</h2>
+    <p class="lead">60 termes, acronymes et notions juridiques de l'urbanisme et de la construction au Maroc</p>
+    <div class="glos-layout">
+      <!-- LEFT : liste déroulante filtrée -->
+      <div class="glos-left">
+        <div class="glos-search">
+          <input type="text" id="glosSearch" placeholder="Rechercher un terme..." autocomplete="off" oninput="glosFilter()">
+          <span class="glos-search-icon">⌕</span>
+        </div>
+        <div class="glos-cats" id="glosCats"></div>
+        <ul class="glos-list" id="glosList"></ul>
+        <div class="glos-count" id="glosCount"></div>
+      </div>
+      <!-- RIGHT : panneau d'affichage -->
+      <div class="glos-panel" id="glosPanel">
+        <div class="glos-panel-empty">
+          <div class="glos-panel-empty-icon">📖</div>
+          <div class="glos-panel-empty-text">Sélectionnez un terme dans la liste<br>pour afficher sa définition complète</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">Réglementation Urbanisme & Construction — Maroc</div>
+        <div class="footer-brand-sub">
+          Base documentaire compilée à partir des textes officiels publiés au Bulletin Officiel du Royaume du Maroc.<br>
+          Source de référence : Ordre des Architectes du Centre — ordrearchicentre.org
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Catégories</div>
+        <ul class="footer-links">
+          <li><a href="#">Urbanisme</a></li>
+          <li><a href="#">Construction — RGC</a></li>
+          <li><a href="#">Parasismique</a></li>
+          <li><a href="#">Sécurité incendie</a></li>
+          <li><a href="#">Professions</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Liens utiles</div>
+        <ul class="footer-links">
+          <li><a href="https://ordrearchicentre.org" target="_blank">OAC — Ordre Architectes Centre</a></li>
+          <li><a href="https://www.sgg.gov.ma" target="_blank">SGG — Bulletin Officiel</a></li>
+          <li><a href="https://www.urbanisme.ma" target="_blank">Ministère de l'Urbanisme</a></li>
+          <li><a href="https://www.amee.ma" target="_blank">AMEE — Efficacité Énergétique</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-legal">© 2026 — Réglementation Urbanisme Maroc. Document de référence non contractuel. Consulter les textes officiels du BO pour toute application.</span>
+      <span class="footer-legal">Mise à jour : Mai 2026</span>
+    </div>
+  </div>
+</footer>
+
+<!-- SCROLL TOP -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Retour en haut">↑</button>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const LAWS = [
+  {
+    id:"LOI-12-90",type:"Loi",num:"n° 12-90",titre:"Loi relative à l'urbanisme",
+    bo:"BO n° 4159 du 15 juillet 1992",cat:"Urbanisme",icon:"🏛️",catKey:"urbanisme",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-92-31 — 17 juin 1992",
+    resume:"Texte fondateur du droit de l'urbanisme marocain. Institue le Schéma Directeur d'Aménagement Urbain (SDAU), le Plan d'Aménagement (PA) et le Plan de Zonage (PZ). Régit le permis de construire, le permis de lotir, le permis d'habiter et le certificat de conformité. Définit les zones d'urbanisation et les sanctions pénales pour infractions.",
+    chapitres:["Titre I — Dispositions générales","Titre II — Documents d'urbanisme (SDAU, PA, PZ)","Titre III — Zones à urbaniser en priorité","Titre IV — Zones d'urbanisation non réglementée","Titre V — Permis de construire et permis de lotir","Titre VI — Servitudes d'utilité publique","Titre VII — Sanctions et dispositions diverses"],
+    articles:{"Art. 40–47":"Permis de construire — conditions, délais, procédure","Art. 48–52":"Permis d'habiter et certificat de conformité","Art. 68–75":"Sanctions pénales et administratives"},
+    mots:["urbanisme","SDAU","schéma directeur","plan aménagement","PA","PZ","permis construire","permis habiter","lotissement","zone","alignement","servitude","loi 12-90","agence urbaine","commune","document"],
+    faq:["Quel est le contenu obligatoire d'un Plan d'Aménagement ?","Quels sont les délais de délivrance du permis de construire ?","Qu'est-ce qu'un SDAU et quelle est sa portée juridique ?","Quelles sanctions pour une construction sans permis ?","Comment obtenir un permis d'habiter ?"],
+    liens:["LOI-25-90","LOI-66-12","RGC-2019"]
+  },
+  {
+    id:"LOI-25-90",type:"Loi",num:"n° 25-90",titre:"Loi relative aux lotissements, groupes d'habitations et morcellements",
+    bo:"BO n° 4159 du 15 juillet 1992",cat:"Urbanisme",icon:"🗂️",catKey:"urbanisme",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-92-7 — 17 juin 1992",
+    resume:"Complément de la loi 12-90, ce texte régit spécifiquement les opérations de lotissement, les groupes d'habitations et les morcellements fonciers. Il définit les conditions d'autorisation, le contenu du dossier, les obligations du lotisseur en matière de VRD (voirie, réseaux divers), les procédures de réception provisoire et définitive et le transfert des équipements aux communes.",
+    chapitres:["Titre I — Les lotissements","Titre II — Les groupes d'habitations","Titre III — Les morcellements","Titre IV — Sanctions"],
+    articles:{"Art. 1–5":"Définitions — lotissement, morcellement, groupe d'habitations","Art. 6–20":"Autorisation de lotir — dossier et procédure","Art. 21–30":"Obligations du lotisseur — VRD et équipements","Art. 31–40":"Réceptions provisoire et définitive","Art. 41–50":"Sanctions"},
+    mots:["lotissement","morcellement","groupe habitations","permis lotir","VRD","voirie réseaux","réception","cahier charges","loi 25-90","division foncière","copropriété","lotisseur","terrain"],
+    faq:["Différence entre lotissement et morcellement ?","Documents pour une demande d'autorisation de lotir ?","Obligations du lotisseur en matière de VRD ?","Peut-on vendre des lots avant la réception définitive ?"],
+    liens:["LOI-12-90","LOI-66-12"]
+  },
+  {
+    id:"RGC-2019",type:"Règlement",num:"Décret n° 2-18-577",titre:"Règlement Général de Construction (RGC)",
+    bo:"BO n° 6874 — Supplément du 27 juin 2019",cat:"Construction",icon:"🏗️",catKey:"construction",
+    statut:"En vigueur",spatial:"National",promulgation:"12 juin 2019",
+    resume:"Texte technique de référence pour toute construction au Maroc. Fixe les règles minimales de sécurité structurelle, d'hygiène, de confort, d'accessibilité et d'esthétique urbaine. Traite des fondations, structures, toitures, ventilation, éclairage naturel, stationnement, COS, CES, hauteurs et retraits. Remplace et consolide d'anciens textes épars.",
+    chapitres:["Ch. 1 — Dispositions générales","Ch. 2 — Implantation (retrait, alignement, hauteur)","Ch. 3 — Fondations et structure","Ch. 4 — Façades, toitures, ouvertures","Ch. 5 — Hygiène (ventilation, éclairage, sanitaires)","Ch. 6 — Sécurité (incendie, parasismique)","Ch. 7 — Accessibilité PMR","Ch. 8 — Stationnement","Ch. 9 — Équipements techniques","Ch. 10 — Dispositions par type de bâtiment"],
+    articles:{"Retrait":"Distances obligatoires aux limites et voies","COS / CES":"Calcul des coefficients d'occupation","Hauteur":"Limites selon zonage du PA","Hygiène":"Surface habitable minimale, ventilation"},
+    mots:["RGC","règlement général construction","norme construction","fondation","structure","béton","toiture","ventilation","hygiène","COS","CES","hauteur","retrait","alignement","permis construire","stationnement","façade","plancher"],
+    faq:["Quelle hauteur maximale en zone résidentielle ?","Règles de retrait du RGC ?","Comment calculer le COS et le CES ?","Normes d'hygiène minimales pour un logement ?","Le RGC s'applique-t-il aux constructions rurales ?"],
+    liens:["RPS-2011","LOI-10-03","RGCPE","LOI-12-90"]
+  },
+  {
+    id:"RGCPE",type:"Règlement",num:"Décret n° 2-13-874",titre:"Règles de performance énergétique des constructions (RGCPE)",
+    bo:"BO n° 6218 — 2013",cat:"Énergie",icon:"⚡",catKey:"energie",
+    statut:"En vigueur",spatial:"National",promulgation:"18 novembre 2013",
+    resume:"Fixe les exigences minimales de performance énergétique pour les constructions neuves et les rénovations lourdes. Définit les règles d'isolation thermique par zone climatique (6 zones) et les niveaux de consommation de référence. Applicable aux bâtiments résidentiels et tertiaires dépassant certains seuils de surface plancher.",
+    chapitres:["Titre I — Champ d'application","Titre II — Exigences — bâtiments résidentiels","Titre III — Exigences — bâtiments tertiaires","Titre IV — Calcul et justification","Titre V — Contrôle et sanctions"],
+    articles:{"Zones climatiques":"6 zones du littoral atlantique au montagnard","Coefficient U":"Valeurs maximales d'isolation par paroi","Consommation ref.":"kWh/m²/an selon usage et zone"},
+    mots:["performance énergétique","isolation","thermique","RGCPE","zone climatique","BBC","basse consommation","U thermique","résistance thermique","bâtiment énergie","RT Maroc","RTCM"],
+    faq:["Quelles constructions sont soumises au RGCPE ?","Comment justifier la conformité dans le dossier de permis ?","Quels sont les coefficients U exigés pour les murs ?","Y a-t-il obligation de recours à un bureau d'études thermiques ?"],
+    liens:["LOI-47-09","RTCM","RGC-2019"]
+  },
+  {
+    id:"RTCM",type:"Règlement technique",num:"RTCM 2014",titre:"Règlement Thermique de Construction au Maroc (RTCM)",
+    bo:"AMEE / Ministère Habitat — 2014",cat:"Énergie",icon:"🌡️",catKey:"energie",
+    statut:"En vigueur",spatial:"National",promulgation:"2014",
+    resume:"Document technique définissant les méthodes de calcul thermique et les valeurs de référence par zone climatique pour les bâtiments neufs. Découpe le Maroc en 6 zones (de la côte atlantique aux zones arides et montagneuses). Support technique du RGCPE.",
+    chapitres:["Zone 1 — Côtière nord (Tanger, Tétouan)","Zone 2 — Atlantique centrale (Casablanca, Rabat)","Zone 3 — Méditerranéenne (Fès, Oujda)","Zone 4 — Semi-aride (Marrakech, Béni Mellal)","Zone 5 — Aride (Ouarzazate, Errachidia)","Zone 6 — Montagnarde (Ifrane, Azrou)"],
+    articles:{"Coefficient U mur":"Valeur maximale variable selon la zone","Coefficient U toiture":"Plus restrictif que les murs","Double vitrage":"Obligatoire dans certaines zones","Ponts thermiques":"Traitement obligatoire des jonctions"},
+    mots:["RTCM","thermique","isolation","zone climatique","coefficient U","résistance R","pont thermique","confort","bioclimatisme","double vitrage","Casablanca","Marrakech","Fès","Ifrane","Agadir"],
+    faq:["Dans quelle zone climatique se trouve Marrakech (Zone 4) ?","Valeurs U maximales pour murs extérieurs ?","Comment calculer la résistance thermique d'une paroi composite ?","Le RTCM impose-t-il le double vitrage partout ?"],
+    liens:["RGCPE","LOI-47-09"]
+  },
+  {
+    id:"RPS-2011",type:"Règlement",num:"Décret n° 2-12-682",titre:"Règlement de Construction Parasismique (RPS 2000 — rév. 2011)",
+    bo:"BO n° 6140 — 4 avril 2013",cat:"Parasismique",icon:"🌍",catKey:"parasismique",
+    statut:"En vigueur",spatial:"National (zonage sismique)",promulgation:"4 avril 2013",
+    resume:"Définit les règles de conception et de construction parasismiques. Divise le territoire marocain en zones de sismicité 0 à 5 et classe les ouvrages en 3 catégories (courants, importants, stratégiques). Comprend les méthodes de calcul statique équivalente et dynamique modale. Applicable à toutes les constructions neuves dans les zones concernées.",
+    chapitres:["Ch. 1 — Champ d'application et définitions","Ch. 2 — Zonage sismique du territoire","Ch. 3 — Classification des ouvrages (classes 1, 2, 3)","Ch. 4 — Conception générale parasismique","Ch. 5 — Méthodes de calcul","Ch. 6 — Règles pour béton armé","Ch. 7 — Règles pour maçonnerie chaînée","Ch. 8 — Règles pour charpentes métalliques","Ch. 9 — Fondations parasismiques"],
+    articles:{"Zone 0":"Aléa très faible — pas d'exigences spéciales","Zone 3":"Aléa élevé — Agadir, Haut Atlas","Zone 5":"Aléa très fort — Al Hoceima","Classe 1":"Ouvrages courants — habitations, bureaux","Classe 3":"Ouvrages stratégiques — hôpitaux, centrales"},
+    mots:["RPS","parasismique","séisme","zone sismique","coefficient sismique","béton armé","maçonnerie chaînée","ductilité","spectre réponse","Al Hoceima","Agadir","chaînage","voile","poteau","fondation antisismique"],
+    faq:["Dans quelle zone sismique se trouve Al Hoceima (Zone 5) ?","Comment déterminer le coefficient sismique d'un bâtiment ?","Règles de chaînage pour la maçonnerie ?","Le RPS s'applique-t-il aux constructions de moins de 2 étages ?","Quelle méthode pour un bâtiment de grande hauteur ?"],
+    liens:["RPS-TERRE","RGC-2019","REG-ECHELLE"]
+  },
+  {
+    id:"RPS-TERRE",type:"Règlement",num:"Décret n° 2-12-666",titre:"Règlement Parasismique — Construction en Terre",
+    bo:"BO n° 6140 — 4 avril 2013",cat:"Parasismique",icon:"🏺",catKey:"parasismique",
+    statut:"En vigueur",spatial:"Zones rurales — Sud Maroc",promulgation:"4 avril 2013",
+    resume:"Règlement spécifique aux constructions en matériaux de terre (adobe, pisé, briques crues) dans les zones sismiques. Adapte les principes parasismiques aux matériaux et traditions constructives des régions du Souss, Draa-Tafilalet et Marrakech-Safi. Définit les règles de chaînage, de renforcement et d'implantation.",
+    chapitres:["Ch. 1 — Champ d'application — constructions en terre","Ch. 2 — Règles d'implantation","Ch. 3 — Chaînage horizontal et vertical","Ch. 4 — Renforcement (bois, métal)","Ch. 5 — Toitures sur murs en terre"],
+    articles:{"Adobe":"Briques séchées au soleil — règles de mise en oeuvre","Pisé":"Construction par damage de terre — exigences","Chaînage":"Obligatoire en zone sismique même pour terre","Hauteur max":"Limitée en zone sismique élevée"},
+    mots:["construction terre","adobe","pisé","briques crues","BTC","bloc terre comprimé","chaînage terre","renforcement bois","zone rurale","Souss","Draa","Marrakech","Sud Maroc"],
+    faq:["Le RPS s'applique-t-il aux constructions en adobe ?","Règles de chaînage pour maisons en pisé ?","Peut-on utiliser le bois comme renforcement ?","Hauteur maximale en terre en zone sismique ?"],
+    liens:["RPS-2011","DAHIR-1960"]
+  },
+  {
+    id:"REG-ECHELLE",type:"Règlement technique",num:"Homologué 18/01/2019",titre:"Règlement — Charpentes métalliques et constructions mixtes",
+    bo:"Homologué le 18 janvier 2019",cat:"Parasismique",icon:"🔩",catKey:"parasismique",
+    statut:"En vigueur",spatial:"National",promulgation:"18 janvier 2019",
+    resume:"Règlement technique homologué définissant les règles de conception, calcul et construction des charpentes métalliques et structures mixtes acier-béton. Complète le RPS 2000 pour les structures en acier, notamment pour le dimensionnement parasismique des portiques et treillis.",
+    chapitres:["Règles générales — acier structurel","Assemblages boulonnés et soudés","Portiques contreventés et non contreventés","Structures mixtes acier-béton","Dimensionnement parasismique des aciers"],
+    articles:{"Profilés HEA/HEB/IPE":"Règles de sélection et vérification","Ductilité":"Exigences selon zone sismique","Assemblages":"Conception pour dissipation d'énergie"},
+    mots:["charpente métallique","structure acier","mixte acier béton","profilé HEA HEB IPE","assemblage","soudure","boulonnage","portique","treillis","bac acier","hangar"],
+    faq:["Règles de dimensionnement parasismique pour structures acier ?","Quels profilés utiliser selon la zone sismique ?"],
+    liens:["RPS-2011","RGC-2019"]
+  },
+  {
+    id:"DECRET-INCENDIE",type:"Décret",num:"n° 2-14-499",titre:"Sécurité contre l'incendie et la panique — ERP et IGH",
+    bo:"BO n° 6350 — 27 mars 2015",cat:"Sécurité incendie",icon:"🔥",catKey:"incendie",
+    statut:"En vigueur",spatial:"National",promulgation:"27 mars 2015",
+    resume:"Fixe les règles de sécurité contre l'incendie et la panique dans les Établissements Recevant du Public (ERP) et les Immeubles de Grande Hauteur (IGH). Définit la résistance au feu des structures et cloisonnements, les règles d'évacuation, de désenfumage, de détection et d'extinction automatique. Crée les commissions de sécurité obligatoires avant toute ouverture.",
+    chapitres:["Livre I — Dispositions générales","Livre II — ERP (5 catégories, types J/L/M/N/O/P/R/S/T/U/W/X/Y)","Livre III — IGH","Livre IV — Commissions de sécurité"],
+    articles:{"Catégorie 1":"Plus de 1 500 personnes","Catégorie 5":"Établissements de faible importance","Type M":"Magasins et centres commerciaux","Type O":"Hôtels et pensions de famille","Type R":"Établissements d'enseignement","Type U":"Établissements de soins"},
+    mots:["sécurité incendie","ERP","IGH","résistance feu","évacuation","désenfumage","sprinkler","détecteur fumée","sortie secours","commission sécurité","REI","coupe feu","protection civile","SDIS","alarme incendie"],
+    faq:["Qu'est-ce qu'un ERP et ses catégories ?","Définition d'un IGH au Maroc ?","Installations obligatoires dans un hôtel ?","Quand le sprinkler est-il obligatoire ?","Comment obtenir l'avis de la commission de sécurité ?","Dégagements pour une salle de 500 personnes ?"],
+    liens:["LOI-10-03","RGC-2019"]
+  },
+  {
+    id:"LOI-16-89",type:"Loi",num:"n° 16-89",titre:"Exercice de la profession d'architecte et Ordre National des Architectes",
+    bo:"BO n° 4183 — 4 novembre 1992",cat:"Professions",icon:"📐",catKey:"professions",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-92-122 — 20 octobre 1992",
+    resume:"Loi fondatrice régissant l'exercice de la profession d'architecte au Maroc. Institue l'Ordre National des Architectes (ONA). Définit les conditions d'inscription au tableau (diplôme, nationalité, moralité), les obligations déontologiques, les incompatibilités et les conditions d'exercice. Rend obligatoire le recours à un architecte pour tout projet nécessitant un permis de construire.",
+    chapitres:["Titre I — Définition et champ d'application","Titre II — Conditions d'inscription à l'Ordre","Titre III — Obligations déontologiques","Titre IV — Incompatibilités","Titre V — Ordre National des Architectes","Titre VI — Sanctions disciplinaires"],
+    articles:{"Art. 1–5":"Définition de la profession — exclusivité","Art. 6–15":"Conditions d'inscription au tableau ONA","Art. 16–25":"Obligations déontologiques","Art. 26–35":"Incompatibilités (entrepreneur, promoteur...)","Art. 46–55":"Sanctions disciplinaires"},
+    mots:["architecte","ONA","Ordre Architectes","inscription tableau","maîtrise oeuvre","responsabilité décennale","déontologie","incompatibilité","diplôme architecte","concours architecture","honoraires","loi 16-89","cabinet","contrat"],
+    faq:["Conditions pour s'inscrire au tableau de l'ONA ?","Un architecte peut-il exercer comme entrepreneur ?","Le recours à l'architecte est-il obligatoire pour moins de 50 m² ?","Responsabilité décennale de l'architecte au Maroc ?","Un architecte étranger peut-il exercer au Maroc ?"],
+    liens:["LOI-106-14","CNOA-2000"]
+  },
+  {
+    id:"LOI-106-14",type:"Loi",num:"n° 106-14",titre:"Loi relative aux sociétés d'architectes",
+    bo:"BO n° 6462 — 19 mai 2016",cat:"Professions",icon:"🏢",catKey:"professions",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-16-16 — 6 avril 2016",
+    resume:"Complète la loi 16-89 en permettant aux architectes d'exercer en société (civile professionnelle ou commerciale). Définit les conditions de constitution, la composition des associés (tous architectes), les modalités de représentation et les obligations envers l'Ordre National des Architectes.",
+    chapitres:["Constitution des sociétés d'architectes","Capital et parts sociales","Obligations envers l'ONA","Représentation et gérance","Dissolution et transformation"],
+    articles:{"Associés":"Tous doivent être architectes inscrits à l'ONA","Capital":"Minimum fixé par voie réglementaire","Raison sociale":"Doit inclure la mention 'architecte(s)'","Inscription":"Obligatoire au tableau de l'ONA"},
+    mots:["société architectes","SCP","SARL architecture","associés","gérant","inscription ONA","capital société","loi 106-14","société civile professionnelle"],
+    faq:["Peut-on créer une SARL entre architectes ?","Un non-architecte peut-il être associé ?","Capital minimum d'une société d'architectes ?","La société doit-elle être inscrite à l'ONA ?"],
+    liens:["LOI-16-89","CNOA-2000"]
+  },
+  {
+    id:"CNOA-2000",type:"Règlement intérieur",num:"Adopté le 15/09/2000",titre:"Règlement intérieur du CNOA",
+    bo:"Conseil National de l'Ordre des Architectes — 2000",cat:"Professions",icon:"⚖️",catKey:"professions",
+    statut:"En vigueur",spatial:"National",promulgation:"15 septembre 2000",
+    resume:"Règit l'organisation et le fonctionnement du Conseil National de l'Ordre des Architectes (CNOA) et des Conseils Régionaux. Fixe les règles d'élection des membres, la gestion des cotisations, le fonctionnement des commissions disciplinaires et le traitement des plaintes contre les architectes.",
+    chapitres:["Organisation du CNOA","Conseils Régionaux","Élections des membres","Cotisations annuelles","Commissions disciplinaires","Traitement des plaintes","Sanctions (avertissement, blâme, suspension, radiation)"],
+    articles:{"Cotisations":"Fixées annuellement par le CNOA","Discipline":"Commission paritaire — instruction des plaintes","Radiation":"Décision du Conseil Régional confirmée par CNOA","Réintégration":"Possible après délai et demande motivée"},
+    mots:["CNOA","Ordre Architectes","règlement intérieur","élections","cotisation","déontologie","discipline","sanctions","radiation","suspension","avertissement","blâme"],
+    faq:["Comment fonctionne la commission disciplinaire ?","Quelles sont les sanctions disciplinaires possibles ?","Cotisations annuelles à l'Ordre ?","Comment porter plainte contre un architecte ?"],
+    liens:["LOI-16-89","LOI-106-14"]
+  },
+  {
+    id:"LOI-10-03",type:"Loi",num:"n° 10-03",titre:"Accessibilité des personnes à mobilité réduite",
+    bo:"BO n° 5118 — 19 juin 2003",cat:"Accessibilité",icon:"♿",catKey:"accessibilite",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-03-58 — 12 mai 2003",
+    resume:"Impose l'accessibilité des bâtiments et espaces publics aux PMR (Personnes à Mobilité Réduite). S'applique aux constructions ouvertes au public, aux logements collectifs et aux espaces extérieurs. Prescriptions : pente rampe max 5–8%, largeur passage min 90 cm, largeur porte min 80 cm, sanitaires adaptés, places PMR, ascenseurs accessibles, dispositifs d'alarme visuels.",
+    chapitres:["Ch. I — Dispositions générales","Ch. II — Accessibilités en urbanisme (art. 5–7)","Ch. II — Accessibilités architecturales (art. 8–12)","Ch. II — Accessibilités de transport (art. 13)","Ch. II — Accessibilités communications (art. 14–19)","Ch. II — Signalisation (art. 20–22)","Ch. III — Protection de la personne handicapée (art. 23–26)","Ch. IV — Sanctions (art. 27–28)","Ch. V — Dispositions particulières (art. 29–31)"],
+    articles:{"Art. 4":"S'applique aux bâtiments ouverts au public, logements collectifs, espaces extérieurs, transports","Art. 7":"Plans d'accessibilité obligatoires dans le dossier de permis","Art. 8":"% de places PMR dans tout stationnement ouvert au public","Art. 9":"Cheminements praticables obligatoires à l'intérieur des bâtiments","Art. 10":"Sanitaires, ascenseurs et installations électriques adaptés aux PMR","Art. 12":"Places assises réservées en salle publique (cinéma, théâtre, université...)","Art. 28":"Sanction pénale pour modification post-permis portant atteinte à l'accessibilité","Art. 29":"Ne s'applique pas aux permis déjà délivrés avant le 19 juin 2003"},
+    mots:["PMR","accessibilité","handicapés","rampe accès","5%","largeur porte","ascenseur","stationnement PMR","sanitaires adaptés","podotactile","braille","ERP accessible","loi 10-03","fauteuil roulant","cheminement"],
+    faq:["Quelles constructions sont soumises à l'accessibilité PMR ?","Pente maximale d'une rampe d'accès ?","Bâtiments existants doivent-ils être mis aux normes ?","Nombre de places handicapées obligatoires dans un parking ?","Ascenseur obligatoire dans un immeuble de 4 étages ?","Quelles sanctions après permis d'habiter si l'accessibilité est supprimée ?"],
+    liens:["RGC-2019","DECRET-INCENDIE","LOI-12-90"]
+  },
+  {
+    id:"LOI-12-03",type:"Loi",num:"n° 12-03",titre:"Études d'impact sur l'environnement (EIE)",
+    bo:"BO n° 5118 — 19 juin 2003",cat:"Environnement",icon:"🌿",catKey:"environnement",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-03-60 — 12 mai 2003",
+    resume:"Institue l'Étude d'Impact sur l'Environnement (EIE) comme préalable obligatoire à certains projets. Définit les projets assujettis via une annexe (hôtels +200 lits, lotissements +1000 logements, zones industrielles, carrières, barrages...). Crée les comités nationaux et régionaux d'EIE. L'EIE doit être validée avant tout permis de construire pour les projets concernés.",
+    chapitres:["Ch. I — Dispositions générales","Ch. II — Procédure d'instruction de l'EIE","Ch. III — Enquête publique","Ch. IV — Décision d'acceptabilité","Ch. V — Contrôle et sanctions"],
+    articles:{"Projets soumis":"Liste définie par annexe (barrages, carrières, hôtels +200 lits, ZI...)","Comité national":"Coordination et décision pour projets d'envergure nationale","Comité régional":"Instruction des projets locaux","Enquête publique":"Consultation des populations concernées","Acceptabilité":"Décision motivée du comité EIE"},
+    mots:["EIE","étude impact environnement","enquête publique","comité EIE","acceptabilité","mesures atténuation","plan gestion environnementale","zone protégée","biodiversité","loi 12-03","impact"],
+    faq:["Mon projet est-il soumis à une EIE ?","Durée de la procédure d'instruction ?","Qui réalise l'EIE — le maître d'ouvrage ?","L'enquête publique est-elle toujours obligatoire ?","Que faire si le comité rend un avis défavorable ?"],
+    liens:["LOI-81-12","LOI-47-09","LOI-12-90"]
+  },
+  {
+    id:"LOI-47-09",type:"Loi",num:"n° 47-09",titre:"Loi relative à l'efficacité énergétique",
+    bo:"BO n° 5996 bis — 24 novembre 2011",cat:"Énergie",icon:"🌱",catKey:"energie",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-11-161 — 24 octobre 2011",
+    resume:"Loi-cadre sur l'efficacité énergétique. Crée l'AMEE (Agence Marocaine pour l'Efficacité Énergétique). Rend obligatoire l'audit énergétique pour les grandes unités industrielles et bâtiments tertiaires. Habilite l'État à fixer des exigences de performance pour les équipements (étiquetage) et les constructions (RGCPE, RTCM).",
+    chapitres:["Titre I — Dispositions générales","Titre II — Programme national d'efficacité énergétique","Titre III — Audit énergétique obligatoire","Titre IV — Étiquetage et certification","Titre V — Agence Marocaine pour l'Efficacité Énergétique (AMEE)","Titre VI — Sanctions"],
+    articles:{"Audit énergétique":"Obligatoire pour unités industrielles et bâtiments tertiaires","AMEE":"Agence publique — promotion et contrôle EE","Étiquetage":"Obligatoire pour équipements énergivores","Contrat performance":"Cadre légal pour les CPE"},
+    mots:["efficacité énergétique","audit énergétique","AMEE","économie énergie","label énergétique","étiquetage","bâtiment efficace","loi 47-09","contrat performance"],
+    faq:["Quels bâtiments sont soumis à l'audit énergétique obligatoire ?","Rôle de l'AMEE ?","Étiquetage énergétique obligatoire pour les climatiseurs ?","La loi prévoit-elle des incitations financières ?"],
+    liens:["RGCPE","RTCM","RGC-2019"]
+  },
+  {
+    id:"LOI-81-12",type:"Loi",num:"n° 81-12",titre:"Loi relative au littoral",
+    bo:"BO n° 6385 — 6 août 2015",cat:"Environnement",icon:"🌊",catKey:"environnement",
+    statut:"En vigueur",spatial:"Zones côtières (Atlantique et Méditerranée)",promulgation:"Dahir n° 1-15-87 — 2 août 2015",
+    resume:"Institue un régime de protection renforcé pour le littoral marocain. Interdit toute construction dans la bande des 100 m à compter de la limite du DPM (Domaine Public Maritime). Réglemente strictement la bande suivante (100–300 m). Garantit le libre accès public aux plages. Institue le Schéma National et les Schémas Régionaux d'Aménagement du Littoral.",
+    chapitres:["Titre I — Définitions et champ d'application","Titre II — Bande des 100 m — inconstructibilité","Titre III — Bande 100–300 m — réglementation renforcée","Titre IV — Libre accès aux plages","Titre V — Schémas d'aménagement du littoral","Titre VI — Contrôle et sanctions"],
+    articles:{"Bande 100 m":"Inconstructible (sauf ouvrages d'utilité publique)","Bande 100–300 m":"Construction soumise à avis spécifique","Accès plage":"Libre accès assuré toutes les 500 m","DPM":"Domaine inaliénable et imprescriptible","Camping":"Interdit dans la bande des 100 m"},
+    mots:["littoral","loi littoral","100 mètres","300 mètres","DPM","domaine public maritime","plage","côte","dune","inconstructibilité","accès plage","loi 81-12","GIZC","érosion côtière"],
+    faq:["Peut-on construire à moins de 100 m de la mer ?","Exceptions à l'interdiction dans la bande littorale ?","Comment est calculée la bande des 100 m ?","La loi s'applique-t-elle aux lacs intérieurs ?","Qui contrôle le respect de la loi littoral ?"],
+    liens:["LOI-12-03","LOI-12-90","LOI-25-90"]
+  },
+  {
+    id:"LOI-66-12",type:"Loi",num:"n° 66-12",titre:"Contrôle et infractions en matières de construction",
+    bo:"BO n° 6510 — 19 septembre 2016",cat:"Contrôle",icon:"🚨",catKey:"controle",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-16-124 — 10 août 2016",
+    resume:"Consolide et renforce le régime des sanctions applicables aux infractions urbanistiques. Définit 4 classes d'infractions (construction sans permis, non-respect du permis, zone non constructible, zone protégée), les montants des amendes, les mesures coercitives (arrêt de chantier, démolition) et les acteurs habilités à constater les infractions.",
+    chapitres:["Titre I — Contrôle des constructions","Titre II — Constatation des infractions","Titre III — Sanctions","Titre IV — Procédures judiciaires"],
+    articles:{"1ère classe":"Construction sans permis de construire","2ème classe":"Non-respect des prescriptions du permis","3ème classe":"Construction en zone non constructible","4ème classe":"Construction en zone de protection (littoral, forêt...)","Arrêt de chantier":"Mesure conservatoire immédiate","Démolition":"Ordonnée par le tribunal compétent"},
+    mots:["infraction urbanistique","construction sans permis","amende","démolition","arrêt travaux","mise en conformité","procès verbal","contrôle urbanisme","régularisation","loi 66-12","sanction"],
+    faq:["Amendes prévues pour construction sans permis ?","Un maire peut-il ordonner une démolition ?","Peut-on régulariser une construction faite sans permis ?","Délai de prescription des infractions urbanistiques ?","Qui peut dresser un PV d'infraction ?"],
+    liens:["LOI-12-90","LOI-25-90","LOI-16-89"]
+  },
+  {
+    id:"LOI-ORG-111",type:"Loi organique",num:"n° 111-14",titre:"Loi organique relative aux Régions",
+    bo:"BO n° 6380 — 23 juillet 2015",cat:"Collectivités",icon:"🗺️",catKey:"collectivites",
+    statut:"En vigueur",spatial:"National — 12 régions",promulgation:"Dahir n° 1-15-83 — 7 juillet 2015",
+    resume:"Définit les compétences des régions dans le cadre de la régionalisation avancée de 2011. Attribue aux régions des compétences en aménagement du territoire (SRAT), développement économique, environnement et urbanisme stratégique. Organise les relations avec les CRI.",
+    chapitres:["Titre I — Organisation de la région","Titre II — Compétences propres","Titre III — Compétences partagées","Titre IV — Compétences transférables","Titre V — Finances régionales","Titre VI — Coopération et partenariat"],
+    articles:{"SRAT":"Schéma Régional d'Aménagement du Territoire","Compétences propres":"Développement économique, tourisme, environnement","CRI":"Centre Régional d'Investissement — tutelle du Wali","Budget":"Autonomie financière renforcée"},
+    mots:["région","conseil régional","SRAT","schéma régional aménagement territoire","CRI","plan développement régional","wali","décentralisation","loi organique 111-14"],
+    faq:["Rôle de la région en matière d'urbanisme ?","Qu'est-ce que le SRAT ?","Relation entre région et CRI ?"],
+    liens:["LOI-ORG-112","LOI-ORG-113","LOI-47-18"]
+  },
+  {
+    id:"LOI-ORG-112",type:"Loi organique",num:"n° 112-14",titre:"Loi organique relative aux Préfectures et Provinces",
+    bo:"BO n° 6380 — 23 juillet 2015",cat:"Collectivités",icon:"🏘️",catKey:"collectivites",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-15-84 — 7 juillet 2015",
+    resume:"Définit l'organisation des préfectures et provinces. Ces entités jouent un rôle intermédiaire entre la région et la commune, notamment en milieu rural et dans les zones à cheval entre urban et rural.",
+    chapitres:["Organisation des préfectures et provinces","Compétences — monde rural","Finances provinciales","Relations avec l'État et la région"],
+    articles:{"Gouverneur":"Représentant de l'État — délégué du gouvernement","Conseil provincial":"Organe délibérant élu","Monde rural":"Compétences spécifiques en zones rurales"},
+    mots:["préfecture","province","gouverneur","aménagement provincial","développement rural","loi organique 112-14","conseil provincial"],
+    faq:["Rôle de la province en matière d'aménagement ?","Différence entre préfecture et province ?"],
+    liens:["LOI-ORG-111","LOI-ORG-113"]
+  },
+  {
+    id:"LOI-ORG-113",type:"Loi organique",num:"n° 113-14",titre:"Loi organique relative aux Communes",
+    bo:"BO n° 6380 — 23 juillet 2015",cat:"Collectivités",icon:"🏙️",catKey:"collectivites",
+    statut:"En vigueur",spatial:"National",promulgation:"Dahir n° 1-15-85 — 7 juillet 2015",
+    resume:"Définit les compétences des communes. La commune est la collectivité de base chargée de la délivrance des permis de construire et d'habiter, de l'application des plans d'aménagement, de la gestion des voiries et services urbains de proximité.",
+    chapitres:["Organisation du conseil communal","Compétences propres — urbanisme, voirie, services","Compétences partagées avec l'État","Finances communales","Fiscalité locale (TSC...)"],
+    articles:{"Permis de construire":"Délivré par le président du conseil communal","Permis d'habiter":"Attribution communale","Plan d'aménagement":"Application et police de l'urbanisme","TSC":"Taxe de Services Communaux","Voirie":"Gestion des voiries communales"},
+    mots:["commune","conseil communal","permis construire","plan aménagement","voirie","éclairage public","fiscalité locale","TSC","loi organique 113-14","président commune","urbanisme communal"],
+    faq:["Qui délivre le permis de construire ?","Compétences de la commune en urbanisme ?","Qu'est-ce que la TSC ?","La commune peut-elle refuser un permis conforme au PA ?"],
+    liens:["LOI-ORG-111","LOI-ORG-112","LOI-12-90","LOI-25-90"]
+  },
+  {
+    id:"MARCHES-PUBLICS",type:"Décret",num:"n° 2-12-349",titre:"Décret relatif aux marchés publics",
+    bo:"BO n° 6140 — 4 avril 2013",cat:"Marchés publics",icon:"📋",catKey:"marches",
+    statut:"Partiellement remplacé",spatial:"National",promulgation:"20 mars 2013",
+    resume:"Régit la passation et l'exécution des marchés publics de travaux, fournitures et services. Définit les seuils et procédures (appel d'offres ouvert/restreint, marché négocié, bon de commande), les garanties exigées, les règles d'exécution et les modalités de réception. Partiellement remplacé par le décret 2-22-431 de 2023.",
+    chapitres:["Titre I — Dispositions générales","Titre II — Modes de passation","Titre III — Exécution des marchés","Titre IV — Contrôle et vérification","Titre V — Règlement des différends"],
+    articles:{"Bon de commande":"Moins de 200 000 MAD HT","Marché négocié":"De 200 000 à 500 000 MAD HT","Appel d'offres restreint":"De 500 000 à 1 000 000 MAD HT","Appel d'offres ouvert":"Au-delà de 1 000 000 MAD HT","Retenue de garantie":"3 à 10% du montant — libérée à réception définitive"},
+    mots:["marchés publics","appel offres","marché négocié","bon commande","CPS","CCAG","retenue garantie","pénalité retard","sous-traitance","réception travaux","maîtrise ouvrage","TGR"],
+    faq:["Seuil obligatoire pour un appel d'offres ouvert ?","Calcul des pénalités de retard ?","Qu'est-ce que la retenue de garantie ?","Règles de sous-traitance dans les marchés publics ?"],
+    liens:["CCAG-TRAVAUX"]
+  },
+  {
+    id:"CCAG-TRAVAUX",type:"Décret",num:"n° 2-14-394",titre:"CCAG applicable aux marchés de travaux",
+    bo:"BO n° 6288 — 11 juillet 2014",cat:"Marchés publics",icon:"📄",catKey:"marches",
+    statut:"En vigueur",spatial:"National",promulgation:"11 juillet 2014",
+    resume:"Cahier des Clauses Administratives Générales régissant les relations entre maître d'ouvrage public et entrepreneur. Définit les obligations des parties, les attachements, les décomptes, la réception provisoire et définitive, les pénalités de retard, la sous-traitance et la résolution des litiges.",
+    chapitres:["Titre I — Dispositions générales","Titre II — Prix et règlement des comptes","Titre III — Délais et pénalités","Titre IV — Réception des travaux","Titre V — Résiliation","Titre VI — Règlement des litiges"],
+    articles:{"Attachements":"Documents constatant l'avancement des travaux","Décomptes mensuels":"État des paiements progressifs","Réception provisoire":"Constat de fin de travaux — début garantie","Réception définitive":"Après délai de parfait achèvement (12 mois)","Pénalités":"Par jour de retard sur le délai contractuel"},
+    mots:["CCAG travaux","clauses administratives générales","attachements","décomptes","réception provisoire","réception définitive","garantie parfait achèvement","pénalités","sous-traitance","ordre service","maîtrise oeuvre"],
+    faq:["Comment fonctionne la réception provisoire ?","Délai du parfait achèvement ?","Comment calculer les pénalités de retard CCAG ?","Conditions de la sous-traitance ?"],
+    liens:["MARCHES-PUBLICS"]
+  },
+  {
+    id:"DAHIR-1960",type:"Dahir",num:"1-60-063",titre:"Dahir relatif au développement des agglomérations rurales",
+    bo:"Bulletin Officiel — 1960",cat:"Rural",icon:"🌾",catKey:"rural",
+    statut:"En vigueur (complété)",spatial:"Zones rurales",promulgation:"25 juin 1960",
+    resume:"Texte historique fondateur pour l'encadrement du développement urbain en milieu rural. Définit le régime applicable aux agglomérations situées hors des périmètres urbains délimités. Base légale pour les zones non couvertes par un plan d'aménagement, complété par de nombreux textes ultérieurs.",
+    chapitres:["Dispositions relatives aux agglomérations rurales","Plans de développement des douars","Équipements collectifs ruraux","Constructions hors périmètre"],
+    articles:{"Douar":"Agglomération rurale de base","Centre rural":"Noyau structurant hors périmètre urbain","Construction rurale":"Régie par le dahir en l'absence de PA"},
+    mots:["agglomération rurale","douar","centre rural","lotissement rural","construction rurale","hors périmètre","zone rurale","dahir 1960"],
+    faq:["Quelle réglementation s'applique hors zones PA ?","Construction rurale sans permis — est-ce possible ?","Différence entre agglomération rurale et périmètre urbain ?"],
+    liens:["RPS-TERRE","LOI-12-90"]
+  },
+  {
+    id:"LOI-47-18",type:"Loi",num:"n° 47-18",titre:"Réforme des Centres Régionaux d'Investissement (CRI)",
+    bo:"BO n° 6759 — 28 février 2019",cat:"Investissement",icon:"💼",catKey:"investissement",
+    statut:"En vigueur",spatial:"National — 12 régions",promulgation:"Dahir n° 1-19-18 — 28 février 2019",
+    resume:"Réforme les CRI et crée des commissions régionales unifiées d'investissement dotées de pouvoirs de décision. Vise à simplifier et accélérer le traitement des dossiers d'investissement incluant les autorisations d'urbanisme. Introduit le principe du silence vaut acceptation au bout de 60 jours.",
+    chapitres:["Création des Commissions Régionales Unifiées d'Investissement","Guichet unique — dossier d'investissement","Délais de traitement et silence-acceptation","Rôle du Wali et du Président de Région","Recours et voies de droit"],
+    articles:{"Commission unifiée":"Réunit tous les acteurs concernés par le projet","Délai 60 jours":"Silence vaut acceptation après 60 jours","Wali":"Préside la commission régionale","Autorisation urbanisme":"Intégrée dans le dossier CRI pour projets d'investissement"},
+    mots:["CRI","centre régional investissement","guichet unique","commission unifiée","silence acceptation","délai 60 jours","wali","investissement","loi 47-18"],
+    faq:["Délai de traitement des dossiers au CRI ?","Principe du silence vaut acceptation ?","Quels projets passent par le CRI ?","Le CRI peut-il délivrer des autorisations d'urbanisme ?"],
+    liens:["LOI-ORG-111","LOI-12-90"]
+  },
+  {
+    id:"GUICHET-UNIQUE",type:"Arrêté",num:"n° 321-313",titre:"Arrêté sur le guichet unique — autorisations de construire",
+    bo:"Arrêté conjoint interministériel",cat:"Urbanisme",icon:"🚪",catKey:"urbanisme",
+    statut:"En vigueur",spatial:"National",promulgation:"Arrêté conjoint",
+    resume:"Organise le guichet unique pour le traitement des demandes de permis de construire et de lotir. Définit la composition des dossiers, les délais d'instruction, le fonctionnement des commissions techniques locales et les modalités de délivrance des autorisations.",
+    chapitres:["Organisation du guichet unique","Composition du dossier permis de construire","Commission technique — rôle et fonctionnement","Délais d'instruction","Délivrance et notification des décisions"],
+    articles:{"Dossier PC":"Pièces obligatoires définies par l'arrêté","Délai d'instruction":"Selon catégorie de projet","Commission technique":"Réunion hebdomadaire — visa des plans","Notification":"À l'architecte et au maître d'ouvrage"},
+    mots:["guichet unique","permis construire","dossier construction","délai instruction","commission technique","simplification administrative","arrêté guichet unique","autorisation"],
+    faq:["Composition du dossier permis de construire ?","Délai d'instruction au guichet unique ?","Qui préside la commission technique ?","Que faire en cas de refus de permis ?"],
+    liens:["LOI-12-90","LOI-47-18"]
+  }
+];
+
+// ── GLOSSARY — 60 termes spécialisés ──────────────────────────────────────
+const GLOSSARY = [
+  // ── URBANISME ──
+  {term:"SDAU", full:"Schéma Directeur d'Aménagement Urbain", cat:"Urbanisme",
+   def:"Document de planification stratégique à long terme (15–25 ans) définissant les grandes orientations de développement spatial d'une agglomération. Non opposable aux tiers mais s'impose aux Plans d'Aménagement. Élaboré par l'Agence Urbaine.",
+   source:"Loi 12-90 — Art. 1 à 18"},
+  {term:"PA", full:"Plan d'Aménagement", cat:"Urbanisme",
+   def:"Document réglementaire opposable aux tiers fixant le zonage, les règles de construction (gabarit, COS, CES, retraits, hauteurs), les emplacements réservés et les servitudes. Approuvé par arrêté ministériel après enquête publique. Toute demande de permis doit y être conforme.",
+   source:"Loi 12-90 — Art. 19 à 30"},
+  {term:"PZ", full:"Plan de Zonage", cat:"Urbanisme",
+   def:"Document d'urbanisme transitoire instauré dans l'attente de l'élaboration ou de la révision d'un Plan d'Aménagement. Il fixe des règles d'occupation du sol simplifiées et des périmètres de zone à vocation définie.",
+   source:"Loi 12-90"},
+  {term:"PAC", full:"Plan d'Aménagement de Centre", cat:"Urbanisme",
+   def:"Variante du Plan d'Aménagement destinée aux centres urbains délimités au sein de communes rurales. Fixe les règles de construction et d'équipement pour les agglomérations secondaires hors grands périmètres urbains.",
+   source:"Loi 12-90 / Dahir 1960"},
+  {term:"PDAIRE", full:"Plan de Développement et d'Aménagement Intégré des Régions et Espaces", cat:"Urbanisme",
+   def:"Document de planification territoriale à l'échelle régionale articulant les politiques sectorielles (économie, habitat, infrastructure, environnement) avec les schémas locaux d'aménagement.",
+   source:"Loi organique 111-14"},
+  {term:"ZAP", full:"Zone d'Aménagement Progressif", cat:"Urbanisme",
+   def:"Zone dans laquelle l'urbanisation est autorisée de manière progressive, selon un calendrier défini, en attendant la réalisation des équipements publics nécessaires. Encadrée par la loi 12-90.",
+   source:"Loi 12-90"},
+  {term:"CU", full:"Certificat d'Urbanisme", cat:"Urbanisme",
+   def:"Document délivré par la commune indiquant les règles d'urbanisme applicables à un terrain donné (zonage, droits à construire, servitudes). N'est pas une autorisation de construire mais un préalable informatif indispensable à tout projet.",
+   source:"Loi 12-90 — Art. 40"},
+  {term:"PC", full:"Permis de Construire", cat:"Urbanisme",
+   def:"Autorisation administrative obligatoire délivrée par le Président du Conseil Communal avant tout début de construction. Le dossier doit être visé par un architecte inscrit à l'ONA. Délai légal : 30 jours (projet simple) ou 60 jours (projet complexe).",
+   source:"Loi 12-90 — Art. 40 à 47"},
+  {term:"PH", full:"Permis d'Habiter", cat:"Urbanisme",
+   def:"Autorisation communale accordée après vérification de la conformité du bâtiment réalisé au permis de construire. Obligatoire pour tout raccordement aux réseaux et toute occupation légale du bâtiment. Délivré après attestation de l'architecte.",
+   source:"Loi 12-90 — Art. 48 à 52"},
+  {term:"CC", full:"Certificat de Conformité", cat:"Urbanisme",
+   def:"Équivalent du permis d'habiter pour les bâtiments non destinés à l'habitation (industriels, commerciaux, tertiaires). Atteste que la construction est conforme au permis de construire accordé.",
+   source:"Loi 12-90 — Art. 48"},
+  // ── CONSTRUCTION ──
+  {term:"RGC", full:"Règlement Général de Construction", cat:"Construction",
+   def:"Texte technique de référence nationale fixant les règles minimales applicables à toute construction : fondations, structure, hygiène, ventilation, accessibilité, stationnement, COS, CES, hauteurs et retraits. Approuvé par décret 2-18-577 du 12 juin 2019.",
+   source:"Décret n° 2-18-577 — BO 6874 (2019)"},
+  {term:"COS", full:"Coefficient d'Occupation du Sol", cat:"Construction",
+   def:"Ratio entre la surface de plancher hors œuvre totale et la surface du terrain. Détermine la densité bâtie autorisée. Ex : COS = 2 sur 500 m² → max 1 000 m² de plancher. Fixé par le PA.",
+   source:"RGC 2019"},
+  {term:"CES", full:"Coefficient d'Emprise au Sol", cat:"Construction",
+   def:"Ratio entre la projection au sol du bâtiment et la surface totale du terrain. Exprime le pourcentage de terrain couvert. Ex : CES = 0,5 sur 500 m² → emprise max 250 m². Distinct du COS.",
+   source:"RGC 2019"},
+  {term:"H/L", full:"Rapport Hauteur/Largeur de voie", cat:"Construction",
+   def:"Règle de gabarit encadrant la hauteur des constructions en fonction de la largeur de la voie publique en façade. Garantit ensoleillement et perspectives urbaines. Souvent exprimé par une équation du type H = L ou H = L/2 selon les zones.",
+   source:"RGC 2019 — Plans d'Aménagement"},
+  {term:"VRD", full:"Voirie et Réseaux Divers", cat:"Construction",
+   def:"Ensemble des infrastructures d'un lotissement ou d'un ensemble immobilier : voies de circulation, réseaux d'eau potable, assainissement, électricité, télécommunications, éclairage public. Leur réalisation incombe au lotisseur (loi 25-90).",
+   source:"Loi 25-90 — Art. 21 à 30"},
+  {term:"GIC/GIP", full:"Grand Invalide Civil / Grand Invalide de Guerre", cat:"Construction",
+   def:"Statuts ouvrant droit aux places de stationnement réservées PMR et aux avantages d'accessibilité prévus par la loi 10-03. Les places GIC/GIP sont signalisées par le pictogramme international de l'accessibilité.",
+   source:"Loi 10-03 — Art. 8"},
+  {term:"UP", full:"Unité de Passage", cat:"Construction",
+   def:"Unité de mesure des dégagements dans les ERP. 1 UP = 0,90 m de largeur utile (passage d'un fauteuil roulant). Le nombre d'UP est calculé en fonction de l'effectif reçu pour dimensionner les sorties et circulations.",
+   source:"Décret 2-14-499 — Sécurité incendie"},
+  // ── PARASISMIQUE ──
+  {term:"RPS", full:"Règlement de Construction Parasismique", cat:"Parasismique",
+   def:"Norme technique marocaine définissant les règles de conception et de calcul des bâtiments pour résister aux séismes. Version actualisée : RPS 2000, révision 2011. Divise le Maroc en 6 zones (0 à 5). Approuvé par décret 2-12-682.",
+   source:"Décret n° 2-12-682 — BO 6140 (2013)"},
+  {term:"ag", full:"Accélération de référence du sol", cat:"Parasismique",
+   def:"Paramètre sismique de base (en m/s²) caractérisant l'intensité du mouvement sismique attendu pour chaque zone. Utilisé dans les calculs de forces sismiques horizontales. Varie de quasi-nul (Zone 0) à très élevé (Zone 5 — Al Hoceima).",
+   source:"RPS 2000 rév. 2011 — Ch. 2"},
+  {term:"REI", full:"Résistance-Étanchéité-Isolation au feu", cat:"Parasismique",
+   def:"Critère de performance au feu des éléments de structure. R = résistance mécanique, E = étanchéité aux flammes et gaz, I = isolation thermique. Exprimé en minutes : REI 60 = résiste 60 min. Utilisé en sécurité incendie.",
+   source:"Décret 2-14-499"},
+  {term:"BTC", full:"Bloc de Terre Comprimé", cat:"Parasismique",
+   def:"Matériau de construction écologique fabriqué par compactage mécanique de terre stabilisée. Réglementé par le décret 2-12-666 (construction en terre) pour les zones sismiques du Sud et de l'Atlas marocain.",
+   source:"Décret n° 2-12-666"},
+  // ── ÉNERGIE ──
+  {term:"RGCPE", full:"Règlement Général de Construction — Performance Énergétique", cat:"Énergie",
+   def:"Arrêté fixant les exigences minimales de performance énergétique pour les constructions neuves et rénovations lourdes. S'applique aux bâtiments > 5 logements ou > 500 m². Définit les valeurs U maximales par zone climatique.",
+   source:"Décret n° 2-13-874 — BO 6218 (2013)"},
+  {term:"RTCM", full:"Règlement Thermique de Construction au Maroc", cat:"Énergie",
+   def:"Document technique définissant les 6 zones climatiques du Maroc et les méthodes de calcul thermique de référence. Support technique du RGCPE. Diffusé par l'AMEE et le Ministère de l'Habitat.",
+   source:"AMEE — 2014"},
+  {term:"AMEE", full:"Agence Marocaine pour l'Efficacité Énergétique", cat:"Énergie",
+   def:"Établissement public créé par la loi 47-09. Chargé de la promotion et du contrôle de l'efficacité énergétique dans les bâtiments, l'industrie et le transport. Diffuse les outils de calcul RTCM et délivre les labels énergétiques.",
+   source:"Loi 47-09"},
+  {term:"BBC", full:"Bâtiment Basse Consommation", cat:"Énergie",
+   def:"Label de performance énergétique désignant les bâtiments dont la consommation d'énergie primaire est inférieure à un seuil défini. Référence internationale (issue du droit français) utilisée comme benchmark au Maroc dans les projets de haut de gamme.",
+   source:"Référence internationale / RTCM"},
+  {term:"CPE", full:"Contrat de Performance Énergétique", cat:"Énergie",
+   def:"Contrat par lequel un prestataire s'engage sur des économies d'énergie mesurables et garanties en échange d'une rémunération. Cadre légal établi par la loi 47-09. Outil privilégié pour les rénovations énergétiques de bâtiments publics.",
+   source:"Loi 47-09"},
+  {term:"DPE", full:"Diagnostic de Performance Énergétique", cat:"Énergie",
+   def:"Évaluation standardisée de la consommation énergétique et des émissions de CO₂ d'un bâtiment. Non encore rendu obligatoire à la transaction au Maroc mais recommandé et en cours de déploiement réglementaire.",
+   source:"Loi 47-09 / RTCM"},
+  {term:"U", full:"Coefficient de transmission thermique (W/m²·K)", cat:"Énergie",
+   def:"Valeur exprimant la quantité de chaleur traversant 1 m² de paroi par unité de temps pour 1°C d'écart. Plus U est bas, meilleure est l'isolation. Le RTCM fixe des valeurs U maximales par paroi et par zone climatique (0,45 à 0,80 W/m²·K pour les murs).",
+   source:"RTCM 2014"},
+  {term:"R", full:"Résistance thermique (m²·K/W)", cat:"Énergie",
+   def:"Inverse du coefficient U. Mesure la capacité d'une paroi à s'opposer au flux de chaleur. Plus R est élevé, plus le matériau est isolant. Utilisé dans les calculs de conformité au RGCPE.",
+   source:"RTCM 2014"},
+  // ── SÉCURITÉ INCENDIE ──
+  {term:"ERP", full:"Établissement Recevant du Public", cat:"Sécurité incendie",
+   def:"Tout bâtiment, local ou enceinte dans lequel des personnes extérieures sont admises. Classé en 5 catégories selon l'effectif et en types selon l'activité (J, L, M, N, O, P, R, S, T, U, W, X, Y). Soumis au décret 2-14-499.",
+   source:"Décret n° 2-14-499 (2015)"},
+  {term:"IGH", full:"Immeuble de Grande Hauteur", cat:"Sécurité incendie",
+   def:"Bâtiment dont le plancher bas du dernier niveau accessible est situé à plus de 28 m au-dessus du niveau de référence (≈ 8 étages). Soumis à des règles de sécurité incendie très renforcées (structure RF 2h, désenfumage mécanique, ascenseur pompiers).",
+   source:"Décret n° 2-14-499 (2015)"},
+  {term:"DAI", full:"Détection Automatique d'Incendie", cat:"Sécurité incendie",
+   def:"Système électronique composé de détecteurs (fumée, chaleur, flamme), d'une centrale de traitement et d'un système d'alarme. Obligatoire dans les ERP de 1ère à 3ème catégorie et dans certains types spécifiques (O, R, U…).",
+   source:"Décret 2-14-499"},
+  {term:"RIA", full:"Robinet d'Incendie Armé", cat:"Sécurité incendie",
+   def:"Équipement de lutte incendie fixe composé d'un robinet à ouverture rapide, un tuyau semi-rigide et une lance. Diamètre DN 25 (dévidoir) ou DN 33 selon catégorie. Implantés de façon à couvrir l'ensemble du bâtiment.",
+   source:"Décret 2-14-499"},
+  {term:"DECI", full:"Défense Extérieure Contre l'Incendie", cat:"Sécurité incendie",
+   def:"Ensemble des ressources en eau (bornes incendie, poteaux, réserves) permettant aux services de secours d'alimenter leurs engins. Doit être prévue dans les projets de lotissement et de construction industrielle.",
+   source:"Décret 2-14-499"},
+  // ── PROFESSIONS ──
+  {term:"ONA", full:"Ordre National des Architectes", cat:"Professions",
+   def:"Organisation professionnelle légale regroupant tous les architectes exerçant au Maroc. Institué par la loi 16-89. Tient le tableau des architectes. Composé du Conseil National (CNOA) et de Conseils Régionaux.",
+   source:"Loi n° 16-89 (1992)"},
+  {term:"CNOA", full:"Conseil National de l'Ordre des Architectes", cat:"Professions",
+   def:"Instance dirigeante de l'ONA au niveau national. Coordonne les conseils régionaux, gère le tableau national, statue en appel des décisions disciplinaires et représente la profession auprès des pouvoirs publics.",
+   source:"Loi 16-89 / Règlement intérieur CNOA"},
+  {term:"MOE", full:"Maîtrise d'Œuvre", cat:"Professions",
+   def:"Mission confiée à l'architecte (et aux bureaux d'études techniques) pour concevoir, diriger et contrôler l'exécution des travaux. Comprend les études (AVP, PRO, DCE), le visa des documents d'exécution, la direction de chantier (DET) et la réception (AOR).",
+   source:"Loi 16-89 — pratique professionnelle"},
+  {term:"MOA", full:"Maîtrise d'Ouvrage", cat:"Professions",
+   def:"Le maître d'ouvrage est le commanditaire et propriétaire du projet de construction. Il définit le programme, finance l'opération, signe les marchés et reçoit l'ouvrage. Peut déléguer cette fonction (MOD — Maîtrise d'Ouvrage Déléguée).",
+   source:"Loi 12-90 / CCAG Travaux"},
+  {term:"MOD", full:"Maîtrise d'Ouvrage Déléguée", cat:"Professions",
+   def:"Transfert partiel ou total des responsabilités du maître d'ouvrage à un organisme spécialisé (établissement public, société privée). Le MOD signe les marchés, coordonne la MOE et rend compte au MOA initial.",
+   source:"CCAG Travaux / Décret marchés publics"},
+  {term:"BET", full:"Bureau d'Études Techniques", cat:"Professions",
+   def:"Société d'ingénierie spécialisée intervenant en complément de l'architecte : structure, VRD, fluides, thermique, acoustique, électricité. Travaille sous contrat avec la MOE ou directement avec la MOA selon les projets.",
+   source:"Pratique professionnelle Maroc"},
+  {term:"OPC", full:"Ordonnancement, Pilotage et Coordination", cat:"Professions",
+   def:"Mission complémentaire à la maîtrise d'œuvre consistant à établir le calendrier détaillé des travaux (planning Gantt), à coordonner les entreprises intervenantes et à suivre l'avancement pour respecter les délais contractuels.",
+   source:"Pratique professionnelle Maroc"},
+  {term:"AVP", full:"Avant-Projet", cat:"Professions",
+   def:"Phase de la mission de maîtrise d'œuvre comprenant l'AVP Sommaire (définition du parti architectural et structurel) et l'AVP Définitif (développement des plans, estimations de coût détaillées). Précède la phase Projet (PRO).",
+   source:"Pratique professionnelle Maroc"},
+  // ── COLLECTIVITÉS & ADMINISTRATION ──
+  {term:"BO", full:"Bulletin Officiel", cat:"Administration",
+   def:"Journal officiel du Royaume du Maroc publiant les dahirs, lois, décrets, arrêtés et règlements. Texte légalement opposable. Publié en arabe et en français. Disponible sur www.sgg.gov.ma.",
+   source:"SGG — Secrétariat Général du Gouvernement"},
+  {term:"SRAT", full:"Schéma Régional d'Aménagement du Territoire", cat:"Administration",
+   def:"Document stratégique élaboré par le Conseil Régional définissant les orientations d'aménagement à l'échelle d'une région (12 régions depuis 2015). Comprend volets économique, habitat, infrastructure, environnement et culture. Non opposable aux tiers.",
+   source:"Loi organique 111-14"},
+  {term:"CRI", full:"Centre Régional d'Investissement", cat:"Administration",
+   def:"Guichet unique régional pour les investisseurs privés, réformé par la loi 47-18. Réunit en une seule commission toutes les administrations concernées (urbanisme, fiscalité, environnement…). Délai de traitement : 60 jours (silence vaut acceptation).",
+   source:"Loi n° 47-18 (2019)"},
+  {term:"AU", full:"Agence Urbaine", cat:"Administration",
+   def:"Établissement public sous tutelle du Ministère de l'Urbanisme, créé pour chaque agglomération importante. Élabore les documents d'urbanisme (SDAU, PA), instruit les demandes de permis importantes et contrôle la conformité urbanistique.",
+   source:"Décret de création des Agences Urbaines"},
+  {term:"ADII", full:"Administration des Douanes et Impôts Indirects", cat:"Administration",
+   def:"Administration fiscale compétente pour les droits de douane, la TVA à l'importation et les accises. Importante dans les projets d'investissement impliquant des équipements importés.",
+   source:"Loi des finances — Code des Douanes"},
+  {term:"TPI", full:"Tribunal de Première Instance", cat:"Administration",
+   def:"Juridiction compétente en 1ère instance pour les litiges en matière de construction (infractions, responsabilité, dommages). Les affaires administratives (refus de permis, démolition ordonnée) relèvent du Tribunal Administratif.",
+   source:"Code de procédure civile marocain"},
+  // ── MARCHÉS PUBLICS ──
+  {term:"CCAG", full:"Cahier des Clauses Administratives Générales", cat:"Marchés publics",
+   def:"Document contractuel de référence régissant les relations entre maître d'ouvrage public et entrepreneur dans tous les marchés de travaux publics. Fixe les obligations des parties, les modalités de réception, les pénalités et les règles de règlement des litiges.",
+   source:"Décret n° 2-14-394 (2014)"},
+  {term:"CPS", full:"Cahier des Prescriptions Spéciales", cat:"Marchés publics",
+   def:"Document contractuel spécifique à chaque marché, complétant le CCAG. Définit les prestations, les matériaux, les délais, les prix, les pénalités propres au projet. Rédigé par le maître d'ouvrage avec l'appui du maître d'œuvre.",
+   source:"Décret marchés publics BO 6140"},
+  {term:"TGR", full:"Trésorerie Générale du Royaume", cat:"Marchés publics",
+   def:"Administration financière centrale supervisant l'exécution budgétaire et le contrôle des dépenses publiques. Vise les marchés publics et les décomptes. Tout marché public > seuil doit recevoir le visa du contrôle des engagements de dépenses.",
+   source:"Décret marchés publics"},
+  {term:"CED", full:"Contrôle des Engagements de Dépenses", cat:"Marchés publics",
+   def:"Visa préalable obligatoire du ministère des finances sur les marchés publics dépassant un certain seuil. Garantit la régularité budgétaire et la disponibilité des crédits avant tout engagement de l'État.",
+   source:"Décret marchés publics"},
+  // ── ENVIRONNEMENT ──
+  {term:"EIE", full:"Étude d'Impact sur l'Environnement", cat:"Environnement",
+   def:"Évaluation environnementale obligatoire préalable à la réalisation de projets figurant dans l'annexe de la loi 12-03. Comprend l'état initial, l'analyse des impacts, les mesures d'atténuation et le programme de surveillance. Instruite par le Comité EIE.",
+   source:"Loi n° 12-03 (2003)"},
+  {term:"DPM", full:"Domaine Public Maritime", cat:"Environnement",
+   def:"Domaine inaliénable et imprescriptible de l'État comprenant le rivage de la mer jusqu'à la limite des plus hautes eaux, les dunes côtières, les lagunes et sebkhas. La bande des 100 m à compter de sa limite est inconstructible (loi 81-12).",
+   source:"Loi n° 81-12 (2015)"},
+  {term:"GIZC", full:"Gestion Intégrée des Zones Côtières", cat:"Environnement",
+   def:"Approche de gestion durable du littoral intégrant les dimensions écologique, économique et sociale. Mise en œuvre à travers les Schémas Régionaux d'Aménagement du Littoral institués par la loi 81-12.",
+   source:"Loi n° 81-12 (2015)"},
+  // ── ACCESSIBILITÉ ──
+  {term:"PMR", full:"Personne à Mobilité Réduite", cat:"Accessibilité",
+   def:"Toute personne dont la mobilité est réduite de façon permanente ou temporaire : personne en fauteuil roulant, avec béquilles, personne âgée, femme enceinte, parent avec poussette, personne malvoyante ou malentendante.",
+   source:"Loi n° 10-03 (2003)"},
+  // ── FONCIER ──
+  {term:"TF", full:"Titre Foncier", cat:"Foncier",
+   def:"Document officiel attestant la propriété d'un bien immobilier après procédure d'immatriculation foncière. Délivré par la Conservation Foncière. Constitue la preuve absolue et inattaquable de la propriété au Maroc.",
+   source:"Dahir 1913 sur l'immatriculation foncière"},
+  {term:"MF", full:"Melkia Foncière", cat:"Foncier",
+   def:"Acte de propriété coutumier (non immatriculé) rédigé par un adoul. Valeur juridique inférieure au titre foncier. En cours de régularisation massive dans le cadre des politiques publiques de titrement.",
+   source:"Code immobilier marocain"},
+  {term:"CF", full:"Conservation Foncière", cat:"Foncier",
+   def:"Administration chargée de la gestion du cadastre et de l'immatriculation foncière au Maroc. Délivre les titres fonciers, enregistre les transactions et les hypothèques. Sous tutelle du Ministère de la Justice.",
+   source:"Agence Nationale de la Conservation Foncière"}
+];
+
+const CATS = [
+  {key:"all",label:"Tous les textes"},
+  {key:"urbanisme",label:"Urbanisme"},
+  {key:"construction",label:"Construction"},
+  {key:"parasismique",label:"Parasismique"},
+  {key:"incendie",label:"Sécurité incendie"},
+  {key:"energie",label:"Énergie"},
+  {key:"professions",label:"Professions"},
+  {key:"accessibilite",label:"Accessibilité"},
+  {key:"environnement",label:"Environnement"},
+  {key:"collectivites",label:"Collectivités"},
+  {key:"marches",label:"Marchés publics"},
+  {key:"controle",label:"Contrôle & infractions"},
+  {key:"rural",label:"Monde rural"},
+  {key:"investissement",label:"Investissement"}
+];
+
+const QUICK_ITEMS = [
+  {icon:"🏛️",name:"Loi 12-90",sub:"Urbanisme",filter:"urbanisme"},
+  {icon:"🏗️",name:"RGC 2019",sub:"Construction",filter:"construction"},
+  {icon:"🌍",name:"RPS 2000",sub:"Parasismique",filter:"parasismique"},
+  {icon:"🔥",name:"Sécurité incendie",sub:"ERP & IGH",filter:"incendie"},
+  {icon:"📐",name:"Architectes",sub:"Loi 16-89",filter:"professions"},
+  {icon:"♿",name:"Accessibilité",sub:"Loi 10-03",filter:"accessibilite"},
+  {icon:"🌊",name:"Littoral",sub:"Loi 81-12",filter:"environnement"},
+  {icon:"⚡",name:"Énergie",sub:"RGCPE & RTCM",filter:"energie"}
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────────────
+let activeFilter = "all";
+let searchTerm = "";
+let expandedId = null;
+
+// ── SCORE ──────────────────────────────────────────────────────────────────────
+function score(law, q) {
+  if(!q) return 1;
+  const t = q.toLowerCase();
+  let s = 0;
+  if(law.titre.toLowerCase().includes(t)) s += 20;
+  if(law.num.toLowerCase().includes(t)) s += 15;
+  if(law.cat.toLowerCase().includes(t)) s += 8;
+  law.mots.forEach(m => { if(m.toLowerCase().includes(t)) s += 4; if(t.includes(m.toLowerCase()) && m.length > 3) s += 2; });
+  if(law.resume.toLowerCase().includes(t)) s += 3;
+  Object.keys(law.articles||{}).forEach(k => { if(k.toLowerCase().includes(t) || (law.articles[k]||'').toLowerCase().includes(t)) s += 2; });
+  return s;
+}
+
+// ── RENDER FILTERS ──────────────────────────────────────────────────────────
+function renderFilters() {
+  document.getElementById("filterChips").innerHTML = CATS.map(c =>
+    `<button class="filter-chip${activeFilter===c.key?' active':''}" onclick="setFilter('${c.key}')">${c.label}</button>`
+  ).join("");
+}
+
+function setFilter(k) {
+  activeFilter = k;
+  renderFilters();
+  renderResults();
+}
+
+// ── RENDER QUICK ────────────────────────────────────────────────────────────
+function quickFilter(filterKey) {
+  setFilter(filterKey);
+  setTimeout(() => {
+    const el = document.getElementById("resultsList");
+    if(el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 130;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  }, 80);
+}
+
+function renderQuick() {
+  document.getElementById("quickGrid").innerHTML = QUICK_ITEMS.map(q =>
+    `<button class="quick-card" type="button" onclick="quickFilter('${q.filter}')">
+      <span class="quick-icon">${q.icon}</span>
+      <div class="quick-name">${q.name}</div>
+      <div class="quick-cat">${q.sub}</div>
+    </button>`
+  ).join("");
+}
+
+// ── RENDER GLOSSARY ─────────────────────────────────────────────────────────
+// ── GLOSSARY MODULE ─────────────────────────────────────────────────────────
+const GLOS_CATS = ["Tous", "Urbanisme", "Construction", "Parasismique", "Énergie",
+                   "Sécurité incendie", "Professions", "Administration", "Marchés publics",
+                   "Environnement", "Accessibilité", "Foncier"];
+let glosActiveCat = "Tous";
+let glosSelectedIdx = null;
+let glosFilteredItems = [];
+
+function glosFilter() {
+  const q = (document.getElementById("glosSearch").value || "").trim().toLowerCase();
+  glosFilteredItems = GLOSSARY.filter(g => {
+    const matchCat = glosActiveCat === "Tous" || g.cat === glosActiveCat;
+    const matchQ = !q || g.term.toLowerCase().includes(q) || g.full.toLowerCase().includes(q) || g.def.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  renderGlosList();
+}
+
+function setGlosCat(cat) {
+  glosActiveCat = cat;
+  glosSelectedIdx = null;
+  document.getElementById("glosCats").innerHTML = GLOS_CATS.map(c =>
+    `<button class="glos-cat${c===glosActiveCat?' active':''}" onclick="setGlosCat('${c}')">${c}</button>`
+  ).join("");
+  glosFilter();
+}
+
+function renderGlosList() {
+  const list = document.getElementById("glosList");
+  const count = document.getElementById("glosCount");
+  if(!glosFilteredItems.length) {
+    list.innerHTML = `<li class="glos-list-empty">Aucun terme trouvé</li>`;
+    count.textContent = "";
+    return;
+  }
+  list.innerHTML = glosFilteredItems.map((g,i) =>
+    `<li class="glos-list-item${glosSelectedIdx===i?' selected':''}" onclick="selectGlosTerm(${i})">
+      <span class="glos-list-term">${g.term}</span>
+      <span class="glos-list-cat">${g.cat}</span>
+    </li>`
+  ).join("");
+  count.textContent = glosFilteredItems.length + " terme" + (glosFilteredItems.length!==1?"s":"");
+}
+
+function selectGlosTerm(i) {
+  glosSelectedIdx = i;
+  renderGlosList();
+  const g = glosFilteredItems[i];
+  document.getElementById("glosPanel").innerHTML = `
+    <div>
+      <div class="glos-panel-term">${g.term}</div>
+      <div class="glos-panel-cat-badge">${g.cat}</div>
+      <div class="glos-panel-full">${g.full}</div>
+      <div class="glos-panel-def">${g.def}</div>
+      <div class="glos-panel-source">${g.source}</div>
+    </div>`;
+}
+
+function renderGlossary() {
+  // Init cats
+  document.getElementById("glosCats").innerHTML = GLOS_CATS.map(c =>
+    `<button class="glos-cat${c===glosActiveCat?' active':''}" onclick="setGlosCat('${c}')">${c}</button>`
+  ).join("");
+  // Init list (all items)
+  glosFilteredItems = GLOSSARY.slice();
+  renderGlosList();
+}
+
+// ── RENDER RESULTS ──────────────────────────────────────────────────────────
+function renderResults() {
+  let items = LAWS.slice();
+  if(activeFilter !== "all") items = items.filter(l => l.catKey === activeFilter);
+  if(searchTerm) {
+    items = items.filter(l => score(l, searchTerm) > 0)
+                 .sort((a,b) => score(b, searchTerm) - score(a, searchTerm));
+  }
+  document.getElementById("searchCount").textContent = items.length + " texte" + (items.length!==1?"s":"");
+  const list = document.getElementById("resultsList");
+  list.id = "resultsList";
+  if(!items.length) {
+    list.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">Aucun résultat trouvé</div>
+      <div class="empty-sub">Essayez avec d'autres mots-clés ou élargissez votre filtre.</div>
+    </div>`;
+    return;
+  }
+  list.innerHTML = items.map((law, i) => buildCard(law, i)).join("");
+}
+
+function buildCard(law, i) {
+  const isExpanded = expandedId === law.id;
+  const badgeStatut = law.statut === "En vigueur"
+    ? `<span class="badge badge-active">En vigueur</span>`
+    : `<span class="badge badge-partial">${law.statut}</span>`;
+  const chapitresHtml = law.chapitres ? law.chapitres.map(c =>
+    `<li class="chapter-item">${c}</li>`).join("") : "";
+  const articlesHtml = law.articles ? Object.entries(law.articles).map(([k,v]) =>
+    `<div class="article-box"><div class="article-ref">${k}</div><div class="article-text">${v}</div></div>`).join("") : "";
+  const faqHtml = law.faq ? law.faq.map(q =>
+    `<li class="faq-item" onclick="askFaq(event,'${q.replace(/'/g,"\\'")}')"><span>${q}</span></li>`).join("") : "";
+  const tagsHtml = law.mots.slice(0,12).map(m =>
+    `<span class="tag">${m}</span>`).join("");
+  const liensHtml = law.liens ? law.liens.map(l => {
+    const rel = LAWS.find(x => x.id === l);
+    return rel ? `<span class="related-chip" onclick="jumpTo('${l}')">${rel.icon} ${rel.titre.substring(0,40)}${rel.titre.length>40?'…':''}</span>` : "";
+  }).join("") : "";
+  return `<div class="law-card${isExpanded?' expanded':''}" id="card-${law.id}" style="animation-delay:${i*0.04}s">
+    <div class="card-header" onclick="toggleCard('${law.id}')">
+      <div class="card-icon-wrap cat-${law.catKey}">${law.icon}</div>
+      <div class="card-meta">
+        <div class="card-badges">
+          <span class="badge badge-type">${law.type}</span>
+          <span class="badge badge-cat">${law.cat}</span>
+          ${badgeStatut}
+        </div>
+        <div class="card-title">${law.titre}</div>
+        <div class="card-ref">${law.num} · ${law.bo}</div>
+      </div>
+      <span class="card-chevron">▾</span>
+    </div>
+    <div class="card-body">
+      <p class="card-resume">${law.resume}</p>
+      <div class="info-bar">
+        <div class="info-item"><div class="info-item-label">Promulgation</div><div class="info-item-val">${law.promulgation}</div></div>
+        <div class="info-item"><div class="info-item-label">Portée spatiale</div><div class="info-item-val">${law.spatial}</div></div>
+        <div class="info-item"><div class="info-item-label">Statut</div><div class="info-item-val">${law.statut}</div></div>
+      </div>
+      <div class="card-sections">
+        <div>
+          <div class="card-section-title">Chapitres / structure</div>
+          <ul class="chapter-list">${chapitresHtml}</ul>
+        </div>
+        <div>
+          <div class="card-section-title">Articles & prescriptions clés</div>
+          ${articlesHtml}
+        </div>
+      </div>
+      <div class="card-section-title" style="margin-bottom:8px;margin-top:4px">Mots-clés</div>
+      <div class="tags-wrap" style="margin-bottom:14px">${tagsHtml}</div>
+      ${law.faq ? `<div class="card-section-title" style="margin-bottom:8px">Questions fréquentes</div><ul class="faq-list">${faqHtml}</ul>` : ""}
+      ${law.liens && law.liens.length ? `<div class="related-section"><div class="related-title">Textes liés</div><div class="related-chips">${liensHtml}</div></div>` : ""}
+      <div class="card-links">
+        <button class="btn-primary" onclick="openModal('${law.id}')">Voir la fiche complète</button>
+        <a href="https://www.sgg.gov.ma" target="_blank" class="btn-outline">Bulletin Officiel ↗</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── TOGGLE CARD ─────────────────────────────────────────────────────────────
+function toggleCard(id) {
+  if(expandedId === id) { expandedId = null; }
+  else { expandedId = id; }
+  renderResults();
+  if(expandedId) {
+    setTimeout(() => {
+      const el = document.getElementById("card-"+expandedId);
+      if(el) el.scrollIntoView({behavior:"smooth",block:"nearest"});
+    }, 80);
+  }
+}
+
+function jumpTo(id) {
+  expandedId = id;
+  activeFilter = "all";
+  searchTerm = "";
+  document.getElementById("searchInput").value = "";
+  renderFilters();
+  renderResults();
+  setTimeout(() => {
+    const el = document.getElementById("card-"+id);
+    if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+  }, 100);
+}
+
+// ── FAQ ANSWERS DATABASE ─────────────────────────────────────────────────────
+const FAQ_ANSWERS = {
+
+  // LOI-12-90
+  "Quel est le contenu obligatoire d'un Plan d'Aménagement ?": {
+    source:"Loi n° 12-90 — Art. 19 à 30",
+    reponse:`Le Plan d'Aménagement (PA) est le document d'urbanisme opposable aux tiers. Il doit obligatoirement préciser : <strong>le zonage du territoire</strong> (zones résidentielles, industrielles, agricoles, espaces verts, équipements…), <strong>les règles de construction</strong> applicables dans chaque zone (gabarit, COS, CES, retraits, hauteurs), <strong>les emplacements réservés</strong> aux équipements publics (écoles, hôpitaux, parkings, mosquées…), <strong>les servitudes d'utilité publique</strong> (lignes HT, conduites, passages), et <strong>le tracé des voies</strong> principales projetées. Il est élaboré par l'Agence Urbaine en concertation avec la commune, soumis à enquête publique, puis approuvé par arrêté du Ministre de l'Urbanisme. Une fois approuvé, il est opposable à toute demande de permis de construire.`
+  },
+  "Quels sont les délais de délivrance du permis de construire ?": {
+    source:"Loi n° 12-90 — Art. 40 à 47 / Arrêté guichet unique",
+    reponse:`Le délai légal d'instruction d'un permis de construire est fixé selon la nature du projet. Pour un projet <strong>simple</strong> (logement individuel, extensions légères) : <strong>30 jours</strong> à compter du dépôt d'un dossier complet. Pour un projet <strong>complexe</strong> (immeuble collectif, ERP, bâtiment industriel) : <strong>60 jours</strong>. Le silence de l'administration au-delà de ces délais vaut en principe refus implicite, sauf dispositions contraires. En cas de dossier incomplet, la commune dispose de <strong>15 jours</strong> pour réclamer les pièces manquantes. L'arrêté sur le guichet unique a harmonisé ces délais dans la pratique.`
+  },
+  "Qu'est-ce qu'un SDAU et quelle est sa portée juridique ?": {
+    source:"Loi n° 12-90 — Art. 1 à 18",
+    reponse:`Le Schéma Directeur d'Aménagement Urbain (SDAU) est un document de planification stratégique à <strong>long terme (15 à 25 ans)</strong> couvrant une agglomération ou une aire métropolitaine. Il définit les grandes orientations de développement spatial : extension urbaine, grands équipements, réseaux structurants, espaces naturels à préserver. <strong>Sa portée juridique</strong> : il n'est pas directement opposable aux particuliers (il ne crée pas de droits ni d'obligations pour les administrés), mais il s'impose aux Plans d'Aménagement (PA) qui doivent être compatibles avec ses orientations. C'est un document de cadrage pour les collectivités et l'État.`
+  },
+  "Quelles sanctions pour une construction sans permis ?": {
+    source:"Loi n° 66-12 — Art. relatifs aux infractions de 1ère classe",
+    reponse:`Construire sans permis constitue une <strong>infraction de 1ère classe</strong> au sens de la loi 66-12. Les sanctions sont : <strong>Amende</strong> pouvant aller de 10 000 à 500 000 MAD selon l'ampleur de la construction. <strong>Arrêt immédiat des travaux</strong> ordonné par le président de commune ou le wali. <strong>Remise en état ou démolition</strong> ordonnée par le tribunal compétent aux frais du contrevenant. En cas de refus d'obtempérer, l'exécution forcée peut être ordonnée. L'architecte qui a prêté son concours à une construction illégale engage également sa responsabilité disciplinaire devant l'Ordre.`
+  },
+  "Comment obtenir un permis d'habiter ?": {
+    source:"Loi n° 12-90 — Art. 48 à 52",
+    reponse:`Le permis d'habiter (ou certificat de conformité pour les bâtiments non destinés à l'habitation) est délivré par la commune après vérification de la conformité des travaux réalisés au permis de construire accordé. La démarche : <strong>1)</strong> Fin des travaux — l'architecte établit une attestation de fin de travaux et de conformité. <strong>2)</strong> Dépôt de la demande en mairie avec : la demande signée, l'attestation de l'architecte, et éventuellement le PV de récolement de la commission. <strong>3)</strong> Visite de contrôle par la commission communale. <strong>4)</strong> Délivrance du permis d'habiter si conformité constatée. Sans permis d'habiter, le bâtiment ne peut légalement être occupé ni raccordé aux réseaux.`
+  },
+
+  // LOI-25-90
+  "Différence entre lotissement et morcellement ?": {
+    source:"Loi n° 25-90 — Art. 1 à 5",
+    reponse:`<strong>Lotissement</strong> : opération de division d'un terrain en plusieurs lots destinés à être bâtis, accompagnée de la création ou de l'aménagement de voirie, d'espaces communs et de réseaux (VRD). Nécessite une autorisation de lotir et implique des obligations importantes du lotisseur envers la future commune. <strong>Morcellement</strong> : simple division d'un terrain en deux ou plusieurs parcelles, <em>sans création de voirie ni de réseaux</em>. La procédure est allégée — elle ne requiert qu'une autorisation de morcellement. La distinction pratique : si la division génère une nouvelle voie d'accès ou des équipements communs, c'est un lotissement ; sinon, c'est un morcellement.`
+  },
+  "Documents pour une demande d'autorisation de lotir ?": {
+    source:"Loi n° 25-90 — Art. 6 à 20 / Décret d'application",
+    reponse:`Le dossier de demande d'autorisation de lotir comprend : <strong>Plans graphiques</strong> — plan de situation, plan topographique, plan masse du lotissement avec tracé des voies et lots numérotés. <strong>Documents techniques</strong> — note justificative de la conception, plan des réseaux VRD (eau, assainissement, électricité, téléphone), plan de nivellement. <strong>Documents administratifs</strong> — titre de propriété ou promesse de vente, certificat d'urbanisme, étude géotechnique si nécessaire. <strong>Cahier des charges</strong> — fixant les servitudes et obligations pesant sur les acquéreurs de lots. <strong>Programme d'équipement</strong> — calendrier et budget des travaux de VRD. Le dossier est déposé en mairie pour instruction par la commission technique locale.`
+  },
+  "Peut-on vendre des lots avant la réception définitive ?": {
+    source:"Loi n° 25-90 — Art. 31 à 40",
+    reponse:`Non, en principe. La loi 25-90 interdit la vente ou la promesse de vente de lots d'un lotissement avant l'obtention de <strong>l'autorisation de lotir</strong>. La commercialisation effective (acte notarié) est conditionnée à la réalisation des VRD et à leur réception. Toutefois, la pratique admet des <strong>contrats de réservation</strong> (avant-contrats) après délivrance de l'autorisation. La <strong>réception provisoire</strong> des VRD permet en pratique de débuter les cessions. La réception définitive (après 1 an de garantie) entraîne le transfert des équipements à la commune. Toute vente antérieure à l'autorisation expose le lotisseur à des poursuites pénales.`
+  },
+
+  // RGC-2019
+  "Quelle hauteur maximale en zone résidentielle ?": {
+    source:"RGC 2019 — Décret 2-18-577 / Plans d'Aménagement locaux",
+    reponse:`La hauteur maximale autorisée n'est <strong>pas fixée universellement</strong> par le RGC : c'est le Plan d'Aménagement (PA) de chaque commune qui fixe les gabarits par zone. Le RGC fournit le cadre de calcul et les méthodes de mesure. En pratique dans les grandes villes marocaines, les zones résidentielles courantes autorisent des hauteurs de <strong>R+2 à R+5</strong> (10 à 18 m). Certaines zones réglementées permettent des immeubles jusqu'à <strong>R+7 ou R+9</strong>. Les zones de villas ou zones pavillonnaires sont souvent limitées à <strong>R+1</strong>. La hauteur se mesure au point le plus bas du terrain naturel jusqu'à l'acrotère ou la corniche. La corniche et les éléments de superstructure (cages d'ascenseur, locaux techniques) font l'objet de règles spécifiques.`
+  },
+  "Règles de retrait du RGC ?": {
+    source:"RGC 2019 — Chapitre 2 — Implantation",
+    reponse:`Le RGC fixe des règles de retrait par rapport aux voies et aux limites séparatives, pouvant être précisées ou renforcées par le PA local. Principes généraux : <strong>Retrait par rapport à la voie publique (alignement)</strong> : construction sur l'alignement ou avec retrait selon les prescriptions du PA. <strong>Retrait latéral</strong> : en général 3 à 4 m par rapport à la limite séparative si les ouvertures donnent sur cette limite, ou construction en mitoyenneté si le règlement le permet. <strong>Retrait de fond de parcelle</strong> : variable selon la hauteur du bâtiment (souvent H/2 avec un minimum de 4 m). <strong>Espaces libres</strong> : un minimum d'espace non bâti est exigé sur chaque parcelle (CES). Ces règles ont pour objectif d'assurer l'ensoleillement, la ventilation et l'intimité des logements.`
+  },
+  "Comment calculer le COS et le CES ?": {
+    source:"RGC 2019 — Définitions et coefficients",
+    reponse:`<strong>COS (Coefficient d'Occupation du Sol)</strong> = Surface de plancher hors œuvre totale / Surface du terrain. Si le terrain fait 500 m² et le COS autorisé est de 2, la surface de plancher totale ne peut dépasser 1 000 m². Le COS détermine la densité bâtie. <strong>CES (Coefficient d'Emprise au Sol)</strong> = Projection au sol du bâtiment / Surface du terrain. Il exprime le pourcentage de terrain couvert par la construction. Si le CES est de 0,5 sur une parcelle de 500 m², l'emprise au sol maximale est de 250 m². Ces deux coefficients sont cumulatifs : la construction doit respecter à la fois le COS et le CES. Les valeurs sont fixées par le PA et varient selon la zone.`
+  },
+  "Normes d'hygiène minimales pour un logement ?": {
+    source:"RGC 2019 — Chapitre 5 — Hygiène",
+    reponse:`Le RGC fixe plusieurs exigences minimales pour un logement habitable : <strong>Superficie</strong> : la pièce principale ne peut être inférieure à 9 m² (surface habitable minimale d'un logement : variable selon la région mais généralement ≥ 28 m²). <strong>Hauteur sous plafond</strong> : minimum 2,50 m dans les pièces habitables. <strong>Éclairage naturel</strong> : toute pièce habitable doit disposer d'une fenêtre donnant sur l'extérieur avec une superficie minimale représentant 1/6 à 1/8 de la surface du plancher. <strong>Ventilation</strong> : les pièces non éclairables naturellement (WC intérieur, salle de bain) doivent être ventilées mécaniquement. <strong>Sanitaires</strong> : tout logement doit disposer d'au minimum un WC et d'un point d'eau. <strong>Cuisine</strong> : ventilation naturelle ou mécanique obligatoire avec évacuation des buées.`
+  },
+  "Le RGC s'applique-t-il aux constructions rurales ?": {
+    source:"RGC 2019 — Article 1 — Champ d'application",
+    reponse:`Le RGC s'applique <strong>sur l'ensemble du territoire national</strong>, y compris les zones rurales. Cependant, son application concrète en milieu rural est modulée : dans les zones couvertes par un Plan d'Aménagement ou un Plan de Développement, toutes les dispositions s'appliquent. Dans les zones hors PA (agglomérations rurales régies par le Dahir de 1960), certaines dispositions peuvent être assouplies ou adaptées par arrêté. En pratique, le RPS 2000 (parasismique) et les règles de base d'hygiène et de sécurité s'appliquent partout. Les constructions en terre dans les zones rurales du Sud relèvent en plus du Règlement Parasismique spécifique à la construction en terre (Décret 2-12-666).`
+  },
+
+  // RGCPE & RTCM
+  "Quelles constructions sont soumises au RGCPE ?": {
+    source:"RGCPE — Décret 2-13-874 — Titre I",
+    reponse:`Le RGCPE s'applique obligatoirement aux : <strong>Bâtiments résidentiels neufs</strong> de plus de <strong>5 logements</strong> ou d'une surface de plancher supérieure à <strong>500 m²</strong>. <strong>Bâtiments tertiaires neufs</strong> (bureaux, commerces, hôtels…) de surface supérieure à <strong>500 m²</strong>. <strong>Rénovations lourdes</strong> affectant plus de 50% du volume du bâtiment existant. Les petites constructions individuelles isolées sont donc exclues du champ d'application direct. La justification de conformité doit être apportée dans le dossier de demande de permis de construire, via une note thermique établie par un bureau d'études ou l'architecte selon une méthode de calcul reconnue.`
+  },
+  "Comment justifier la conformité dans le dossier de permis ?": {
+    source:"RGCPE — Titre IV — Calcul et justification",
+    reponse:`La justification de conformité au RGCPE s'effectue par le biais d'une <strong>note de calcul thermique</strong> jointe au dossier de permis de construire. Cette note doit préciser : la zone climatique du projet, les caractéristiques thermiques des parois (valeurs U de chaque paroi : mur, toiture, plancher bas, vitrages), le traitement des ponts thermiques, et le calcul du coefficient global de déperdition. Pour les bâtiments tertiaires importants, une simulation thermique dynamique peut être exigée. L'outil de calcul de référence est le logiciel RTCM diffusé par l'AMEE. En pratique, l'architecte peut établir cette note ou la confier à un bureau d'études thermiques.`
+  },
+  "Quels sont les coefficients U exigés pour les murs ?": {
+    source:"RTCM 2014 — Valeurs de référence par zone climatique",
+    reponse:`Le RTCM fixe des valeurs U maximales (coefficient de transmission thermique en W/m²·K) pour les murs extérieurs selon les 6 zones climatiques du Maroc. <strong>Plus la valeur U est basse, meilleure est l'isolation.</strong>
+    <br><br>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:8px">
+      <thead><tr style="background:#e8faf4">
+        <th style="padding:8px;text-align:left;border:1px solid #b8f0e0">Zone</th>
+        <th style="padding:8px;text-align:left;border:1px solid #b8f0e0">Villes types</th>
+        <th style="padding:8px;text-align:center;border:1px solid #b8f0e0">U mur max (W/m²·K)</th>
+        <th style="padding:8px;text-align:center;border:1px solid #b8f0e0">U toiture max</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:7px 8px;border:1px solid #edeae2">Zone 1 — Côtière nord</td><td style="padding:7px 8px;border:1px solid #edeae2">Tanger, Tétouan</td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center"><strong>0,80</strong></td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center">0,50</td></tr>
+        <tr style="background:#fafaf8"><td style="padding:7px 8px;border:1px solid #edeae2">Zone 2 — Atlantique</td><td style="padding:7px 8px;border:1px solid #edeae2">Casablanca, Rabat</td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center"><strong>0,75</strong></td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center">0,45</td></tr>
+        <tr><td style="padding:7px 8px;border:1px solid #edeae2">Zone 3 — Méditerranéenne</td><td style="padding:7px 8px;border:1px solid #edeae2">Fès, Oujda</td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center"><strong>0,70</strong></td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center">0,40</td></tr>
+        <tr style="background:#fafaf8"><td style="padding:7px 8px;border:1px solid #edeae2">Zone 4 — Semi-aride</td><td style="padding:7px 8px;border:1px solid #edeae2">Marrakech, Béni Mellal</td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center"><strong>0,60</strong></td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center">0,35</td></tr>
+        <tr><td style="padding:7px 8px;border:1px solid #edeae2">Zone 5 — Aride</td><td style="padding:7px 8px;border:1px solid #edeae2">Ouarzazate, Errachidia</td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center"><strong>0,55</strong></td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center">0,30</td></tr>
+        <tr style="background:#fafaf8"><td style="padding:7px 8px;border:1px solid #edeae2">Zone 6 — Montagnarde</td><td style="padding:7px 8px;border:1px solid #edeae2">Ifrane, Azrou</td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center"><strong>0,45</strong></td><td style="padding:7px 8px;border:1px solid #edeae2;text-align:center">0,25</td></tr>
+      </tbody>
+    </table>
+    <br>En pratique, pour un mur en bloc creux standard (U ≈ 1,8 W/m²·K), une isolation complémentaire est nécessaire dans toutes les zones. L'isolation en laine de verre de 5 cm ou en polystyrène expansé de 4 cm permet généralement d'atteindre les valeurs cibles.`
+  },
+  "Y a-t-il obligation de recours à un bureau d'études thermiques ?": {
+    source:"RGCPE — Titre IV",
+    reponse:`Le RGCPE ne rend pas obligatoire le recours à un <strong>bureau d'études thermique externe</strong> pour tous les projets. L'architecte responsable du projet peut lui-même établir la note justificative de conformité thermique, en utilisant les outils de calcul RTCM mis à disposition par l'AMEE. Cependant, pour les <strong>bâtiments tertiaires de grande taille</strong> (surface > 5 000 m²) ou les projets nécessitant une simulation thermique dynamique, le recours à un ingénieur thermicien est fortement recommandé et parfois exigé par les agences urbaines. De plus, pour les projets souhaitant obtenir une <strong>certification énergétique</strong> (label BBC, LEED, HQE…), l'intervention d'un bureau d'études spécialisé est indispensable.`
+  },
+  "Dans quelle zone climatique se trouve Marrakech (Zone 4) ?": {
+    source:"RTCM 2014 — Zonage climatique",
+    reponse:`Marrakech se trouve en <strong>Zone 4 — Semi-aride</strong>. Cette zone est caractérisée par des étés très chauds et secs, et des hivers relativement doux mais avec des nuits froides. Les exigences thermiques sont donc orientées principalement vers la <strong>protection contre la chaleur estivale</strong> (forte inertie thermique, protections solaires, isolation de toiture performante) tout en maintenant un confort hivernal acceptable. Les valeurs U maximales pour la Zone 4 : mur extérieur ≤ 0,60 W/m²·K, toiture ≤ 0,35 W/m²·K. L'orientation bioclimatique (façades nord-sud, protections solaires sur les façades est/ouest) est particulièrement importante dans cette zone.`
+  },
+
+  // RPS
+  "Dans quelle zone sismique se trouve Al Hoceima (Zone 5) ?": {
+    source:"RPS 2000 rév. 2011 — Chapitre 2 — Zonage sismique",
+    reponse:`Al Hoceima est classée en <strong>Zone 5 — Aléa sismique très fort</strong>, la zone la plus élevée du zonage marocain. Cette classification fait suite au séisme dévastateur du <strong>24 février 2004</strong> (magnitude 6,4) qui a causé plus de 600 victimes et détruit des milliers de constructions. Dans cette zone, les exigences parasismiques sont maximales : le coefficient d'accélération de référence (ag) est le plus élevé, les règles de conception ductile sont obligatoires pour toutes les structures, et la classe d'ouvrage se traduit par des coefficients d'importance majorés. Toute construction neuve à Al Hoceima doit impérativement respecter intégralement le RPS 2000, quel que soit son type ou sa taille.`
+  },
+  "Comment déterminer le coefficient sismique d'un bâtiment ?": {
+    source:"RPS 2000 rév. 2011 — Chapitre 5 — Méthodes de calcul",
+    reponse:`Le coefficient sismique de calcul C dépend de plusieurs paramètres : <strong>1)</strong> La <strong>zone sismique</strong> du site (0 à 5), qui détermine l'accélération de référence ag. <strong>2)</strong> La <strong>classe de l'ouvrage</strong> (1 : courant / 2 : important / 3 : stratégique), qui introduit un coefficient d'importance I (1,0 / 1,4 / 1,8). <strong>3)</strong> Le <strong>type de sol</strong> (S1 à S4 — du rocher à l'argile molle), qui amplifie ou atténue le mouvement sismique via le coefficient de site S. <strong>4)</strong> La <strong>période fondamentale</strong> de la structure (T), déterminée par sa hauteur et sa rigidité. La méthode statique équivalente est applicable pour les bâtiments réguliers de hauteur ≤ 25 m. Au-delà ou pour les structures irrégulières, l'analyse dynamique modale spectrale est requise.`
+  },
+  "Règles de chaînage pour la maçonnerie ?": {
+    source:"RPS 2000 rév. 2011 — Chapitre 7 — Maçonnerie chaînée",
+    reponse:`Pour les constructions en maçonnerie chaînée (blocs creux, briques), le RPS impose les dispositions suivantes : <strong>Chaînages verticaux</strong> : dans tous les angles, aux extrémités des murs, et à intervalles ne dépassant pas <strong>4 m</strong>. Section minimale : 15 × 15 cm avec armatures longitudinales ≥ 4HA10 et cadres ø6 tous les 20 cm. <strong>Chaînages horizontaux</strong> : à chaque niveau de plancher, sur l'ensemble du périmètre. Section ≥ 15 × 15 cm, même ferraillage. <strong>Linteaux</strong> : au-dessus de chaque ouverture (porte, fenêtre), appui minimum de 20 cm de chaque côté. <strong>Longueur des murs</strong> : sans chaînage intermédiaire, un mur ne peut dépasser 4 m de longueur. Ces exigences s'appliquent en zones sismiques 2 à 5.`
+  },
+  "Le RPS s'applique-t-il aux constructions de moins de 2 étages ?": {
+    source:"RPS 2000 rév. 2011 — Chapitre 1 — Champ d'application",
+    reponse:`Oui, le RPS s'applique à <strong>toutes les constructions neuves</strong> situées en zones sismiques, quel que soit leur nombre de niveaux, y compris les constructions de plain-pied (R+0). Cependant, les exigences sont proportionnées à la classe de l'ouvrage et à la zone sismique : une maison individuelle de plain-pied en Zone 1 ou 2 n'est soumise qu'à des exigences de chaînage minimal, tandis qu'un même bâtiment en Zone 4 ou 5 doit respecter toutes les règles de conception ductile et de calcul. En pratique, pour les très petites constructions (moins de 50 m²) en zones de faible sismicité (0-1), le respect des règles de chaînage du RGC est souvent considéré comme suffisant.`
+  },
+
+  // Sécurité incendie
+  "Qu'est-ce qu'un ERP et ses catégories ?": {
+    source:"Décret 2-14-499 — Livre II",
+    reponse:`Un <strong>ERP (Établissement Recevant du Public)</strong> est tout bâtiment, local ou enceinte dans lesquels des personnes extérieures à l'exploitant sont admises, librement ou non. Les ERP sont classés en <strong>5 catégories</strong> selon l'effectif maximum du public admis simultanément : <strong>1ère catégorie</strong> : plus de 1 500 personnes. <strong>2ème catégorie</strong> : de 701 à 1 500 personnes. <strong>3ème catégorie</strong> : de 301 à 700 personnes. <strong>4ème catégorie</strong> : 300 personnes et moins. <strong>5ème catégorie (2ème groupe)</strong> : établissements de faible importance où l'effectif est inférieur aux seuils définis par type. Les ERP sont aussi classés par <strong>type</strong> selon leur activité : J (personnes âgées), L (spectacles), M (magasins), N (restaurants), O (hôtels), R (enseignement), U (soins), W (bureaux), X (sport), etc.`
+  },
+  "Définition d'un IGH au Maroc ?": {
+    source:"Décret 2-14-499 — Livre III",
+    reponse:`Un <strong>Immeuble de Grande Hauteur (IGH)</strong> est, au sens de la réglementation marocaine, tout bâtiment dont le plancher bas du dernier niveau accessible au public ou aux occupants est situé à plus de <strong>28 mètres</strong> au-dessus du niveau de référence (niveau du sol accessible aux services de secours). Cette hauteur de 28 m correspond approximativement à 8 étages habitables. Les IGH sont soumis à des règles de sécurité incendie considérablement renforcées par rapport aux ERP classiques : structures résistant au feu pendant au moins 2 heures, compartimentage renforcé, alimentation électrique de secours, ascenseurs pompiers, désenfumage mécanique, et surveillance permanente.`
+  },
+  "Installations obligatoires dans un hôtel ?": {
+    source:"Décret 2-14-499 — Livre II — Type O",
+    reponse:`Un hôtel est un ERP de type O. Les installations de sécurité incendie obligatoires varient selon la catégorie, mais comprennent généralement : <strong>Détection automatique d'incendie</strong> (DAI) dans les locaux à risques et couloirs, obligatoire en 1ère à 3ème catégorie. <strong>Système de désenfumage</strong> des couloirs et escaliers. <strong>Éclairage de sécurité</strong> (blocs autonomes) dans toutes les circulations. <strong>Extincteurs</strong> à raison d'un extincteur pour 200 m² de plancher. <strong>Robinets d'Incendie Armés (RIA)</strong> DN 25 ou 33 selon la catégorie. <strong>Colonne sèche</strong> à partir de R+4. <strong>Sprinkler</strong> : obligatoire dans les établissements de 1ère catégorie et les IGH. <strong>Plan d'évacuation</strong> affiché dans chaque chambre. <strong>Consigne incendie</strong> visible.`
+  },
+  "Quand le sprinkler est-il obligatoire ?": {
+    source:"Décret 2-14-499 — Dispositions par type et catégorie",
+    reponse:`Le système d'extinction automatique par sprinkler est obligatoire dans les situations suivantes : <strong>ERP de 1ère catégorie</strong> (plus de 1 500 personnes) de façon générale. <strong>IGH</strong> (immeubles > 28 m) : obligatoire dans la plupart des cas. <strong>Établissements de type M</strong> (magasins, centres commerciaux) dès la 1ère catégorie. <strong>Établissements de type L</strong> (salles de spectacles) de grande capacité. <strong>Parcs de stationnement couverts</strong> de plus de 300 véhicules. <strong>Locaux à risques spéciaux</strong> (stockage de produits inflammables, archives…). Pour les hôtels de 4ème et 5ème catégorie, le sprinkler n'est généralement pas obligatoire mais la détection automatique l'est. Dans le doute, c'est la commission de sécurité qui tranche au vu du dossier.`
+  },
+  "Comment obtenir l'avis de la commission de sécurité ?": {
+    source:"Décret 2-14-499 — Livre IV — Commissions de sécurité",
+    reponse:`La procédure pour obtenir l'avis de la commission de sécurité est la suivante : <strong>Avant construction</strong> : dépôt du dossier technique de sécurité (plans, note de calcul des dégagements, fiches techniques des équipements) pour avis sur la conception. <strong>Avant ouverture</strong> : visite de la commission pour vérification de la conformité des installations aux plans approuvés. La commission est composée de représentants de la Protection Civile (DGSN/préfecture), de la commune, de l'architecte et selon les cas d'un représentant du ministère concerné. Elle délivre un <strong>avis favorable</strong> (avec ou sans prescriptions) ou <strong>défavorable</strong>. Sans avis favorable, le permis d'habiter/l'autorisation d'ouverture ne peut être délivré. En cas de défavorable, les prescriptions doivent être levées avant une nouvelle visite.`
+  },
+  "Dégagements pour une salle de 500 personnes ?": {
+    source:"Décret 2-14-499 — Livre II — Règles de dégagement",
+    reponse:`Une salle recevant 500 personnes est un ERP de <strong>3ème catégorie</strong> (301 à 700 personnes). Les règles de dégagement sont calculées en <strong>Unités de Passage (UP)</strong> : 1 UP = 0,90 m de largeur utile. Le nombre minimal d'UP est déterminé par la formule : pour une salle de spectacle type L, le nombre d'UP de sortie = effectif / 100 arrondi au-dessus. Pour 500 personnes : 5 UP minimum = soit une sortie de 4,50 m ou plusieurs sorties totalisant au moins 4,50 m de largeur utile. En pratique pour 500 personnes, 2 sorties de 2 UP (1,80 m chacune) sont minimalement acceptables. La commission de sécurité peut imposer des exigences supplémentaires selon la configuration des lieux. Le calcul intègre aussi les dégagements intérieurs (allées, couloirs) et les escaliers.`
+  },
+
+  // Professions
+  "Conditions pour s'inscrire au tableau de l'ONA ?": {
+    source:"Loi n° 16-89 — Art. 6 à 15",
+    reponse:`Les conditions cumulatives pour être inscrit au tableau de l'Ordre National des Architectes sont : <strong>Nationalité</strong> : être de nationalité marocaine (des dérogations existent pour certains ressortissants étrangers sous conditions de réciprocité). <strong>Diplôme</strong> : être titulaire d'un diplôme d'architecte reconnu par l'État marocain (ENSAS, école d'architecture agréée, ou diplôme étranger reconnu équivalent). <strong>Moralité</strong> : jouir de ses droits civiques, ne pas avoir fait l'objet de condamnation pénale incompatible avec l'exercice de la profession. <strong>Résidence</strong> : être domicilié et exercer au Maroc. <strong>Absence d'incompatibilité</strong> : ne pas exercer simultanément une activité incompatible (entrepreneur de travaux, fournisseur de matériaux, promoteur immobilier direct…). La demande est déposée auprès du Conseil Régional compétent, qui statue dans un délai de 3 mois.`
+  },
+  "Un architecte peut-il exercer comme entrepreneur ?": {
+    source:"Loi n° 16-89 — Art. 26 à 35 — Incompatibilités",
+    reponse:`Non. La loi 16-89 établit une <strong>incompatibilité formelle</strong> entre la profession d'architecte et l'activité d'entrepreneur de travaux. Un architecte inscrit au tableau de l'ONA ne peut pas : exercer simultanément comme entrepreneur de construction, être gérant ou associé d'une entreprise de travaux, être fournisseur de matériaux de construction pour ses propres chantiers, ou exercer comme promoteur immobilier de manière habituelle. Cette incompatibilité vise à garantir l'indépendance de l'architecte vis-à-vis des intérêts économiques du chantier. La violation de cette règle expose l'architecte à des poursuites disciplinaires pouvant aller jusqu'à la radiation du tableau. Cependant, il peut participer à des opérations d'autopromotion (construire pour lui-même) dans des limites strictes.`
+  },
+  "Le recours à l'architecte est-il obligatoire pour moins de 50 m² ?": {
+    source:"Loi n° 16-89 — Art. 1 à 5",
+    reponse:`La loi 16-89 rend obligatoire le recours à un architecte pour <strong>tout projet nécessitant un permis de construire</strong>. La loi ne fixe pas de seuil de surface directement. Cependant, en pratique, certaines communes accordent des permis de construire pour des projets très modestes (annexes, locaux techniques, petites extensions) sans exiger le visa d'un architecte, sur la base de plans simples déposés directement. Pour toute construction d'habitation, de bâtiment d'activité ou d'ouvrage soumis à permis, le recours à l'architecte est légalement requis. La jurisprudence et la pratique administrative considèrent que dès lors qu'un permis de construire est nécessaire, l'architecte est obligatoire — la surface de 50 m² n'est pas un critère légal mais une tolérance administrative parfois pratiquée.`
+  },
+  "Responsabilité décennale de l'architecte au Maroc ?": {
+    source:"Code des Obligations et Contrats (DOC) — Art. 769 à 772",
+    reponse:`La responsabilité décennale de l'architecte au Maroc est fondée sur les articles 769 à 772 du Dahir des Obligations et Contrats (DOC), complétés par la loi 16-89. Elle impose à l'architecte et à l'entrepreneur une responsabilité solidaire de <strong>10 ans</strong> à compter de la réception des travaux pour tous vices de construction compromettant la solidité de l'ouvrage ou le rendant impropre à sa destination. Les vices couverts sont : les défauts de fondation, l'instabilité structurelle, les infiltrations d'eau importantes, etc. Cette responsabilité est d'ordre public : elle ne peut être contractuellement limitée. Elle implique pour l'architecte de souscrire une <strong>assurance responsabilité décennale</strong>. L'ONA recommande fortement cette assurance, bien qu'elle ne soit pas encore rendue obligatoire par un texte spécifique au Maroc.`
+  },
+  "Un architecte étranger peut-il exercer au Maroc ?": {
+    source:"Loi n° 16-89 — Art. 6 et suivants",
+    reponse:`Oui, sous conditions. Un architecte étranger peut exercer au Maroc dans deux cas principaux : <strong>Convention de réciprocité</strong> : si son pays a conclu une convention de réciprocité avec le Maroc (c'est le cas notamment pour certains pays arabes et africains). Dans ce cas, il peut être inscrit au tableau de l'ONA. <strong>Mission ponctuelle</strong> : pour des projets spécifiques, un architecte étranger peut être autorisé à exercer en association avec un architecte marocain inscrit au tableau. En pratique, les grands projets internationaux impliquent souvent une équipe mixte avec un architecte marocain co-signataire des plans et garant vis-à-vis de l'ONA et de la réglementation locale. L'exercice permanent sans inscription au tableau est illégal et expose à des poursuites pénales pour exercice illégal de la profession.`
+  },
+
+  // Accessibilité
+  "Quelles constructions sont soumises à l'accessibilité PMR ?": {
+    source:"Loi n° 10-03 — Art. 4",
+    reponse:`La loi 10-03 s'applique à trois catégories : <strong>1) Constructions ouvertes au public</strong> : bâtiments administratifs, commerciaux, industriels, d'enseignement, de santé, de formation, religieux, sportifs, culturels, touristiques, de loisirs, centres de camping, structures d'accueil, gares et aéroports. <strong>2) Logements collectifs</strong> : tout immeuble résidentiel collectif (à partir de 2 logements). <strong>3) Espaces extérieurs</strong> : voiries, cheminements piétons, parkings. La loi s'applique aux <strong>constructions neuves</strong> et aux <strong>rénovations importantes</strong> réalisées après sa publication au BO (19 juin 2003). Elle ne s'applique pas aux permis déjà délivrés avant cette date (art. 29).`
+  },
+  "Pente maximale d'une rampe d'accès ?": {
+    source:"Loi n° 10-03 — Art. 9 / Normes NM de référence",
+    reponse:`La pente maximale réglementaire pour une rampe d'accès PMR est de <strong>5%</strong> (1 cm de dénivelé pour 20 cm de longueur horizontale). Cette valeur correspond à la norme internationale de confort pour les fauteuils roulants manuels. Une pente de <strong>8%</strong> est tolérée lorsque l'aménagement à 5% est techniquement impossible (contraintes de site, bâtiment existant). Dans ce cas, la longueur maximale de la partie à 8% doit être limitée. Les rampes doivent également comporter : des <strong>paliers de repos</strong> tous les 10 m de longueur, des <strong>garde-corps</strong> de part et d'autre si la hauteur de chute dépasse 0,40 m, une <strong>main courante</strong> à 0,90 m de hauteur, et une <strong>largeur utile minimale de 1,40 m</strong> pour permettre le croisement.`
+  },
+  "Bâtiments existants doivent-ils être mis aux normes ?": {
+    source:"Loi n° 10-03 — Art. 29",
+    reponse:`L'article 29 de la loi 10-03 précise explicitement que ses dispositions <strong>ne s'appliquent pas aux installations existantes</strong> ni aux projets pour lesquels un permis de construire avait déjà été délivré à la date de publication de la loi (19 juin 2003). Il n'existe donc pas d'obligation légale générale de mise aux normes PMR pour les bâtiments existants. Cependant, lors de <strong>travaux de rénovation importants</strong> (modification de structure, changement de destination, extension significative), la mise en conformité partielle ou totale est souvent exigée par l'Agence Urbaine ou la commune. En pratique, les ERP (établissements recevant du public) font l'objet d'une pression administrative plus forte pour la mise en accessibilité, notamment lors du renouvellement des autorisations d'exploitation.`
+  },
+  "Nombre de places handicapées obligatoires dans un parking ?": {
+    source:"Loi n° 10-03 — Art. 8",
+    reponse:`L'article 8 renvoie à des textes réglementaires pour fixer le pourcentage exact. En l'absence d'arrêté précis, la norme de référence appliquée en pratique au Maroc est calquée sur les standards internationaux : <strong>2% du nombre total de places</strong>, avec un minimum d'<strong>1 place</strong> pour tout parking accessible au public. Pour un parking de 200 places : minimum 4 places PMR. Les places réservées doivent avoir une largeur de <strong>3,30 m minimum</strong> (contre 2,30 m pour une place standard) pour permettre le déploiement d'un fauteuil roulant à côté du véhicule. Elles doivent être situées à proximité de l'entrée du bâtiment desservi, signalisées par le pictogramme international de l'accessibilité et reliées à un cheminement praticable sans obstacles.`
+  },
+  "Ascenseur obligatoire dans un immeuble de 4 étages ?": {
+    source:"Loi n° 10-03 — Art. 10 / RGC 2019",
+    reponse:`La loi 10-03 impose que les ascenseurs soient accessibles aux PMR (art. 10) mais ne fixe pas directement le seuil de hauteur déclenchant l'obligation. C'est le croisement avec le RGC et les PA locaux qui donne la règle pratique : <strong>Pour les ERP</strong> : l'ascenseur est obligatoire dès lors que le bâtiment comporte des niveaux recevant du public au-delà du rez-de-chaussée, sauf impossibilité technique justifiée. <strong>Pour les logements collectifs</strong> : l'ascenseur est généralement imposé à partir de <strong>R+3</strong> (4 niveaux : RDC + 3 étages) selon les prescriptions du PA local et du RGC. Pour un <strong>R+4</strong> (immeuble de 4 étages + RDC), l'ascenseur est donc pratiquement toujours obligatoire. Les dimensions de la cabine doivent permettre l'accès en fauteuil roulant (NM EN 81-70 : dimensions minimales 1,10 × 1,40 m).`
+  },
+  "Quelles sanctions après permis d'habiter si l'accessibilité est supprimée ?": {
+    source:"Loi n° 10-03 — Art. 28",
+    reponse:`L'article 28 de la loi 10-03 est explicite : <em>"les peines prévues dans les lois et règlements en vigueur sont appliquées à toute personne qui, après délivrance du permis d'habiter ou du certificat de conformité, aurait apporté une modification quelconque portant atteinte aux exigences générales et aux dispositions techniques des plans architecturaux déjà approuvés."</em> En pratique, la suppression d'une rampe d'accès, le condamnement d'un passage PMR ou la transformation de sanitaires adaptés après réception constitue une infraction aux dispositions de la loi 10-03 et à la loi 66-12 sur les infractions de construction. Les sanctions comprennent des <strong>amendes</strong> et l'obligation de <strong>remise en état</strong>. L'architecte qui a établi les plans et attesté la conformité peut également voir sa responsabilité engagée.`
+  },
+
+  // Environnement
+  "Mon projet est-il soumis à une EIE ?": {
+    source:"Loi n° 12-03 — Annexe — Liste des projets soumis",
+    reponse:`Un projet est soumis à EIE obligatoire s'il figure dans l'annexe de la loi 12-03. Les catégories principales sont : <strong>Infrastructures</strong> : barrages, routes de plus de 10 km, lignes ferroviaires, ports, aéroports. <strong>Industrie</strong> : raffineries, usines chimiques et pétrochimiques, cimenteries, aciéries, fonderies, industries agroalimentaires de grande taille. <strong>Urbanisme</strong> : lotissements de plus de <strong>1 000 logements</strong>, zones industrielles, zones touristiques importantes. <strong>Tourisme</strong> : hôtels de plus de <strong>200 lits</strong>. <strong>Extractif</strong> : carrières, mines. <strong>Énergie</strong> : centrales électriques, lignes HT. <strong>Déchets et eau</strong> : stations d'épuration, décharges contrôlées. Si votre projet ne figure pas dans la liste, il n'est pas soumis à EIE obligatoire, mais une évaluation environnementale volontaire peut toujours être conduite.`
+  },
+
+  // Littoral
+  "Peut-on construire à moins de 100 m de la mer ?": {
+    source:"Loi n° 81-12 — Titre II",
+    reponse:`Non, en règle générale. La loi 81-12 impose une <strong>inconstructibilité totale</strong> dans la bande des 100 mètres calculée à partir de la limite du Domaine Public Maritime (DPM). Des exceptions très limitées sont prévues uniquement pour : les ouvrages et installations nécessaires au service public (digues, phares, postes de secours, équipements portuaires), et les constructions réalisées dans le cadre de projets d'aménagement déclarés d'utilité publique par décret. La bande 100–300 m est également soumise à une réglementation renforcée : toute construction y nécessite un avis préalable spécifique de la commission du littoral en plus des autorisations d'urbanisme habituelles. La violation de l'inconstructibilité littorale est sanctionnée par la démolition aux frais du contrevenant.`
+  },
+
+  // Infractions
+  "Amendes prévues pour construction sans permis ?": {
+    source:"Loi n° 66-12 — Titre III — Sanctions",
+    reponse:`La loi 66-12 prévoit un système d'amendes progressives selon la gravité de l'infraction : <strong>1ère classe — Construction sans permis</strong> : amende entre <strong>10 000 et 500 000 MAD</strong> selon la surface et la nature de la construction. <strong>2ème classe — Non-respect des prescriptions du permis</strong> : amende entre <strong>5 000 et 100 000 MAD</strong>. <strong>3ème classe — Construction en zone non constructible</strong> : amende entre <strong>50 000 et 1 000 000 MAD</strong> + démolition obligatoire. <strong>4ème classe — Construction en zone de protection spéciale</strong> (littoral, forêt domaniale…) : amendes majorées + démolition impérative. Ces montants s'appliquent sans préjudice des poursuites pénales qui peuvent conduire à des peines d'emprisonnement (1 à 6 mois) en cas de récidive. Le maître d'ouvrage, l'architecte et l'entrepreneur peuvent être poursuivis solidairement.`
+  },
+
+  // Marchés publics
+  "Seuil obligatoire pour un appel d'offres ouvert ?": {
+    source:"Décret n° 2-12-349 — Seuils de passation",
+    reponse:`Selon le décret 2-12-349 (2013), les seuils de passation des marchés publics sont : <strong>Bon de commande</strong> : moins de 200 000 MAD HT (procédure simplifiée, consultation directe). <strong>Marché négocié</strong> : de 200 000 à 500 000 MAD HT (consultation d'au moins 3 entreprises). <strong>Appel d'offres restreint</strong> : de 500 000 à 1 000 000 MAD HT (liste restreinte de soumissionnaires). <strong>Appel d'offres ouvert</strong> : au-delà de <strong>1 000 000 MAD HT</strong> — publication obligatoire dans les journaux et le portail des marchés publics de l'État. À noter : ces seuils ont été actualisés par des textes ultérieurs, notamment le décret 2-22-431 (2023), qui a relevé certains seuils. Il convient donc de vérifier les textes en vigueur au moment de la passation.`
+  },
+
+  // Collectivités
+  "Qui délivre le permis de construire ?": {
+    source:"Loi organique n° 113-14 — Art. compétences communes / Loi 12-90",
+    reponse:`Le permis de construire est délivré par le <strong>Président du Conseil Communal</strong> (maire) de la commune où se situe le terrain. En pratique, l'instruction du dossier est assurée par les services techniques communaux et soumise à l'avis de la <strong>commission technique locale</strong> (qui réunit commune, agence urbaine, et selon les cas d'autres services de l'État). Pour les projets situés dans le périmètre d'une <strong>Agence Urbaine</strong>, le visa de l'Agence est obligatoire avant la délivrance du permis par le président communal. Pour les projets d'investissement importants passant par le <strong>CRI</strong>, la commission régionale unifiée d'investissement peut tenir lieu de guichet unique et coordonner toutes les autorisations, y compris le permis de construire.`
+  }
+
+};
+
+// ── ASK FAQ — AFFICHAGE INLINE ───────────────────────────────────────────────
+function askFaq(e, q) {
+  e.stopPropagation();
+  const answer = FAQ_ANSWERS[q];
+  const modal = document.getElementById("modalContent");
+
+  if(answer) {
+    modal.innerHTML = `
+      <div class="modal-header" style="align-items:flex-start">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="font-size:18px">❓</span>
+            <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--green-700)">Question — Réponse</span>
+          </div>
+          <h2 style="font-size:16px;font-weight:500;line-height:1.5;color:var(--ink);font-family:'Source Sans 3',sans-serif">${q}</h2>
+        </div>
+        <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow=''">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--green-50);border-left:3px solid var(--green-600);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:10px 14px;margin-bottom:18px">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--green-700);margin-bottom:3px">Source</div>
+          <div style="font-size:13px;color:var(--green-800);font-weight:500">${answer.source}</div>
+        </div>
+        <div style="font-size:14px;color:var(--ink-60);line-height:1.85">${answer.reponse}</div>
+        <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--cream-dark);display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow=''">Fermer</button>
+          <a href="https://www.sgg.gov.ma" target="_blank" class="btn-primary" style="font-size:12px">Consulter le texte officiel ↗</a>
+        </div>
+      </div>`;
+  } else {
+    modal.innerHTML = `
+      <div class="modal-header">
+        <div style="flex:1">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--green-700);margin-bottom:8px">Question</div>
+          <h2 style="font-size:15px;font-weight:500;color:var(--ink);font-family:'Source Sans 3',sans-serif">${q}</h2>
+        </div>
+        <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow=''">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:14px;color:var(--ink-60);line-height:1.8;margin-bottom:20px">Cette question concerne les textes juridiques listés dans cette base documentaire. Pour une réponse détaillée et actualisée, nous vous recommandons de consulter le texte officiel au Bulletin Officiel ou de vous rapprocher de l'Ordre des Architectes du Centre.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="https://ordrearchicentre.org/lois-et-reglementation/" target="_blank" class="btn-primary">OAC — Lois et réglementation ↗</a>
+          <button class="btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow=''">Fermer</button>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById("modalOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+// ── MODAL ───────────────────────────────────────────────────────────────────
+function openModal(id) {
+  const law = LAWS.find(l => l.id === id);
+  if(!law) return;
+  const modal = document.getElementById("modalContent");
+  modal.innerHTML = `
+    <div class="modal-header">
+      <div class="card-icon-wrap cat-${law.catKey}" style="flex-shrink:0;width:48px;height:48px;font-size:22px">${law.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div class="card-badges" style="margin-bottom:6px">
+          <span class="badge badge-type">${law.type}</span>
+          <span class="badge badge-cat">${law.cat}</span>
+        </div>
+        <h2 style="font-size:16px;font-weight:500;line-height:1.4;color:#1c1c1c">${law.titre}</h2>
+        <div style="font-size:12px;color:#6b6860;margin-top:4px">${law.num} · ${law.bo}</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Résumé</div>
+        <p style="font-size:14px;color:#6b6860;line-height:1.8">${law.resume}</p>
+      </div>
+      <div class="info-bar" style="margin-bottom:20px">
+        <div class="info-item"><div class="info-item-label">Promulgation</div><div class="info-item-val">${law.promulgation}</div></div>
+        <div class="info-item"><div class="info-item-label">Portée spatiale</div><div class="info-item-val">${law.spatial}</div></div>
+        <div class="info-item"><div class="info-item-label">Statut</div><div class="info-item-val">${law.statut}</div></div>
+      </div>
+      ${law.chapitres ? `<div class="modal-section"><div class="modal-section-title">Structure du texte</div><ul class="chapter-list">${law.chapitres.map(c=>`<li class="chapter-item">${c}</li>`).join("")}</ul></div>` : ""}
+      ${law.articles ? `<div class="modal-section"><div class="modal-section-title">Articles & prescriptions clés</div>${Object.entries(law.articles).map(([k,v])=>`<div class="article-box"><div class="article-ref">${k}</div><div class="article-text">${v}</div></div>`).join("")}</div>` : ""}
+      ${law.faq ? `<div class="modal-section"><div class="modal-section-title">Questions fréquentes</div><ul class="faq-list">${law.faq.map(q=>`<li class="faq-item" onclick="askFaq(event,'${q.replace(/'/g,"\\'")}')">${q}</li>`).join("")}</ul></div>` : ""}
+      ${law.liens && law.liens.length ? `<div class="modal-section"><div class="modal-section-title">Textes liés</div><div class="related-chips">${law.liens.map(l=>{const rel=LAWS.find(x=>x.id===l);return rel?`<span class="related-chip" onclick="closeModal();jumpTo('${l}')">${rel.icon} ${rel.titre}</span>`:""}).join("")}</div></div>` : ""}
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid #edeae2;display:flex;gap:10px;flex-wrap:wrap">
+        <a href="https://www.sgg.gov.ma" target="_blank" class="btn-primary">Consulter le BO officiel ↗</a>
+        <button class="btn-outline" onclick="closeModal()">Fermer</button>
+      </div>
+    </div>`;
+  document.getElementById("modalOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(e) {
+  if(e && e.target !== document.getElementById("modalOverlay") && !e.target.classList.contains("modal-close")) return;
+  if(!e || e.target === document.getElementById("modalOverlay")) {
+    document.getElementById("modalOverlay").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+}
+
+document.getElementById("modalOverlay").addEventListener("click", function(e) {
+  if(e.target === this) {
+    this.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+});
+
+// ── SEARCH ──────────────────────────────────────────────────────────────────
+const searchInput = document.getElementById("searchInput");
+let searchTimer;
+searchInput.addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchTerm = searchInput.value.trim().toLowerCase();
+    expandedId = null;
+    renderResults();
+  }, 220);
+});
+searchInput.addEventListener("keydown", e => {
+  if(e.key === "Escape") { searchInput.value = ""; searchTerm = ""; renderResults(); }
+});
+
+// ── SCROLL TOP ──────────────────────────────────────────────────────────────
+window.addEventListener("scroll", () => {
+  const btn = document.getElementById("scrollTop");
+  btn.classList.toggle("visible", window.scrollY > 500);
+});
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+renderFilters();
+renderQuick();
+renderGlossary();
+renderResults();
+
+// Keyboard: ESC closes modal
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && document.getElementById("modalOverlay").classList.contains("open")) {
+    document.getElementById("modalOverlay").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+});
+</script>
+
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

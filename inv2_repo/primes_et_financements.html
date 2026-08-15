@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primes & Financements — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.header{
+  position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,0.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  border-bottom:1px solid rgba(184,134,42,0.2);
+}
+.header-left{display:flex;align-items:center;gap:16px}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.module-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,0.12);border:1px solid rgba(184,134,42,0.25);padding:4px 10px;border-radius:100px}
+
+/* PAGE */
+.page{max-width:960px;margin:0 auto;padding:40px 32px 80px}
+.page-hero{text-align:center;margin-bottom:48px}
+.page-label{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px}
+.page-title{font-family:var(--font-title);font-size:36px;font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:12px}
+.page-sub{font-size:15px;color:var(--smoke);max-width:500px;margin:0 auto;line-height:1.7}
+
+/* STEPPER */
+.stepper{display:flex;align-items:center;gap:0;margin-bottom:40px}
+.step-item{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.step-item::after{content:'';position:absolute;top:18px;left:50%;right:-50%;height:2px;background:var(--border);z-index:0}
+.step-item:last-child::after{display:none}
+.step-circle{
+  width:36px;height:36px;border-radius:50%;border:2px solid var(--border);
+  background:var(--white);display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--smoke);
+  position:relative;z-index:1;transition:all 0.3s;
+}
+.step-circle.active{border-color:var(--gold);background:var(--gold);color:var(--ink)}
+.step-circle.done{border-color:var(--success);background:var(--success);color:var(--white)}
+.step-label{font-size:11px;color:var(--smoke);margin-top:6px;font-family:var(--font-mono);letter-spacing:0.04em;text-align:center}
+.step-label.active{color:var(--gold)}
+
+/* CARD */
+.form-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:24px}
+.form-card-title{font-family:var(--font-title);font-size:20px;font-weight:700;margin-bottom:24px}
+
+/* OPTIONS GRID */
+.options-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.option-btn{
+  padding:14px 16px;border:1.5px solid var(--border);border-radius:10px;
+  cursor:pointer;text-align:left;background:var(--bg);
+  font-family:var(--font-body);font-size:13.5px;color:var(--ink-soft);
+  transition:all 0.2s;line-height:1.4;
+}
+.option-btn:hover{border-color:var(--gold);color:var(--ink);background:var(--gold-pale)}
+.option-btn.selected{border-color:var(--gold);background:var(--gold-pale);color:var(--ink);font-weight:600}
+.option-btn .opt-label{font-family:var(--font-mono);font-size:10px;color:var(--gold);display:block;margin-bottom:4px;letter-spacing:0.06em}
+
+/* SLIDER */
+.slider-field{margin-bottom:20px}
+.slider-field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:8px}
+.slider-row{display:flex;gap:12px;align-items:center}
+input[type=range]{flex:1;height:4px;accent-color:var(--gold);cursor:pointer;border:none}
+.slider-display{font-family:var(--font-mono);font-size:13px;color:var(--gold);min-width:100px;text-align:right}
+
+/* NAV BUTTONS */
+.nav-btns{display:flex;gap:12px;justify-content:space-between;margin-top:24px}
+.btn-prev{padding:12px 24px;border:1.5px solid var(--border);border-radius:10px;background:none;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink-soft);transition:all 0.2s}
+.btn-prev:hover{border-color:var(--ink);color:var(--ink)}
+.btn-next{padding:12px 28px;border-radius:10px;background:var(--gold);border:none;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--ink);transition:all 0.2s}
+.btn-next:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-next:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+
+/* RESULTS */
+.results-header{display:flex;align-items:center;gap:16px;margin-bottom:32px}
+.results-count{
+  font-family:var(--font-title);font-size:40px;font-weight:800;color:var(--gold);line-height:1;
+}
+.results-subtitle{font-size:15px;color:var(--smoke);line-height:1.6}
+
+.aide-card{
+  background:var(--white);border:1px solid var(--border);border-radius:14px;
+  padding:24px;margin-bottom:16px;transition:all 0.25s;
+  display:flex;flex-direction:column;gap:12px;
+}
+.aide-card:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(0,0,0,0.06)}
+.aide-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.aide-name{font-family:var(--font-title);font-size:17px;font-weight:700;line-height:1.2}
+.aide-org{font-family:var(--font-mono);font-size:10px;color:var(--smoke);letter-spacing:0.06em;margin-top:3px}
+.aide-score{
+  display:flex;align-items:center;gap:6px;flex-shrink:0;
+  font-family:var(--font-mono);font-size:11px;font-weight:700;
+  padding:5px 12px;border-radius:100px;
+}
+.score-high{background:rgba(26,107,60,0.1);color:var(--success)}
+.score-med{background:rgba(184,134,42,0.1);color:var(--gold)}
+.score-low{background:rgba(0,0,0,0.05);color:var(--smoke)}
+.aide-desc{font-size:13.5px;color:var(--ink-soft);line-height:1.65}
+.aide-avantages{display:flex;flex-wrap:wrap;gap:6px}
+.aide-tag{
+  font-size:11px;font-family:var(--font-mono);
+  padding:4px 10px;border-radius:100px;background:var(--bg2);color:var(--ink-soft);
+}
+.aide-conditions{
+  font-size:12px;color:var(--smoke);background:var(--bg);
+  border-radius:8px;padding:10px 14px;line-height:1.6;
+}
+.aide-link{
+  display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--accent);
+  font-weight:600;cursor:pointer;transition:color 0.2s;text-decoration:none;margin-top:4px;
+}
+.aide-link:hover{color:var(--gold)}
+
+.no-results{text-align:center;padding:60px 24px;color:var(--smoke)}
+.no-results h3{font-family:var(--font-title);font-size:20px;font-weight:700;margin-bottom:8px}
+
+.restart-btn{
+  margin-top:24px;padding:12px 24px;border-radius:10px;
+  background:var(--bg2);border:1px solid var(--border);cursor:pointer;
+  font-family:var(--font-body);font-size:14px;color:var(--ink-soft);
+  transition:all 0.2s;
+}
+.restart-btn:hover{border-color:var(--gold);color:var(--ink)}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="landing.html" class="back-btn">← Retour</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="module-badge">Module · Primes & Financements</div>
+  </div>
+</header>
+
+<div class="page">
+  <div class="page-hero">
+    <div class="page-label">Matching automatique</div>
+    <h1 class="page-title">Simulez vos primes et financements</h1>
+    <p class="page-sub">4 questions, 15+ programmes analysés. Identifiez les dispositifs CCG, Maroc PME et FDII pour lesquels vous êtes éligible.</p>
+  </div>
+
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="step-item"><div class="step-circle active" id="sc1">1</div><div class="step-label active">Profil</div></div>
+    <div class="step-item"><div class="step-circle" id="sc2">2</div><div class="step-label">Projet</div></div>
+    <div class="step-item"><div class="step-circle" id="sc3">3</div><div class="step-label">Besoins</div></div>
+    <div class="step-item"><div class="step-circle" id="sc4">4</div><div class="step-label">Critères</div></div>
+    <div class="step-item"><div class="step-circle" id="sc5">✓</div><div class="step-label">Résultats</div></div>
+  </div>
+
+  <!-- STEPS -->
+  <div id="step1">
+    <div class="form-card">
+      <div class="form-card-title">1. Votre profil investisseur</div>
+      <div class="options-grid" id="profil-options">
+        <button class="option-btn" onclick="select('profil','marocain',this)"><span class="opt-label">PERSONNE PHYSIQUE</span>Marocain(e) résidant au Maroc</button>
+        <button class="option-btn" onclick="select('profil','etranger',this)"><span class="opt-label">INVESTISSEUR ÉTRANGER</span>Personne physique ou morale étrangère</button>
+        <button class="option-btn" onclick="select('profil','mre',this)"><span class="opt-label">MRE</span>Marocain(e) Résidant à l'Étranger</button>
+        <button class="option-btn" onclick="select('profil','pm-marocaine',this)"><span class="opt-label">PERSONNE MORALE</span>Société marocaine existante</button>
+      </div>
+      <div style="margin-top:20px">
+        <div class="form-card-title" style="font-size:16px;margin-bottom:14px">Statut de votre projet</div>
+        <div class="options-grid" id="statut-options">
+          <button class="option-btn" onclick="select('statut','creation',this)"><span class="opt-label">PROJET</span>Création d'entreprise</button>
+          <button class="option-btn" onclick="select('statut','extension',this)"><span class="opt-label">EXISTANT</span>Extension / Modernisation</button>
+          <button class="option-btn" onclick="select('statut','startup',this)"><span class="opt-label">START-UP</span>Jeune entreprise innovante</button>
+          <button class="option-btn" onclick="select('statut','acquisition',this)"><span class="opt-label">RESTRUCTURATION</span>Acquisition / Joint-venture</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="btn-next" onclick="goStep(2)" id="next1">Étape suivante →</button></div>
+  </div>
+
+  <div id="step2" style="display:none">
+    <div class="form-card">
+      <div class="form-card-title">2. Votre projet d'investissement</div>
+      <div style="margin-bottom:20px">
+        <label style="display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:8px">Secteur d'activité</label>
+        <select id="secteur" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--font-body);font-size:14px;background:var(--bg);outline:none" onchange="updateProfile()">
+          <option value="">— Choisir un secteur —</option>
+          <option value="industrie">Industrie manufacturière</option>
+          <option value="agro">Agroalimentaire</option>
+          <option value="textile">Textile & Habillement</option>
+          <option value="auto">Automobile & Équipements</option>
+          <option value="aero">Aéronautique</option>
+          <option value="chimie">Chimie / Parachimie / Pharmacie</option>
+          <option value="tic">Offshoring / TIC / Numérique</option>
+          <option value="tourisme">Tourisme / Hôtellerie</option>
+          <option value="agri">Agriculture</option>
+          <option value="artisanat">Artisanat</option>
+          <option value="education">Éducation / Formation</option>
+          <option value="sante">Santé</option>
+          <option value="energie">Énergies renouvelables</option>
+          <option value="commerce">Commerce</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <label style="display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:8px">Zone d'implantation</label>
+        <div class="options-grid" id="zone-options">
+          <button class="option-btn" onclick="select('zone','zai',this)"><span class="opt-label">PREMIUM</span>Zone d'Accélération Industrielle (ZAI)</button>
+          <button class="option-btn" onclick="select('zone','franche',this)"><span class="opt-label">ZONE FRANCHE</span>Zone franche / CFC</button>
+          <button class="option-btn" onclick="select('zone','rural',this)"><span class="opt-label">RURAL</span>Milieu rural (commune rurale)</button>
+          <button class="option-btn" onclick="select('zone','urbain',this)"><span class="opt-label">URBAIN</span>Commune urbaine normale</button>
+        </div>
+      </div>
+
+      <div class="slider-field">
+        <label>Montant total d'investissement prévu</label>
+        <div class="slider-row">
+          <input type="range" id="invest-slider" min="50000" max="100000000" step="50000" value="2000000" oninput="updateInvestLabel(this.value)">
+          <span class="slider-display" id="invest-label">2 000 000 MAD</span>
+        </div>
+      </div>
+
+      <div class="slider-field">
+        <label>Emplois stables à créer</label>
+        <div class="slider-row">
+          <input type="range" id="emploi-slider" min="0" max="500" step="5" value="20" oninput="updateEmploiLabel(this.value)">
+          <span class="slider-display" id="emploi-label">20 emplois</span>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(1)">← Retour</button>
+      <button class="btn-next" onclick="goStep(3)">Étape suivante →</button>
+    </div>
+  </div>
+
+  <div id="step3" style="display:none">
+    <div class="form-card">
+      <div class="form-card-title">3. Vos besoins de financement</div>
+      <div style="margin-bottom:20px">
+        <label style="display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:8px">Type de besoin financier</label>
+        <div class="options-grid" id="besoin-options">
+          <button class="option-btn" onclick="select('besoin','garantie',this)"><span class="opt-label">GARANTIE BANCAIRE</span>Obtenir une garantie pour mon crédit</button>
+          <button class="option-btn" onclick="select('besoin','subvention',this)"><span class="opt-label">SUBVENTION</span>Prime / Subvention à l'investissement</button>
+          <button class="option-btn" onclick="select('besoin','credit',this)"><span class="opt-label">CRÉDIT BANCAIRE</span>Financement bancaire avec co-garantie</button>
+          <button class="option-btn" onclick="select('besoin','fonds',this)"><span class="opt-label">FONDS PROPRES</span>Haut de bilan / Capital-risque</button>
+          <button class="option-btn" onclick="select('besoin','export',this)"><span class="opt-label">EXPORT</span>Financement à l'exportation</button>
+          <button class="option-btn" onclick="select('besoin','formation',this)"><span class="opt-label">FORMATION</span>Aide à la formation / restructuration</button>
+        </div>
+      </div>
+
+      <div class="slider-field">
+        <label>Montant de financement recherché</label>
+        <div class="slider-row">
+          <input type="range" id="financement-slider" min="50000" max="20000000" step="50000" value="1000000" oninput="updateFinLabel(this.value)">
+          <span class="slider-display" id="fin-label">1 000 000 MAD</span>
+        </div>
+      </div>
+
+      <div style="margin-top:8px">
+        <label style="display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:10px">Avez-vous déjà un financement bancaire en cours ?</label>
+        <div style="display:flex;gap:10px">
+          <button class="option-btn" onclick="select('banque','oui',this)" style="flex:1">✓ Oui</button>
+          <button class="option-btn" onclick="select('banque','non',this)" style="flex:1">✗ Non, premier financement</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(2)">← Retour</button>
+      <button class="btn-next" onclick="goStep(4)">Étape suivante →</button>
+    </div>
+  </div>
+
+  <div id="step4" style="display:none">
+    <div class="form-card">
+      <div class="form-card-title">4. Vérification critères d'éligibilité</div>
+      <div class="options-grid" style="grid-template-columns:1fr">
+        <div style="margin-bottom:14px">
+          <label style="font-size:13px;font-weight:600;margin-bottom:8px;display:block">Êtes-vous en situation régulière fiscale et CNSS ?</label>
+          <div style="display:flex;gap:10px"><button class="option-btn" onclick="select('regularite','oui',this)" style="flex:1">✓ Oui, régulier</button><button class="option-btn" onclick="select('regularite','non',this)" style="flex:1">✗ Non / Ne sais pas</button></div>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="font-size:13px;font-weight:600;margin-bottom:8px;display:block">Activité principale : promotion immobilière ?</label>
+          <div style="display:flex;gap:10px"><button class="option-btn" onclick="select('immo','oui',this)" style="flex:1">✓ Oui</button><button class="option-btn" onclick="select('immo','non',this)" style="flex:1">✗ Non</button></div>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="font-size:13px;font-weight:600;margin-bottom:8px;display:block">Chiffre d'affaires annuel HT</label>
+          <div class="options-grid">
+            <button class="option-btn" onclick="select('ca','micro',this)"><span class="opt-label">MICRO</span>< 3 millions MAD</button>
+            <button class="option-btn" onclick="select('ca','tpe',this)"><span class="opt-label">TPE</span>3 – 10 millions MAD</button>
+            <button class="option-btn" onclick="select('ca','pme',this)"><span class="opt-label">PME</span>10 – 200 millions MAD</button>
+            <button class="option-btn" onclick="select('ca','grande',this)"><span class="opt-label">GE</span>> 200 millions MAD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(3)">← Retour</button>
+      <button class="btn-next" onclick="showResults()">🎯 Voir mes aides éligibles</button>
+    </div>
+  </div>
+
+  <!-- RÉSULTATS -->
+  <div id="step5" style="display:none">
+    <div class="results-header">
+      <div class="results-count" id="results-count">0</div>
+      <div>
+        <div style="font-family:var(--font-title);font-size:20px;font-weight:700">Programmes éligibles identifiés</div>
+        <div class="results-subtitle">Classés par score d'adéquation avec votre profil · Source : CCG, AMDIE, Maroc PME</div>
+      </div>
+    </div>
+    <div id="aides-list"></div>
+    <button class="restart-btn" onclick="restart()">↺ Refaire la simulation</button>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ══════════════════════════════════════════
+// MATCHING AIDES & FINANCEMENTS — Module 04
+// ══════════════════════════════════════════
+
+const profile = {};
+
+// ══ SELECTION MULTI-OPTION ══
+function select(field, value, btn) {
+  profile[field] = value;
+  const parent = btn.closest('.options-grid, div');
+  if (parent) parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function updateProfile() { profile.secteur = document.getElementById('secteur').value; }
+function updateInvestLabel(v) {
+  document.getElementById('invest-label').textContent = parseInt(v).toLocaleString('fr-FR') + ' MAD';
+  profile.investissement = parseInt(v);
+}
+function updateEmploiLabel(v) {
+  document.getElementById('emploi-label').textContent = v + ' emplois';
+  profile.emplois = parseInt(v);
+}
+function updateFinLabel(v) {
+  document.getElementById('fin-label').textContent = parseInt(v).toLocaleString('fr-FR') + ' MAD';
+  profile.financement = parseInt(v);
+}
+
+// ══ NAVIGATION ══
+function goStep(n) {
+  [1,2,3,4,5].forEach(i => document.getElementById('step'+i).style.display = i===n?'block':'none');
+  updateStepper(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Sync profile from sliders
+  profile.investissement = parseInt(document.getElementById('invest-slider').value);
+  profile.emplois = parseInt(document.getElementById('emploi-slider').value);
+  profile.financement = parseInt(document.getElementById('financement-slider').value);
+  profile.secteur = document.getElementById('secteur').value;
+}
+
+function updateStepper(n) {
+  for(let i=1;i<=5;i++) {
+    const c = document.getElementById('sc'+i);
+    if(i<n){c.className='step-circle done';c.nextElementSibling.className='step-label'}
+    else if(i===n){c.className='step-circle active';c.nextElementSibling.className='step-label active'}
+    else{c.className='step-circle';c.nextElementSibling.className='step-label'}
+  }
+}
+
+function restart() {
+  Object.keys(profile).forEach(k => delete profile[k]);
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  goStep(1);
+}
+
+// ══ BASE DE DONNÉES DES AIDES ══
+const AIDES = [
+  {
+    id:'damane-express',
+    nom:'Damane Express',
+    org:'CCG — Caisse Centrale de Garantie',
+    desc:'Garantie de crédit bancaire sans étude approfondie du dossier. Idéal pour les TPE/PME en création ou en développement avec un délai de réponse réduit.',
+    avantages:['Garantie 80% du crédit','Plafond 1 M MAD','Décision en 72h'],
+    conditions:'TPE/PME marocaine, régulière CNSS et fiscalement, crédit bancaire moyen ou long terme',
+    lien:'https://www.ccg.ma',
+    criteres: p => !p.immo || p.immo==='non',
+    score: p => {
+      let s=0;
+      if(p.ca==='micro'||p.ca==='tpe') s+=40;
+      if(p.besoin==='garantie'||p.besoin==='credit') s+=30;
+      if(p.statut==='creation') s+=20;
+      if(p.regularite==='oui') s+=10;
+      return s;
+    }
+  },
+  {
+    id:'damane-imtiaz',
+    nom:'Damane Imtiaz',
+    org:'CCG — Caisse Centrale de Garantie',
+    desc:"Garantie renforcée pour les projets d'investissement porteurs d'une TPE/PME. Couvre les crédits d'investissement avec un plafond plus élevé.",
+    avantages:['Garantie 70% du crédit','Plafond 5 M MAD','Pour TPE/PME industrielles'],
+    conditions:'PME marocaine, CA < 200M MAD, projet d\'investissement industriel ou de service',
+    lien:'https://www.ccg.ma',
+    criteres: p => p.immo!=='oui',
+    score: p => {
+      let s=0;
+      if(p.ca==='tpe'||p.ca==='pme') s+=40;
+      if(['industrie','auto','aero','chimie','textile','agro'].includes(p.secteur)) s+=25;
+      if(p.besoin==='garantie'||p.besoin==='credit') s+=20;
+      if(p.investissement>500000) s+=15;
+      return s;
+    }
+  },
+  {
+    id:'imtiaz-maroc-pme',
+    nom:'Imtiaz — Maroc PME',
+    org:'Maroc PME (Agence Nationale)',
+    desc:"Prime d'investissement de 20% pour les PME en croissance. Subvention directe non remboursable pour les projets créateurs de valeur ajoutée et d'emplois.",
+    avantages:['Prime 20% de l\'investissement','Plafond 10 M MAD','Non remboursable'],
+    conditions:'PME avec CA ≤ 200M MAD, projet de croissance ou changement d\'échelle, dossier via plateforme Maroc PME',
+    lien:'https://www.marocpme.ma',
+    criteres: p => p.ca==='pme'||p.ca==='tpe',
+    score: p => {
+      let s=0;
+      if(p.ca==='pme') s+=45;
+      if(p.besoin==='subvention') s+=30;
+      if(p.statut==='extension') s+=15;
+      if(p.investissement>1000000) s+=10;
+      return s;
+    }
+  },
+  {
+    id:'istitmar',
+    nom:'Istitmar — Maroc PME',
+    org:'Maroc PME (Agence Nationale)',
+    desc:"Prime d'investissement de 30% pour les TPE à fort potentiel. Destinée à la valorisation industrielle, l'innovation et le développement de nouvelles activités.",
+    avantages:['Prime 30% de l\'investissement','Plafond 2 M MAD','Pour TPE < 10M MAD CA'],
+    conditions:'TPE avec CA ≤ 10M MAD, projet de valorisation industrielle ou innovation, dossier via Maroc PME',
+    lien:'https://www.marocpme.ma',
+    criteres: p => p.ca==='micro'||p.ca==='tpe',
+    score: p => {
+      let s=0;
+      if(p.ca==='micro') s+=50;
+      if(p.ca==='tpe') s+=30;
+      if(p.besoin==='subvention') s+=30;
+      if(p.statut==='creation'||p.statut==='startup') s+=20;
+      return s;
+    }
+  },
+  {
+    id:'mdm-invest',
+    nom:'MDM Invest',
+    org:'CCG + Banques partenaires',
+    desc:"Financement conjoint pour les MRE souhaitant investir au Maroc. Contribution non remboursable de 10% du montant total (plafond 5M MAD) en plus de l'apport et du financement bancaire.",
+    avantages:['10% contribution non remboursable','Plafond 5 M MAD','Secteurs : industrie, éducation, hôtellerie, santé'],
+    conditions:'Être MRE (titre séjour étranger), projet ≥ 1M MAD, apport min 25%, secteurs éligibles',
+    lien:'https://www.ccg.ma/mdm-invest',
+    criteres: p => p.profil==='mre',
+    score: p => {
+      let s=0;
+      if(p.profil==='mre') s+=70;
+      if(['industrie','education','tourisme','sante'].includes(p.secteur)) s+=20;
+      if(p.investissement>=1000000) s+=10;
+      return s;
+    }
+  },
+  {
+    id:'fdii-prime',
+    nom:'Prime FDII — Investissement Structurant',
+    org:'FDII (Fonds de Développement Industriel et des Investissements)',
+    desc:"Prime à l'investissement pour les projets industriels structurants ou pionniers. Deux catégories : projets d'envergure (≥50M MAD) et projets structurants (≥20M MAD).",
+    avantages:['Prime négociable au cas par cas','Catégories : Envergure / Structurant / Pionnier','Via convention avec État'],
+    conditions:'Investissement ≥ 20M MAD OU ≥ 50 emplois stables, accord via commission nationale des investissements',
+    lien:'https://www.investissement.gov.ma',
+    criteres: p => (p.investissement>=20000000 || p.emplois>=50) && p.immo!=='oui',
+    score: p => {
+      let s=0;
+      if(p.investissement>=50000000) s+=50;
+      else if(p.investissement>=20000000) s+=30;
+      if(p.emplois>=200) s+=30;
+      else if(p.emplois>=50) s+=15;
+      if(['auto','aero','industrie','chimie','energie'].includes(p.secteur)) s+=20;
+      return s;
+    }
+  },
+  {
+    id:'inmaa',
+    nom:'INMAA — Formation Lean',
+    org:'Maroc PME (Programme INMAA)',
+    desc:"Formation et assistance aux entreprises industrielles en Lean Management. Prise en charge à 60% du coût de la formation pour améliorer la productivité.",
+    avantages:['60% prise en charge formation','Lean Manufacturing','Pour industriels CA < 200M MAD'],
+    conditions:'Entreprise industrielle ou activité liée à l\'industrie, CA < 200M MAD',
+    lien:'https://www.marocpme.ma/inmaa',
+    criteres: p => ['industrie','auto','aero','chimie','agro','textile'].includes(p.secteur),
+    score: p => {
+      let s=0;
+      if(['auto','aero'].includes(p.secteur)) s+=50;
+      if(['industrie','chimie','agro','textile'].includes(p.secteur)) s+=35;
+      if(p.besoin==='formation') s+=30;
+      if(p.ca==='pme'||p.ca==='tpe') s+=20;
+      return s;
+    }
+  },
+  {
+    id:'tamwil-fellah',
+    nom:'Tamwil El Fellah',
+    org:'CCG + Crédit Agricole du Maroc',
+    desc:"Garantie bancaire spécifique pour les agriculteurs et projets agricoles. Couvre les crédits d'exploitation et d'investissement agricoles.",
+    avantages:['Garantie jusqu\'à 85%','Pour petits et moyens agriculteurs','Crédit exploitation et investissement'],
+    conditions:'Activité agricole principale, dossier via Crédit Agricole du Maroc',
+    lien:'https://www.ccg.ma',
+    criteres: p => p.secteur==='agri',
+    score: p => {
+      let s=0;
+      if(p.secteur==='agri') s+=70;
+      if(p.besoin==='garantie'||p.besoin==='credit') s+=20;
+      if(p.zone==='rural') s+=10;
+      return s;
+    }
+  },
+  {
+    id:'charte-invest-prime',
+    nom:'Prime Charte Investissement 2022',
+    org:'Commission Nationale des Investissements',
+    desc:"Nouvelle prime d'investissement créée par la Charte 2022. Taux de prime variable selon la région, le secteur et le nombre d'emplois créés. Jusqu'à 30% de l'investissement éligible.",
+    avantages:['Jusqu\'à 30% de l\'investissement éligible','Bonus région prioritaire +5%','Bonus PME +5%'],
+    conditions:'Investissement ≥ 50M MAD ou 200 emplois stables (projets d\'envergure); ≥ 20M MAD ou 50 emplois (projets structurants)',
+    lien:'https://www.investissement.gov.ma',
+    criteres: p => p.investissement>=20000000 || p.emplois>=50,
+    score: p => {
+      let s=0;
+      if(p.investissement>=50000000) s+=45;
+      else if(p.investissement>=20000000) s+=25;
+      if(p.emplois>=200) s+=35;
+      else if(p.emplois>=50) s+=20;
+      if(p.zone==='zai') s+=15;
+      if(p.profil==='etranger') s+=10;
+      return s;
+    }
+  },
+  {
+    id:'categori-ccg',
+    nom:'Catégorie des Entreprises — CCG',
+    org:'CCG — Caisse Centrale de Garantie',
+    desc:"Assistance technique à la catégorisation pour les PME industrielles. Prise en charge de 70% des actions individuelles et 80% des plans de progrès triennaux.",
+    avantages:['70-80% des coûts pris en charge','Pour PME industrielles','Améliore l\'accès aux appels d\'offres'],
+    conditions:'Entreprise industrielle ou liée à l\'industrie, CA < 200M MAD',
+    lien:'https://www.marocpme.ma',
+    criteres: p => ['industrie','auto','aero','chimie','agro','textile'].includes(p.secteur) && p.ca!=='micro',
+    score: p => {
+      let s=0;
+      if(['auto','aero'].includes(p.secteur)) s+=40;
+      if(p.ca==='pme') s+=30;
+      if(p.besoin==='formation') s+=20;
+      return s;
+    }
+  }
+];
+
+// ══ AFFICHAGE RÉSULTATS ══
+function showResults() {
+  goStep(5);
+
+  // Récupérer valeurs finales sliders
+  profile.investissement = parseInt(document.getElementById('invest-slider').value);
+  profile.emplois = parseInt(document.getElementById('emploi-slider').value);
+  profile.financement = parseInt(document.getElementById('financement-slider').value);
+  profile.secteur = document.getElementById('secteur').value;
+
+  // Calculer scores
+  const eligible = AIDES
+    .map(a => ({ ...a, scoreVal: a.score(profile), eligible: a.criteres(profile) }))
+    .filter(a => a.eligible && a.scoreVal > 0)
+    .sort((a,b) => b.scoreVal - a.scoreVal);
+
+  document.getElementById('results-count').textContent = eligible.length;
+
+  if (!eligible.length) {
+    document.getElementById('aides-list').innerHTML = `
+      <div class="no-results">
+        <h3>Aucun programme correspondant exactement</h3>
+        <p style="margin-top:8px">Affinez votre profil ou contactez directement un CRI pour un accompagnement personnalisé.</p>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('aides-list').innerHTML = eligible.map(a => {
+    const s = a.scoreVal;
+    const scoreClass = s>=60?'score-high':s>=30?'score-med':'score-low';
+    const scoreLabel = s>=60?'✓ Très éligible':s>=30?'~ Éligible':'◌ Partiellement';
+    return `
+      <div class="aide-card">
+        <div class="aide-header">
+          <div>
+            <div class="aide-name">${a.nom}</div>
+            <div class="aide-org">${a.org}</div>
+          </div>
+          <div class="aide-score ${scoreClass}">${scoreLabel} <span style="opacity:0.6">${s}pts</span></div>
+        </div>
+        <div class="aide-desc">${a.desc}</div>
+        <div class="aide-avantages">${a.avantages.map(av=>`<span class="aide-tag">✓ ${av}</span>`).join('')}</div>
+        <div class="aide-conditions"><strong>Conditions :</strong> ${a.conditions}</div>
+        <a href="${a.lien}" target="_blank" class="aide-link">→ Accéder au programme officiel</a>
+      </div>`;
+  }).join('');
+}
+
+// ══ INIT SLIDERS ══
+updateInvestLabel(2000000);
+updateEmploiLabel(20);
+updateFinLabel(1000000);
+</script>
+
+<!-- ═══ Scripts Smart-Invest.ia ═══ -->
+<script src='lib/auth.js'></script>
+<script src='lib/demo-mode.js'></script>
+<script src='lib/upgrade-modal.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIS Foncier ZAI — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.header{
+  position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  border-bottom:1px solid rgba(184,134,42,.2);
+}
+.header-left{display:flex;align-items:center;gap:16px}
+.back-btn{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.module-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,.12);border:1px solid rgba(184,134,42,.25);padding:4px 10px;border-radius:100px}
+
+.page{max-width:1300px;margin:0 auto;padding:32px 32px 80px}
+
+/* HERO */
+.page-hero{margin-bottom:28px}
+.page-label{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.page-title{font-family:var(--font-title);font-size:30px;font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:8px}
+.page-sub{font-size:14px;color:var(--smoke);max-width:600px;line-height:1.7}
+
+/* STATS ROW */
+.stats-row{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.stat-box{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 18px;flex:1;min-width:120px}
+.stat-n{font-family:var(--font-title);font-size:24px;font-weight:800;color:var(--ink);line-height:1}
+.stat-n span{color:var(--gold)}
+.stat-l{font-size:11px;color:var(--smoke);margin-top:4px;line-height:1.4}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}}
+
+/* FILTERS */
+.filters-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;position:sticky;top:72px}
+.filter-title{font-family:var(--font-mono);font-size:10px;color:var(--smoke);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.filter-group{margin-bottom:16px}
+.filter-group label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+select,input[type=range]{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font-body);font-size:13px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+select:focus{border-color:var(--gold)}
+
+.filter-checks{display:flex;flex-direction:column;gap:6px}
+.fcheck{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);cursor:pointer}
+.fcheck input{accent-color:var(--gold)}
+
+.filter-range-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--smoke);margin-top:4px}
+
+.btn-filter{width:100%;padding:9px;border-radius:8px;background:var(--gold);border:none;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;margin-top:4px;transition:all .2s}
+.btn-filter:hover{background:var(--gold-light)}
+
+/* CARDS LIST */
+.cards-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.zai-card{
+  background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;
+  cursor:pointer;transition:all .25s;position:relative;
+}
+.zai-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(184,134,42,.1);transform:translateY(-1px)}
+.zai-card.selected{border-color:var(--gold);border-width:2px;background:var(--gold-pale)}
+.zai-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.zai-card-name{font-family:var(--font-title);font-size:15px;font-weight:700;color:var(--ink)}
+.zai-card-region{font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:3px}
+
+.zai-avail{font-family:var(--font-mono);font-size:11px;padding:3px 10px;border-radius:100px}
+.avail-yes{background:rgba(26,107,60,.1);color:var(--success);border:1px solid rgba(26,107,60,.2)}
+.avail-limited{background:rgba(184,134,42,.1);color:var(--gold);border:1px solid rgba(184,134,42,.2)}
+.avail-no{background:rgba(120,30,30,.08);color:#A32020;border:1px solid rgba(120,30,30,.15)}
+
+.zai-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.zai-stat{background:var(--bg2);border-radius:8px;padding:8px 10px;text-align:center}
+.zai-stat .zai-stat-n{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--ink)}
+.zai-stat .zai-stat-l{font-size:10px;color:var(--smoke);margin-top:2px}
+
+.zai-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.zai-tag{font-family:var(--font-mono);font-size:10px;background:var(--bg2);color:var(--smoke);border:1px solid var(--border);padding:2px 8px;border-radius:100px}
+.zai-tag.sect{background:rgba(30,77,107,.08);color:var(--accent);border-color:rgba(30,77,107,.2)}
+
+.zai-cta{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.btn-contact{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .2s;border:1.5px solid;text-decoration:none;display:inline-flex;align-items:center}
+.btn-primary-sm{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.btn-primary-sm:hover{background:var(--gold-light)}
+.btn-sec-sm{background:var(--bg2);border-color:var(--border);color:var(--smoke)}
+.btn-sec-sm:hover{border-color:var(--gold);color:var(--ink)}
+
+/* LEGEND */
+.legend{display:flex;gap:12px;padding:10px 16px;border-top:1px solid var(--border);font-size:11px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:5px}
+.leg-dot{width:10px;height:10px;border-radius:50%}
+
+.source-row{display:flex;gap:6px;flex-wrap:wrap;padding:12px 20px;border-top:1px solid var(--border)}
+.source-badge{font-family:var(--font-mono);font-size:10px;background:rgba(184,134,42,.1);border:1px solid rgba(184,134,42,.2);color:var(--gold);padding:3px 9px;border-radius:4px}
+</style>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="pro"></script>
+<script src='lib/upgrade-modal.js'></script>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="smart_invest_zones_economiques.html" class="back-btn">← Zones Économiques</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="module-badge">MODULE 22 · GIS FONCIER ZAI</span>
+  </div>
+  <span style="font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.25)">AMDIE · Données foncières 2025</span>
+</header>
+
+<div class="page">
+
+  <div class="page-hero">
+    <div class="page-label">Disponibilité Foncière · Zones Industrielles</div>
+    <h1 class="page-title">GIS Foncier ZAI<br>Terrains disponibles en temps réel</h1>
+    <p class="page-sub">Explorez les disponibilités foncières dans les 18 Zones d'Accélération Industrielle marocaines. Prix au m², superficies libres, contacts promoteurs — données AMDIE 2025.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-n" id="sTotal">18</div>
+      <div class="stat-l">ZAI actives au Maroc</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-n" id="sDisp"><span>12</span></div>
+      <div class="stat-l">ZAI avec foncier disponible</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-n" id="sHa"><span>2 840</span> ha</div>
+      <div class="stat-l">Superficie totale disponible</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-n" id="sPrix"><span>180</span> MAD/m²</div>
+      <div class="stat-l">Prix moyen tous types</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-n" id="sCRI"><span>12</span></div>
+      <div class="stat-l">CRI partenaires</div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- FILTERS -->
+    <div>
+      <div class="filters-card">
+        <div class="filter-title">Filtres de recherche</div>
+
+        <div class="filter-group">
+          <label>Région</label>
+          <select id="filterRegion" onchange="applyFilters()">
+            <option value="">Toutes les régions</option>
+            <option value="tth">Tanger-Tétouan-Al Hoceïma</option>
+            <option value="casa">Casablanca-Settat</option>
+            <option value="rsk">Rabat-Salé-Kénitra</option>
+            <option value="msp">Marrakech-Safi</option>
+            <option value="fes">Fès-Meknès</option>
+            <option value="souss">Souss-Massa</option>
+            <option value="od">Oriental</option>
+            <option value="bkm">Béni Mellal-Khénifra</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Secteur prioritaire</label>
+          <select id="filterSector" onchange="applyFilters()">
+            <option value="">Tous secteurs</option>
+            <option value="auto">Automobile</option>
+            <option value="aero">Aéronautique</option>
+            <option value="tic">TIC / Offshoring</option>
+            <option value="agro">Agroalimentaire</option>
+            <option value="textile">Textile</option>
+            <option value="pharma">Pharmacie</option>
+            <option value="energie">Énergie / EnR</option>
+            <option value="logistique">Logistique</option>
+            <option value="chimie">Chimie / Parachimie</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Superficie minimale souhaitée</label>
+          <select id="filterSup" onchange="applyFilters()">
+            <option value="0">Toutes tailles</option>
+            <option value="1000">1 000 m² et plus</option>
+            <option value="5000">5 000 m² et plus</option>
+            <option value="10000">1 ha et plus</option>
+            <option value="50000">5 ha et plus</option>
+            <option value="100000">10 ha et plus</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Disponibilité foncière</label>
+          <div class="filter-checks">
+            <label class="fcheck"><input type="checkbox" checked id="fAvail" onchange="applyFilters()"> Terrains disponibles</label>
+            <label class="fcheck"><input type="checkbox" checked id="fLimited" onchange="applyFilters()"> Disponibilité limitée</label>
+            <label class="fcheck"><input type="checkbox" id="fFull" onchange="applyFilters()"> Complet (liste d'attente)</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Prix max (MAD/m²) — <span id="priceVal" style="color:var(--gold);font-family:var(--font-mono)">800</span></label>
+          <input type="range" min="50" max="800" value="800" id="filterPrice" oninput="document.getElementById('priceVal').textContent=this.value;applyFilters()">
+          <div class="filter-range-row"><span>50</span><span>800 MAD/m²</span></div>
+        </div>
+
+        <button class="btn-filter" onclick="resetFilters()">↺ Réinitialiser les filtres</button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div>
+
+      <!-- RÉGION QUICK-SELECT -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;margin-bottom:16px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border)">
+          <div style="font-size:14px;font-weight:600">Sélection rapide par région</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--smoke)" id="mapCount">18 zones · 12 disponibles</span>
+            <a href="smart_invest_zones_economiques.html" style="font-family:var(--font-mono);font-size:10px;color:var(--gold);background:rgba(184,134,42,.1);border:1px solid rgba(184,134,42,.25);padding:4px 10px;border-radius:100px;text-decoration:none;white-space:nowrap">🗺️ Carte interactive →</a>
+          </div>
+        </div>
+        <div id="regionGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0"></div>
+        <div style="padding:10px 20px 12px;display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--smoke);border-top:1px solid var(--border)">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#2ECC71;display:inline-block"></span>Disponible</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#F0C460;display:inline-block"></span>Limité</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#5DA5E0;display:inline-block"></span>Zone financière</span>
+          <span style="margin-left:auto;font-family:var(--font-mono);font-size:10px">Sources : AMDIE · ZAI Maroc · TMSA · MedZ</span>
+        </div>
+      </div>
+
+      <!-- ZAI CARDS LIST -->
+      <div class="cards-list" id="zaiCardsList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ── ZAI DATA ── */
+const ZAI_DATA = [
+  {
+    id:'tanger_mel', name:'ZAI Tanger — Meloussa', region:'tth',
+    superficie_tot:2570, superficie_dispo:450, prix_min:200, prix_max:350,
+    avail:'yes', secteurs:['auto','aero','textile','logistique'],
+    avantages:['IS 0% → 5 ans', 'Suspension droits douane', 'Liberté rapatriement', 'TVA 0% sur équipements'],
+    contact_cri:'CRI Tanger-Tétouan', contact_tel:'+212 539 31 41 00',
+    zone_type:'ZAI Nationale', operateur:'TMSA / MedZ',
+    note:'Première zone industrielle d\'Afrique. Accès direct port Tanger Med (8M conteneurs/an). Clients : Renault, Stellantis, Airbus, Safran.'
+  },
+  {
+    id:'kenitra', name:'Kénitra Atlantic Free Zone (AFZ)', region:'rsk',
+    superficie_tot:3500, superficie_dispo:820, prix_min:180, prix_max:280,
+    avail:'yes', secteurs:['auto','tic','logistique'],
+    avantages:['IS 0% → 5 ans', 'Exo TVA import total', 'Terrain préférentiel', 'Énergie photovoltaïque ZAI'],
+    contact_cri:'CRI Rabat-Salé-Kénitra', contact_tel:'+212 537 57 28 00',
+    zone_type:'ZAI Nationale', operateur:'MEDZ',
+    note:'Pôle automobile PSA (Stellantis) et équipementiers. Accès autoroute A3. 45 min Rabat, 60 min Casablanca.'
+  },
+  {
+    id:'casa', name:'Casablanca Finance City (CFC)', region:'casa',
+    superficie_tot:100, superficie_dispo:15, prix_min:1200, prix_max:2500,
+    avail:'limited', secteurs:['tic','pharma'],
+    avantages:['IS 15% bénéfices étrangers', 'IR 20% plafonné', 'Accès marchés africains', 'Sièges régionaux Afrique'],
+    contact_cri:'CFC Authority', contact_tel:'+212 522 97 97 00',
+    zone_type:'Zone Franche Financière', operateur:'CFC Authority',
+    note:'Hub financier pour l\'Afrique. Accueille 200+ entreprises multinationales. Bureau minimum : 50 m². Procédure d\'agrément CFC Authority.'
+  },
+  {
+    id:'berrechid', name:'Zone Industrielle Berrechid', region:'casa',
+    superficie_tot:1200, superficie_dispo:310, prix_min:120, prix_max:200,
+    avail:'yes', secteurs:['auto','logistique','chimie','agro'],
+    avantages:['IS 0% → 5 ans ZAI', 'Proximité Casablanca (35 km)', 'Coûts fonciers bas', 'Desserte autoroutière directe'],
+    contact_cri:'CRI Casablanca-Settat', contact_tel:'+212 522 36 52 00',
+    zone_type:'Zone Industrielle', operateur:'CRI / Communes',
+    note:'Excellent rapport qualité-prix. Idéale pour industrie légère et logistique. Accès A7 Casablanca-Marrakech.'
+  },
+  {
+    id:'fes', name:'ZAI Fès — Parc Industriel', region:'fes',
+    superficie_tot:350, superficie_dispo:65, prix_min:100, prix_max:180,
+    avail:'limited', secteurs:['textile','agro','chimie','pharma'],
+    avantages:['IS 0% → 5 ans', 'Main-d\'œuvre qualifiée Fès', 'Université Al Akhawayn proximité'],
+    contact_cri:'CRI Fès-Meknès', contact_tel:'+212 535 65 38 00',
+    zone_type:'ZAI Régionale', operateur:'CRI Fès-Meknès',
+    note:'Tradition industrielle textile et artisanat. Profil MRE / PME marocaine. Formation Ofppt locale.'
+  },
+  {
+    id:'oujda', name:'ZAI Oujda — Technopôle', region:'od',
+    superficie_tot:280, superficie_dispo:180, prix_min:80, prix_max:140,
+    avail:'yes', secteurs:['tic','energie','agro','logistique'],
+    avantages:['Connexion Maghreb (frontière Algérie)', 'Coûts parmi les plus bas', 'Technopôle numérique', 'Énergie solaire ZAI'],
+    contact_cri:'CRI Oriental', contact_tel:'+212 536 54 32 00',
+    zone_type:'ZAI + Technopôle', operateur:'CRI Oriental',
+    note:'Forte disponibilité foncière. Potentiel route commerciale Maroc-Algérie. Hub logistique orienté Afrique subsaharienne via Nador.'
+  },
+  {
+    id:'agadir', name:'ZAI Agadir — Haliopôle / AgriPark', region:'souss',
+    superficie_tot:420, superficie_dispo:95, prix_min:130, prix_max:220,
+    avail:'yes', secteurs:['agro','energie','logistique'],
+    avantages:['IS 0% → 5 ans', 'Spécialisation agro premium', 'Port Agadir direct', 'Énergie solaire Souss'],
+    contact_cri:'CRI Souss-Massa', contact_tel:'+212 528 84 55 00',
+    zone_type:'ZAI Sectorielle', operateur:'MedZ',
+    note:'Leader mondial citron, avocat, tomate. Accès port et aéroport. Haliopôle : cluster pêche industrielle. Lien avec Coopératives Green Generation 2030.'
+  },
+  {
+    id:'marrakech', name:'Marrakech Parc Industriel', region:'msp',
+    superficie_tot:190, superficie_dispo:30, prix_min:150, prix_max:260,
+    avail:'limited', secteurs:['textile','agro','pharma'],
+    avantages:['Bassin main-d\'œuvre qualifiée', 'Tourisme industriel', 'Liaison autoroute A7'],
+    contact_cri:'CRI Marrakech-Safi', contact_tel:'+212 524 43 61 00',
+    zone_type:'Zone Industrielle', operateur:'CRI Marrakech',
+    note:'Demande forte, disponibilité limitée. Excellent pour artisanat industrialisé et agroalimentaire premium.'
+  }
+];
+
+var selectedId = null;
+var filteredIds = ZAI_DATA.map(z=>z.id);
+
+function renderCards(ids) {
+  const container = document.getElementById('zaiCardsList');
+  const data = ids.map(id => ZAI_DATA.find(z=>z.id===id)).filter(Boolean);
+  container.innerHTML = data.map(z => `
+    <div class="zai-card ${selectedId===z.id?'selected':''}" id="card_${z.id}" onclick="selectZAI('${z.id}')">
+      <div class="zai-card-header">
+        <div>
+          <div class="zai-card-name">${z.name}</div>
+          <div class="zai-card-region">${z.zone_type} · ${z.operateur}</div>
+        </div>
+        <span class="zai-avail avail-${z.avail}">${z.avail==='yes'?'Disponible':z.avail==='limited'?'Limité':'Complet'}</span>
+      </div>
+      <div class="zai-stats">
+        <div class="zai-stat">
+          <div class="zai-stat-n">${(z.superficie_dispo/10).toFixed(0)} ha</div>
+          <div class="zai-stat-l">Dispo.</div>
+        </div>
+        <div class="zai-stat">
+          <div class="zai-stat-n">${z.prix_min}–${z.prix_max}</div>
+          <div class="zai-stat-l">MAD/m²</div>
+        </div>
+        <div class="zai-stat">
+          <div class="zai-stat-n">${(z.superficie_tot/10).toFixed(0)} ha</div>
+          <div class="zai-stat-l">Total ZAI</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--smoke);line-height:1.55;margin-bottom:8px">${z.note}</div>
+      <div class="zai-tags">
+        ${z.secteurs.map(s=>`<span class="zai-tag sect">${s}</span>`).join('')}
+        ${z.avantages.slice(0,2).map(a=>`<span class="zai-tag">${a}</span>`).join('')}
+      </div>
+      <div class="zai-cta">
+        <a href="smart_invest_zones_economiques.html" class="btn-contact btn-primary-sm">🗺️ Voir sur carte</a>
+        <a href="smart_invest_charte_investissement.html" class="btn-contact btn-sec-sm">💰 Calcul primes</a>
+        <a href="smart_invest_assistant.html" class="btn-contact btn-sec-sm">🤖 Demander à l'IA</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectZAI(id) {
+  selectedId = id;
+  const z = ZAI_DATA.find(z=>z.id===id);
+  if(!z) return;
+  document.querySelectorAll('.zai-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('region-active'));
+  const card = document.getElementById('card_'+id);
+  if(card) { card.classList.add('selected'); card.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  const rbtn = document.getElementById('rbtn_'+id);
+  if(rbtn) rbtn.classList.add('region-active');
+}
+
+/* Region grid builder */
+const REGIONS_LIST = [
+  {key:'tth', label:'Tanger-Tétouan', icon:'🔵'},
+  {key:'rsk', label:'Rabat-Kénitra',  icon:'🟢'},
+  {key:'casa',label:'Casablanca',     icon:'🔷'},
+  {key:'fes', label:'Fès-Meknès',     icon:'🟡'},
+  {key:'od',  label:'Oriental',       icon:'🟢'},
+  {key:'msp', label:'Marrakech-Safi', icon:'🟡'},
+  {key:'souss',label:'Souss-Massa',   icon:'🟢'},
+  {key:'bkm', label:'Béni Mellal',    icon:'🔵'},
+];
+
+function renderRegionGrid() {
+  const grid = document.getElementById('regionGrid');
+  if(!grid) return;
+  grid.innerHTML = REGIONS_LIST.map(r => {
+    const regionZAI = ZAI_DATA.filter(z=>z.region===r.key);
+    const avail = regionZAI.filter(z=>z.avail==='yes').length;
+    const total = regionZAI.length;
+    if(!total) return '';
+    const firstId = regionZAI[0].id;
+    return `<button id="rbtn_${firstId}" class="region-btn" onclick="filterByRegion('${r.key}')"
+      style="padding:12px 10px;border:0.5px solid var(--border);border-right:none;border-bottom:none;background:var(--white);cursor:pointer;transition:all .2s;text-align:center;font-family:var(--font-body)">
+      <div style="font-size:16px;margin-bottom:4px">${r.icon}</div>
+      <div style="font-size:11px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:3px">${r.label}</div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--success)">${avail}/${total} ZAI</div>
+    </button>`;
+  }).join('');
+
+  // Fix borders
+  const style = document.createElement('style');
+  style.textContent = `.region-btn{border-right:0.5px solid var(--border) !important;border-bottom:0.5px solid var(--border) !important}.region-btn:hover{background:var(--gold-pale) !important;border-color:rgba(184,134,42,.3) !important}.region-active{background:var(--gold-pale) !important;border-color:var(--gold) !important}`;
+  document.head.appendChild(style);
+}
+
+function filterByRegion(r) {
+  document.getElementById('filterRegion').value = r;
+  applyFilters();
+  document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('region-active'));
+  const firstZAI = ZAI_DATA.find(z=>z.region===r);
+  if(firstZAI) document.getElementById('rbtn_'+firstZAI.id)?.classList.add('region-active');
+}
+
+function applyFilters() {
+  const region = document.getElementById('filterRegion').value;
+  const sector = document.getElementById('filterSector').value;
+  const supMin = parseInt(document.getElementById('filterSup').value)||0;
+  const priceMax = parseInt(document.getElementById('filterPrice').value)||800;
+  const avail = document.getElementById('fAvail').checked;
+  const limited = document.getElementById('fLimited').checked;
+  const full = document.getElementById('fFull').checked;
+
+  filteredIds = ZAI_DATA.filter(z=>{
+    if(region && z.region !== region) return false;
+    if(sector && !z.secteurs.includes(sector)) return false;
+    if(z.superficie_dispo*100 < supMin) return false;
+    if(z.prix_min > priceMax) return false;
+    if(z.avail==='yes' && !avail) return false;
+    if(z.avail==='limited' && !limited) return false;
+    if(z.avail==='no' && !full) return false;
+    return true;
+  }).map(z=>z.id);
+
+  renderCards(filteredIds);
+  document.getElementById('mapCount').textContent = filteredIds.length + ' zones · ' + filteredIds.filter(id=>ZAI_DATA.find(z=>z.id===id).avail==='yes').length + ' disponibles';
+}
+
+function resetFilters() {
+  document.getElementById('filterRegion').value='';
+  document.getElementById('filterSector').value='';
+  document.getElementById('filterSup').value='0';
+  document.getElementById('filterPrice').value='800';
+  document.getElementById('priceVal').textContent='800';
+  document.getElementById('fAvail').checked=true;
+  document.getElementById('fLimited').checked=true;
+  document.getElementById('fFull').checked=false;
+  applyFilters();
+}
+
+// Init
+renderRegionGrid();
+applyFilters();
+</script>
+<script src='lib/auth.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

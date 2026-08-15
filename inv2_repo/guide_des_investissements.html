@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide des IDE — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--er:#B91C1C;--wn:#C05820;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.header{position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  border-bottom:1px solid rgba(184,134,42,.2)}
+.hl{display:flex;align-items:center;gap:14px}
+.back{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none}.back:hover{color:var(--gl)}
+.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:#fff}.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:10px;color:var(--gl);background:rgba(184,134,42,.12);
+  border:1px solid rgba(184,134,42,.25);padding:4px 10px;border-radius:100px}
+.disc{font-size:11px;color:rgba(255,255,255,.25);font-family:var(--fm)}
+.page{max-width:1100px;margin:0 auto;padding:32px 32px 80px}
+.page-title{font-family:var(--ft);font-size:26px;font-weight:800;margin-bottom:6px}
+.page-title span{color:var(--gold)}
+.page-sub{font-size:14px;color:var(--sm);margin-bottom:28px;line-height:1.65}
+
+.tabs{display:flex;gap:4px;margin-bottom:28px;background:var(--b2);border-radius:12px;padding:4px;width:fit-content;flex-wrap:wrap}
+.tab{padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;
+  border:none;background:none;color:var(--sm);transition:all .2s;font-family:var(--fb)}
+.tab.active{background:var(--wh);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tab-panel{display:none}.tab-panel.show{display:block}
+
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:22px;margin-bottom:16px}
+.card-title{font-family:var(--ft);font-size:14px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title .ct-badge{font-family:var(--fm);font-size:9px;padding:2px 8px;border-radius:100px;background:var(--gp);color:var(--gold);border:1px solid rgba(184,134,42,.2)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:768px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ÉTAPES */
+.step-list{display:flex;flex-direction:column;gap:0}
+.step-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--bd);position:relative}
+.step-item:last-child{border:none}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--ink);
+  font-family:var(--ft);font-size:14px;font-weight:800;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0}
+.step-item::before{content:'';position:absolute;left:16px;top:48px;bottom:-16px;
+  width:2px;background:rgba(184,134,42,.15)}
+.step-item:last-child::before{display:none}
+.step-body{flex:1}
+.step-title{font-family:var(--ft);font-size:14px;font-weight:800;margin-bottom:4px}
+.step-desc{font-size:13px;color:var(--is);line-height:1.65;margin-bottom:6px}
+.step-meta{display:flex;gap:10px;flex-wrap:wrap}
+.step-tag{font-family:var(--fm);font-size:9px;padding:3px 8px;border-radius:100px}
+.tag-time{background:rgba(30,77,107,.1);color:var(--ac)}
+.tag-doc{background:rgba(184,134,42,.1);color:var(--gold)}
+.tag-online{background:rgba(26,107,60,.1);color:var(--ok)}
+.tag-obligatoire{background:rgba(185,28,28,.08);color:var(--er)}
+
+/* ELIGIBILITY QUIZ */
+.quiz-card{background:var(--wh);border:2px solid var(--bd);border-radius:14px;padding:22px;
+  cursor:pointer;transition:all .2s;margin-bottom:10px}
+.quiz-card:hover{border-color:rgba(184,134,42,.3)}
+.quiz-card.selected{border-color:var(--gold);background:rgba(184,134,42,.04)}
+.quiz-q{font-size:14px;font-weight:600;margin-bottom:12px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{padding:10px 14px;background:var(--b2);border:1.5px solid var(--bd);border-radius:9px;
+  cursor:pointer;transition:all .2s;font-size:13px;color:var(--is)}
+.quiz-opt:hover,.quiz-opt.selected{border-color:var(--gold);background:rgba(184,134,42,.05);color:var(--gold)}
+
+/* AVANTAGES CARDS */
+.avantage-card{background:var(--wh);border:1px solid var(--bd);border-radius:12px;padding:18px;
+  transition:all .2s}
+.avantage-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.av-icon{font-size:26px;margin-bottom:10px}
+.av-title{font-family:var(--ft);font-size:14px;font-weight:800;margin-bottom:6px}
+.av-desc{font-size:12.5px;color:var(--sm);line-height:1.6}
+.av-val{font-family:var(--fm);font-size:11px;color:var(--ok);margin-top:6px}
+
+/* CHECKLIST */
+.checklist{display:flex;flex-direction:column;gap:6px}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--b2);
+  border-radius:8px;cursor:pointer;transition:all .2s}
+.check-item:hover{background:rgba(184,134,42,.07)}
+.check-item.done{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.2)}
+.check-box{width:18px;height:18px;border:1.5px solid var(--bd);border-radius:4px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .2s}
+.check-item.done .check-box{background:var(--ok);border-color:var(--ok);color:#fff;font-size:11px}
+.check-text{flex:1;font-size:12.5px;color:var(--is);line-height:1.5}
+.check-text strong{display:block;font-weight:600;margin-bottom:1px}
+.check-tag{font-family:var(--fm);font-size:9px;color:var(--sm);margin-top:2px}
+
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--is);
+  margin-bottom:5px;text-transform:uppercase;font-family:var(--fm)}
+.fg select,.fg input{width:100%;padding:10px 13px;border:1.5px solid var(--bd);border-radius:9px;
+  font-family:var(--fb);font-size:14px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.fg select:focus,.fg input:focus{border-color:var(--gold);background:var(--wh)}
+
+.btn-calc{width:100%;padding:13px;background:var(--gold);color:var(--ink);border:none;
+  border-radius:10px;font-family:var(--fb);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px}
+.btn-calc:hover{background:var(--gl);transform:translateY(-1px)}
+
+/* TABLE STANDARD */
+.std-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.std-table th{padding:8px 12px;background:var(--b2);color:var(--sm);font-family:var(--fm);
+  font-size:9px;letter-spacing:.07em;text-transform:uppercase;border-bottom:1px solid var(--bd);text-align:left}
+.std-table td{padding:10px 12px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.5}
+.std-table tr:last-child td{border:none}
+.std-table tr:hover td{background:rgba(184,134,42,.025)}
+.chip{display:inline-block;font-family:var(--fm);font-size:9px;padding:2px 8px;border-radius:100px}
+.chip-ok{background:rgba(26,107,60,.1);color:var(--ok)}
+.chip-warn{background:rgba(192,88,32,.1);color:var(--wn)}
+.chip-blue{background:rgba(30,77,107,.1);color:var(--ac)}
+.chip-red{background:rgba(185,28,28,.1);color:var(--er)}
+
+.alert{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:9px;font-size:13px;margin-bottom:14px;line-height:1.55}
+.alert-info{background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.2);border-left:3px solid var(--ac);color:var(--ac)}
+.alert-ok{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.2);border-left:3px solid var(--ok);color:var(--ok)}
+.alert-warn{background:rgba(192,88,32,.07);border:1px solid rgba(192,88,32,.2);border-left:3px solid var(--wn);color:var(--wn)}
+
+/* RESULT BOX */
+.result-box{background:var(--ink);border-radius:14px;padding:22px;color:#fff;margin-top:16px;display:none}
+.rb-title{font-family:var(--ft);font-size:16px;font-weight:800;margin-bottom:12px;color:var(--gl)}
+.rb-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px}
+.rb-row:last-child{border:none}
+.rb-label{color:rgba(255,255,255,.5)}
+.rb-val{font-family:var(--fm);color:#fff;font-weight:600}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="hl">
+    <a href="landing.html" class="back">← Accueil</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="badge"> IDE · Charte 03-22</span>
+  </div>
+  <div class="disc">Source : AMDI, CRI, Loi 03-22 · Mis à jour 2025</div>
+</header>
+
+<div class="page">
+  <div class="page-title">Guide <span> des Investissements Étrangers</span></div>
+  <p class="page-sub">Procédures IDE complètes · Charte d'investissement Loi 03-22 · Éligibilité aux primes · Démarches  · Documents requis · Contrôle des changes</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('eligibilite',this)">Éligibilité & Profil</button>
+    <button class="tab" onclick="showTab('procedures',this)">Procédures </button>
+    <button class="tab" onclick="showTab('avantages',this)">Avantages & Primes</button>
+    <button class="tab" onclick="showTab('changes',this)">Contrôle des changes</button>
+    <button class="tab" onclick="showTab('checklist',this)">Checklist dossier</button>
+  </div>
+
+  <!-- ══ ONGLET 1 : ÉLIGIBILITÉ ══ -->
+  <div class="tab-panel show" id="tp-eligibilite">
+    <div class="grid2">
+      <div>
+        <div class="card">
+          <div class="card-title">🎯 Votre profil investisseur</div>
+          <div class="fg">
+            <label>Pays d'origine</label>
+            <select id="pays_origine" onchange="calcEligibilite()">
+              <option value="france">🇫🇷 France</option>
+              <option value="uae">🇦🇪 Émirats Arabes Unis</option>
+              <option value="usa">🇺🇸 États-Unis</option>
+              <option value="chine">🇨🇳 Chine</option>
+              <option value="espagne">🇪🇸 Espagne</option>
+              <option value="allemagne">🇩🇪 Allemagne</option>
+              <option value="uk">🇬🇧 Royaume-Uni</option>
+              <option value="mre">🇲🇦 MRE / Diaspora marocaine</option>
+              <option value="autre">Autre pays</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Type d'investissement</label>
+            <select id="type_inv" onchange="calcEligibilite()">
+              <option value="greenfield">Création ex nihilo (Greenfield)</option>
+              <option value="extension">Extension d'unité existante</option>
+              <option value="acquisition">Acquisition / Prise de participation</option>
+              <option value="partenariat">Partenariat / JV avec entreprise marocaine</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Secteur cible</label>
+            <select id="secteur_cible" onchange="calcEligibilite()">
+              <option value="auto">🚗 Automobile / Aéronautique</option>
+              <option value="agro">🌾 Agroalimentaire</option>
+              <option value="textile">🧵 Textile / Cuir</option>
+              <option value="tic">💻 TIC / Digital / BPO</option>
+              <option value="energie">⚡ Énergie renouvelable</option>
+              <option value="tourisme">🏨 Tourisme / Hôtellerie</option>
+              <option value="immo">🏗️ Immobilier (hors résidentiel)</option>
+              <option value="sante">🏥 Santé / Pharma</option>
+              <option value="agri">🌿 Agriculture</option>
+              <option value="autre">Autre secteur</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Montant d'investissement (MAD)</label>
+            <input type="number" id="montant_inv" value="10000000" oninput="calcEligibilite()">
+            <div class="hint">IDE minimum recommandé : 50M MAD pour convention</div>
+          </div>
+          <div class="fg">
+            <label>Emplois directs prévus</label>
+            <input type="number" id="emplois" value="50" oninput="calcEligibilite()">
+          </div>
+          <div class="fg">
+            <label>Localisation envisagée</label>
+            <select id="localisation" onchange="calcEligibilite()">
+              <option value="zai">Zone d'Accélération Industrielle (ZAI)</option>
+              <option value="zfe">Zone Franche d'Exportation (ZFE)</option>
+              <option value="cfc">Casablanca Finance City (CFC)</option>
+              <option value="region">Hors ZAI / Droit commun</option>
+            </select>
+          </div>
+          <button class="btn-calc" onclick="calcEligibilite()">Analyser mon éligibilité →</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="result-box show" id="eligResult" style="display:block">
+          <div class="rb-title" id="er_title">📋 Résultat d'éligibilité</div>
+          <div id="er_rows"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-title">🤝 Accords bilatéraux Maroc</div>
+          <div style="font-size:13px;color:var(--is);line-height:1.8" id="bilateral_info">
+            Sélectionnez votre pays d'origine pour voir les accords applicables.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ONGLET 2 : PROCÉDURES ══ -->
+  <div class="tab-panel" id="tp-procedures">
+    <div class="alert alert-info">ℹ️ Les délais sont indicatifs — Guichet unique CRI : 15 à 30 jours pour les projets standard. Convention d'investissement : 2 à 4 mois.</div>
+
+    <div class="card">
+      <div class="card-title">🗺️ Parcours investisseur IDE — Étape par étape</div>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Contact & prise en charge</div>
+            <div class="step-desc">L'AMDIE est votre interlocuteur unique pour les grands IDE. Elle vous oriente, facilite et suit votre dossier. Rendez-vous sur invest.gov.ma ou contactez le CRI. </div>
+            <div class="step-meta">
+              <span class="step-tag tag-time">⏱ 1-5 jours</span>
+              <span class="step-tag tag-online">🌐 invest.gov.ma</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Étude de faisabilité & choix localisation</div>
+            <div class="step-desc">Sélection de la zone (ZAI, ZFE, droit commun), identification du terrain via le GIS Foncier, étude d'impact environnemental si nécessaire. L'AMDIE peut vous mettre en contact avec les gestionnaires de zones.</div>
+            <div class="step-meta">
+              <span class="step-tag tag-time">⏱ 2-8 semaines</span>
+              <span class="step-tag tag-doc">📄 Lettre d'intention</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Constitution de la société marocaine</div>
+            <div class="step-desc">Création de l'entité juridique marocaine (SARL, SA, succursale) auprès du Centre Régional d'Investissement. Capital libéré minimum : 100 000 MAD (SARL), 300 000 MAD (SA). Apport en devises via compte en devises ou MAD convertible.</div>
+            <div class="step-meta">
+              <span class="step-tag tag-time">⏱ 5-10 jours ouvrables</span>
+              <span class="step-tag tag-online">🌐 CRI en ligne</span>
+              <span class="step-tag tag-doc">📄 Statuts, dépôt légal</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Ouverture compte bancaire MAD convertible</div>
+            <div class="step-desc">Pour les investisseurs étrangers : compte en MAD convertible (MAD-c) permettant les rapatriements de dividendes et de capitaux. Ou compte en devises étrangères. Instruction Office des Changes.</div>
+            <div class="step-meta">
+              <span class="step-tag tag-time">⏱ 3-7 jours</span>
+              <span class="step-tag tag-obligatoire">⚠ Obligatoire IDE</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Dépôt de la déclaration d'investissement</div>
+            <div class="step-desc">Déclaration obligatoire à l'Office des Changes pour tout investissement étranger ≥ 1 MAD. Via la banque intermédiaire agréée. Le visa n'est plus requis depuis 2014 — la déclaration suffit.</div>
+            <div class="step-meta">
+              <span class="step-tag tag-time">⏱ Immédiat</span>
+              <span class="step-tag tag-obligatoire">⚠ Obligatoire</span>
+              <span class="step-tag tag-doc">📄 Formulaire Office des Changes</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <div class="step-title">Convention d'investissement  (≥ 50M MAD)</div>
+            <div class="step-desc">Pour les projets ≥ 50 millions MAD : convention signée entre l'investisseur et l'État marocain. Elle fixe les engagements réciproques (primes, exonérations, terrain, infrastructures) et est approuvée par la Commission des Investissements.</div>
+            <div class="step-meta">
+              <span class="step-tag tag-time">⏱ 2-4 mois</span>
+              <span class="step-tag tag-doc">📄 Business plan détaillé requis</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">7</div>
+          <div class="step-body">
+            <div class="step-title">Autorisations sectorielles spécifiques</div>
+            <div class="step-desc">Selon le secteur : agrément Tourisme (Ministère du Tourisme), autorisation ANRT (Télécoms), agrément ANRE (Énergie), accord AMMC (Finance). Ces autorisations peuvent être obtenues en parallèle.</div>
+            <div class="step-meta">
+              <span class="step-tag tag-time">⏱ Variable (1-6 mois)</span>
+              <span class="step-tag tag-online">🌐 Portails ministériels</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">8</div>
+          <div class="step-body">
+            <div class="step-title">Démarrage & suivi </div>
+            <div class="step-desc">Après lancement, l'AMDIE ou LE CRI assure le suivi de vos engagements (emplois, CA export, investissement réalisé). Rapport annuel requis. Accès aux primes MIP en fonction des jalons atteints.</div>
+            <div class="step-meta">
+              <span class="step-tag tag-time">⏱ Annuel</span>
+              <span class="step-tag tag-online">🌐 Monitoring</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ONGLET 3 : AVANTAGES ══ -->
+  <div class="tab-panel" id="tp-avantages">
+    <div class="card">
+      <div class="card-title">🎁 Avantages Charte Investissement — Loi 03-22 (2023-2026)</div>
+      <div class="alert alert-ok">✓ La Charte d'Investissement 2022 est la plus généreuse du Maghreb — primes pouvant atteindre 30% du coût d'investissement.</div>
+      <div class="grid3" style="margin-bottom:16px">
+        <div class="avantage-card">
+          <div class="av-icon">💰</div>
+          <div class="av-title">Prime commune (MIP)</div>
+          <div class="av-desc">Pour tout investissement ≥ 50M MAD avec au moins 50 emplois. Prime sur le foncier, infrastructure et formation.</div>
+          <div class="av-val">Jusqu'à 15% du coût d'investissement</div>
+        </div>
+        <div class="avantage-card">
+          <div class="av-icon">📍</div>
+          <div class="av-title">Prime régionale</div>
+          <div class="av-desc">Bonus pour les régions moins développées (Béni Mellal, Drâa-Tafilalet, Oriental, Souss-Massa).</div>
+          <div class="av-val">+10% supplémentaires (total 25%)</div>
+        </div>
+        <div class="avantage-card">
+          <div class="av-icon">🏭</div>
+          <div class="av-title">Prime sectorielle</div>
+          <div class="av-desc">Industries à forte valeur ajoutée : automobile, aéro, pharma, énergies renouvelables, numériques.</div>
+          <div class="av-val">+5% supplémentaires (total 30%)</div>
+        </div>
+        <div class="avantage-card">
+          <div class="av-icon">🌍</div>
+          <div class="av-title">Exonération IS (ZAI)</div>
+          <div class="av-desc">Zones d'Accélération Industrielle : exonération totale IS pendant 5 ans, puis 20% de façon permanente.</div>
+          <div class="av-val">0% IS pendant 5 ans · 20% ensuite</div>
+        </div>
+        <div class="avantage-card">
+          <div class="av-icon">🚢</div>
+          <div class="av-title">Exonération droits douane</div>
+          <div class="av-desc">Importation de biens d'équipement, matières premières et produits semi-finis pour l'export.</div>
+          <div class="av-val">0% droits + 0% TVA à l'import</div>
+        </div>
+        <div class="avantage-card">
+          <div class="av-icon">💼</div>
+          <div class="av-title">Prise en charge formation</div>
+          <div class="av-desc">OFPPT — prise en charge partielle des coûts de formation du personnel marocain.</div>
+          <div class="av-val">Jusqu'à 40% des coûts formation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Seuils d'éligibilité — Charte 03-22</div>
+      <table class="std-table">
+        <thead><tr><th>Dispositif</th><th>Montant min.</th><th>Emplois min.</th><th>Prime max.</th><th>Délai traitement</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Prime commune</strong></td><td>50 millions MAD</td><td>50 emplois directs</td><td>15% coût inv.</td><td>3-6 mois</td></tr>
+          <tr><td><strong>Prime régionale</strong></td><td>50 millions MAD</td><td>50 emplois</td><td>+10% (25% total)</td><td>Avec prime commune</td></tr>
+          <tr><td><strong>Prime sectorielle</strong></td><td>50 millions MAD</td><td>50 emplois</td><td>+5% (30% total)</td><td>Avec prime commune</td></tr>
+          <tr><td><strong>Grands projets structurants</strong></td><td>250 millions MAD</td><td>500 emplois</td><td>Jusqu'à 30%</td><td>Commission des Inv.</td></tr>
+          <tr><td><strong>PME / Petits investissements</strong></td><td>&lt; 50M MAD</td><td>Variable</td><td>CRI (taux réduits)</td><td>30 jours CRI</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ ONGLET 4 : CONTRÔLE DES CHANGES ══ -->
+  <div class="tab-panel" id="tp-changes">
+    <div class="card">
+      <div class="card-title">💱 Contrôle des changes — Investisseurs étrangers</div>
+      <div class="alert alert-ok">✓ Le Maroc garantit le libre rapatriement des capitaux et dividendes pour les IDE déclarés — sans délai ni limitation de montant.</div>
+      <table class="std-table" style="margin-bottom:16px">
+        <thead><tr><th>Opération</th><th>Régime</th><th>Délai</th><th>Document requis</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Rapatriement dividendes</strong></td><td><span class="chip chip-ok">Libre</span></td><td>Immédiat</td><td>Attestation fiscale IS acquitté, PV AGO</td></tr>
+          <tr><td><strong>Rapatriement capital</strong></td><td><span class="chip chip-ok">Libre</span></td><td>Immédiat</td><td>Déclaration initiale + attestation réalisation</td></tr>
+          <tr><td><strong>Cession de titres</strong></td><td><span class="chip chip-ok">Libre</span></td><td>Avant cession</td><td>Déclaration Office des Changes</td></tr>
+          <tr><td><strong>Prêts étrangers</strong></td><td><span class="chip chip-blue">Déclaratif</span></td><td>Avant tirage</td><td>Formulaire emprunt extérieur</td></tr>
+          <tr><td><strong>Royalties / Honoraires</strong></td><td><span class="chip chip-blue">Déclaratif</span></td><td>À chaque paiement</td><td>Contrat visé + facture</td></tr>
+          <tr><td><strong>Avances actionnaire > 3 mois</strong></td><td><span class="chip chip-warn">Autorisation</span></td><td>Avant opération</td><td>Demande OC Rabat</td></tr>
+          <tr><td><strong>Investissements sortants</strong></td><td><span class="chip chip-warn">Autorisation</span></td><td>Avant opération</td><td>Dossier complet Office des Changes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">🏦 Comptes en devises / MAD convertible</div>
+      <div class="grid2">
+        <div style="padding:16px;background:var(--b2);border-radius:10px">
+          <div style="font-family:var(--ft);font-size:13px;font-weight:800;margin-bottom:8px">Compte MAD Convertible (MAD-c)</div>
+          <div style="font-size:12.5px;color:var(--is);line-height:1.8">
+            <div>✓ Alimenté par apports en devises</div>
+            <div>✓ Mouvements débiteurs libres</div>
+            <div>✓ Rapatriement libre du solde</div>
+            <div>✓ Conversion MAD-c ↔ devises possible</div>
+            <div style="color:var(--sm);margin-top:6px;font-size:11px">Pour les ressortissants étrangers et MRE investissant au Maroc</div>
+          </div>
+        </div>
+        <div style="padding:16px;background:var(--b2);border-radius:10px">
+          <div style="font-family:var(--ft);font-size:13px;font-weight:800;margin-bottom:8px">Compte en devises</div>
+          <div style="font-size:12.5px;color:var(--is);line-height:1.8">
+            <div>✓ Libellé en EUR, USD, GBP, AED...</div>
+            <div>✓ Transactions internationales directes</div>
+            <div>✓ Pas de conversion obligatoire</div>
+            <div>✓ Taux de change au marché</div>
+            <div style="color:var(--sm);margin-top:6px;font-size:11px">Pour sociétés marocaines à capital étranger ou JV</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ONGLET 5 : CHECKLIST ══ -->
+  <div class="tab-panel" id="tp-checklist">
+    <div class="alert alert-info">ℹ️ Cochez les documents au fur et à mesure. Votre progression est sauvegardée localement.</div>
+    <div class="grid2">
+      <div>
+        <div class="card">
+          <div class="card-title">📁 Documents création société <span class="ct-badge" id="pct1">0/0</span></div>
+          <div class="checklist" id="cl1"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🌍 Documents investisseur étranger <span class="ct-badge" id="pct2">0/0</span></div>
+          <div class="checklist" id="cl2"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title">💰 Documents dossier convention  <span class="ct-badge" id="pct3">0/0</span></div>
+          <div class="checklist" id="cl3"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🏭 Documents fonciers / ZAI <span class="ct-badge" id="pct4">0/0</span></div>
+          <div class="checklist" id="cl4"></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <button onclick="resetChecklist()" style="padding:9px 18px;background:transparent;border:1.5px solid var(--bd);border-radius:8px;font-family:var(--fb);font-size:12px;color:var(--sm);cursor:pointer">🗑 Réinitialiser la checklist</button>
+    </div>
+  </div>
+</div>
+
+<script src='lib/auth.js'></script>
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tp-' + id).classList.add('show');
+  if (el) el.classList.add('active');
+}
+
+// ── ÉLIGIBILITÉ ──────────────────────────────────────────────
+const BILATERAL = {
+  france: 'Convention de protection des investissements (1997) · Accord de non-double imposition · Accord général de coopération',
+  uae: 'Accord BIT Maroc-UAE · Convention fiscale (2000) · Accords BRICS en cours',
+  usa: 'OPIC (DFC) disponible · Pas de BIT · Négociations ALE Maroc-USA',
+  chine: 'BIT Maroc-Chine (1995) · Convention fiscale (2002) · Initiative Ceinture & Route',
+  espagne: 'BIT Maroc-Espagne (1992) · Convention fiscale · Zone Tanger-Med',
+  allemagne: 'BIT Maroc-Allemagne (2001) · GIZ présent · Convention fiscale',
+  uk: 'BIT Maroc-UK (1990) · Accord de continuité post-Brexit (2021)',
+  mre: 'Régime spécial MRE · Rapatriement de l\'épargne facilité · Compte en devises personnel',
+  autre: 'Vérifiez les accords bilatéraux  — Plus de 70 BIT signés par le Maroc'
+};
+
+function calcEligibilite() {
+  const montant = parseFloat(document.getElementById('montant_inv').value) || 0;
+  const emplois = parseFloat(document.getElementById('emplois').value) || 0;
+  const pays = document.getElementById('pays_origine').value;
+  const type = document.getElementById('type_inv').value;
+  const secteur = document.getElementById('secteur_cible').value;
+  const loc = document.getElementById('localisation').value;
+
+  const isGrandProjet = montant >= 250000000 && emplois >= 500;
+  const isConvention  = montant >= 50000000  && emplois >= 50;
+  const isPrime       = isConvention;
+
+  let prime = 0;
+  if (isPrime) prime += 15;
+  if (isPrime && ['agro','energie','sante'].includes(secteur)) prime += 5;
+  if (isPrime && loc === 'region') prime += 10;
+  if (loc === 'zai') prime = Math.max(prime, 5);
+
+  const rows = [
+    { label:'Montant', val: montant.toLocaleString('fr-MA') + ' MAD', ok: montant > 0 },
+    { label:'Emplois prévus', val: emplois, ok: emplois > 0 },
+    { label:'Éligible prime commune (≥ 50M MAD)', val: isPrime ? '✓ OUI' : '✗ NON (en dessous du seuil)', ok: isPrime },
+    { label:'Éligible convention ', val: isConvention ? '✓ OUI' : '✗ NON', ok: isConvention },
+    { label:'Grand projet structurant', val: isGrandProjet ? '✓ OUI (≥ 250M & 500 emp.)' : 'NON', ok: isGrandProjet },
+    { label:'Prime estimée (max)', val: prime > 0 ? prime + '% du coût' : '< 50M MAD — CRI uniquement', ok: prime > 0 },
+    { label:'Localisation recommandée', val: loc === 'zai' ? '✓ ZAI — exonération IS 5 ans' : loc === 'zfe' ? '✓ ZFE — 0% IS permanent' : loc === 'cfc' ? '✓ CFC — régime fiscal privilégié' : 'Droit commun', ok: ['zai','zfe','cfc'].includes(loc) },
+  ];
+
+  document.getElementById('er_title').textContent = isPrime ? '✅ Éligible aux primes ' : '📋 Résultat d\'éligibilité';
+  document.getElementById('er_rows').innerHTML = rows.map(r => `
+    <div class="rb-row">
+      <span class="rb-label">${r.label}</span>
+      <span class="rb-val" style="color:${r.ok?'#4ADE80':'rgba(255,255,255,.5)'}">${r.val}</span>
+    </div>`).join('');
+
+  document.getElementById('bilateral_info').innerHTML =
+    (BILATERAL[pays] || BILATERAL.autre).split(' · ').map(s => `<div style="padding:4px 0;border-bottom:1px solid var(--bd)">🔹 ${s}</div>`).join('') +
+    '<div style="font-size:12px;color:var(--sm);margin-top:8px;font-family:var(--fm)">Source: · invest.gov.ma</div>';
+}
+
+// ── CHECKLIST ────────────────────────────────────────────────
+const CHECKLISTS = {
+  cl1: [
+    { label: 'Statuts société rédigés et signés', sub: 'Par notaire ou sous seing privé (SARL)' },
+    { label: 'Spécimen de signature des gérants/DG', sub: 'Légalisé' },
+    { label: 'Attestation de domiciliation', sub: 'Contrat de bail ou siège social justifié' },
+    { label: 'Copie CNI ou passeport associés', sub: 'Certifiée conforme' },
+    { label: 'Attestation de libération du capital', sub: 'Remise par la banque intermédiaire' },
+    { label: 'Publication au Bulletin Officiel', sub: 'Annonce légale de constitution' },
+    { label: 'Inscription Registre du Commerce (RC)', sub: 'Tribunal de commerce' },
+    { label: 'Identifiant fiscal (IF) DGI', sub: 'Attribution automatique post-RC' },
+    { label: 'Affiliation CNSS', sub: 'En ligne sur DAMANCOM dès premier salarié' },
+    { label: 'Identifiant commun de l\'entreprise (ICE)', sub: 'Via portail maroc.ma' },
+  ],
+  cl2: [
+    { label: 'Passeport investisseur étranger (valide)', sub: 'Copie certifiée conforme + traduction si arabe/français' },
+    { label: 'Justificatif de résidence pays d\'origine', sub: 'Moins de 3 mois' },
+    { label: 'Extrait K-bis ou équivalent société mère', sub: 'Avec traduction si nécessaire' },
+    { label: 'Déclaration IDE à l\'Office des Changes', sub: 'Via banque intermédiaire agréée' },
+    { label: 'Ouverture compte MAD convertible ou devises', sub: 'Justificatif virement initial en devises' },
+    { label: 'Attestation de rapatriement apport en capital', sub: 'Délivrée par la banque' },
+  ],
+  cl3: [
+    { label: 'Business plan détaillé (5 ans)', sub: 'CA, emplois, investissements, financement' },
+    { label: 'Étude de marché secteur cible', sub: 'Avec sources chiffrées' },
+    { label: 'Maquette financière (bilan prévisionnel)', sub: 'IS, trésorerie, ratios' },
+    { label: 'Note descriptive du projet', sub: 'Technologie, process, valeur ajoutée' },
+    { label: 'Lettre d\'intention signée', sub: 'Engagement de l\'investisseur' },
+    { label: 'Attestation financière / rating société mère', sub: 'Ou garantie bancaire' },
+    { label: 'Engagement emploi marocain (>= 50%)', sub: 'Plan de recrutement détaillé' },
+    { label: 'Étude environnementale préliminaire', sub: 'Selon nature du projet' },
+  ],
+  cl4: [
+    { label: 'Demande d\'attribution terrain ZAI', sub: 'Auprès du gestionnaire de zone (MFZ, MEDZ, etc.)' },
+    { label: 'Plan de masse projet / terrain', sub: 'Superficie, type de bâtiment' },
+    { label: 'Contrat de bail emphytéotique ou vente', sub: 'Selon politique de la zone' },
+    { label: 'Permis de construire', sub: 'Délai moyen : 3-6 mois' },
+    { label: 'Connexions utilities (eau, électricité, gaz)', sub: 'Demandes aux offices compétents' },
+  ],
+};
+
+const SAVED_KEY = 'im_amdi_checklist';
+let checkState = {};
+
+function loadChecklist() {
+  try { checkState = JSON.parse(localStorage.getItem(SAVED_KEY) || '{}'); } catch {}
+}
+
+function saveChecklist() {
+  localStorage.setItem(SAVED_KEY, JSON.stringify(checkState));
+}
+
+function renderChecklist(clId) {
+  const items = CHECKLISTS[clId];
+  const container = document.getElementById(clId);
+  const pctEl = document.getElementById('pct' + clId.slice(-1));
+  let done = 0;
+  container.innerHTML = items.map((item, i) => {
+    const key = clId + '_' + i;
+    const isDone = !!checkState[key];
+    if (isDone) done++;
+    return `
+      <div class="check-item ${isDone?'done':''}" onclick="toggleCheck('${clId}',${i})">
+        <div class="check-box">${isDone?'✓':''}</div>
+        <div class="check-text">
+          <strong>${item.label}</strong>
+          <div class="check-tag">${item.sub}</div>
+        </div>
+      </div>`;
+  }).join('');
+  pctEl.textContent = `${done}/${items.length}`;
+}
+
+function toggleCheck(clId, i) {
+  const key = clId + '_' + i;
+  checkState[key] = !checkState[key];
+  saveChecklist();
+  renderChecklist(clId);
+}
+
+function resetChecklist() {
+  if (!confirm('Réinitialiser toute la checklist ?')) return;
+  checkState = {};
+  saveChecklist();
+  Object.keys(CHECKLISTS).forEach(renderChecklist);
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  loadChecklist();
+  Object.keys(CHECKLISTS).forEach(renderChecklist);
+  calcEligibilite();
+});
+</script>
+<script src='lib/upgrade-modal.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

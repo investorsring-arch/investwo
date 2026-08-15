@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur des Coûts d'Installation — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --danger:#C0392B;--warning:#E67E22;
+  --border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.header{position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(184,134,42,0.2)}
+.header-left{display:flex;align-items:center;gap:16px}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.module-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,0.12);border:1px solid rgba(184,134,42,0.25);padding:4px 10px;border-radius:100px}
+.data-tag{font-size:11px;color:rgba(255,255,255,0.25);font-family:var(--font-mono)}
+
+.page{max-width:1200px;margin:0 auto;padding:32px 32px 80px}
+.page-hero{text-align:center;margin-bottom:36px}
+.page-label{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px}
+.page-title{font-family:var(--font-title);font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:8px}
+.page-sub{font-size:14px;color:var(--smoke);max-width:580px;margin:0 auto;line-height:1.7}
+
+.tabs{display:flex;gap:4px;background:var(--bg2);border-radius:12px;padding:4px;width:fit-content;margin:0 auto 36px;flex-wrap:wrap;justify-content:center}
+.tab{padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--smoke);transition:all 0.2s;font-family:var(--font-body)}
+.tab.active{background:var(--white);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+
+/* CALCULATEUR */
+.calc-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+@media(max-width:900px){.calc-layout{grid-template-columns:1fr}}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px}
+.card-title{font-family:var(--font-title);font-size:17px;font-weight:700;margin-bottom:22px;display:flex;align-items:center;gap:8px}
+.card-title .badge{font-family:var(--font-mono);font-size:10px;color:var(--gold);background:var(--gold-pale);padding:3px 8px;border-radius:4px}
+
+.field{margin-bottom:18px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.source-note{font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:3px}
+select,.num-input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--font-body);font-size:13.5px;color:var(--ink);background:var(--bg);outline:none;transition:border-color 0.2s}
+select:focus,.num-input:focus{border-color:var(--gold)}
+
+.slider-row{display:flex;gap:10px;align-items:center;margin-top:4px}
+input[type=range]{flex:1;height:4px;accent-color:var(--gold);cursor:pointer;border:none;background:linear-gradient(to right, var(--gold) 0%, var(--bg2) 0%)}
+.sv{font-family:var(--font-mono);font-size:12px;color:var(--gold);min-width:100px;text-align:right}
+
+/* RÉSULTATS */
+.result-dark{background:var(--ink);border-radius:16px;padding:28px;color:var(--white)}
+.result-title{font-family:var(--font-title);font-size:16px;font-weight:700;color:var(--gold-light);margin-bottom:20px}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13.5px}
+.result-row:last-of-type{border-bottom:none}
+.rl{color:rgba(255,255,255,0.5)}
+.rv{font-family:var(--font-mono);color:var(--white)}
+.result-row.hl .rl{color:rgba(255,255,255,0.8);font-weight:600}
+.result-row.hl .rv{color:var(--gold-light)}
+.result-row.total{background:rgba(184,134,42,0.1);border-radius:8px;padding:12px 14px;margin-top:8px}
+.result-row.total .rl{color:var(--gold-light);font-weight:700}
+.result-row.total .rv{color:var(--gold-light);font-size:17px}
+
+/* PIE */
+.pie-wrap{margin-top:20px}
+.pie-label-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pie-legend{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.6)}
+.pie-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* SOURCE TAG */
+.src{font-family:var(--font-mono);font-size:10px;background:rgba(184,134,42,0.1);border:1px solid rgba(184,134,42,0.2);color:var(--gold-light);padding:3px 8px;border-radius:4px;display:inline-block;margin:2px}
+
+/* TABLEAU RÉGIONAL */
+table.regions{width:100%;border-collapse:collapse;font-size:13px}
+table.regions th{background:var(--ink);color:var(--gold-light);font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;padding:10px 12px;text-align:left;white-space:nowrap}
+table.regions td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--ink-soft);vertical-align:top}
+table.regions tr:hover td{background:var(--gold-pale)}
+table.regions .r-name{font-weight:700;color:var(--ink);font-size:12.5px}
+table.regions .zai-badge{font-family:var(--font-mono);font-size:9px;background:rgba(26,107,60,0.1);color:var(--success);padding:2px 7px;border-radius:4px}
+table.regions .cri-link{font-size:11px;color:var(--accent);text-decoration:none}
+table.regions .cri-link:hover{color:var(--gold)}
+
+/* BENCHMARK */
+.bench-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.bench-controls select{width:auto;padding:7px 12px;font-size:12.5px}
+.bench-controls label{font-size:12px;font-weight:600;color:var(--ink-soft);white-space:nowrap}
+.sort-btn{padding:6px 14px;font-family:var(--font-mono);font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;cursor:pointer;color:var(--ink-soft);transition:all 0.2s;white-space:nowrap}
+.sort-btn:hover,.sort-btn.active{background:var(--ink);color:var(--gold-light);border-color:var(--ink)}
+
+table.bench{width:100%;border-collapse:collapse;font-size:12.5px}
+table.bench th{background:var(--ink-mid);color:var(--gold-light);font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;padding:10px 12px;text-align:left;cursor:pointer;user-select:none;white-space:nowrap}
+table.bench th:hover{background:var(--ink);color:var(--gold-light)}
+table.bench td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--ink-soft);vertical-align:middle}
+table.bench tr:hover td{background:rgba(184,134,42,0.03)}
+table.bench .b-country{font-weight:700;color:var(--ink);font-size:13px;white-space:nowrap}
+table.bench .b-maroc td{background:rgba(184,134,42,0.05)}
+table.bench .b-maroc .b-country{color:var(--gold)}
+
+/* Bar mini */
+.bar-mini{display:flex;align-items:center;gap:6px}
+.bar-bg{flex:1;height:5px;background:rgba(0,0,0,0.06);border-radius:99px;min-width:60px;max-width:90px}
+.bar-fill{height:5px;border-radius:99px;transition:width 0.3s}
+.bar-val{font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);white-space:nowrap}
+
+/* Delta badge */
+.delta{display:inline-flex;align-items:center;gap:3px;font-family:var(--font-mono);font-size:10px;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.delta.better{background:rgba(26,107,60,0.1);color:var(--success)}
+.delta.worse{background:rgba(192,57,43,0.08);color:var(--danger)}
+.delta.neutral{background:rgba(0,0,0,0.05);color:var(--smoke)}
+
+/* Region badge */
+.reg-badge{font-family:var(--font-mono);font-size:9px;padding:2px 6px;border-radius:3px;background:var(--bg2);color:var(--smoke);white-space:nowrap}
+
+/* Légende avantage */
+.bench-note-cell{font-size:11px;color:var(--smoke);max-width:200px;line-height:1.4}
+.note-data{font-size:11px;color:var(--smoke);font-family:var(--font-mono);margin-top:16px;line-height:1.6;padding:12px;background:var(--bg2);border-radius:8px}
+
+/* Légende comparatif */
+.legend-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px;font-size:11px}
+.legend-item{display:flex;align-items:center;gap:5px;color:var(--ink-soft)}
+
+/* Stats cards */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:760px){.stats-bar{grid-template-columns:1fr 1fr}}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.stat-label{font-family:var(--font-mono);font-size:10px;color:var(--smoke);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px}
+.stat-val{font-family:var(--font-title);font-size:22px;font-weight:800;color:var(--gold)}
+.stat-sub{font-size:11px;color:var(--smoke);margin-top:2px}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="landing.html" class="back-btn">← Retour</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="module-badge">Module 06 · Simulateur Coûts</div>
+  </div>
+  <div class="data-tag">SMIG 2026 · CNSS 2024 · Lydec/Redal/TFZ · ILO/WB 2025</div>
+</header>
+
+<div class="page">
+  <div class="page-hero">
+    <div class="page-label">Calculateur · Régions · Benchmark 20 pays</div>
+    <h1 class="page-title">Simulateur des Coûts d'Installation</h1>
+    <p class="page-sub">Masse salariale, charges sociales, énergie, eau, télécoms — calculés en temps réel. Positionnement Maroc face à 19 destinations d'investissement mondiales.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('calc',this)">⚙️ Simulateur</button>
+    <button class="tab" onclick="switchTab('regions',this)">🗺 12 Régions</button>
+    <button class="tab" onclick="switchTab('bench',this)">🌍 Benchmark 20 pays</button>
+  </div>
+
+  <!-- ══ CALCULATEUR ══ -->
+  <div id="tab-calc">
+    <div class="calc-layout">
+      <div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-title">Paramètres d'exploitation <span class="badge">Temps réel</span></div>
+          <div class="field">
+            <label>Ville / Zone d'implantation</label>
+            <select id="ville" onchange="calc()">
+              <option value="casa">Casablanca (Lydec)</option>
+              <option value="rabat">Rabat (Redal)</option>
+              <option value="tanger-zf">Tanger Zone Franche (TFZ)</option>
+              <option value="tanger-ville">Tanger Ville</option>
+              <option value="fes">Fès-Meknès</option>
+              <option value="autres">Autres villes (tarifs moyens)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Secteur d'activité</label>
+            <select id="secteur" onchange="calc()">
+              <option value="industrie">Industrie / Production</option>
+              <option value="services">Services / Bureau</option>
+              <option value="agri">Agriculture</option>
+              <option value="hotellerie">Hôtellerie / Restauration</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-title">Masse salariale</div>
+          <div class="field">
+            <label>Nombre d'employés</label>
+            <div class="slider-row">
+              <input type="range" id="nb-emp" min="1" max="500" value="20" oninput="syncSlider('nb-emp','nb-emp-v',v=>v+' employés');calc()">
+              <span class="sv" id="nb-emp-v">20 employés</span>
+            </div>
+            <div class="source-note">SMIG industrie/commerce : <strong>17,92 MAD/h</strong> (191,33h/mois = 3 429 MAD/mois) · Décret n°2.25.983 · janv. 2026</div>
+          </div>
+          <div class="field">
+            <label>Salaire brut mensuel moyen par employé (MAD)</label>
+            <div class="slider-row">
+              <input type="range" id="salaire" min="3429" max="50000" step="500" value="6000" oninput="syncSlider('salaire','salaire-v',v=>parseInt(v).toLocaleString('fr-FR')+' MAD');calc()">
+              <span class="sv" id="salaire-v">6 000 MAD</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-title">Énergie électrique</div>
+          <div class="field">
+            <label>Puissance souscrite (kVA)</label>
+            <div class="slider-row">
+              <input type="range" id="puissance" min="10" max="1000" step="10" value="100" oninput="syncSlider('puissance','puissance-v',v=>v+' kVA');calc()">
+              <span class="sv" id="puissance-v">100 kVA</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Consommation mensuelle totale (kWh)</label>
+            <div class="slider-row">
+              <input type="range" id="kwh" min="100" max="100000" step="100" value="5000" oninput="syncSlider('kwh','kwh-v',v=>parseInt(v).toLocaleString('fr-FR')+' kWh');calc()">
+              <span class="sv" id="kwh-v">5 000 kWh</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Répartition Heures Creuses / Pleines / Pointe</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+              <div><label style="font-size:11px">HC %</label><input type="number" class="num-input" id="pct-hc" value="40" min="0" max="100" oninput="calc()"></div>
+              <div><label style="font-size:11px">HP %</label><input type="number" class="num-input" id="pct-hp" value="45" min="0" max="100" oninput="calc()"></div>
+              <div><label style="font-size:11px">Pointe %</label><input type="number" class="num-input" id="pct-pt" value="15" min="0" max="100" oninput="calc()"></div>
+            </div>
+            <div class="source-note">Source : Lydec, Redal, TFZ — tarifs HT · TVA 14% applicable</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Eau & Télécommunications</div>
+          <div class="field">
+            <label>Consommation eau mensuelle (m³)</label>
+            <div class="slider-row">
+              <input type="range" id="eau" min="0" max="5000" step="10" value="100" oninput="syncSlider('eau','eau-v',v=>parseInt(v).toLocaleString('fr-FR')+' m³');calc()">
+              <span class="sv" id="eau-v">100 m³</span>
+            </div>
+            <div class="source-note">Industriel Casablanca : 20 MAD fixe + 8,79 MAD/m³ HT · TVA 7%</div>
+          </div>
+          <div class="field">
+            <label>Forfait Télécoms mensuel</label>
+            <select id="telecom" onchange="calc()">
+              <option value="basic">ADSL + mobile — 123 MAD/mois</option>
+              <option value="fibre" selected>Fibre 100M + mobile — 520 MAD/mois</option>
+              <option value="pro">Pack Pro multi-lignes — 1 200 MAD/mois</option>
+            </select>
+            <div class="source-note">Source : ANRT · IAM / Inwi / Orange Maroc</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RÉSULTATS -->
+      <div class="result-dark" id="results-panel">
+        <div class="result-title">📊 Coût mensuel estimé</div>
+        <div id="result-rows"></div>
+        <div class="pie-wrap">
+          <div style="font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px">Répartition des coûts</div>
+          <svg id="pie-chart" width="120" height="120" viewBox="0 0 120 120"></svg>
+          <div class="pie-label-row" id="pie-legend"></div>
+        </div>
+        <div style="margin-top:16px">
+          <span class="src">SMIG Décret 2.25.983 · 2026</span>
+          <span class="src">CNSS 2024</span>
+          <span class="src">Lydec/Redal/TFZ</span>
+          <span class="src">ANRT 2024</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RÉGIONS ══ -->
+  <div id="tab-regions" style="display:none">
+    <div class="card">
+      <div class="card-title">Comparateur — 12 Régions du Maroc <span class="badge">Guide AMDIE</span></div>
+      <div style="overflow-x:auto">
+        <table class="regions" id="regions-table">
+          <thead><tr>
+            <th>Région</th><th>CRI</th><th>ZAI Disponible</th><th>Secteurs prioritaires</th><th>Avantages spécifiques</th><th>Lien CRI</th>
+          </tr></thead>
+          <tbody id="regions-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ BENCHMARK ══ -->
+  <div id="tab-bench" style="display:none">
+
+    <!-- Stats -->
+    <div class="stats-bar" id="stats-bar"></div>
+
+    <div class="card">
+      <div class="card-title">Maroc vs 19 destinations mondiales <span class="badge">Données 2024–2026</span></div>
+
+      <!-- Contrôles -->
+      <div class="bench-controls">
+        <div style="display:flex;align-items:center;gap:8px">
+          <label>Région</label>
+          <select id="filter-region" onchange="renderBench()">
+            <option value="">Toutes les régions</option>
+            <option value="Afrique du Nord">Afrique du Nord</option>
+            <option value="Afrique de l'Ouest">Afrique de l'Ouest</option>
+            <option value="Afrique de l'Est">Afrique de l'Est</option>
+            <option value="Afrique australe">Afrique australe</option>
+            <option value="Europe">Europe</option>
+            <option value="Amériques">Amériques</option>
+            <option value="Asie">Asie</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <label>Trier par</label>
+          <button class="sort-btn" onclick="setSortBench('smig',this)">SMIG ↕</button>
+          <button class="sort-btn" onclick="setSortBench('charges',this)">Charges ↕</button>
+          <button class="sort-btn" onclick="setSortBench('is',this)">IS ↕</button>
+          <button class="sort-btn" onclick="setSortBench('kwh',this)">Énergie ↕</button>
+          <button class="sort-btn" onclick="setSortBench('delai',this)">Délai ↕</button>
+        </div>
+      </div>
+
+      <!-- Légende -->
+      <div class="legend-row">
+        <div class="legend-item"><span class="delta better">▼ Moins cher</span> que le Maroc</div>
+        <div class="legend-item"><span class="delta worse">▲ Plus cher</span> que le Maroc</div>
+        <div class="legend-item"><span class="delta neutral">≈ Comparable</span></div>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table class="bench" id="bench-table">
+          <thead>
+            <tr>
+              <th onclick="setSortBench('pays',this)">Pays</th>
+              <th>Région</th>
+              <th onclick="setSortBench('smig',this)">SMIG/mois (USD)</th>
+              <th onclick="setSortBench('charges',this)">Charges patron. %</th>
+              <th onclick="setSortBench('is',this)">IS standard %</th>
+              <th onclick="setSortBench('kwh',this)">kWh industrie (USD)</th>
+              <th onclick="setSortBench('delai',this)">Délai création (j)</th>
+              <th onclick="setSortBench('db',this)">Score DB 2020</th>
+              <th>Notes investisseur</th>
+            </tr>
+          </thead>
+          <tbody id="bench-body"></tbody>
+        </table>
+      </div>
+
+      <div class="note-data">
+        <strong>Sources :</strong> ILO (OIT) · World Bank B-READY / Doing Business 2020 · KPMG Tax Summaries 2024 · GlobalPetrolPrices.com (jan. 2025) · ISSA Contribution Rates 2024 · SMIG Maroc : Décret n°2.25.983 (janv. 2026) · Upsilon Consulting · Tax Foundation 2024<br>
+        <strong>Maroc :</strong> SMIG 17,92 MAD/h · 3 429 MAD/mois brut · IS progressif 10% / 20% / 35% (CGI 2025) · ZAI : IS 0% sur 5 ans · CFC : taux réduit permanent · CNSS patronal 21,09% + AMO 2,26% + Formation 1,6% + autres = 27,83% total<br>
+        ⚠ Données indicatives à des fins de comparaison. Les taux effectifs peuvent varier selon secteur, statut, accords bilatéraux et conventions collectives. Actualisation annuelle recommandée.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// MODULE 06 — Simulateur des Coûts d'Installation
+// Smart-Invest.ia · v2.1 · Mai 2026
+// Sources : SMIG Décret 2.25.983 (janv.2026), CNSS 2024, Lydec/Redal/TFZ, ILO, WB, KPMG
+// ══════════════════════════════════════════
+
+// ── TABS ──
+function switchTab(tab, btn) {
+  ['calc','regions','bench'].forEach(t => document.getElementById('tab-'+t).style.display = t===tab?'block':'none');
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab==='regions') renderRegions();
+  if(tab==='bench') { renderBenchStats(); renderBench(); }
+}
+
+// ── SLIDER SYNC ──
+function syncSlider(id, labelId, fmt) {
+  const v = document.getElementById(id).value;
+  document.getElementById(labelId).textContent = fmt(v);
+  const pct = (v - document.getElementById(id).min) / (document.getElementById(id).max - document.getElementById(id).min) * 100;
+  document.getElementById(id).style.background = `linear-gradient(to right, var(--gold) ${pct}%, var(--bg2) ${pct}%)`;
+}
+
+// ── TARIFS ÉNERGIE PAR VILLE ──
+const TARIFS = {
+  'casa':      { redev:526.58, hc:0.6985, hp:0.9514, pt:1.3304, eau_fixe:20, eau_m3:8.79,  ass_fixe:28, ass_m3:4.58 },
+  'rabat':     { redev:449.68, hc:0.6493, hp:0.9225, pt:1.2865, eau_fixe:20, eau_m3:8.737, ass_fixe:20, ass_m3:3.4811 },
+  'tanger-zf': { redev:503.92, hc:0.7381, hp:0.9485, pt:1.2589, eau_fixe:10, eau_m3:5.90,  ass_fixe:20, ass_m3:3.00 },
+  'tanger-ville':{ redev:490, hc:0.72, hp:0.93, pt:1.27, eau_fixe:18, eau_m3:7.50, ass_fixe:22, ass_m3:3.80 },
+  'fes':       { redev:460, hc:0.67, hp:0.92, pt:1.26, eau_fixe:18, eau_m3:8.00, ass_fixe:20, ass_m3:3.60 },
+  'autres':    { redev:480, hc:0.69, hp:0.93, pt:1.28, eau_fixe:18, eau_m3:8.50, ass_fixe:22, ass_m3:4.00 },
+};
+
+const TELECOM_COSTS = { basic:123, fibre:520, pro:1200 };
+const CNSS_PATRON = 0.2109; // 21,09% — part patronale principale CNSS
+const CNSS_TOTAL  = 0.2783; // 27,83% — total charges patronales (CNSS + AMO + TFP + OFPPT)
+
+// ── CALCUL PRINCIPAL ──
+function calc() {
+  const ville   = document.getElementById('ville').value;
+  const secteur = document.getElementById('secteur').value;
+  const nbEmp   = parseInt(document.getElementById('nb-emp').value)||0;
+  const salaire = parseFloat(document.getElementById('salaire').value)||0;
+  const puissance = parseFloat(document.getElementById('puissance').value)||0;
+  const kwh       = parseFloat(document.getElementById('kwh').value)||0;
+  const pctHC = (parseFloat(document.getElementById('pct-hc').value)||0)/100;
+  const pctHP = (parseFloat(document.getElementById('pct-hp').value)||0)/100;
+  const pctPT = (parseFloat(document.getElementById('pct-pt').value)||0)/100;
+  const eauM3  = parseFloat(document.getElementById('eau').value)||0;
+  const telecom = TELECOM_COSTS[document.getElementById('telecom').value]||0;
+  const t = TARIFS[ville];
+
+  // SMIG 2026 — Décret n°2.25.983
+  const smig = secteur === 'agri' ? 97.44*26 : 17.92*191.33;
+  const salaire_effectif = Math.max(salaire, smig);
+
+  const masse_sal      = nbEmp * salaire_effectif;
+  const charges_tot    = masse_sal * CNSS_TOTAL;
+  const cout_employeur = masse_sal + charges_tot;
+
+  const elec_redev = (puissance * t.redev) / 12;
+  const elec_conso = kwh * (pctHC*t.hc + pctHP*t.hp + pctPT*t.pt);
+  const elec_ht    = elec_redev + elec_conso;
+  const elec_ttc   = elec_ht * 1.14;
+
+  const eau_ht    = t.eau_fixe + eauM3 * t.eau_m3;
+  const eau_ttc   = eau_ht * 1.07;
+  const ass_ht    = t.ass_fixe + eauM3 * t.ass_m3;
+  const ass_ttc   = ass_ht * 1.07;
+  const telecom_ttc = telecom * 1.20;
+
+  const total_mensuel = cout_employeur + elec_ttc + eau_ttc + ass_ttc + telecom_ttc;
+  const total_annuel  = total_mensuel * 12;
+
+  const fmt = n => Math.round(n).toLocaleString('fr-FR') + ' MAD';
+
+  document.getElementById('result-rows').innerHTML = `
+    <div class="result-row hl"><span class="rl">Masse salariale brute</span><span class="rv">${fmt(masse_sal)}</span></div>
+    <div class="result-row"><span class="rl">→ dont SMIG plancher/employé (2026)</span><span class="rv">${fmt(smig)}</span></div>
+    <div class="result-row"><span class="rl">Charges patronales totales (27,83%)</span><span class="rv">${fmt(charges_tot)}</span></div>
+    <div class="result-row hl"><span class="rl">Coût total employeur</span><span class="rv">${fmt(cout_employeur)}</span></div>
+    <div style="height:1px;background:rgba(255,255,255,0.06);margin:8px 0"></div>
+    <div class="result-row"><span class="rl">Électricité HT (conso + redevance)</span><span class="rv">${fmt(elec_ht)}</span></div>
+    <div class="result-row"><span class="rl">Électricité TTC (TVA 14%)</span><span class="rv">${fmt(elec_ttc)}</span></div>
+    <div class="result-row"><span class="rl">Eau TTC (TVA 7%)</span><span class="rv">${fmt(eau_ttc)}</span></div>
+    <div class="result-row"><span class="rl">Assainissement TTC</span><span class="rv">${fmt(ass_ttc)}</span></div>
+    <div class="result-row"><span class="rl">Télécoms TTC</span><span class="rv">${fmt(telecom_ttc)}</span></div>
+    <div style="height:1px;background:rgba(255,255,255,0.06);margin:8px 0"></div>
+    <div class="result-row total"><span class="rl">TOTAL mensuel d'exploitation</span><span class="rv">${fmt(total_mensuel)}</span></div>
+    <div class="result-row" style="margin-top:6px"><span class="rl">TOTAL annuel estimé</span><span class="rv" style="color:#4ADE80;font-size:14px">${fmt(total_annuel)}</span></div>
+    <div class="result-row"><span class="rl">Coût employeur moyen / salarié</span><span class="rv">${nbEmp>0?fmt(cout_employeur/nbEmp):'–'}</span></div>
+  `;
+
+  const pieData = [
+    { label:'Masse salariale + charges', val: cout_employeur, color:'#F0C460' },
+    { label:'Électricité', val: elec_ttc, color:'#B8862A' },
+    { label:'Eau & Assainissement', val: eau_ttc+ass_ttc, color:'#7A5520' },
+    { label:'Télécoms', val: telecom_ttc, color:'#4A7A8A' },
+  ].filter(d => d.val > 0);
+
+  renderPie(pieData, total_mensuel);
+}
+
+function renderPie(data, total) {
+  if(total === 0) return;
+  let angle = -Math.PI/2;
+  const cx=60, cy=60, r=50;
+  let paths='', legends='';
+  data.forEach(d => {
+    const slice = (d.val/total) * Math.PI*2;
+    const x1 = cx + r*Math.cos(angle);
+    const y1 = cy + r*Math.sin(angle);
+    angle += slice;
+    const x2 = cx + r*Math.cos(angle);
+    const y2 = cy + r*Math.sin(angle);
+    const large = slice > Math.PI ? 1 : 0;
+    paths += `<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r} 0 ${large},1 ${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${d.color}" stroke="#0E0E0C" stroke-width="1.5"/>`;
+    legends += `<div class="pie-legend"><div class="pie-dot" style="background:${d.color}"></div>${d.label} (${(d.val/total*100).toFixed(0)}%)</div>`;
+  });
+  document.getElementById('pie-chart').innerHTML = paths;
+  document.getElementById('pie-legend').innerHTML = legends;
+}
+
+// ── RÉGIONS ──
+const REGIONS_DATA = [
+  { nom:'Casablanca-Settat', cri:'casainvest.ma', zai:'ZAI Casablanca, ZI Bouskoura, CFC', secteurs:'Finance, Industrie, Services, Export', avantages:'Hub financier CFC, port Casablanca, réseau bancaire dense', lien:'http://www.casainvest.ma' },
+  { nom:'Tanger-Tétouan-Al Hoceïma', cri:'investangier.com', zai:'ZAI Tanger (Villed & TFZ), ZI Meloussa', secteurs:'Automobile, Aéronautique, Logistique, Textile', avantages:'Port Tanger Med (1er port Afrique), accès Europe, TFZ exonérations complètes', lien:'http://www.investangier.com' },
+  { nom:'Rabat-Salé-Kénitra', cri:'rabatinvest.ma', zai:'ZAI Kénitra (Atlantic Free Zone)', secteurs:'Automobile, TIC, Administration, Services', avantages:'Proximité capitale, PSA Kénitra, administrations centrales, universités', lien:'http://www.rabatinvest.ma' },
+  { nom:'Fès-Meknès', cri:'fesmeknesinvest.ma', zai:'ZI Sidi Brahim, ZAI Fès', secteurs:'Cuir/Maroquinerie, Textile, Agroalimentaire, Artisanat', avantages:"Main d'œuvre qualifiée, coûts fonciers bas, artisanat traditionnel", lien:'http://www.fesmeknesinvest.ma' },
+  { nom:'Marrakech-Safi', cri:'crimarrakech.ma', zai:'ZI Sidi Ghanem, ZI Ain Taoujdate', secteurs:'Tourisme, Hôtellerie, Agroalimentaire, Artisanat', avantages:'Hub touristique mondial, aéroport international, foncier compétitif', lien:'http://www.crimarrakech.ma' },
+  { nom:'Souss-Massa', cri:'agadirinvest.com', zai:'ZAI Ait Melloul, ZI Ait Melloul', secteurs:'Pêche, Agroalimentaire, Arganier, Tourisme', avantages:'1er port de pêche, agriculture de contre-saison, potentiel agri-export', lien:'http://www.agadirinvest.com' },
+  { nom:'Oriental', cri:'orientalinvest.ma', zai:'ZI Selouane, ZI Oujda', secteurs:'Mines, Agroalimentaire, Commerce transfrontalier', avantages:'Frontière Algérie (potentiel), ressources minières, coûts faibles', lien:'http://www.orientalinvest.ma' },
+  { nom:'Béni Mellal-Khénifra', cri:'coeurdumaroc.ma', zai:'ZI Béni Mellal', secteurs:'Mines (phosphates), Agriculture, Agroalimentaire', avantages:'OCP phosphates, eau abondante (barrages), position géographique centrale', lien:'http://www.coeurdumaroc.ma' },
+  { nom:'Drâa-Tafilalet', cri:'—', zai:'Aucune ZAI', secteurs:'Tourisme saharien, Artisanat, Dattes, Énergie solaire', avantages:'Potentiel solaire (ensoleillement), tourisme désert, authenticité culturelle', lien:'#' },
+  { nom:'Guelmim-Oued Noun', cri:'guelmiminvest.ma', zai:'En développement', secteurs:'Pêche, Logistique, Énergie solaire/éolienne', avantages:'Zone de développement prioritaire, avantages fiscaux spécifiques Sud', lien:'#' },
+  { nom:'Laâyoune-Sakia El Hamra', cri:'laayouneinvest.ma', zai:'ZI Laâyoune', secteurs:'Pêche, Phosphates, Ressources naturelles, Énergies', avantages:'IS 0% pour sociétés actives dans la région, exonérations TVA, avantages spécifiques Provinces du Sud', lien:'http://www.laayouneinvest.ma' },
+  { nom:'Dakhla-Oued Eddahab', cri:'dakhlaconnect.com', zai:'Pôle Atlantique en création', secteurs:'Pêche hauturière, Énergie éolienne, Tourisme haut de gamme', avantages:'Pôle Atlantique émergent, vent 300j/an (éolien), kite-surf mondial, IS 0% Provinces Sud', lien:'http://www.dakhlaconnect.com' },
+];
+
+function renderRegions() {
+  document.getElementById('regions-body').innerHTML = REGIONS_DATA.map(r => `
+    <tr>
+      <td class="r-name">${r.nom}</td>
+      <td style="font-family:var(--font-mono);font-size:11px">${r.cri}</td>
+      <td>${(r.zai.includes('ZAI')||r.zai.includes('ZI'))?`<span class="zai-badge">${r.zai}</span>`:r.zai}</td>
+      <td style="font-size:12px">${r.secteurs}</td>
+      <td style="font-size:12px">${r.avantages}</td>
+      <td>${r.lien!=='#'?`<a href="${r.lien}" target="_blank" class="cri-link">→ CRI</a>`:'—'}</td>
+    </tr>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════
+// BENCHMARK INTERNATIONAL — 20 PAYS
+// Sources validées : ILO · KPMG Tax Summaries 2024 · GlobalPetrolPrices.com
+//                    ISSA Contribution Rates 2024 · WB Doing Business 2020
+//                    SMIG Maroc : Décret 2.25.983 (janv.2026)
+// ══════════════════════════════════════════════════════════════════
+const BENCH_DATA = [
+
+  // ── RÉFÉRENCE MAROC ──────────────────────────────────────────────
+  {
+    pays:'🇲🇦 Maroc', region:'Afrique du Nord',
+    smig:350,       // 3 429 MAD ÷ 9,80 USD/MAD (janv.2026) · Décret n°2.25.983
+    charges:27.83,  // CNSS 21,09% + AMO 2,26% + TFP 1,6% + OFPPT + autres
+    is:'10–35',     // CGI 2025 : ≤300k→10% / 300k–1M→20% / >1M→35% (progressif)
+    isNum:22,       // valeur médiane pour tri
+    kwh:0.10,       // Tarif HT industrie MT · Lydec/Redal (moy. pondérée HC+HP+Pointe)
+    delai:9,        // Délai moyen création SARL via CRI (72h procédure accélérée)
+    db:'Réf.',
+    dbNum:0,
+    note:'IS 0% ZAI sur 5 ans. CRI en 72h. SMIG +10% entre 2024–2026 (accord tripartite). 28 ALE actifs.',
+    maroc:true
+  },
+
+  // ── AFRIQUE DU NORD & MOYEN-ORIENT ───────────────────────────────
+  {
+    pays:'🇹🇳 Tunisie', region:'Afrique du Nord',
+    smig:195,       // SMIG TND 450/mois ÷ 3,0 TND/USD (2025)
+    charges:16.57,  // Employeur CNSS Tunisie : 16,57% (régime général)
+    is:25,          // IS standard 2024 · KPMG Tunisia
+    isNum:25, kwh:0.07, delai:11, db:'78', dbNum:78,
+    note:'Régime fiscal stable. Accords bilatéraux UE. Risque change TND.'
+  },
+  {
+    pays:'🇪🇬 Égypte', region:'Afrique du Nord',
+    smig:140,       // SMIG EGP 6 000/mois ÷ ~43 EGP/USD (dévaluation 2024)
+    charges:26.0,   // Employeur : 18,75% assurance sociale + fonds pension ~7,25%
+    is:22.5,        // IS Égypte 2024 (taux progressif, taux effectif PME ~22,5%)
+    isNum:22.5, kwh:0.04, delai:11, db:'114', dbNum:114,
+    note:'Énergie industrielle la moins chère du benchmark. Forte dévaluation EGP (risque change).'
+  },
+
+  // ── AFRIQUE DE L'OUEST ────────────────────────────────────────────
+  {
+    pays:'🇸🇳 Sénégal', region:"Afrique de l'Ouest",
+    smig:175,       // SMIG FCFA 100 000/mois (2024) ÷ ~570 CFA/USD
+    charges:17.0,   // CSS + IPRES employeur ~17% total
+    is:30,          // IS 30% · CGI Sénégal 2024
+    isNum:30, kwh:0.17, delai:6, db:'123', dbNum:123,
+    note:'Hub CEDEAO. Énergie chère (thermique subventionné). Stabilité institutionnelle améliorée.'
+  },
+  {
+    pays:"🇨🇮 Côte d'Ivoire", region:"Afrique de l'Ouest",
+    smig:125,       // SMIG FCFA 75 000/mois ÷ ~600 CFA/USD
+    charges:18.4,   // CNPS employeur (prévoyance + retraite + accidents) ~18,4%
+    is:25,          // IS standard Code Général des Impôts 2024
+    isNum:25, kwh:0.12, delai:6, db:'110', dbNum:110,
+    note:"1ère économie Afrique de l'Ouest. Croissance ~6–7%/an. CFA arrimé EUR = stabilité change."
+  },
+  {
+    pays:'🇬🇭 Ghana', region:"Afrique de l'Ouest",
+    smig:90,        // SMIG GHS 18,15/jour × 26j ÷ ~14 GHS/USD (2024)
+    charges:13.0,   // SSNIT patronal 13% (Social Security National Insurance Trust)
+    is:25,          // IS standard Ghana 2024
+    isNum:25, kwh:0.08, delai:14, db:'118', dbNum:118,
+    note:'Charges patronales compétitives. Cedi (GHS) volatil. Instabilité tarifaire énergie.'
+  },
+
+  // ── AFRIQUE AUSTRALE ──────────────────────────────────────────────
+  {
+    pays:'🇿🇦 Afr. du Sud', region:'Afrique australe',
+    smig:350,       // SMIG ZAR 4 579/mois ÷ ~18,5 ZAR/USD (2024)
+    charges:2.0,    // UIF 1% + SDL (Skills Levy) 1% — pas de cotis. retraite obligatoire
+    is:27,          // IS 27% depuis 2022 · National Treasury
+    isNum:27, kwh:0.09, delai:40, db:'84', dbNum:84,
+    note:'Cotisations patronales parmi les plus basses. Délais admin élevés. Load-shedding électrique résiduel.'
+  },
+
+  // ── AFRIQUE DE L'EST ──────────────────────────────────────────────
+  {
+    pays:'🇪🇹 Éthiopie', region:"Afrique de l'Est",
+    smig:45,        // Pas de SMIG national. Estimation marché main-d'œuvre non qualifiée industrie
+    charges:11.0,   // Cotisation retraite employeur : 11% · EPFO Ethiopia
+    is:30,          // IS progressif max 30% · Ethiopian Revenue Authority 2024
+    isNum:30, kwh:0.03, delai:15, db:'159', dbNum:159,
+    note:"Énergie la moins chère du benchmark (hydroélectrique subsidié). Pas de SMIG officiel. Main-d'œuvre très bon marché."
+  },
+  {
+    pays:'🇷🇼 Rwanda', region:"Afrique de l'Est",
+    smig:90,        // SMIG estimé RWF 50 000/mois ÷ ~1 300 RWF/USD
+    charges:12.5,   // RSSB : pension employeur 5% + assurance maladie 7,5%
+    is:30,          // IS 30% · RRA (Rwanda Revenue Authority) 2024
+    isNum:30, kwh:0.19, delai:4, db:'38', dbNum:38,
+    note:'Meilleur environnement des affaires Afrique (DB 2020 : rang 38). Énergie chère. Ecosystème numérique en essor.'
+  },
+
+  // ── EUROPE ────────────────────────────────────────────────────────
+  {
+    pays:'🇹🇷 Turquie', region:'Europe / Proche-Orient',
+    smig:530,       // TRY 17 002/mois ÷ ~32 TRY/USD (janv.2024, SMIG relevé +100% sur 2 ans)
+    charges:20.5,   // SGK employeur (assurance sociale + chômage + accident) ~20,5%
+    is:25,          // IS 25% (relevé de 20% en 2022) · Gelir İdaresi Başkanlığı
+    isNum:25, kwh:0.09, delai:7, db:'33', dbNum:33,
+    note:'SMIG en forte hausse post-inflation (×2 depuis 2022). Accès double marché EU/MENA. Risque change TRY.'
+  },
+  {
+    pays:'🇵🇹 Portugal', region:'Europe méridionale',
+    smig:960,       // EUR 820/mois (2024) × ~1,17 EUR/USD
+    charges:23.75,  // Sécurité sociale patronale 23,75% (Segurança Social)
+    is:21,          // IRC standard 21% · AT Portugal 2024 (PME <2M€ : 17%)
+    isNum:21, kwh:0.15, delai:6, db:'39', dbNum:39,
+    note:'Régime NHR attractif pour expatriés. Membre UE. Transition énergétique avancée (renouvelables >60%).'
+  },
+  {
+    pays:'🇷🇴 Roumanie', region:'Europe orientale',
+    smig:660,       // RON 3 300/mois ÷ ~4,97 RON/USD (oct.2023)
+    charges:2.25,   // Cotisation patronale résiduelle (CAM) 2,25% — contributions déplacées côté salarié
+    is:16,          // IS flat 16% · ANAF Romania 2024 (plus bas taux UE hors micro-entreprises)
+    isNum:16, kwh:0.12, delai:3, db:'55', dbNum:55,
+    note:"IS 16% parmi les plus compétitifs d'UE. Charges patronales quasi nulles (réforme 2018). Membre UE."
+  },
+  {
+    pays:'🇵🇱 Pologne', region:'Europe orientale',
+    smig:950,       // PLN 4 242/mois ÷ ~4,02 PLN/USD (2024)
+    charges:19.4,   // ZUS employeur : ~19,4% (retraite 9,76% + maladie 2,45% + accident ~1,67% + FP 2,45%)
+    is:19,          // CIT standard 19% · Ministerstwo Finansów (PME : 9%)
+    isNum:19, kwh:0.16, delai:5, db:'40', dbNum:40,
+    note:"Économie robuste UE. Coûts énergie industrielle élevés post-crise gazière 2022. Main-d'œuvre qualifiée."
+  },
+  {
+    pays:'🇪🇸 Espagne', region:'Europe occidentale',
+    smig:1200,      // EUR 1 080/mois (2024) × ~1,11 EUR/USD
+    charges:30.8,   // SS employeur : ~29,9% + FOGASA 0,2% + formation 0,7% = ~30,8%
+    is:25,          // IS standard 25% · AEAT 2024 (PME : 23%)
+    isNum:25, kwh:0.14, delai:12, db:'30', dbNum:30,
+    note:'Charges patronales parmi les plus lourdes du benchmark. Accès marché UE 450M. Tensions marché du travail.'
+  },
+
+  // ── AMÉRIQUES ─────────────────────────────────────────────────────
+  {
+    pays:'🇲🇽 Mexique', region:'Amériques',
+    smig:290,       // Zone frontalière 248,93 MXN/j × 26j ÷ ~17,5 MXN/USD (2024)
+    charges:33.0,   // IMSS ~24% + INFONAVIT 5% + SAR 2% + autres cotis. ~2% = ~33%
+    is:30,          // ISR entreprises 30% · SAT Mexico 2024
+    isNum:30, kwh:0.09, delai:8, db:'60', dbNum:60,
+    note:'Accès préférentiel USMCA (États-Unis + Canada). Charges patronales élevées. Poids dans les relations commerciales nearshoring.'
+  },
+
+  // ── ASIE DU SUD-EST ───────────────────────────────────────────────
+  {
+    pays:'🇻🇳 Vietnam', region:'Asie du Sud-Est',
+    smig:185,       // VND 4 680 000/mois (zone 1 la plus haute, 2024) ÷ ~25 300 VND/USD
+    charges:23.5,   // Employeur : assurance sociale 17,5% + santé 3% + chômage 1% + syndicat 2% = 23,5%
+    is:20,          // CIT 20% standard · Ministry of Finance Vietnam 2024
+    isNum:20, kwh:0.08, delai:6, db:'70', dbNum:70,
+    note:'Croissance industrielle rapide (+6%/an). Export-oriented. Filière électronique/textile en plein essor. Risque inflation salaires.'
+  },
+  {
+    pays:'🇹🇭 Thaïlande', region:'Asie du Sud-Est',
+    smig:290,       // THB 9 870/mois ÷ ~34 THB/USD (2025) · Mauve Group
+    charges:5.0,    // Sécurité sociale patronale 5% (SSO, plafonnée à THB 750/mois)
+    is:20,          // CIT standard 20% · Revenue Department Thailand 2024
+    isNum:20, kwh:0.11, delai:5, db:'21', dbNum:21,
+    note:'Cotisations sociales parmi les plus basses. Hub ASEAN (Toyota, Honda, WD). Infrastructure logistique excellente.'
+  },
+  {
+    pays:'🇲🇾 Malaisie', region:'Asie du Sud-Est',
+    smig:325,       // MYR 1 500/mois ÷ ~4,65 MYR/USD (2024)
+    charges:14.75,  // EPF employeur 13% + SOCSO 1,75% + EIS 0% (plafond atteint)
+    is:24,          // CIT 24% · LHDN Malaysia 2024 (PME : 17%)
+    isNum:24, kwh:0.04, delai:18, db:'12', dbNum:12,
+    note:"Top 12 mondial Doing Business 2020. Énergie industrielle parmi les moins chères d'Asie. Hub technologique régional."
+  },
+
+  // ── ASIE DU SUD ───────────────────────────────────────────────────
+  {
+    pays:'🇧🇩 Bangladesh', region:'Asie du Sud',
+    smig:85,        // Secteur confection BDT 8 000/mois (salaire min textile 2023) ÷ ~110 BDT/USD
+    charges:7.0,    // Provident Fund employeur 5% + assurance santé ~2% (hors secteurs formels)
+    is:27.5,        // CIT 27,5% (entreprises cotées) / 32,5% (non cotées) · NBR Bangladesh 2024
+    isNum:27.5, kwh:0.09, delai:19, db:'168', dbNum:168,
+    note:"Main-d'œuvre la moins chère du benchmark. Spécialisation confection/textile. Instabilité politique (2024). Infra limitée."
+  },
+  {
+    pays:'🇮🇳 Inde', region:'Asie du Sud',
+    smig:130,       // SMIG variable par État · INR 178/jour plancher national × 26j ÷ ~84 INR/USD
+    charges:25.0,   // PF employeur 12% + ESI 3,25% + bonus loi + divers ~25% (estimé secteur formel)
+    is:25,          // CIT 25% (chiffre d'affaires <400Cr) · Income Tax Act India 2024
+    isNum:25, kwh:0.07, delai:17, db:'63', dbNum:63,
+    note:'SMIG variable par État et secteur. Grand marché intérieur 1,4 Md. Réformes PLI (Production Linked Incentive) attractives.'
+  },
+];
+
+// ── SORT STATE ──
+let benchSortKey = null;
+let benchSortAsc = true;
+
+function setSortBench(key, btn) {
+  if(benchSortKey === key) benchSortAsc = !benchSortAsc;
+  else { benchSortKey = key; benchSortAsc = true; }
+  // Reset all sort buttons styling
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  // Highlight the clicked button
+  if(btn && btn.classList.contains('sort-btn')) btn.classList.add('active');
+  renderBench();
+}
+
+// ── STATS CARDS ──
+function renderBenchStats() {
+  const marocData = BENCH_DATA.find(d => d.maroc);
+  const smigVals   = BENCH_DATA.filter(d=>!d.maroc).map(d=>d.smig);
+  const chargeVals = BENCH_DATA.filter(d=>!d.maroc).map(d=>d.charges);
+  const kwhVals    = BENCH_DATA.filter(d=>!d.maroc).map(d=>d.kwh);
+  const cheaperSMIG    = smigVals.filter(v => v < marocData.smig).length;
+  const cheaperCharges = chargeVals.filter(v => v < marocData.charges).length;
+  const cheaperKwh     = kwhVals.filter(v => v < marocData.kwh).length;
+  const avgSMIG = Math.round(smigVals.reduce((a,b)=>a+b,0)/smigVals.length);
+
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">SMIG Maroc 2026</div>
+      <div class="stat-val">$350</div>
+      <div class="stat-sub">${cheaperSMIG}/19 pays moins chers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Charges patronales Maroc</div>
+      <div class="stat-val">27,83%</div>
+      <div class="stat-sub">${cheaperCharges}/19 pays moins chargés</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">SMIG moyen benchmark</div>
+      <div class="stat-val">$${avgSMIG}</div>
+      <div class="stat-sub">Médiane 20 pays analysés</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">kWh industrie Maroc</div>
+      <div class="stat-val">$0,10</div>
+      <div class="stat-sub">${cheaperKwh}/19 pays moins chers</div>
+    </div>
+  `;
+}
+
+// ── RENDER BENCHMARK ──
+function renderBench() {
+  const filterRegion = document.getElementById('filter-region').value;
+  const marocData    = BENCH_DATA.find(d => d.maroc);
+
+  let data = BENCH_DATA.filter(d => {
+    if(d.maroc) return true; // Toujours afficher Maroc
+    if(!filterRegion) return true;
+    return d.region.includes(filterRegion);
+  });
+
+  if(benchSortKey) {
+    const key = benchSortKey;
+    const marocRow = data.find(d => d.maroc);
+    const others   = data.filter(d => !d.maroc);
+    others.sort((a, b) => {
+      let va = key === 'is' ? a.isNum : key === 'db' ? a.dbNum : (typeof a[key] === 'string' ? a[key] : a[key]);
+      let vb = key === 'is' ? b.isNum : key === 'db' ? b.dbNum : (typeof b[key] === 'string' ? b[key] : b[key]);
+      if(typeof va === 'string') return benchSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+      return benchSortAsc ? va - vb : vb - va;
+    });
+    data = marocRow ? [marocRow, ...others] : others;
+  }
+
+  // Max values for bar scaling
+  const maxSMIG  = Math.max(...BENCH_DATA.map(d=>d.smig));
+  const maxCharg = Math.max(...BENCH_DATA.map(d=>d.charges));
+  const maxKwh   = Math.max(...BENCH_DATA.map(d=>d.kwh));
+
+  function barColor(val, marocVal, inverted) {
+    if(val === marocVal) return '#B8862A';
+    const better = inverted ? val < marocVal : val > marocVal;
+    return better ? '#1A6B3C' : '#C0392B';
+  }
+
+  function deltaTag(val, marocVal, label, inverted) {
+    if(val === marocVal) return `<span class="delta neutral">≈ Comparable</span>`;
+    const better = inverted ? val < marocVal : val > marocVal;
+    const pct = Math.abs(((val - marocVal)/marocVal)*100).toFixed(0);
+    const cls = better ? 'better' : 'worse';
+    const arrow = val < marocVal ? '▼' : '▲';
+    return `<span class="delta ${cls}">${arrow} ${pct}%</span>`;
+  }
+
+  document.getElementById('bench-body').innerHTML = data.map(r => {
+    const isMaroc = r.maroc;
+    const isStr = typeof r.is === 'string' ? r.is : r.is + '%';
+
+    const smigBar  = Math.round((r.smig / maxSMIG) * 100);
+    const chargBar = Math.round((r.charges / maxCharg) * 100);
+    const kwhBar   = Math.round((r.kwh / maxKwh) * 100);
+
+    const smigColor  = isMaroc ? '#B8862A' : barColor(r.smig, marocData.smig, true);
+    const chargColor = isMaroc ? '#B8862A' : barColor(r.charges, marocData.charges, true);
+    const kwhColor   = isMaroc ? '#B8862A' : barColor(r.kwh, marocData.kwh, true);
+
+    return `
+    <tr class="${isMaroc?'b-maroc':''}">
+      <td class="b-country">${r.pays}${isMaroc?' ← Référence':''}</td>
+      <td><span class="reg-badge">${r.region}</span></td>
+      <td>
+        <div class="bar-mini">
+          <div class="bar-bg"><div class="bar-fill" style="width:${smigBar}%;background:${smigColor}"></div></div>
+          <span class="bar-val">${r.smig} $</span>
+        </div>
+        ${isMaroc?'<div style="font-size:10px;color:var(--smoke);margin-top:2px">≈ 3 429 MAD/mois</div>':deltaTag(r.smig, marocData.smig, '', true)}
+      </td>
+      <td>
+        <div class="bar-mini">
+          <div class="bar-bg"><div class="bar-fill" style="width:${chargBar}%;background:${chargColor}"></div></div>
+          <span class="bar-val">${r.charges}%</span>
+        </div>
+        ${isMaroc?'<div style="font-size:10px;color:var(--smoke);margin-top:2px">CNSS+AMO+TFP…</div>':deltaTag(r.charges, marocData.charges, '', true)}
+      </td>
+      <td>
+        ${isStr}${isMaroc?'<br><span style="font-size:10px;color:var(--success)">0% ZAI · 5 ans</span>':''}
+      </td>
+      <td>
+        <div class="bar-mini">
+          <div class="bar-bg"><div class="bar-fill" style="width:${kwhBar}%;background:${kwhColor}"></div></div>
+          <span class="bar-val">${r.kwh} $</span>
+        </div>
+        ${isMaroc?'':deltaTag(r.kwh, marocData.kwh, '', true)}
+      </td>
+      <td>
+        ${r.delai} j${isMaroc?'<br><span style="font-size:10px;color:var(--success)">72h via CRI</span>':''}
+        ${!isMaroc?deltaTag(r.delai, marocData.delai, '', true):''}
+      </td>
+      <td style="font-family:var(--font-mono);font-size:11px">${r.db}</td>
+      <td class="bench-note-cell">${r.note}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', function() {
+  calc();
+  ['nb-emp','salaire','puissance','kwh','eau'].forEach(id => {
+    const el = document.getElementById(id);
+    const pct = (el.value - el.min) / (el.max - el.min) * 100;
+    el.style.background = `linear-gradient(to right, var(--gold) ${pct}%, var(--bg2) ${pct}%)`;
+  });
+});
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

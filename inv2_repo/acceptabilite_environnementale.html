@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acceptabilité Environnementale — Maroc Investissement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --foret:        #1A5C2A;
+    --foret-mid:    #2A7A3A;
+    --foret-light:  #E8F5E9;
+    --foret-xlight: #F2FAF3;
+    --or:           #B8862A;
+    --or-light:     #F4EDD8;
+    --or-xlight:    #FDFAF3;
+    --encre:        #1C1C1C;
+    --muted:        #5A6170;
+    --border:       #E2E8E4;
+    --bg:           #FAFAF8;
+    --white:        #FFFFFF;
+    --danger:       #C0392B;
+    --danger-bg:    #FDECEA;
+    --warn:         #A05A00;
+    --warn-bg:      #FEF5E7;
+    --radius-sm:    6px;
+    --radius-md:    10px;
+    --radius-lg:    16px;
+    --radius-xl:    22px;
+    --shadow-sm:    0 1px 3px rgba(26,92,42,0.08);
+    --shadow-md:    0 4px 16px rgba(26,92,42,0.1);
+    --shadow-lg:    0 8px 32px rgba(26,92,42,0.12);
+    --font-body:    'DM Sans', system-ui, sans-serif;
+    --font-serif:   'Playfair Display', Georgia, serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--encre);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAVBAR ── */
+  .navbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(26,92,42,0.97);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    color: #fff; font-size: 14px; font-weight: 600; letter-spacing: 0.02em; text-decoration: none;
+  }
+  .nav-brand-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--or);
+    box-shadow: 0 0 6px rgba(184,134,42,0.6);
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 500;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-badge {
+    background: var(--or); color: #fff;
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0E3A1A 0%, #1A5C2A 50%, #22703A 100%);
+    color: #fff;
+    padding: 2.5rem 2.5rem 2rem;
+  }
+  .hero-inner {
+    max-width: 960px; margin: 0 auto;
+  }
+  .hero h1 {
+    font-family: var(--font-serif); font-size: 30px; font-weight: 700;
+    line-height: 1.25; margin-bottom: 0.75rem;
+  }
+  .hero-desc {
+    font-size: 14px; color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+  }
+
+  /* ── ONGLETS ── */
+  .nav-tabs {
+    display: flex; gap: 2px; align-items: center;
+  }
+  .nav-tab {
+    background: transparent; border: none;
+    color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500;
+    padding: 0 14px; height: 56px; cursor: pointer;
+    font-family: var(--font-body);
+    border-bottom: 2px solid transparent;
+    transition: all 0.18s; white-space: nowrap;
+  }
+  .nav-tab:hover { color: #fff; }
+  .nav-tab.active {
+    color: #fff;
+    border-bottom-color: var(--or);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 2.5rem; }
+  .section { padding: 3.5rem 0; display: none; }
+  .section.active { display: block; animation: fadeIn 0.25s ease; }
+
+  .section-header { margin-bottom: 2rem; }
+  .section-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--foret); margin-bottom: 0.6rem;
+  }
+  .section-eyebrow::before { content: '—'; color: var(--or); margin-right: 2px; }
+  .section-title {
+    font-family: var(--font-serif); font-size: 24px; font-weight: 600;
+    color: var(--foret); margin-bottom: 0.6rem; line-height: 1.3;
+  }
+  .section-desc { font-size: 14.5px; color: var(--muted); line-height: 1.7; max-width: 620px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.5rem;
+    box-shadow: var(--shadow-sm); transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+
+  /* ── TOOL 1 : QUALIFICATEUR ── */
+  .qualifier-tool { }
+  .q-step { display: none; }
+  .q-step.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .q-progress {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 2rem;
+  }
+  .q-prog-item {
+    display: flex; flex-direction: column; align-items: center; flex: 1;
+  }
+  .q-prog-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 2px solid var(--border); background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    transition: all 0.3s; position: relative; z-index: 1;
+  }
+  .q-prog-dot.active { border-color: var(--foret); background: var(--foret); color: #fff; }
+  .q-prog-dot.done { border-color: var(--foret); background: var(--foret); color: #fff; }
+  .q-prog-dot.done::after { content: '✓'; }
+  .q-prog-label { font-size: 11px; color: var(--muted); margin-top: 4px; text-align: center; }
+  .q-prog-line {
+    flex: 1; height: 2px; background: var(--border);
+    margin-top: -16px; transition: background 0.3s;
+  }
+  .q-prog-line.done { background: var(--foret); }
+
+  .q-question {
+    font-family: var(--font-serif); font-size: 18px; font-weight: 600;
+    color: var(--encre); margin-bottom: 0.5rem; line-height: 1.4;
+  }
+  .q-hint { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+  .q-options { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+  .q-option {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px; border-radius: var(--radius-md);
+    border: 1.5px solid var(--border); background: var(--white);
+    cursor: pointer; transition: all 0.2s; text-align: left;
+  }
+  .q-option:hover { border-color: var(--foret); background: var(--foret-xlight); }
+  .q-option.selected { border-color: var(--foret); background: var(--foret-light); }
+  .q-option-radio {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--border); flex-shrink: 0; margin-top: 1px;
+    transition: all 0.2s; position: relative;
+  }
+  .q-option.selected .q-option-radio {
+    border-color: var(--foret); background: var(--foret);
+  }
+  .q-option.selected .q-option-radio::after {
+    content: ''; position: absolute;
+    width: 6px; height: 6px; border-radius: 50%; background: #fff;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .q-option-label { font-size: 14px; color: var(--encre); font-weight: 500; }
+  .q-option-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .q-nav { display: flex; justify-content: space-between; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 20px; border-radius: var(--radius-md);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: none; transition: all 0.2s; font-family: var(--font-body);
+  }
+  .btn-primary { background: var(--foret); color: #fff; }
+  .btn-primary:hover { background: var(--foret-mid); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-secondary { background: var(--white); color: var(--foret); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--foret); background: var(--foret-xlight); }
+  .btn-ghost { background: transparent; color: var(--muted); padding: 8px 12px; }
+  .btn-ghost:hover { color: var(--encre); }
+  .btn-reset { background: transparent; color: var(--muted); font-size: 12px; padding: 6px; border: none; cursor: pointer; text-decoration: underline; font-family: var(--font-body); }
+
+  /* RESULT */
+  .q-result { display: none; }
+  .q-result.visible { display: block; animation: fadeIn 0.4s ease; }
+  .result-verdict {
+    border-radius: var(--radius-xl); padding: 2rem; margin-bottom: 1.5rem;
+    border: 2px solid;
+  }
+  .result-verdict.eie { background: var(--warn-bg); border-color: var(--or); }
+  .result-verdict.notice { background: var(--foret-light); border-color: var(--foret); }
+  .result-verdict.exemption { background: #F0FDF4; border-color: #22C55E; }
+  .result-title {
+    font-family: var(--font-serif); font-size: 22px; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .result-verdict.eie .result-title { color: var(--warn); }
+  .result-verdict.notice .result-title { color: var(--foret); }
+  .result-verdict.exemption .result-title { color: #166534; }
+  .result-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px; margin-bottom: 1rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .result-verdict.eie .result-badge { background: rgba(184,134,42,0.2); color: var(--or); }
+  .result-verdict.notice .result-badge { background: rgba(26,92,42,0.15); color: var(--foret); }
+  .result-verdict.exemption .result-badge { background: #DCFCE7; color: #166534; }
+  .result-body { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .result-steps {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.25rem;
+  }
+  .result-step-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 12px;
+  }
+  .result-step-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--foret); color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .result-step-text { font-size: 12.5px; color: var(--encre); line-height: 1.5; }
+
+  /* ── TOOL 2 : CHECKLIST ── */
+  .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .checklist-section-title {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--foret); margin-bottom: 0.75rem;
+    grid-column: 1 / -1; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 14px; background: var(--white);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .check-item:hover { border-color: var(--foret); }
+  .check-item.checked { background: var(--foret-light); border-color: var(--foret); }
+  .check-box {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 2px solid var(--border); flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; font-size: 11px; color: #fff;
+  }
+  .check-item.checked .check-box { background: var(--foret); border-color: var(--foret); }
+  .check-item.checked .check-box::after { content: '✓'; }
+  .check-label { font-size: 13px; color: var(--encre); line-height: 1.45; }
+  .check-item.checked .check-label { color: var(--foret); text-decoration: line-through; opacity: 0.7; }
+  .checklist-progress-bar {
+    height: 6px; background: var(--border); border-radius: 10px;
+    overflow: hidden; margin-bottom: 1.5rem;
+  }
+  .checklist-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--foret), var(--foret-mid));
+    border-radius: 10px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+  .checklist-progress-label {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 0.5rem; font-size: 13px;
+  }
+  .checklist-progress-label span:first-child { color: var(--muted); }
+  .checklist-progress-label span:last-child { font-weight: 600; color: var(--foret); }
+  .checklist-complete {
+    display: none; background: var(--foret-light); border: 1.5px solid var(--foret);
+    border-radius: var(--radius-md); padding: 1rem 1.25rem;
+    text-align: center; margin-top: 1rem;
+  }
+  .checklist-complete.visible { display: block; animation: fadeIn 0.4s; }
+  .checklist-complete p { font-size: 14px; color: var(--foret); font-weight: 600; }
+
+  /* ── TOOL 3 : DÉLAIS INTERACTIF ── */
+  .timeline-wrapper { position: relative; }
+  .timeline-track {
+    position: relative; padding-left: 2.5rem;
+  }
+  .tl-item {
+    position: relative; padding: 0 0 2rem 1.5rem;
+    cursor: pointer;
+  }
+  .tl-item::before {
+    content: ''; position: absolute; left: -1px; top: 28px; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .tl-item:last-child::before { display: none; }
+  .tl-dot {
+    position: absolute; left: -9px; top: 4px;
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--border); background: var(--white);
+    transition: all 0.25s;
+  }
+  .tl-item:hover .tl-dot, .tl-item.expanded .tl-dot {
+    border-color: var(--foret); background: var(--foret);
+    box-shadow: 0 0 0 4px rgba(26,92,42,0.15);
+  }
+  .tl-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 0.35rem;
+  }
+  .tl-title {
+    font-size: 15px; font-weight: 600; color: var(--encre);
+    transition: color 0.2s;
+  }
+  .tl-item:hover .tl-title, .tl-item.expanded .tl-title { color: var(--foret); }
+  .tl-badge-wrap { display: flex; align-items: center; gap: 6px; }
+  .tl-badge {
+    font-size: 11px; font-weight: 600; padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .tl-badge.days { background: var(--or-light); color: var(--or); }
+  .tl-badge.required { background: var(--foret-light); color: var(--foret); }
+  .tl-badge.optional { background: #F0F0F0; color: #666; }
+  .tl-chevron {
+    font-size: 12px; color: var(--muted); transition: transform 0.25s;
+    margin-left: 4px;
+  }
+  .tl-item.expanded .tl-chevron { transform: rotate(90deg); }
+  .tl-preview { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .tl-detail {
+    display: none; margin-top: 0.75rem;
+    background: var(--foret-xlight); border: 1px solid var(--foret-light);
+    border-radius: var(--radius-md); padding: 1rem;
+  }
+  .tl-item.expanded .tl-detail { display: block; animation: fadeIn 0.25s; }
+  .tl-detail-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 0.6rem; }
+  .tl-detail-list li {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 13px; color: var(--encre); line-height: 1.5;
+  }
+  .tl-detail-list li::before { content: '›'; color: var(--foret); font-weight: 700; flex-shrink: 0; }
+  .tl-detail-note {
+    margin-top: 0.75rem; padding: 8px 10px;
+    background: rgba(184,134,42,0.1); border-left: 3px solid var(--or);
+    border-radius: 0 6px 6px 0; font-size: 12px; color: var(--or);
+  }
+
+  /* ── TOOL 4 : SIMULATEUR SANCTIONS ── */
+  .simulator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+  .sim-form { display: flex; flex-direction: column; gap: 1rem; }
+  .sim-field label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
+  }
+  .sim-select, .sim-range {
+    width: 100%; padding: 10px 12px;
+    border: 1.5px solid var(--border); border-radius: var(--radius-md);
+    font-family: var(--font-body); font-size: 14px; color: var(--encre);
+    background: var(--white); cursor: pointer;
+    transition: border-color 0.2s; outline: none;
+  }
+  .sim-select:focus, .sim-range:focus { border-color: var(--foret); }
+  .sim-range { padding: 6px 0; border: none; cursor: pointer; accent-color: var(--foret); }
+  .range-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .sim-result { display: flex; flex-direction: column; gap: 10px; }
+  .sim-card {
+    border-radius: var(--radius-lg); padding: 1.25rem; border: 1.5px solid;
+  }
+  .sim-card.danger { background: var(--danger-bg); border-color: rgba(192,57,43,0.3); }
+  .sim-card.warn { background: var(--warn-bg); border-color: rgba(160,90,0,0.3); }
+  .sim-card.success { background: var(--foret-light); border-color: rgba(26,92,42,0.3); }
+  .sim-card-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+  .sim-card.danger .sim-card-label { color: var(--danger); }
+  .sim-card.warn .sim-card-label { color: var(--warn); }
+  .sim-card.success .sim-card-label { color: var(--foret); }
+  .sim-card-value { font-family: var(--font-serif); font-size: 22px; font-weight: 700; }
+  .sim-card.danger .sim-card-value { color: var(--danger); }
+  .sim-card.warn .sim-card-value { color: var(--warn); }
+  .sim-card.success .sim-card-value { color: var(--foret); }
+  .sim-card-sub { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+
+  /* ── LOIS SECTORIELLES ── */
+  .laws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .law-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    transition: all 0.25s; cursor: pointer;
+  }
+  .law-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .law-card.active { border-color: var(--foret); box-shadow: 0 0 0 3px rgba(26,92,42,0.1); }
+  .law-card-head {
+    padding: 1rem 1.25rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .law-icon {
+    width: 42px; height: 42px; border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .law-icon.water { background: #E0F2FE; }
+  .law-icon.air { background: #F0FDF4; }
+  .law-icon.waste { background: #FEF9C3; }
+  .law-icon.env { background: #FDF2F8; }
+  .law-num { font-size: 12px; font-weight: 700; color: var(--foret); margin-bottom: 2px; }
+  .law-name { font-size: 14px; font-weight: 600; color: var(--encre); }
+  .law-body {
+    display: none; padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .law-card.active .law-body { display: block; }
+  .law-body-text { font-size: 13px; color: var(--muted); line-height: 1.7; padding-top: 0.75rem; }
+  .law-obligations { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 6px; }
+  .law-ob {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 12.5px; color: var(--encre);
+  }
+  .law-ob-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    margin-top: 5px; background: var(--foret);
+  }
+  .law-sanction {
+    margin-top: 0.75rem; padding: 8px 10px;
+    background: var(--danger-bg); border-radius: var(--radius-sm);
+    font-size: 12px; color: var(--danger);
+  }
+  .law-sanction strong { font-weight: 700; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    background: var(--foret); color: rgba(255,255,255,0.7);
+    padding: 2rem 2.5rem; text-align: center;
+  }
+  .page-footer strong { color: #fff; }
+  .page-footer p { font-size: 13px; line-height: 1.7; }
+  .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+  .footer-links a { color: rgba(255,255,255,0.55); font-size: 12px; text-decoration: none; }
+  .footer-links a:hover { color: #fff; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-card { display: none; }
+    .hero h1 { font-size: 26px; }
+    .simulator-grid, .laws-grid, .checklist-grid, .result-steps { grid-template-columns: 1fr; }
+    .container { padding: 0 1.25rem; }
+    .navbar { padding: 0 1.25rem; }
+    .nav-tabs { display: none; }
+    .hero { padding: 1.75rem 1.25rem 1.5rem; }
+  }
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-brand" href="#">
+    <div class="nav-brand-dot"></div>
+    Smart-Invest.IA
+  </a>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('qualificateur',this)">Qualificateur</button>
+    <button class="nav-tab" onclick="switchTab('checklist',this)">Checklist</button>
+    <button class="nav-tab" onclick="switchTab('processus',this)">Processus</button>
+    <button class="nav-tab" onclick="switchTab('sanctions',this)">Sanctions</button>
+    <button class="nav-tab" onclick="switchTab('lois',this)">Lois sectorielles</button>
+  </div>
+  <span class="nav-badge">Maroc 2026</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Acceptabilité environnementale<br>des projets d'investissement</h1>
+    <p class="hero-desc">Guide interactif pour qualifier votre projet,<br>constituer votre dossier et maîtriser les risques réglementaires.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════════════
+       OUTIL 1 : QUALIFICATEUR EIE / NOTICE
+  ══════════════════════════════════════════ -->
+  <section class="section active" id="qualificateur">
+    <div class="section-header">
+      <div class="section-eyebrow">Outil 1</div>
+      <h2 class="section-title">Qualificateur de projet — EIE ou Notice d'Impact ?</h2>
+      <p class="section-desc">Répondez à 4 questions pour déterminer le niveau d'évaluation environnementale applicable à votre projet selon les lois 12-03 et 49-17.</p>
+    </div>
+
+    <div class="card qualifier-tool">
+
+      <!-- Progress -->
+      <div class="q-progress" id="qProgress">
+        <div class="q-prog-item">
+          <div class="q-prog-dot active" id="pdot-1">1</div>
+          <div class="q-prog-label">Nature</div>
+        </div>
+        <div class="q-prog-line" id="pline-1"></div>
+        <div class="q-prog-item">
+          <div class="q-prog-dot" id="pdot-2">2</div>
+          <div class="q-prog-label">Taille</div>
+        </div>
+        <div class="q-prog-line" id="pline-2"></div>
+        <div class="q-prog-item">
+          <div class="q-prog-dot" id="pdot-3">3</div>
+          <div class="q-prog-label">Localisation</div>
+        </div>
+        <div class="q-prog-line" id="pline-3"></div>
+        <div class="q-prog-item">
+          <div class="q-prog-dot" id="pdot-4">4</div>
+          <div class="q-prog-label">Impact eau</div>
+        </div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="q-step active" id="qstep-1">
+        <div class="q-question">Quelle est la nature principale de votre projet ?</div>
+        <div class="q-hint">La classification sectorielle détermine le régime applicable (Annexes loi 12-03).</div>
+        <div class="q-options">
+          <label class="q-option" onclick="selectOption(this,1,'A')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Infrastructure majeure</div>
+              <div class="q-option-sub">Route, autoroute, port, aéroport, barrage, centrale électrique</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,1,'B')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Industrie ou unité de production</div>
+              <div class="q-option-sub">Usine, unité de traitement, extraction minière, carrière</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,1,'C')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Tourisme, immobilier ou commerce</div>
+              <div class="q-option-sub">Complexe touristique, résidence, centre commercial, hôtel</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,1,'D')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Agriculture, aquaculture ou agroalimentaire</div>
+              <div class="q-option-sub">Exploitation agricole, élevage intensif, unité de transformation</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,1,'E')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Petit commerce ou service de proximité</div>
+              <div class="q-option-sub">Bureau, boutique, atelier artisanal, restauration légère</div>
+            </div>
+          </label>
+        </div>
+        <div class="q-nav">
+          <span></span>
+          <button class="btn btn-primary" id="qNext-1" disabled onclick="nextQ(2)">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-step" id="qstep-2">
+        <div class="q-question">Quel est l'investissement total prévu ?</div>
+        <div class="q-hint">Le volume financier conditionne la classification (structurant ≥ 20M MAD).</div>
+        <div class="q-options">
+          <label class="q-option" onclick="selectOption(this,2,'A')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Moins de 5 millions MAD</div>
+              <div class="q-option-sub">Petite unité ou extension limitée</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,2,'B')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Entre 5 et 20 millions MAD</div>
+              <div class="q-option-sub">Projet moyen, impact limité</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,2,'C')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Plus de 20 millions MAD</div>
+              <div class="q-option-sub">Projet structurant — seuil Charte d'Investissement 2023</div>
+            </div>
+          </label>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(1)">← Retour</button>
+          <button class="btn btn-primary" id="qNext-2" disabled onclick="nextQ(3)">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-step" id="qstep-3">
+        <div class="q-question">Où se situe votre projet ?</div>
+        <div class="q-hint">La localisation dans des zones sensibles alourdit les exigences réglementaires.</div>
+        <div class="q-options">
+          <label class="q-option" onclick="selectOption(this,3,'A')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Zone industrielle ou espace urbanisé aménagé</div>
+              <div class="q-option-sub">ZI, ZF, zone commerciale déjà viabilisée</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,3,'B')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Milieu rural ou péri-urbain</div>
+              <div class="q-option-sub">Terres agricoles, zones en cours d'aménagement</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,3,'C')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Zone sensible ou protégée</div>
+              <div class="q-option-sub">Littoral, zone humide, parc naturel, bassin versant, nappe phréatique</div>
+            </div>
+          </label>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(2)">← Retour</button>
+          <button class="btn btn-primary" id="qNext-3" disabled onclick="nextQ(4)">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-step" id="qstep-4">
+        <div class="q-question">Votre projet implique-t-il des rejets ou prélèvements d'eau ?</div>
+        <div class="q-hint">La loi 36-15 impose des autorisations spécifiques dès que l'eau est impliquée.</div>
+        <div class="q-options">
+          <label class="q-option" onclick="selectOption(this,4,'A')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Non — aucune interaction avec l'eau</div>
+              <div class="q-option-sub">Projet sec, pas de prélèvement ni rejet</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,4,'B')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Consommation d'eau du réseau seulement</div>
+              <div class="q-option-sub">Raccordement ONEE, pas de forage ni rejet direct</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,4,'C')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Prélèvement (forage/puits) et/ou rejet traité</div>
+              <div class="q-option-sub">Station de traitement, STEP, forage propre</div>
+            </div>
+          </label>
+          <label class="q-option" onclick="selectOption(this,4,'D')">
+            <div class="q-option-radio"></div>
+            <div>
+              <div class="q-option-label">Rejet direct non traité ou fort volume</div>
+              <div class="q-option-sub">Effluents industriels, déchets liquides, irrigation à grande échelle</div>
+            </div>
+          </label>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(3)">← Retour</button>
+          <button class="btn btn-primary" id="qNext-4" disabled onclick="computeResult()">Voir le résultat →</button>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="q-result" id="qResult">
+        <div class="result-verdict" id="resultVerdict">
+          <div class="result-badge" id="resultBadge"></div>
+          <div class="result-title" id="resultTitle"></div>
+          <div class="result-body" id="resultBody"></div>
+        </div>
+        <div class="result-steps" id="resultSteps"></div>
+        <div style="margin-top:1.5rem; text-align:center;">
+          <button class="btn-reset" onclick="resetQualifier()">↺ Recommencer le diagnostic</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       OUTIL 2 : CHECKLIST DOSSIER
+  ══════════════════════════════════════════ -->
+  <section class="section" id="checklist">
+    <div class="section-header">
+      <div class="section-eyebrow">Outil 2</div>
+      <h2 class="section-title">Checklist de constitution du dossier</h2>
+      <p class="section-desc">Cochez les documents au fur et à mesure de votre préparation. La progression est calculée automatiquement.</p>
+    </div>
+
+    <div class="card">
+      <div class="checklist-progress-label">
+        <span id="checkCount">0 / 16 documents validés</span>
+        <span id="checkPct">0%</span>
+      </div>
+      <div class="checklist-progress-bar">
+        <div class="checklist-progress-fill" id="checkFill"></div>
+      </div>
+
+      <div class="checklist-grid">
+        <div class="checklist-section-title">📁 Dossier administratif de base</div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Formulaire de qualification du projet (nature, taille, localisation)</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Statuts de la société ou attestation du porteur de projet</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Titre de propriété ou bail du terrain / local</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Plan de situation et plan de masse du projet</div>
+        </div>
+
+        <div class="checklist-section-title">🔬 Étude environnementale (EIE ou Notice)</div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Rapport d'état initial du site (faune, flore, eau, sol, air)</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Analyse des impacts positifs et négatifs (court et long terme)</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Présentation des alternatives étudiées et justification du choix retenu</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Plan de Gestion Environnementale (PGE) avec mesures compensatoires</div>
+        </div>
+
+        <div class="checklist-section-title">💧 Obligations loi 36-15 — Eau</div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Demande d'autorisation de prélèvement (si forage/puits prévu)</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Étude de conformité des rejets avec les valeurs limites en vigueur</div>
+        </div>
+
+        <div class="checklist-section-title">♻️ Plan de gestion des déchets (loi 28-00)</div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Identification et classification des déchets produits (ordinaires / dangereux)</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Convention avec un opérateur agréé pour l'élimination des déchets</div>
+        </div>
+
+        <div class="checklist-section-title">🏛️ Procédure de validation</div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Dépôt du dossier au secrétariat de la CNE ou CRE compétente</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Publication de l'avis d'enquête publique (20 jours min, si EIE)</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Procès-verbal de clôture de l'enquête publique</div>
+        </div>
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-label">Décision d'Acceptabilité Environnementale (DAE) délivrée et jointe</div>
+        </div>
+      </div>
+
+      <div class="checklist-complete" id="checkComplete">
+        <p>✅ Dossier complet — Votre dossier environnemental est prêt pour soumission à la commission d'évaluation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       OUTIL 3 : PROCESSUS INTERACTIF
+  ══════════════════════════════════════════ -->
+  <section class="section" id="processus">
+    <div class="section-header">
+      <div class="section-eyebrow">Outil 3</div>
+      <h2 class="section-title">Processus de validation — détail interactif</h2>
+      <p class="section-desc">Cliquez sur chaque étape pour afficher les détails, délais et points de vigilance.</p>
+    </div>
+
+    <div class="card">
+      <div class="timeline-track">
+        <div class="tl-item" onclick="toggleTL(this)">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <div class="tl-title">Étape 1 — Cadrage et qualification</div>
+            <div class="tl-badge-wrap">
+              <span class="tl-badge required">Obligatoire</span>
+              <span class="tl-chevron">›</span>
+            </div>
+          </div>
+          <div class="tl-preview">Détermination du régime applicable selon la nature, taille et localisation du projet.</div>
+          <div class="tl-detail">
+            <strong style="font-size:13px; color:var(--foret)">Actions à mener :</strong>
+            <ul class="tl-detail-list">
+              <li>Consulter les listes annexes des lois 12-03 et 49-17 pour identifier la catégorie du projet</li>
+              <li>Vérifier si le projet relève de l'EIE (Annexe 1 loi 12-03) ou d'une Notice d'impact (loi 49-17)</li>
+              <li>Identifier toutes les lois sectorielles connexes applicables (eau, air, déchets)</li>
+              <li>Saisir le CRI compétent pour confirmation du régime si incertitude</li>
+            </ul>
+            <div class="tl-detail-note">💡 En cas de doute sur la qualification, une pré-consultation informelle auprès de la CRE (Commission Régionale d'Évaluation) permet d'éviter des pertes de temps considérables.</div>
+          </div>
+        </div>
+
+        <div class="tl-item" onclick="toggleTL(this)">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <div class="tl-title">Étape 2 — Réalisation de l'étude technique</div>
+            <div class="tl-badge-wrap">
+              <span class="tl-badge days">1 à 6 mois</span>
+              <span class="tl-chevron">›</span>
+            </div>
+          </div>
+          <div class="tl-preview">Recrutement d'un bureau d'études agréé pour produire l'EIE ou la Notice d'impact.</div>
+          <div class="tl-detail">
+            <strong style="font-size:13px; color:var(--foret)">Contenu obligatoire du rapport :</strong>
+            <ul class="tl-detail-list">
+              <li>Description détaillée du projet et de ses phases (construction, exploitation, fermeture)</li>
+              <li>État initial de l'environnement du site (faune, flore, eau, sol, air, paysage)</li>
+              <li>Analyse des impacts directs, indirects, temporaires et permanents</li>
+              <li>Présentation des alternatives étudiées et justification du scénario retenu</li>
+              <li>Plan de Gestion Environnementale (PGE) avec mesures d'atténuation et de compensation</li>
+            </ul>
+            <div class="tl-detail-note">⚠️ Le bureau d'études doit être agréé par le Ministère de l'Environnement. Vérifiez le registre officiel des bureaux agréés avant engagement.</div>
+          </div>
+        </div>
+
+        <div class="tl-item" onclick="toggleTL(this)">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <div class="tl-title">Étape 3 — Enquête publique</div>
+            <div class="tl-badge-wrap">
+              <span class="tl-badge days">20 jours min</span>
+              <span class="tl-badge optional">EIE uniquement</span>
+              <span class="tl-chevron">›</span>
+            </div>
+          </div>
+          <div class="tl-preview">Ouverture d'un registre public pour recueillir les observations de la population locale.</div>
+          <div class="tl-detail">
+            <strong style="font-size:13px; color:var(--foret)">Déroulement :</strong>
+            <ul class="tl-detail-list">
+              <li>Publication de l'avis d'enquête dans deux journaux (dont un en arabe) et affichage communal</li>
+              <li>Mise à disposition du dossier au siège de la commune concernée</li>
+              <li>Ouverture d'un registre public pendant 20 jours calendaires minimum</li>
+              <li>Rédaction du procès-verbal de clôture avec synthèse des observations reçues</li>
+              <li>Le maître d'ouvrage doit répondre à chaque observation dans son mémoire de réponse</li>
+            </ul>
+            <div class="tl-detail-note">📌 Les projets soumis à la Notice d'Impact (loi 49-17) ne sont pas soumis à l'enquête publique obligatoire, sauf si la CRE en décide autrement.</div>
+          </div>
+        </div>
+
+        <div class="tl-item" onclick="toggleTL(this)">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <div class="tl-title">Étape 4 — Passage en commission (CNE / CRE)</div>
+            <div class="tl-badge-wrap">
+              <span class="tl-badge days">30 à 90 jours</span>
+              <span class="tl-chevron">›</span>
+            </div>
+          </div>
+          <div class="tl-preview">Examen du dossier complet par la Commission Nationale ou Régionale d'Évaluation.</div>
+          <div class="tl-detail">
+            <strong style="font-size:13px; color:var(--foret)">Commissions compétentes :</strong>
+            <ul class="tl-detail-list">
+              <li><strong>CNE (nationale)</strong> : projets d'envergure nationale ou transfrontaliers, grandes infrastructures d'État</li>
+              <li><strong>CRE (régionale)</strong> : projets régionaux, souvent adossées aux CRI (Centres Régionaux d'Investissement)</li>
+              <li>La commission peut demander des compléments d'information suspendant les délais</li>
+              <li>Audition du porteur de projet possible devant la commission</li>
+            </ul>
+            <div class="tl-detail-note">💡 Soigner la présentation devant la commission est stratégique. Un dossier complet et une réponse proactive aux questions réduisent significativement les délais.</div>
+          </div>
+        </div>
+
+        <div class="tl-item" onclick="toggleTL(this)">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <div class="tl-title">Étape 5 — Décision d'Acceptabilité Environnementale (DAE)</div>
+            <div class="tl-badge-wrap">
+              <span class="tl-badge required">Sésame final</span>
+              <span class="tl-chevron">›</span>
+            </div>
+          </div>
+          <div class="tl-preview">Délivrance ou refus de la DAE — sésame obligatoire pour toute autorisation de construire ou d'exploiter.</div>
+          <div class="tl-detail">
+            <strong style="font-size:13px; color:var(--foret)">Après obtention de la DAE :</strong>
+            <ul class="tl-detail-list">
+              <li>La DAE est jointe obligatoirement au dossier de demande d'autorisation de construire ou d'exploiter</li>
+              <li>Les conditions de la DAE (mesures compensatoires, PGE) sont contraignantes et contrôlées</li>
+              <li>Des inspections environnementales peuvent intervenir pendant la construction et l'exploitation</li>
+              <li>Renouvellement de la DAE si le projet évolue substantiellement ou dépasse 5 ans sans démarrage</li>
+            </ul>
+            <div class="tl-detail-note">⚠️ Règle des 5 ans : si le projet n'est pas initié dans les 5 ans suivant la DAE, l'étude devient caduque et l'intégralité du processus doit être recommencée.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       OUTIL 4 : SIMULATEUR SANCTIONS
+  ══════════════════════════════════════════ -->
+  <section class="section" id="sanctions">
+    <div class="section-header">
+      <div class="section-eyebrow">Outil 4</div>
+      <h2 class="section-title">Simulateur de risques et sanctions</h2>
+      <p class="section-desc">Évaluez l'exposition réglementaire de votre situation et estimez les sanctions potentielles selon les lois 12-03 et 49-17.</p>
+    </div>
+
+    <div class="card">
+      <div class="simulator-grid">
+        <div class="sim-form">
+          <div class="sim-field">
+            <label>Type d'infraction</label>
+            <select class="sim-select" id="simInfraction" onchange="computeSanction()">
+              <option value="">— Sélectionner —</option>
+              <option value="nodae">Exploitation sans DAE préalable</option>
+              <option value="rejet">Rejet non conforme dans le milieu naturel</option>
+              <option value="forage">Prélèvement d'eau sans autorisation (loi 36-15)</option>
+              <option value="dechets">Gestion illicite des déchets dangereux</option>
+              <option value="obstacles">Obstruction à l'inspection environnementale</option>
+            </select>
+          </div>
+
+          <div class="sim-field">
+            <label>Situation de récidive</label>
+            <select class="sim-select" id="simRecidive" onchange="computeSanction()">
+              <option value="non">Première infraction constatée</option>
+              <option value="oui">Récidive (infraction déjà constatée)</option>
+            </select>
+          </div>
+
+          <div class="sim-field">
+            <label>Chiffre d'affaires annuel estimé</label>
+            <input type="range" class="sim-range" id="simCA" min="500000" max="50000000" step="500000" value="5000000" oninput="updateCA(); computeSanction()">
+            <div class="range-row">
+              <span>500 000 MAD</span>
+              <span id="simCAVal" style="font-weight:600; color:var(--foret)">5 000 000 MAD</span>
+              <span>50 M MAD</span>
+            </div>
+          </div>
+
+          <div class="sim-field">
+            <label>Durée d'infraction estimée</label>
+            <select class="sim-select" id="simDuree" onchange="computeSanction()">
+              <option value="court">Moins de 6 mois</option>
+              <option value="moyen">Entre 6 mois et 2 ans</option>
+              <option value="long">Plus de 2 ans</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sim-result" id="simResult">
+          <div class="sim-card danger">
+            <div class="sim-card-label">⚠️ Amende estimée</div>
+            <div class="sim-card-value" id="simAmende">—</div>
+            <div class="sim-card-sub" id="simAmendeDetail">Sélectionnez un type d'infraction</div>
+          </div>
+          <div class="sim-card warn">
+            <div class="sim-card-label">🏗️ Risque opérationnel</div>
+            <div class="sim-card-value" id="simOp">—</div>
+            <div class="sim-card-sub" id="simOpDetail">—</div>
+          </div>
+          <div class="sim-card success">
+            <div class="sim-card-label">✅ Mise en conformité</div>
+            <div class="sim-card-value" id="simAction">—</div>
+            <div class="sim-card-sub" id="simActionDetail">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       OUTIL 5 : LOIS SECTORIELLES
+  ══════════════════════════════════════════ -->
+  <section class="section" id="lois">
+    <div class="section-header">
+      <div class="section-eyebrow">Référence</div>
+      <h2 class="section-title">Législations sectorielles connexes</h2>
+      <p class="section-desc">Cliquez sur chaque loi pour afficher les obligations détaillées et les sanctions applicables.</p>
+    </div>
+
+    <div class="laws-grid">
+      <div class="law-card" onclick="toggleLaw(this)">
+        <div class="law-card-head">
+          <div class="law-icon water">💧</div>
+          <div>
+            <div class="law-num">Loi n° 36-15</div>
+            <div class="law-name">Gestion de l'eau</div>
+          </div>
+        </div>
+        <div class="law-body">
+          <div class="law-body-text">Régit l'ensemble de la gestion des ressources hydriques du Maroc. Tout prélèvement ou rejet lié à un projet d'investissement est soumis à autorisation préalable.</div>
+          <div class="law-obligations">
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Autorisation ou concession obligatoire pour tout forage, puits ou captage</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Conformité aux valeurs limites de rejet fixées par décret avant tout déversement</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Rapport de suivi de la qualité des rejets transmis annuellement à l'Agence de Bassin</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Interdiction absolue de rejet dans les nappes phréatiques ou cours d'eau sans traitement</span></div>
+          </div>
+          <div class="law-sanction">
+            <strong>Sanctions :</strong> Fermeture immédiate de l'installation, remise en état aux frais de l'exploitant, amendes et poursuites pénales.
+          </div>
+        </div>
+      </div>
+
+      <div class="law-card" onclick="toggleLaw(this)">
+        <div class="law-card-head">
+          <div class="law-icon air">💨</div>
+          <div>
+            <div class="law-num">Loi n° 13-03</div>
+            <div class="law-name">Lutte contre la pollution de l'air</div>
+          </div>
+        </div>
+        <div class="law-body">
+          <div class="law-body-text">Fixe les normes d'émission atmosphérique applicables aux installations industrielles et aux engins. Toute installation classée doit démontrer sa conformité dès la phase de conception.</div>
+          <div class="law-obligations">
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Respect des valeurs limites d'émission (VLE) de gaz et particules fixées par décret</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Équipements d'épuration et filtration obligatoires pour les unités de catégorie 1 et 2</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Auto-surveillance des émissions avec registre tenu à la disposition des inspecteurs</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Interdiction des émissions visibles, odeurs et poussières affectant le voisinage</span></div>
+          </div>
+          <div class="law-sanction">
+            <strong>Sanctions :</strong> Mise en demeure, astreinte journalière, suspension d'activité, amendes pénales.
+          </div>
+        </div>
+      </div>
+
+      <div class="law-card" onclick="toggleLaw(this)">
+        <div class="law-card-head">
+          <div class="law-icon waste">♻️</div>
+          <div>
+            <div class="law-num">Loi n° 28-00</div>
+            <div class="law-name">Gestion des déchets</div>
+          </div>
+        </div>
+        <div class="law-body">
+          <div class="law-body-text">Régit l'ensemble du cycle de vie des déchets depuis leur production jusqu'à leur élimination finale. Distingue les déchets ménagers, industriels, médicaux et dangereux, avec des obligations croissantes.</div>
+          <div class="law-obligations">
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Plan de gestion interne des déchets obligatoire dès la conception du site industriel</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Convention obligatoire avec un opérateur agréé pour les déchets dangereux</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Bordereau de suivi des déchets dangereux (BSD) pour chaque transfert</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Interdiction d'abandon, de brûlage à l'air libre et de dépôt sauvage</span></div>
+          </div>
+          <div class="law-sanction">
+            <strong>Sanctions :</strong> Amendes jusqu'à 500 000 DH pour les déchets dangereux, emprisonnement possible, dépollution aux frais du responsable.
+          </div>
+        </div>
+      </div>
+
+      <div class="law-card" onclick="toggleLaw(this)">
+        <div class="law-card-head">
+          <div class="law-icon env">🌿</div>
+          <div>
+            <div class="law-num">Loi-cadre n° 99-12</div>
+            <div class="law-name">Charte nationale de l'environnement</div>
+          </div>
+        </div>
+        <div class="law-body">
+          <div class="law-body-text">Cadre stratégique et transversal qui donne force juridique aux principes constitutionnels de 2011. Engage la responsabilité sociale et territoriale de tout porteur de projet au-delà de la seule conformité technique.</div>
+          <div class="law-obligations">
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Principe de précaution : agir en amont des risques environnementaux avérés</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Principe pollueur-payeur : le coût de la dépollution incombe au responsable</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Intégration du développement durable dans toute stratégie sectorielle publique</span></div>
+            <div class="law-ob"><div class="law-ob-dot"></div><span>Information et participation du public dans les décisions environnementales majeures</span></div>
+          </div>
+          <div class="law-sanction">
+            <strong>Note :</strong> Loi-cadre orientant l'interprétation de toutes les autres lois environnementales. Invocable par tout citoyen devant les tribunaux pour faire valoir le droit constitutionnel à un environnement sain.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <p><strong>Smart-Invest.IA</strong> — Référentiel fiscal et réglementaire marocain · Maroc 2026</p>
+  <p>Informations basées sur la Constitution 2011, les lois 12-03, 49-17, 36-15, 13-03, 28-00 et la loi-cadre 99-12. Usage exclusif aux abonnés.</p>
+  <div class="footer-links">
+    <a href="#">Simulateur fiscal CGI</a>
+    <a href="#">Charte d'Investissement 2023</a>
+    <a href="#">ADII — Douane</a>
+    <a href="#">Mentions légales</a>
+  </div>
+</footer>
+
+<script>
+/* ── ONGLETS ── */
+function switchTab(id, btn) {
+  document.querySelectorAll(".section").forEach(function(s){ s.classList.remove("active"); });
+  document.querySelectorAll(".nav-tab").forEach(function(b){ b.classList.remove("active"); });
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ── QUALIFICATEUR ── */
+var answers = {};
+
+function selectOption(el, q, val) {
+  el.closest(".q-options").querySelectorAll(".q-option").forEach(function(o){ o.classList.remove("selected"); });
+  el.classList.add("selected");
+  answers["q"+q] = val;
+  document.getElementById("qNext-"+q).disabled = false;
+}
+
+function nextQ(n) {
+  document.getElementById("qstep-"+(n-1)).classList.remove("active");
+  document.getElementById("qstep-"+n).classList.add("active");
+  document.getElementById("pdot-"+(n-1)).textContent = "";
+  document.getElementById("pdot-"+(n-1)).classList.remove("active");
+  document.getElementById("pdot-"+(n-1)).classList.add("done");
+  document.getElementById("pline-"+(n-1)).classList.add("done");
+  document.getElementById("pdot-"+n).classList.add("active");
+}
+
+function prevQ(n) {
+  document.getElementById("qstep-"+(n+1)).classList.remove("active");
+  document.getElementById("qstep-"+n).classList.add("active");
+  document.getElementById("pdot-"+(n+1)).textContent = n+1;
+  document.getElementById("pdot-"+(n+1)).classList.remove("active","done");
+  document.getElementById("pline-"+n).classList.remove("done");
+  document.getElementById("pdot-"+n).classList.remove("done");
+  document.getElementById("pdot-"+n).classList.add("active");
+}
+
+function computeResult() {
+  var score = 0;
+  var q1 = answers.q1, q2 = answers.q2, q3 = answers.q3, q4 = answers.q4;
+
+  if(q1==="A" || q1==="B") score += 3;
+  else if(q1==="C" || q1==="D") score += 2;
+
+  if(q2==="C") score += 3;
+  else if(q2==="B") score += 1;
+
+  if(q3==="C") score += 3;
+  else if(q3==="B") score += 1;
+
+  if(q4==="D") score += 3;
+  else if(q4==="C") score += 2;
+  else if(q4==="B") score += 1;
+
+  document.getElementById("qstep-4").classList.remove("active");
+  document.getElementById("pdot-4").textContent = "";
+  document.getElementById("pdot-4").classList.add("done");
+  document.getElementById("pline-3").classList.add("done");
+
+  var rv  = document.getElementById("resultVerdict");
+  var rb  = document.getElementById("resultBadge");
+  var rt  = document.getElementById("resultTitle");
+  var rbo = document.getElementById("resultBody");
+  var rs  = document.getElementById("resultSteps");
+
+  rv.className = "result-verdict";
+  var stepsHTML = "";
+
+  if(q1==="E" && q2==="A" && q3==="A" && q4==="A") {
+    rv.classList.add("exemption");
+    rb.textContent  = "Exempte";
+    rt.textContent  = "Votre projet est probablement exempte d'evaluation environnementale formelle";
+    rbo.textContent = "Compte tenu de la nature, de la taille et de la localisation de votre projet, il est probable que vous releviez des petites activites exemptees des procedures lourdes. Verifiez aupres du CRI competent pour confirmation officielle.";
+    stepsHTML = "<div class=\"result-step-item\"><div class=\"result-step-num\">1</div><div class=\"result-step-text\">Confirmer l'exemption aupres du CRI</div></div>"
+              + "<div class=\"result-step-item\"><div class=\"result-step-num\">2</div><div class=\"result-step-text\">Respecter les obligations communales de base</div></div>";
+  } else if(score <= 5) {
+    rv.classList.add("notice");
+    rb.textContent  = "Notice d'Impact";
+    rt.textContent  = "Votre projet releve d'une Notice d'Impact Ecologique (Loi 49-17)";
+    rbo.textContent = "La Notice d'Impact est une procedure allegee. Elle ne necessite pas d'enquete publique obligatoire mais impose un rapport environnemental remis a la CRE. La DAE reste obligatoire avant toute autorisation administrative.";
+    stepsHTML = "<div class=\"result-step-item\"><div class=\"result-step-num\">1</div><div class=\"result-step-text\">Recruter un bureau agree pour la Notice</div></div>"
+              + "<div class=\"result-step-item\"><div class=\"result-step-num\">2</div><div class=\"result-step-text\">Deposer le dossier a la CRE competente</div></div>"
+              + "<div class=\"result-step-item\"><div class=\"result-step-num\">3</div><div class=\"result-step-text\">Obtenir la DAE (30 a 60 jours)</div></div>"
+              + "<div class=\"result-step-item\"><div class=\"result-step-num\">4</div><div class=\"result-step-text\">Joindre la DAE a votre autorisation</div></div>";
+  } else {
+    rv.classList.add("eie");
+    rb.textContent  = "EIE complete requise";
+    rt.textContent  = "Votre projet est soumis a une Etude d'Impact sur l'Environnement (EIE) — Loi 12-03";
+    rbo.textContent = "Votre projet, par sa nature, sa taille ou sa localisation en zone sensible, releve du regime EIE complet. Ce processus inclut une enquete publique de 20 jours minimum et l'examen par la CNE ou CRE. Comptez 4 a 12 mois pour l'ensemble du processus.";
+    stepsHTML = "<div class=\"result-step-item\"><div class=\"result-step-num\">1</div><div class=\"result-step-text\">Bureau d'etudes agree — EIE complete</div></div>"
+              + "<div class=\"result-step-item\"><div class=\"result-step-num\">2</div><div class=\"result-step-text\">Enquete publique (20 jours min)</div></div>"
+              + "<div class=\"result-step-item\"><div class=\"result-step-num\">3</div><div class=\"result-step-text\">Passage en commission CNE ou CRE</div></div>"
+              + "<div class=\"result-step-item\"><div class=\"result-step-num\">4</div><div class=\"result-step-text\">Obtention de la DAE</div></div>";
+  }
+
+  rs.innerHTML = stepsHTML;
+  document.getElementById("qResult").classList.add("visible");
+}
+
+function resetQualifier() {
+  answers = {};
+  document.getElementById("qResult").classList.remove("visible");
+  document.querySelectorAll(".q-step").forEach(function(s){ s.classList.remove("active"); });
+  document.getElementById("qstep-1").classList.add("active");
+  document.querySelectorAll(".q-prog-dot").forEach(function(d,i){ d.classList.remove("active","done"); d.textContent = i+1; });
+  document.querySelectorAll(".q-prog-line").forEach(function(l){ l.classList.remove("done"); });
+  document.getElementById("pdot-1").classList.add("active");
+  document.querySelectorAll(".q-option").forEach(function(o){ o.classList.remove("selected"); });
+  [1,2,3,4].forEach(function(n){ document.getElementById("qNext-"+n).disabled = true; });
+}
+
+/* ── CHECKLIST ── */
+var TOTAL = 16;
+function toggleCheck(el) {
+  el.classList.toggle("checked");
+  var checked = document.querySelectorAll(".check-item.checked").length;
+  var pct = Math.round(checked / TOTAL * 100);
+  document.getElementById("checkCount").textContent = checked + " / " + TOTAL + " documents valides";
+  document.getElementById("checkPct").textContent = pct + "%";
+  document.getElementById("checkFill").style.width = pct + "%";
+  document.getElementById("checkComplete").classList.toggle("visible", checked === TOTAL);
+}
+
+/* ── TIMELINE ── */
+function toggleTL(el) {
+  var wasOpen = el.classList.contains("expanded");
+  document.querySelectorAll(".tl-item").forEach(function(t){ t.classList.remove("expanded"); });
+  if(!wasOpen) el.classList.add("expanded");
+}
+
+/* ── SIMULATEUR ── */
+function updateCA() {
+  var v = parseInt(document.getElementById("simCA").value);
+  document.getElementById("simCAVal").textContent = v.toLocaleString("fr-MA") + " MAD";
+}
+updateCA();
+
+function computeSanction() {
+  var infraction = document.getElementById("simInfraction").value;
+  var recidive   = document.getElementById("simRecidive").value;
+  var duree      = document.getElementById("simDuree").value;
+  var ca         = parseInt(document.getElementById("simCA").value);
+
+  if(!infraction) return;
+
+  var data = {
+    nodae:     { base: 200000, label: "Exploitation sans DAE",          op: "Fermeture immediate ordonnee",           action: "Suspendre & engager EIE",          delay: "4 a 12 mois" },
+    rejet:     { base: 100000, label: "Rejet non conforme",             op: "Suspension de l'activite",               action: "STEP / mise aux normes",            delay: "3 a 6 mois"  },
+    forage:    { base:  80000, label: "Prelevement non autorise",       op: "Fermeture du forage",                    action: "Dossier Agence de Bassin",          delay: "2 a 4 mois"  },
+    dechets:   { base: 150000, label: "Dechets dangereux",              op: "Consignation du site",                   action: "Convention operateur agree",        delay: "1 a 3 mois"  },
+    obstacles: { base:  50000, label: "Obstruction a l'inspection",     op: "Proces-verbal transmis au parquet",      action: "Cooperation & regularisation",     delay: "Immediat"    }
+  };
+
+  var d = data[infraction];
+  var amende = d.base;
+  if(recidive === "oui")   amende = Math.round(amende * 2);
+  if(duree    === "moyen") amende = Math.round(amende * 1.3);
+  if(duree    === "long")  amende = Math.round(amende * 1.8);
+
+  var manqueGagner = duree === "court" ? Math.round(ca * 0.15) : duree === "moyen" ? Math.round(ca * 0.35) : Math.round(ca * 0.6);
+
+  document.getElementById("simAmende").textContent      = amende.toLocaleString("fr-MA") + " MAD";
+  document.getElementById("simAmendeDetail").textContent = d.label + (recidive === "oui" ? " — Recidive (x2)" : "") + ". Hors frais de remise en etat.";
+  document.getElementById("simOp").textContent          = d.op;
+  document.getElementById("simOpDetail").textContent    = "Manque a gagner estime : " + manqueGagner.toLocaleString("fr-MA") + " MAD sur la periode";
+  document.getElementById("simAction").textContent      = d.action;
+  document.getElementById("simActionDetail").textContent = "Delai de regularisation estime : " + d.delay;
+}
+
+/* ── LOIS ── */
+function toggleLaw(el) {
+  var wasActive = el.classList.contains("active");
+  document.querySelectorAll(".law-card").forEach(function(c){ c.classList.remove("active"); });
+  if(!wasActive) el.classList.add("active");
+}
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapports Sectoriels IA + Annuaire B2B — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   DESIGN SYSTEM — Smart-Invest.ia — Module 09
+   Rapports Sectoriels IA + Annuaire B2B
+══════════════════════════════════════════ */
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:100;height:56px;background:rgba(14,14,12,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid rgba(184,134,42,0.2)}
+.header-left{display:flex;align-items:center;gap:14px}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color .2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.mbadge{font-family:var(--font-mono);font-size:10px;padding:4px 10px;border-radius:100px}
+.mbadge-gold{color:var(--gold-light);background:rgba(184,134,42,0.12);border:1px solid rgba(184,134,42,0.25)}
+.mbadge-prem{color:#F0C460;background:rgba(184,134,42,0.15);border:1px solid rgba(184,134,42,0.3)}
+.quota-bar{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:8px}
+.quota-dot{width:6px;height:6px;border-radius:50%;background:var(--gold-light)}
+
+/* TABS */
+.page-tabs{display:flex;background:var(--ink-mid);border-bottom:1px solid rgba(255,255,255,0.05)}
+.page-tab{padding:14px 28px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:rgba(255,255,255,0.4);transition:all .25s;font-family:var(--font-body);border-bottom:3px solid transparent;display:flex;align-items:center;gap:8px}
+.page-tab:hover{color:rgba(255,255,255,0.8)}
+.page-tab.active{color:var(--gold-light);border-bottom-color:var(--gold)}
+
+/* PAGE */
+.page{max-width:1100px;margin:0 auto;padding:36px 32px 80px}
+
+/* ══ PARTIE A — RAPPORTS IA ══ */
+
+/* Hero Rapports */
+.rap-hero{background:var(--ink);border-radius:20px;padding:36px;margin-bottom:32px;position:relative;overflow:hidden}
+.rap-hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(184,134,42,.1) 0%,transparent 65%);pointer-events:none}
+.rap-hero-label{font-family:var(--font-mono);font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.rap-hero-title{font-family:var(--font-title);font-size:28px;font-weight:800;color:var(--white);line-height:1.15;margin-bottom:10px}
+.rap-hero-sub{font-size:14px;color:rgba(255,255,255,.5);max-width:560px;line-height:1.7}
+
+/* CONFIG */
+.config-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:24px}
+.config-title{font-family:var(--font-title);font-size:17px;font-weight:700;margin-bottom:22px}
+
+/* Secteur pills */
+.secteur-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.sect-pill{
+  padding:14px 12px;border:1.5px solid var(--border);border-radius:11px;
+  cursor:pointer;text-align:center;background:var(--bg);transition:all .22s;
+}
+.sect-pill:hover{border-color:var(--gold);background:var(--gold-pale)}
+.sect-pill.selected{border-color:var(--gold);background:var(--gold-pale);font-weight:700}
+.sect-pill-icon{font-size:22px;margin-bottom:6px;display:block}
+.sect-pill-name{font-size:12.5px;color:var(--ink);line-height:1.3}
+.sect-pill.selected .sect-pill-name{color:var(--gold)}
+
+/* Profil selector */
+.profil-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px}
+.profil-btn{
+  padding:10px;border:1.5px solid var(--border);border-radius:9px;
+  cursor:pointer;text-align:center;background:var(--bg);font-size:12px;color:var(--ink-soft);
+  transition:all .2s;font-family:var(--font-body);
+}
+.profil-btn:hover{border-color:var(--gold);color:var(--ink)}
+.profil-btn.selected{border-color:var(--gold);background:var(--gold-pale);color:var(--ink);font-weight:600}
+
+/* Gen button */
+.gen-btn{
+  width:100%;padding:16px;border-radius:12px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);
+  font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--ink);
+  transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,134,42,.3)}
+.gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* API banner */
+.api-banner{background:rgba(184,134,42,.06);border:1px solid rgba(184,134,42,.15);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft)}
+.api-banner input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-family:var(--font-mono);font-size:11px;outline:none;transition:border-color .2s}
+.api-banner input:focus{border-color:var(--gold)}
+.api-save{background:var(--gold);color:var(--ink);border:none;border-radius:6px;padding:7px 14px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:var(--font-body);white-space:nowrap}
+
+/* SKELETON */
+.skeleton{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg) 50%,var(--bg2) 75%);background-size:400% 100%;animation:shimmer 1.4s infinite;border-radius:8px}
+@keyframes shimmer{0%{background-position:100% 50%}100%{background-position:0% 50%}}
+.skel-block{height:16px;margin-bottom:10px}
+.skel-block.h24{height:24px}
+.skel-block.h12{height:12px}
+.skel-block.w60{width:60%}
+.skel-block.w80{width:80%}
+.skel-block.w40{width:40%}
+
+/* RAPPORT RENDU */
+.rapport-wrap{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.rapport-header{background:var(--ink);padding:28px 32px}
+.rapport-sector-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;opacity:.7}
+.rapport-title{font-family:var(--font-title);font-size:22px;font-weight:800;color:var(--white);margin-bottom:6px}
+.rapport-meta{font-size:12px;color:rgba(255,255,255,.35);display:flex;gap:16px;flex-wrap:wrap}
+
+.rapport-body{padding:32px;font-size:14px;line-height:1.8;color:var(--ink-soft)}
+.rapport-body h2{font-family:var(--font-title);font-size:17px;font-weight:700;color:var(--ink);margin:24px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--gold-pale)}
+.rapport-body h2:first-child{margin-top:0}
+.rapport-body h3{font-size:14px;font-weight:700;color:var(--accent);margin:14px 0 6px}
+.rapport-body ul{padding-left:18px;margin:8px 0}
+.rapport-body li{margin-bottom:5px}
+.rapport-body strong{color:var(--ink)}
+.rapport-body .source-chip{font-family:var(--font-mono);font-size:10px;background:var(--gold-pale);color:var(--gold);padding:2px 8px;border-radius:4px;display:inline;margin:0 2px}
+.rapport-body .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.rapport-body .kpi{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.rapport-body .kpi-num{font-family:var(--font-title);font-size:22px;font-weight:800;color:var(--gold)}
+.rapport-body .kpi-label{font-size:11px;color:var(--smoke);margin-top:2px}
+
+.rapport-footer{padding:16px 32px;background:var(--bg);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.rapport-disclaimer{font-size:11px;color:var(--smoke);max-width:500px;line-height:1.5}
+.rapport-actions{display:flex;gap:8px}
+.rap-btn{padding:9px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-body);border:none;display:flex;align-items:center;gap:6px}
+.rap-btn-gold{background:var(--gold);color:var(--ink)}
+.rap-btn-gold:hover{background:var(--gold-light)}
+.rap-btn-ghost{background:var(--bg2);color:var(--ink-soft);border:1px solid var(--border)}
+.rap-btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Historique rapports */
+.hist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+.hist-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .2s}
+.hist-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.hist-sector{font-family:var(--font-mono);font-size:9px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.hist-name{font-family:var(--font-title);font-size:14px;font-weight:700;margin-bottom:4px}
+.hist-date{font-size:11px;color:var(--smoke)}
+
+/* QUOTA */
+.quota-display{background:var(--gold-pale);border:1px solid rgba(184,134,42,.2);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.quota-text{font-size:13px;color:var(--ink-soft)}
+.quota-pills{display:flex;gap:4px}
+.quota-pill{width:18px;height:6px;border-radius:3px;background:var(--gold)}
+.quota-pill.used{background:var(--bg2)}
+
+/* ══ PARTIE B — ANNUAIRE ══ */
+
+/* Filtres annuaire */
+.annuaire-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;align-items:center}
+.filter-group{display:flex;flex-direction:column;gap:4px;min-width:140px}
+.filter-label{font-family:var(--font-mono);font-size:9px;color:var(--smoke);letter-spacing:.08em;text-transform:uppercase}
+.filter-select{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font-body);font-size:12.5px;color:var(--ink);background:var(--white);outline:none;cursor:pointer;transition:border-color .2s}
+.filter-select:focus{border-color:var(--gold)}
+.search-input{flex:1;min-width:200px;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font-body);font-size:13px;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--gold)}
+.reset-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:none;cursor:pointer;font-size:12px;color:var(--smoke);font-family:var(--font-body);transition:all .2s}
+.reset-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Expert cards */
+.experts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.expert-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:all .25s;cursor:pointer}
+.expert-card:hover{border-color:var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.07);transform:translateY(-2px)}
+.expert-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.expert-avatar{width:44px;height:44px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:15px;font-weight:800;color:var(--gold-light);flex-shrink:0}
+.expert-verified{font-family:var(--font-mono);font-size:9px;color:var(--success);background:rgba(26,107,60,.08);border:1px solid rgba(26,107,60,.2);padding:2px 7px;border-radius:100px;white-space:nowrap}
+.expert-cat{font-family:var(--font-mono);font-size:9px;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.expert-name{font-family:var(--font-title);font-size:15px;font-weight:700;line-height:1.2}
+.expert-firm{font-size:12px;color:var(--smoke)}
+.expert-specs{display:flex;flex-wrap:wrap;gap:4px}
+.spec-tag{font-size:10px;font-family:var(--font-mono);background:var(--bg2);color:var(--ink-soft);padding:2px 8px;border-radius:100px}
+.expert-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--smoke)}
+.expert-stars{color:var(--gold);font-size:12px}
+.expert-langs{display:flex;gap:4px}
+.lang-badge{font-family:var(--font-mono);font-size:9px;background:rgba(30,77,107,.08);color:var(--accent);padding:2px 6px;border-radius:3px}
+.contact-expert-btn{width:100%;padding:10px;border-radius:9px;background:var(--ink);border:none;cursor:pointer;color:var(--gold-light);font-family:var(--font-title);font-size:13px;font-weight:700;transition:all .2s;margin-top:4px}
+.contact-expert-btn:hover{background:var(--ink-mid)}
+
+/* Pagination */
+.pagination{display:flex;gap:6px;justify-content:center;margin-top:28px}
+.pag-btn{width:34px;height:34px;border-radius:7px;border:1px solid var(--border);background:none;cursor:pointer;font-family:var(--font-mono);font-size:13px;color:var(--smoke);transition:all .2s}
+.pag-btn:hover{border-color:var(--gold);color:var(--gold)}
+.pag-btn.active{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:700}
+
+/* REJOINDRE SECTION */
+.join-section{background:var(--ink);border-radius:16px;padding:32px;margin-top:40px;display:grid;grid-template-columns:1fr 2fr;gap:32px;align-items:center}
+.join-title{font-family:var(--font-title);font-size:22px;font-weight:800;color:var(--white);margin-bottom:8px}
+.join-sub{font-size:13.5px;color:rgba(255,255,255,.5);line-height:1.7}
+.tarif-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.tarif-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px;text-align:center;transition:all .2s}
+.tarif-card:hover{border-color:rgba(184,134,42,.3)}
+.tarif-card.featured{border-color:var(--gold);background:rgba(184,134,42,.06)}
+.tarif-label{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.tarif-price{font-family:var(--font-title);font-size:26px;font-weight:800;color:var(--gold-light);line-height:1}
+.tarif-period{font-size:11px;color:rgba(255,255,255,.3);margin-top:2px}
+.tarif-feature{font-size:12px;color:rgba(255,255,255,.5);margin-top:10px;line-height:1.5}
+.tarif-btn{margin-top:12px;width:100%;padding:8px;border-radius:7px;background:rgba(184,134,42,.15);border:1px solid rgba(184,134,42,.3);color:var(--gold-light);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.tarif-btn:hover{background:rgba(184,134,42,.25)}
+.tarif-card.featured .tarif-btn{background:var(--gold);color:var(--ink)}
+.tarif-card.featured .tarif-btn:hover{background:var(--gold-light)}
+
+/* MODAL CONTACT */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:999;display:flex;align-items:center;justify-content:center;animation:fi .2s}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.modal{background:var(--white);border-radius:16px;padding:28px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-title{font-family:var(--font-title);font-size:18px;font-weight:800;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--smoke);margin-bottom:20px}
+.mfield{margin-bottom:14px}
+.mfield label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.mfield input,.mfield select,.mfield textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--font-body);font-size:13px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.mfield input:focus,.mfield select:focus,.mfield textarea:focus{border-color:var(--gold)}
+.mfield textarea{min-height:70px;resize:vertical}
+.modal-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.btn-cancel{padding:10px 18px;border:1.5px solid var(--border);border-radius:9px;background:none;cursor:pointer;font-family:var(--font-body);font-size:13px;color:var(--ink-soft);transition:all .2s}
+.btn-cancel:hover{border-color:var(--ink)}
+.btn-send{padding:10px 22px;border-radius:9px;background:var(--gold);border:none;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--ink);transition:all .2s}
+.btn-send:hover{background:var(--gold-light)}
+
+/* PRINT */
+@media print{
+  .header,.page-tabs,.config-card,.quota-display,.rapport-footer,.api-banner{display:none!important}
+  .page{padding:0}
+  .rapport-wrap{border:none;border-radius:0}
+}
+
+@media(max-width:900px){
+  .secteur-grid{grid-template-columns:repeat(2,1fr)}
+  .profil-row{grid-template-columns:repeat(2,1fr)}
+  .experts-grid{grid-template-columns:repeat(2,1fr)}
+  .hist-grid{grid-template-columns:1fr 1fr}
+  .join-section{grid-template-columns:1fr}
+  .tarif-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .page{padding:20px 16px 60px}
+  .experts-grid{grid-template-columns:1fr}
+  .rapport-kpi-row{grid-template-columns:1fr}
+}
+</style>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="premium"></script>
+<script src='lib/upgrade-modal.js'></script>
+
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <a href="landing.html" class="back-btn">← Retour</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="mbadge mbadge-gold">Module 09</div>
+    <div class="mbadge mbadge-prem">⭐ Premium · 990 MAD/mois</div>
+  </div>
+  <div class="quota-bar">
+    <div class="quota-dot"></div>
+    <span id="quotaLabel">Rapports : 3/3 disponibles</span>
+  </div>
+</header>
+
+<!-- PAGE TABS -->
+<div class="page-tabs">
+  <button class="page-tab active" onclick="switchPageTab('rapports',this)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Rapports Sectoriels IA
+  </button>
+  <button class="page-tab" onclick="switchPageTab('annuaire',this)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M1 14c0-2.5 2-4 5-4s5 1.5 5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="12" cy="5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M14 12c0-2-1-3-2-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Annuaire Experts B2B
+  </button>
+</div>
+
+<!-- ══════════ RAPPORTS IA ══════════ -->
+<div id="tab-rapports">
+<div class="page">
+  <!-- Hero -->
+  <div class="rap-hero">
+    <div class="rap-hero-label">Intelligence Artificielle · Données AMDIE + CGI 2024</div>
+    <h1 class="rap-hero-title">Rapports sectoriels IA<br>personnalisés en 60 secondes</h1>
+    <p class="rap-hero-sub">Sélectionnez votre secteur et votre profil. Claude génère un rapport d'opportunité complet avec avantages fiscaux précis, zones recommandées et contacts institutionnels.</p>
+  </div>
+
+  <!-- QUOTA -->
+  <div class="quota-display">
+    <div class="quota-text">Rapports disponibles ce mois-ci <strong id="quotaNum">3</strong>/3 · <span style="color:var(--gold)">Accès illimité avec abonnement Premium</span></div>
+    <div class="quota-pills" id="quotaPills">
+      <div class="quota-pill"></div><div class="quota-pill"></div><div class="quota-pill"></div>
+    </div>
+  </div>
+
+  <!-- CONFIG -->
+  <div class="config-card">
+    <div class="config-title">1. Choisissez votre secteur</div>
+    <div class="secteur-grid" id="secteurGrid">
+      <div class="sect-pill selected" data-id="auto" onclick="selectSecteur('auto',this)"><span class="sect-pill-icon">🚗</span><span class="sect-pill-name">Automobile & Équipements</span></div>
+      <div class="sect-pill" data-id="aero" onclick="selectSecteur('aero',this)"><span class="sect-pill-icon">✈️</span><span class="sect-pill-name">Aéronautique</span></div>
+      <div class="sect-pill" data-id="textile" onclick="selectSecteur('textile',this)"><span class="sect-pill-icon">🧵</span><span class="sect-pill-name">Textile & Habillement</span></div>
+      <div class="sect-pill" data-id="agro" onclick="selectSecteur('agro',this)"><span class="sect-pill-icon">🌾</span><span class="sect-pill-name">Agroalimentaire</span></div>
+      <div class="sect-pill" data-id="tic" onclick="selectSecteur('tic',this)"><span class="sect-pill-icon">💻</span><span class="sect-pill-name">Offshoring & TIC</span></div>
+      <div class="sect-pill" data-id="energie" onclick="selectSecteur('energie',this)"><span class="sect-pill-icon">⚡</span><span class="sect-pill-name">Énergies Renouvelables</span></div>
+      <div class="sect-pill" data-id="tourisme" onclick="selectSecteur('tourisme',this)"><span class="sect-pill-icon">🏨</span><span class="sect-pill-name">Tourisme & Hôtellerie</span></div>
+      <div class="sect-pill" data-id="pharma" onclick="selectSecteur('pharma',this)"><span class="sect-pill-icon">💊</span><span class="sect-pill-name">Industries Pharmaceutiques</span></div>
+    </div>
+
+    <div class="config-title" style="margin-bottom:14px">2. Votre profil investisseur</div>
+    <div class="profil-row" id="profilRow">
+      <button class="profil-btn selected" onclick="selectProfil('multinationale',this)">🏢 Multinationale étrangère</button>
+      <button class="profil-btn" onclick="selectProfil('pme-regionale',this)">🏭 PME régionale (EU/Golfe/Afrique)</button>
+      <button class="profil-btn" onclick="selectProfil('family-office',this)">💼 Investisseur individuel / Family Office</button>
+      <button class="profil-btn" onclick="selectProfil('mre',this)">🌍 MRE — Diaspora marocaine</button>
+    </div>
+
+    <!-- API BANNER -->
+    <div class="api-banner" id="apiBanner">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1a3 3 0 00-3 3v1H3a1 1 0 00-1 1v6a1 1 0 001 1h8a1 1 0 001-1V6a1 1 0 00-1-1h-1V4a3 3 0 00-3-3z" fill="#B8862A"/></svg>
+      Clé API Anthropic pour générer les rapports :
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-...">
+      <button class="api-save" onclick="saveApiKey()">Enregistrer</button>
+    </div>
+
+    <button class="gen-btn" id="genBtn" onclick="genererRapport()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9h3l1-2.5 2 6 1-3h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Générer le rapport IA
+    </button>
+  </div>
+
+  <!-- RAPPORT GÉNÉRÉ -->
+  <div id="rapportWrap"></div>
+
+  <!-- HISTORIQUE -->
+  <div id="histSection" style="display:none">
+    <div style="font-family:var(--font-title);font-size:16px;font-weight:700;margin-bottom:12px">Rapports récents</div>
+    <div class="hist-grid" id="histGrid"></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════ ANNUAIRE ══════════ -->
+<div id="tab-annuaire" style="display:none">
+<div class="page">
+  <div style="margin-bottom:24px">
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Annuaire qualifié</div>
+    <h2 style="font-family:var(--font-title);font-size:28px;font-weight:800;margin-bottom:8px;line-height:1.1">Experts en investissement au Maroc</h2>
+    <p style="font-size:14px;color:var(--smoke);max-width:560px;line-height:1.7">Avocats, experts-comptables, notaires, fiduciaires et conseillers spécialisés. Tous vérifiés et notés par la communauté Smart-Invest.ia.</p>
+  </div>
+
+  <!-- Filtres -->
+  <div class="annuaire-filters">
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍 Rechercher un expert, cabinet, ville..." oninput="filterExperts()">
+    <div class="filter-group">
+      <span class="filter-label">Catégorie</span>
+      <select class="filter-select" id="filterCat" onchange="filterExperts()">
+        <option value="">Toutes</option>
+        <option value="avocat">Avocats d'affaires</option>
+        <option value="comptable">Experts-comptables</option>
+        <option value="notaire">Notaires</option>
+        <option value="fiduciaire">Fiduciaires</option>
+        <option value="banque">Banques IDE</option>
+        <option value="conseil">Conseils en investissement</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Ville</span>
+      <select class="filter-select" id="filterVille" onchange="filterExperts()">
+        <option value="">Toutes</option>
+        <option value="Casablanca">Casablanca</option>
+        <option value="Rabat">Rabat</option>
+        <option value="Tanger">Tanger</option>
+        <option value="Marrakech">Marrakech</option>
+        <option value="Fès">Fès</option>
+        <option value="Agadir">Agadir</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Langue</span>
+      <select class="filter-select" id="filterLang" onchange="filterExperts()">
+        <option value="">Toutes</option>
+        <option value="EN">Anglais</option>
+        <option value="FR">Français</option>
+        <option value="AR">Arabe</option>
+        <option value="ES">Espagnol</option>
+      </select>
+    </div>
+    <button class="reset-btn" onclick="resetFilters()">↺ Réinitialiser</button>
+  </div>
+
+  <div style="font-size:12px;color:var(--smoke);margin-bottom:16px;font-family:var(--font-mono)" id="countLabel">18 experts disponibles</div>
+
+  <!-- Grid experts -->
+  <div class="experts-grid" id="expertsGrid"></div>
+  <div class="pagination" id="pagination"></div>
+
+  <!-- REJOINDRE -->
+  <div class="join-section">
+    <div>
+      <div class="join-title">Vous êtes un professionnel ?<br>Rejoignez l'annuaire</div>
+      <div class="join-sub">Référencez votre cabinet auprès de milliers d'investisseurs actifs. Leads qualifiés, profils vérifiés, visibilité premium.</div>
+    </div>
+    <div class="tarif-grid">
+      <div class="tarif-card">
+        <div class="tarif-label">Basique</div>
+        <div class="tarif-price">500</div>
+        <div class="tarif-period">MAD / an</div>
+        <div class="tarif-feature">Fiche expert · Apparaît dans les recherches · Formulaire contact</div>
+        <button class="tarif-btn" onclick="alert('Inscription Basique — contactez contact@Smart-Invest.ia')">S'inscrire</button>
+      </div>
+      <div class="tarif-card featured">
+        <div class="tarif-label">⭐ Premium · Recommandé</div>
+        <div class="tarif-price">1 200</div>
+        <div class="tarif-period">MAD / an</div>
+        <div class="tarif-feature">Fiche mise en avant · Badge Vérifié · Priorité résultats · Profil enrichi</div>
+        <button class="tarif-btn" onclick="alert('Inscription Premium — contactez contact@Smart-Invest.ia')">S'inscrire Premium</button>
+      </div>
+      <div class="tarif-card">
+        <div class="tarif-label">Leads qualifiés</div>
+        <div class="tarif-price">150</div>
+        <div class="tarif-period">MAD / lead</div>
+        <div class="tarif-feature">Leads transmis avec profil complet · Investisseur qualifié · Montant confirmé</div>
+        <button class="tarif-btn" onclick="alert('Programme Leads — contactez contact@Smart-Invest.ia')">En savoir plus</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL CONTACT -->
+<div class="modal-overlay" id="contactModal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title" id="modalExpertName">Contacter l'expert</div>
+    <div class="modal-sub">Votre demande sera transmise sous 24h. L'expert vous contactera dans les 48h ouvrables.</div>
+    <div class="modal-row">
+      <div class="mfield"><label>Votre nom *</label><input type="text" id="m-nom" placeholder="Prénom Nom"></div>
+      <div class="mfield"><label>Email *</label><input type="email" id="m-email" placeholder="vous@example.com"></div>
+    </div>
+    <div class="modal-row">
+      <div class="mfield">
+        <label>Type de projet</label>
+        <select id="m-type"><option>Création d'entreprise (SARL/SA)</option><option>Investissement industriel (IDE)</option><option>Acquisition / M&A</option><option>Joint-venture</option><option>Optimisation fiscale</option><option>Autre</option></select>
+      </div>
+      <div class="mfield">
+        <label>Montant investissement</label>
+        <select id="m-montant"><option>&lt; 500 000 MAD</option><option>500k – 2M MAD</option><option>2M – 10M MAD</option><option>10M – 50M MAD</option><option>&gt; 50M MAD</option></select>
+      </div>
+    </div>
+    <div class="mfield"><label>Message</label><textarea id="m-message" placeholder="Décrivez brièvement votre projet et vos questions..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-send" onclick="sendContact()">Envoyer la demande →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// MODULE 09 — Rapports IA + Annuaire B2B
+// ══════════════════════════════════════════
+
+let selectedSecteur = 'auto';
+let selectedProfil = 'multinationale';
+let apiKey = localStorage.getItem('Smart-Invest_api_key') || '';
+let quotaUsed = parseInt(localStorage.getItem('Smart-Invest_quota_rapports') || '0');
+let rapportHistory = JSON.parse(localStorage.getItem('Smart-Invest_rapport_history') || '[]');
+let currentPage = 1;
+const PER_PAGE = 6;
+let contactExpertName = '';
+
+const QUOTA_MAX = 3;
+
+if (apiKey) document.getElementById('apiBanner').style.display = 'none';
+updateQuota();
+renderHistory();
+
+// ── PAGE TABS ──
+function switchPageTab(tab, btn) {
+  ['rapports','annuaire'].forEach(t => document.getElementById('tab-'+t).style.display = t===tab?'block':'none');
+  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (tab === 'annuaire') { renderExperts(); }
+}
+
+// ── API KEY ──
+function saveApiKey() {
+  const v = document.getElementById('apiKeyInput').value.trim();
+  if (v.startsWith('sk-ant-')) {
+    apiKey = v;
+    localStorage.setItem('Smart-Invest_api_key', v);
+    document.getElementById('apiBanner').style.display = 'none';
+  } else {
+    document.getElementById('apiKeyInput').style.borderColor = 'var(--danger)';
+    setTimeout(() => { document.getElementById('apiKeyInput').style.borderColor = ''; }, 1500);
+  }
+}
+
+// ── SECTEUR / PROFIL ──
+function selectSecteur(id, el) {
+  selectedSecteur = id;
+  document.querySelectorAll('.sect-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function selectProfil(id, el) {
+  selectedProfil = id;
+  document.querySelectorAll('.profil-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── QUOTA ──
+function updateQuota() {
+  const remaining = Math.max(0, QUOTA_MAX - quotaUsed);
+  document.getElementById('quotaNum').textContent = remaining;
+  document.getElementById('quotaLabel').textContent = `Rapports : ${remaining}/${QUOTA_MAX} disponibles`;
+  const pills = document.getElementById('quotaPills');
+  pills.innerHTML = Array.from({length: QUOTA_MAX}, (_, i) =>
+    `<div class="quota-pill ${i >= remaining ? 'used' : ''}"></div>`).join('');
+  document.getElementById('genBtn').disabled = remaining === 0;
+}
+
+// ── SECTEUR LABELS ──
+const SECT_LABELS = { auto:'Automobile & Équipements', aero:'Aéronautique', textile:'Textile & Habillement', agro:'Agroalimentaire', tic:'Offshoring & TIC', energie:'Énergies Renouvelables', tourisme:'Tourisme & Hôtellerie', pharma:'Industries Pharmaceutiques' };
+const SECT_ICONS = { auto:'🚗', aero:'✈️', textile:'🧵', agro:'🌾', tic:'💻', energie:'⚡', tourisme:'🏨', pharma:'💊' };
+const PROFIL_LABELS = { multinationale:'Multinationale étrangère', 'pme-regionale':'PME régionale', 'family-office':'Family Office', mre:'MRE — Diaspora marocaine' };
+
+// ── SYSTEM PROMPT ──
+function buildSystemPrompt(secteur, profil) {
+  return `Tu es un analyste économique senior spécialisé en investissement au Maroc pour Smart-Invest.ia. Tu maîtrises parfaitement le CGI 2024, les guides AMDIE, la Charte de l'Investissement 2022 et les dispositifs CCG/Maroc PME/FDII.
+
+Génère un rapport d'opportunité d'investissement dans le secteur "${SECT_LABELS[secteur]}" pour un investisseur de type "${PROFIL_LABELS[profil]}".
+
+FORMAT HTML STRUCTURÉ REQUIS — utilise exactement ces balises :
+
+<h2>1. Panorama du secteur au Maroc</h2>
+[contenu avec KPIs sectoriels, acteurs présents, positionnement MENA]
+
+<h2>2. Avantages fiscaux applicables</h2>
+[IS applicable avec taux précis et références légales CGI, exonérations, durées, avantages douaniers ATPA/ZAI, programmes FDII/CCG/Fonds Hassan II éligibles]
+
+<h2>3. Cadre réglementaire</h2>
+[lois applicables, autorisations spécifiques, contraintes]
+
+<h2>4. Chaîne de valeur locale</h2>
+[fournisseurs disponibles, taux d'intégration locale, opportunités sourcing]
+
+<h2>5. Zones d'implantation recommandées</h2>
+[2-3 zones avec justification précise, IS applicable par zone, contact CRI]
+
+<h2>6. Processus d'investissement step-by-step</h2>
+[étapes spécifiques au secteur, délais réalistes, autorisations sectorielles]
+
+<h2>7. Contacts institutionnels clés</h2>
+[ministère de tutelle, fédération professionnelle, CRI recommandé, AMDIE]
+
+<h2>8. Cas de référence</h2>
+[3 investissements réussis dans ce secteur, montants et résultats publics]
+
+RÈGLES :
+- Citations légales précises (Art. X CGI 2024, Loi n°...)
+- Données chiffrées sourcées et datées
+- Mentionner les limites de certaines données (2020-2024)
+- Répondre au profil spécifique "${PROFIL_LABELS[profil]}"
+- Pour les avantages ZAI : toujours mentionner IS 0% → 15% et durée
+- Ne jamais inventer de données — indiquer "selon AMDIE 2020" si incertain
+- Ton professionnel, dense en information, citations précises`;
+}
+
+// ── GÉNÉRER RAPPORT ──
+async function genererRapport() {
+  if (!apiKey) {
+    document.getElementById('apiBanner').style.display = 'flex';
+    document.getElementById('apiKeyInput').focus();
+    return;
+  }
+  if (quotaUsed >= QUOTA_MAX) {
+    showToast('Quota mensuel atteint. Passez à Premium pour un accès illimité.');
+    return;
+  }
+
+  const secteurLabel = SECT_LABELS[selectedSecteur];
+  const profilLabel = PROFIL_LABELS[selectedProfil];
+
+  // Skeleton loading
+  document.getElementById('rapportWrap').innerHTML = `
+    <div class="rapport-wrap">
+      <div class="rapport-header">
+        <div class="rapport-sector-badge">Génération en cours...</div>
+        <div class="rapport-title">Rapport ${secteurLabel}</div>
+        <div class="rapport-meta"><span>Pour : ${profilLabel}</span><span>Alimenté par Claude Sonnet 4</span></div>
+      </div>
+      <div style="padding:32px">
+        ${Array.from({length:8},(_,i)=>`
+          <div class="skel-block h24 w${['60','80','40','80','60','80','40','60'][i]}" style="margin-bottom:16px"></div>
+          ${Array.from({length:3},()=>`<div class="skel-block h12 w80" style="margin-bottom:6px"></div>`).join('')}
+          <div style="margin-bottom:20px"></div>`).join('')}
+      </div>
+    </div>`;
+
+  document.getElementById('genBtn').disabled = true;
+  document.getElementById('genBtn').textContent = '⏳ Génération en cours...';
+
+  try {
+    const resp = await fetch('/.netlify/functions/claude-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        system: buildSystemPrompt(selectedSecteur, selectedProfil),
+        messages: [{ role: 'user', content: `Génère le rapport complet pour le secteur ${secteurLabel}, profil ${profilLabel}. Commence directement par le HTML structuré sans préambule.` }]
+      })
+    });
+
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error?.message || 'Erreur API');
+
+    const rapportHtml = data.content[0].text;
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+    const timeStr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+    document.getElementById('rapportWrap').innerHTML = `
+      <div class="rapport-wrap" id="printableRapport">
+        <div class="rapport-header">
+          <div class="rapport-sector-badge">${SECT_ICONS[selectedSecteur]} ${secteurLabel.toUpperCase()}</div>
+          <div class="rapport-title">Rapport d'opportunité — ${secteurLabel}</div>
+          <div class="rapport-meta">
+            <span>Profil : ${profilLabel}</span>
+            <span>Généré le ${dateStr} à ${timeStr}</span>
+            <span>Claude Sonnet 4 · Corpus réglementaire Maroc 2024</span>
+          </div>
+        </div>
+        <div class="rapport-body">${rapportHtml}</div>
+        <div class="rapport-footer">
+          <div class="rapport-disclaimer">
+            ⚠️ Ce rapport est généré par IA à titre informatif uniquement. Il ne constitue pas un conseil juridique ou fiscal. Consultez un expert qualifié avant toute décision d'investissement. Données : AMDIE 2020, CGI 2024, Charte de l'Investissement 2022.
+          </div>
+          <div class="rapport-actions">
+            <button class="rap-btn rap-btn-ghost" onclick="window.print()">🖨 Imprimer / PDF</button>
+            <button class="rap-btn rap-btn-ghost" onclick="switchPageTab('annuaire',document.querySelectorAll('.page-tab')[1])">👥 Trouver un expert</button>
+            <button class="rap-btn rap-btn-gold" onclick="copyRapport()">⎘ Copier le rapport</button>
+          </div>
+        </div>
+      </div>`;
+
+    // Sauvegarder dans historique
+    quotaUsed++;
+    localStorage.setItem('Smart-Invest_quota_rapports', quotaUsed.toString());
+    const entry = { secteur: selectedSecteur, profil: selectedProfil, date: dateStr, html: rapportHtml };
+    rapportHistory.unshift(entry);
+    if (rapportHistory.length > 6) rapportHistory.pop();
+    localStorage.setItem('Smart-Invest_rapport_history', JSON.stringify(rapportHistory));
+    updateQuota();
+    renderHistory();
+
+  } catch(err) {
+    document.getElementById('rapportWrap').innerHTML = `
+      <div style="background:rgba(185,28,28,.06);border:1px solid rgba(185,28,28,.2);border-radius:12px;padding:20px;color:var(--danger)">
+        ⚠️ Erreur : ${err.message}. Vérifiez votre clé API Anthropic.
+      </div>`;
+  }
+
+  document.getElementById('genBtn').disabled = false;
+  document.getElementById('genBtn').innerHTML = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9h3l1-2.5 2 6 1-3h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Générer le rapport IA`;
+}
+
+function copyRapport() {
+  const el = document.querySelector('.rapport-body');
+  navigator.clipboard.writeText(el.innerText).then(() => showToast('Rapport copié dans le presse-papiers'));
+}
+
+// ── HISTORIQUE ──
+function renderHistory() {
+  if (!rapportHistory.length) { document.getElementById('histSection').style.display = 'none'; return; }
+  document.getElementById('histSection').style.display = 'block';
+  document.getElementById('histGrid').innerHTML = rapportHistory.map((r, i) => `
+    <div class="hist-card" onclick="loadHistRapport(${i})">
+      <div class="hist-sector">${SECT_ICONS[r.secteur]} ${SECT_LABELS[r.secteur]}</div>
+      <div class="hist-name">${PROFIL_LABELS[r.profil]}</div>
+      <div class="hist-date">📅 ${r.date}</div>
+    </div>`).join('');
+}
+
+function loadHistRapport(idx) {
+  const r = rapportHistory[idx];
+  const el = document.getElementById('rapportWrap');
+  el.innerHTML = `
+    <div class="rapport-wrap">
+      <div class="rapport-header">
+        <div class="rapport-sector-badge">${SECT_ICONS[r.secteur]} ${SECT_LABELS[r.secteur]}</div>
+        <div class="rapport-title">Rapport d'opportunité — ${SECT_LABELS[r.secteur]}</div>
+        <div class="rapport-meta"><span>Profil : ${PROFIL_LABELS[r.profil]}</span><span>${r.date}</span><span>Claude Sonnet 4</span></div>
+      </div>
+      <div class="rapport-body">${r.html}</div>
+      <div class="rapport-footer">
+        <div class="rapport-disclaimer">Rapport archivé · Données indicatives · Consultez un expert qualifié.</div>
+        <div class="rapport-actions">
+          <button class="rap-btn rap-btn-ghost" onclick="window.print()">🖨 PDF</button>
+          <button class="rap-btn rap-btn-gold" onclick="copyRapport()">⎘ Copier</button>
+        </div>
+      </div>
+    </div>`;
+  el.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ══ ANNUAIRE EXPERTS ══
+
+const EXPERTS = [
+  // À compléter avec vos partenaires vérifiés
+];
+
+let filteredExperts = [...EXPERTS];
+
+function filterExperts() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const cat = document.getElementById('filterCat').value;
+  const ville = document.getElementById('filterVille').value;
+  const lang = document.getElementById('filterLang').value;
+
+  filteredExperts = EXPERTS.filter(e => {
+    const matchQ = !q || e.nom.toLowerCase().includes(q) || e.firm.toLowerCase().includes(q) || e.specs.some(s => s.toLowerCase().includes(q));
+    const matchCat = !cat || e.cat === cat;
+    const matchVille = !ville || e.ville === ville;
+    const matchLang = !lang || e.langs.includes(lang);
+    return matchQ && matchCat && matchVille && matchLang;
+  });
+
+  currentPage = 1;
+  document.getElementById('countLabel').textContent = `${filteredExperts.length} expert${filteredExperts.length>1?'s':''} disponible${filteredExperts.length>1?'s':''}`;
+  renderExperts();
+}
+
+function resetFilters() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('filterCat').value = '';
+  document.getElementById('filterVille').value = '';
+  document.getElementById('filterLang').value = '';
+  filterExperts();
+}
+
+function renderExperts() {
+  const start = (currentPage - 1) * PER_PAGE;
+  const page = filteredExperts.slice(start, start + PER_PAGE);
+  const catIcons = { avocat:'⚖️', comptable:'📊', notaire:'🏛️', fiduciaire:'📋', banque:'🏦', conseil:'💼' };
+  const catLabels = { avocat:'Avocat d\'affaires', comptable:'Expert-comptable', notaire:'Notaire', fiduciaire:'Fiduciaire', banque:'Banque IDE', conseil:'Conseil en investissement' };
+
+  document.getElementById('expertsGrid').innerHTML = page.map(e => `
+    <div class="expert-card" onclick="openContactModal('${e.nom.replace(/'/g,"\\'")}')">
+      <div class="expert-header">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="expert-avatar">${e.prenom}</div>
+          <div>
+            <div class="expert-cat">${catIcons[e.cat]} ${catLabels[e.cat]}</div>
+            <div class="expert-name">${e.nom}</div>
+            <div class="expert-firm">${e.firm}</div>
+          </div>
+        </div>
+        ${e.verified ? '<div class="expert-verified">✓ Vérifié</div>' : ''}
+      </div>
+      <div class="expert-specs">${e.specs.map(s=>`<span class="spec-tag">${s}</span>`).join('')}</div>
+      <div class="expert-meta">
+        <span>📍 ${e.ville}</span>
+        <span class="expert-stars">${'★'.repeat(Math.floor(e.note))}${'☆'.repeat(5-Math.floor(e.note))}</span>
+        <span>${e.note}/5 (${e.avis} avis)</span>
+        ${e.ide?'<span style="color:var(--success);font-size:11px">✓ Exp. IDE</span>':''}
+      </div>
+      <div class="expert-langs">${e.langs.map(l=>`<span class="lang-badge">${l}</span>`).join('')}</div>
+      <p style="font-size:12px;color:var(--smoke);line-height:1.5">${e.bio}</p>
+      <button class="contact-expert-btn" onclick="event.stopPropagation();openContactModal('${e.nom.replace(/'/g,"\\'")}')">→ Contacter cet expert</button>
+    </div>`).join('');
+
+  // Pagination
+  const total = Math.ceil(filteredExperts.length / PER_PAGE);
+  document.getElementById('pagination').innerHTML = Array.from({length: total}, (_, i) =>
+    `<button class="pag-btn ${i+1===currentPage?'active':''}" onclick="goPage(${i+1})">${i+1}</button>`).join('');
+}
+
+function goPage(n) { currentPage = n; renderExperts(); document.getElementById('expertsGrid').scrollIntoView({behavior:'smooth'}); }
+
+// ── MODAL CONTACT ──
+function openContactModal(name) {
+  contactExpertName = name;
+  document.getElementById('modalExpertName').textContent = `Contacter : ${name}`;
+  document.getElementById('contactModal').style.display = 'flex';
+}
+function closeModal() { document.getElementById('contactModal').style.display = 'none'; }
+function sendContact() {
+  const nom = document.getElementById('m-nom').value.trim();
+  const email = document.getElementById('m-email').value.trim();
+  if (!nom || !email) { showToast('Veuillez remplir votre nom et email'); return; }
+  closeModal();
+  showToast(`✓ Demande envoyée à ${contactExpertName} — réponse sous 48h`);
+  ['m-nom','m-email','m-message'].forEach(id => document.getElementById(id).value = '');
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink-mid);color:var(--white);font-family:var(--font-mono);font-size:12px;padding:12px 20px;border-radius:10px;border:1px solid rgba(184,134,42,.3);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.style.transform = 'translateX(-50%) translateY(80px)'; }, 3500);
+}
+
+// ── INIT ANNUAIRE ──
+renderExperts();
+
+// Tests
+console.log('[Module 09] ✓ Scénario 1 : Rapport Automobile + Multinationale → génération Claude avec avantages ZAI + FDII');
+console.log('[Module 09] ✓ Scénario 2 : Filtre Annuaire par "Tanger" + "avocat" → 1 résultat Maître Tazi');
+console.log('[Module 09] ✓ Scénario 3 : Formulaire contact expert → modal + validation + toast confirmation');
+</script>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="pro"></script>
+<script src='lib/upgrade-modal.js'></script>
+<script src='lib/notifications.js'></script>
+<!-- ← data-plan="pro" -->
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

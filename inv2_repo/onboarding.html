@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bienvenue — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--er:#B91C1C;--wn:#C05820;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{min-height:100vh}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;
+  display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.hd{height:56px;background:rgba(14,14,12,.98);display:flex;align-items:center;
+  justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(184,134,42,.2)}
+.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:#fff}
+.logo span{color:var(--gl)}
+.hd-step{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.06em}
+
+/* ── PROGRESS ── */
+.progress-bar{height:3px;background:var(--b2);position:relative}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gl));
+  border-radius:0 2px 2px 0;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* ── MAIN ── */
+main{flex:1;display:flex;align-items:center;justify-content:center;
+  padding:32px 16px 48px;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(184,134,42,.06) 0%,transparent 70%)}
+.wrap{width:100%;max-width:640px}
+
+/* ── STEP INDICATOR ── */
+.steps-row{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:32px}
+.step-bubble{display:flex;flex-direction:column;align-items:center;position:relative}
+.step-bubble:not(:last-child)::after{content:'';position:absolute;top:14px;left:60%;
+  width:calc(100% + 20px);height:2px;background:var(--bd);z-index:0}
+.sb-circle{width:28px;height:28px;border-radius:50%;border:2px solid var(--bd);
+  background:var(--wh);display:flex;align-items:center;justify-content:center;
+  font-family:var(--fm);font-size:11px;font-weight:700;color:var(--sm);
+  position:relative;z-index:1;transition:all .3s;flex-shrink:0}
+.sb-circle.active{border-color:var(--gold);background:var(--gold);color:var(--ink)}
+.sb-circle.done{border-color:var(--ok);background:var(--ok);color:#fff}
+.sb-label{font-family:var(--fm);font-size:9px;color:var(--sm);margin-top:5px;
+  text-align:center;white-space:nowrap;letter-spacing:.03em}
+.sb-label.active{color:var(--gold)}
+.step-gap{width:60px;height:2px;background:var(--bd);margin:0;flex-shrink:0;margin-bottom:18px}
+.step-gap.done{background:var(--ok)}
+
+/* ── SCREEN ── */
+.screen{display:none}.screen.show{display:block;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ── WELCOME SCREEN ── */
+.welcome-icon{font-size:52px;text-align:center;margin-bottom:16px;animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.welcome-title{font-family:var(--ft);font-size:28px;font-weight:800;text-align:center;
+  margin-bottom:8px;letter-spacing:-.02em}
+.welcome-title span{color:var(--gold)}
+.welcome-sub{font-size:14px;color:var(--sm);text-align:center;max-width:440px;
+  margin:0 auto 28px;line-height:1.7}
+
+/* ── PROFILE CARDS ── */
+.profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:8px}
+.profile-card{background:var(--wh);border:2px solid var(--bd);border-radius:14px;
+  padding:18px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.profile-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(184,134,42,.04) 0%,transparent 60%);
+  opacity:0;transition:opacity .2s}
+.profile-card:hover{border-color:rgba(184,134,42,.4);transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(184,134,42,.1)}
+.profile-card:hover::before{opacity:1}
+.profile-card.selected{border-color:var(--gold);background:rgba(184,134,42,.04);
+  box-shadow:0 0 0 3px rgba(184,134,42,.12)}
+.pc-icon{font-size:28px;margin-bottom:10px}
+.pc-title{font-family:var(--ft);font-size:14px;font-weight:800;margin-bottom:4px}
+.pc-desc{font-size:12px;color:var(--sm);line-height:1.6}
+.pc-check{position:absolute;top:10px;right:10px;width:20px;height:20px;
+  border-radius:50%;border:2px solid var(--bd);background:var(--wh);
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+  transition:all .2s;color:transparent}
+.profile-card.selected .pc-check{border-color:var(--gold);background:var(--gold);color:var(--ink)}
+
+/* ── SECTOR SCREEN ── */
+.sector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.sector-btn{background:var(--wh);border:1.5px solid var(--bd);border-radius:10px;
+  padding:10px 12px;cursor:pointer;transition:all .2s;text-align:center;font-size:12px;
+  font-weight:500;color:var(--is);display:flex;align-items:center;gap:6px}
+.sector-btn:hover{border-color:var(--gold);color:var(--gold)}
+.sector-btn.selected{border-color:var(--gold);background:rgba(184,134,42,.05);
+  color:var(--gold);font-weight:600}
+.sector-btn .sb-icon{font-size:16px}
+
+/* ── GOALS SCREEN ── */
+.goal-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.goal-item{background:var(--wh);border:1.5px solid var(--bd);border-radius:10px;
+  padding:12px 14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.goal-item:hover{border-color:var(--gold)}
+.goal-item.selected{border-color:var(--gold);background:rgba(184,134,42,.04)}
+.goal-icon{font-size:20px;flex-shrink:0}
+.goal-text{flex:1}
+.goal-title{font-size:13.5px;font-weight:600;margin-bottom:2px}
+.goal-sub{font-size:11.5px;color:var(--sm)}
+.goal-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--bd);
+  flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:10px}
+.goal-item.selected .goal-check{border-color:var(--gold);background:var(--gold);color:var(--ink)}
+.goal-item.selected .goal-check::after{content:'✓'}
+
+/* ── RESULT SCREEN ── */
+.result-header{text-align:center;margin-bottom:28px}
+.result-icon{font-size:44px;margin-bottom:12px}
+.result-title{font-family:var(--ft);font-size:22px;font-weight:800;margin-bottom:6px}
+.result-sub{font-size:13.5px;color:var(--sm);line-height:1.65}
+.modules-recommended{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.mod-rec{background:var(--wh);border:1px solid var(--bd);border-radius:10px;
+  padding:12px 14px;display:flex;align-items:center;gap:12px;text-decoration:none;
+  color:inherit;transition:all .2s}
+.mod-rec:hover{border-color:var(--gold);transform:translateX(3px)}
+.mod-rec-icon{font-size:20px;flex-shrink:0;width:36px;height:36px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center}
+.mod-rec-body{flex:1}
+.mod-rec-name{font-size:13.5px;font-weight:600;margin-bottom:2px}
+.mod-rec-desc{font-size:11.5px;color:var(--sm)}
+.mod-rec-badge{font-family:var(--fm);font-size:9px;padding:2px 8px;border-radius:100px;flex-shrink:0}
+.mb-g{background:rgba(26,107,60,.1);color:var(--ok)}
+.mb-p{background:rgba(184,134,42,.1);color:var(--gold)}
+.mb-e{background:rgba(30,77,107,.1);color:var(--ac)}
+.mod-rec-arrow{color:var(--gold);font-size:16px;flex-shrink:0}
+
+/* ── BUTTONS ── */
+.btn-primary{width:100%;padding:14px;background:var(--gold);color:var(--ink);border:none;
+  border-radius:11px;font-family:var(--fb);font-size:14px;font-weight:700;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:hover:not(:disabled){background:var(--gl);transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(184,134,42,.25)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed}
+.btn-secondary{width:100%;padding:12px;background:transparent;color:var(--sm);
+  border:1.5px solid var(--bd);border-radius:11px;font-family:var(--fb);font-size:13px;
+  cursor:pointer;transition:all .2s;margin-top:8px}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.btn-skip{background:none;border:none;font-family:var(--fm);font-size:10px;color:var(--sm);
+  cursor:pointer;text-decoration:underline;display:block;text-align:center;margin-top:12px}
+.btn-skip:hover{color:var(--gold)}
+
+/* ── SCREEN TITLE ── */
+.screen-title{font-family:var(--ft);font-size:22px;font-weight:800;margin-bottom:6px;
+  letter-spacing:-.02em}
+.screen-title span{color:var(--gold)}
+.screen-sub{font-size:13.5px;color:var(--sm);margin-bottom:22px;line-height:1.65}
+
+/* ── CARD ── */
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:14px;
+  padding:22px 24px;margin-bottom:12px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+
+@media(max-width:540px){
+  .profile-grid{grid-template-columns:1fr}
+  .sector-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="hd">
+  <div class="logo">Smart-<span>Invest</span>.ia</div>
+  <div class="hd-step" id="stepLabel">Étape 1 / 4</div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+
+<main>
+  <div class="wrap">
+
+    <!-- ══ ÉTAPE 1 — BIENVENUE ══ -->
+    <div class="screen show" id="s1">
+      <div class="welcome-icon" id="welcomeIcon">🎉</div>
+      <div class="welcome-title">Bienvenue, <span id="firstName">vous</span> !</div>
+      <div class="welcome-sub">Pour vous guider vers les bons modules, dites-nous en 3 questions qui vous êtes.</div>
+
+      <div class="card">
+        <div class="screen-title">Quel est votre <span>profil</span> ?</div>
+        <div class="screen-sub">Choisissez celui qui correspond le mieux à votre situation.</div>
+
+        <div class="profile-grid">
+          <div class="profile-card" onclick="selectProfile('ide', this)">
+            <div class="pc-check" id="chk-ide"></div>
+            <div class="pc-icon">🌍</div>
+            <div class="pc-title">Investisseur étranger (IDE)</div>
+            <div class="pc-desc">Je viens de l'étranger et je veux investir au Maroc (France, UAE, USA, Chine...)</div>
+          </div>
+          <div class="profile-card" onclick="selectProfile('mre', this)">
+            <div class="pc-check" id="chk-mre"></div>
+            <div class="pc-icon">✈️</div>
+            <div class="pc-title">MRE / Marocain résidant à l'étranger</div>
+            <div class="pc-desc">Je suis marocain de la diaspora et je veux créer ou investir au pays.</div>
+          </div>
+          <div class="profile-card" onclick="selectProfile('pme', this)">
+            <div class="pc-check" id="chk-pme"></div>
+            <div class="pc-icon">🏭</div>
+            <div class="pc-title">Entrepreneur / PME locale</div>
+            <div class="pc-desc">Je dirige ou lance une entreprise au Maroc et veux optimiser ma fiscalité.</div>
+          </div>
+          <div class="profile-card" onclick="selectProfile('expert', this)">
+            <div class="pc-check" id="chk-expert"></div>
+            <div class="pc-icon">⚖️</div>
+            <div class="pc-title">Conseiller / Expert</div>
+            <div class="pc-desc">Je suis avocat, expert-comptable, CRI ou consultant accompagnant des clients.</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" id="btn1" onclick="goStep(2)" disabled>Continuer →</button>
+      <button class="btn-skip" onclick="skipOnboarding()">Passer l'onboarding</button>
+    </div>
+
+    <!-- ══ ÉTAPE 2 — SECTEUR ══ -->
+    <div class="screen" id="s2">
+      <div class="card">
+        <div class="screen-title">Votre secteur <span>d'activité</span></div>
+        <div class="screen-sub">Sélectionnez votre secteur (ou plusieurs). Nous personnaliserons vos recommandations.</div>
+        <div class="sector-grid" id="sectorGrid">
+          <div class="sector-btn" onclick="toggleSector('auto', this)"><span class="sb-icon">🚗</span> Automobile</div>
+          <div class="sector-btn" onclick="toggleSector('aero', this)"><span class="sb-icon">✈️</span> Aéronautique</div>
+          <div class="sector-btn" onclick="toggleSector('agro', this)"><span class="sb-icon">🌾</span> Agroalimentaire</div>
+          <div class="sector-btn" onclick="toggleSector('textile', this)"><span class="sb-icon">🧵</span> Textile</div>
+          <div class="sector-btn" onclick="toggleSector('tic', this)"><span class="sb-icon">💻</span> TIC / Digital</div>
+          <div class="sector-btn" onclick="toggleSector('tourisme', this)"><span class="sb-icon">🏨</span> Tourisme</div>
+          <div class="sector-btn" onclick="toggleSector('immo', this)"><span class="sb-icon">🏗️</span> Immobilier</div>
+          <div class="sector-btn" onclick="toggleSector('energie', this)"><span class="sb-icon">⚡</span> Énergie</div>
+          <div class="sector-btn" onclick="toggleSector('sante', this)"><span class="sb-icon">🏥</span> Santé</div>
+          <div class="sector-btn" onclick="toggleSector('finance', this)"><span class="sb-icon">💰</span> Finance</div>
+          <div class="sector-btn" onclick="toggleSector('industrie', this)"><span class="sb-icon">🏭</span> Industrie</div>
+          <div class="sector-btn" onclick="toggleSector('autre', this)"><span class="sb-icon">📦</span> Autre</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="goStep(3)">Continuer →</button>
+      <button class="btn-secondary" onclick="goStep(1)">← Retour</button>
+    </div>
+
+    <!-- ══ ÉTAPE 3 — OBJECTIFS ══ -->
+    <div class="screen" id="s3">
+      <div class="card">
+        <div class="screen-title">Votre <span>objectif principal</span></div>
+        <div class="screen-sub">Qu'est-ce qui vous amène sur Smart-Invest.ia ? (Plusieurs choix possibles)</div>
+        <div class="goal-list">
+          <div class="goal-item" onclick="toggleGoal('fiscal', this)">
+            <div class="goal-icon">🧮</div>
+            <div class="goal-text">
+              <div class="goal-title">Optimiser ma fiscalité</div>
+              <div class="goal-sub">IS, IR, TVA, primes ZAI, régimes spéciaux</div>
+            </div>
+            <div class="goal-check" id="g-fiscal"></div>
+          </div>
+          <div class="goal-item" onclick="toggleGoal('foncier', this)">
+            <div class="goal-icon">🗺️</div>
+            <div class="goal-text">
+              <div class="goal-title">Trouver un terrain / une ZAI</div>
+              <div class="goal-sub">Disponibilités foncières, prix/m², ZAI sectorielles</div>
+            </div>
+            <div class="goal-check" id="g-foncier"></div>
+          </div>
+          <div class="goal-item" onclick="toggleGoal('projet', this)">
+            <div class="goal-icon">🎛️</div>
+            <div class="goal-text">
+              <div class="goal-title">Piloter mon projet d'investissement</div>
+              <div class="goal-sub">Gantt, EVM, risques, budget, étapes CRI</div>
+            </div>
+            <div class="goal-check" id="g-projet"></div>
+          </div>
+          <div class="goal-item" onclick="toggleGoal('financement', this)">
+            <div class="goal-icon">💰</div>
+            <div class="goal-text">
+              <div class="goal-title">Trouver des aides et financements</div>
+              <div class="goal-sub">FDII, CCG, Fonds Hassan II, Maroc PME</div>
+            </div>
+            <div class="goal-check" id="g-financement"></div>
+          </div>
+          <div class="goal-item" onclick="toggleGoal('juridique', this)">
+            <div class="goal-icon">⚖️</div>
+            <div class="goal-text">
+              <div class="goal-title">Choisir ma forme juridique</div>
+              <div class="goal-sub">SARL, SA, SAS, succursale, comparatif</div>
+            </div>
+            <div class="goal-check" id="g-juridique"></div>
+          </div>
+          <div class="goal-item" onclick="toggleGoal('ia', this)">
+            <div class="goal-icon">🤖</div>
+            <div class="goal-text">
+              <div class="goal-title">Utiliser l'IA pour mes analyses</div>
+              <div class="goal-sub">Questions fiscales, rapports sectoriels, business plan IA</div>
+            </div>
+            <div class="goal-check" id="g-ia"></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="goStep(4)">Voir mes modules recommandés →</button>
+      <button class="btn-secondary" onclick="goStep(2)">← Retour</button>
+    </div>
+
+    <!-- ══ ÉTAPE 4 — RÉSULTATS ══ -->
+    <div class="screen" id="s4">
+      <div class="card">
+        <div class="result-header">
+          <div class="result-icon">🎯</div>
+          <div class="result-title">Votre parcours personnalisé</div>
+          <div class="result-sub" id="resultSub">Basé sur votre profil, voici les modules à explorer en priorité.</div>
+        </div>
+        <div class="modules-recommended" id="modulesRecommended"></div>
+        <div style="font-family:var(--fm);font-size:10px;color:var(--sm);text-align:center;margin-bottom:16px">
+          → Vous pouvez aussi explorer tous les modules depuis le portail
+        </div>
+        <a href="smart_invest_portail.html" class="btn-primary" style="text-decoration:none;display:flex">
+          Accéder à tous mes modules →
+        </a>
+        <button class="btn-secondary" onclick="goStep(3)">← Modifier mes objectifs</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src='lib/auth.js'></script>
+<script>
+// ── STATE ─────────────────────────────────────────────────
+let selectedProfile = null;
+let selectedSectors = new Set();
+let selectedGoals   = new Set();
+let currentStep = 1;
+
+// ── INIT ─────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  // Récupérer le prénom depuis AuthService
+  const user = window.AuthService ? AuthService.getUser() : null;
+  const name = user ? (user.name || user.email || '').split(/[\s@]/)[0] : '';
+  if (name) {
+    document.getElementById('firstName').textContent = name;
+    document.getElementById('welcomeIcon').textContent = '👋';
+  }
+
+  // Si onboarding déjà fait → portail
+  if (localStorage.getItem('im_onboarding_done') === '1') {
+    window.location.href = 'smart_invest_portail.html';
+    return;
+  }
+
+  // Pré-sélectionner le secteur depuis le compte
+  if (user?.sector) {
+    const sectorMap = {
+      'Automobile':'auto','Aéronautique':'aero','Agroalimentaire':'agro',
+      'Textile':'textile','TIC / Digital':'tic','Tourisme':'tourisme',
+      'Immobilier':'immo','Énergie':'energie','Santé':'sante',
+      'Finance':'finance','Industrie':'industrie'
+    };
+    const key = sectorMap[user.sector];
+    if (key) {
+      selectedSectors.add(key);
+      document.querySelectorAll('.sector-btn').forEach(btn => {
+        if (btn.getAttribute('onclick')?.includes(`'${key}'`)) btn.classList.add('selected');
+      });
+    }
+  }
+});
+
+// ── NAVIGATION ────────────────────────────────────────────
+function goStep(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('show'));
+  document.getElementById('s' + n).classList.add('show');
+  currentStep = n;
+  document.getElementById('stepLabel').textContent = `Étape ${n} / 4`;
+  document.getElementById('progressFill').style.width = (n * 25) + '%';
+  if (n === 4) buildResults();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── PROFILE ───────────────────────────────────────────────
+function selectProfile(id, el) {
+  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedProfile = id;
+  document.getElementById('btn1').disabled = false;
+}
+
+// ── SECTORS ──────────────────────────────────────────────
+function toggleSector(id, el) {
+  el.classList.toggle('selected');
+  if (selectedSectors.has(id)) selectedSectors.delete(id);
+  else selectedSectors.add(id);
+}
+
+// ── GOALS ────────────────────────────────────────────────
+function toggleGoal(id, el) {
+  el.classList.toggle('selected');
+  if (selectedGoals.has(id)) selectedGoals.delete(id);
+  else selectedGoals.add(id);
+}
+
+// ── RESULTS ENGINE ────────────────────────────────────────
+const MODULE_DB = [
+  { id:'fiscal',   name:'Simulateur Fiscal IS/IR/TVA', desc:'Calculs CGI 2024 au centime près', icon:'🧮', iconBg:'rgba(184,134,42,.1)', file:'smart_invest_simulateur_fiscal.html', plan:'gratuit', goals:['fiscal'], profiles:['ide','mre','pme','expert'] },
+  { id:'matching', name:'Matching Aides & Subventions', desc:'FDII, CCG, Fonds Hassan II, Maroc PME', icon:'🎯', iconBg:'rgba(26,107,60,.1)', file:'smart_invest_matching_aides.html', plan:'gratuit', goals:['financement'], profiles:['ide','mre','pme'] },
+  { id:'zones',    name:'Zones Économiques Spéciales', desc:'ZAI, CFC, zones offshore, avantages', icon:'🗺️', iconBg:'rgba(30,77,107,.1)', file:'smart_invest_zones_economiques.html', plan:'gratuit', goals:['fiscal','foncier'], profiles:['ide','mre','pme','expert'] },
+  { id:'juridique',name:'Forme Juridique', desc:'SARL, SA, SAS, succursale — comparatif complet', icon:'⚖️', iconBg:'rgba(122,53,96,.1)', file:'smart_invest_forme_juridique.html', plan:'gratuit', goals:['juridique'], profiles:['ide','mre','pme','expert'] },
+  { id:'tracker',  name:'Tracker Dossier CRI', desc:'10 étapes, documents requis, délais', icon:'📍', iconBg:'rgba(192,88,32,.1)', file:'smart_invest_tracker_cri.html', plan:'gratuit', goals:['projet','juridique'], profiles:['ide','mre','pme'] },
+  { id:'couts',    name:'Coûts d\'Installation', desc:'SMIG, CNSS, énergie — 12 régions comparées', icon:'💼', iconBg:'rgba(184,134,42,.1)', file:'smart_invest_couts_installation.html', plan:'gratuit', goals:['financement','fiscal'], profiles:['ide','pme'] },
+  { id:'assistant',name:'Assistant IA InvestBot', desc:'Questions fiscalité, droit, procédures CRI', icon:'🤖', iconBg:'rgba(185,28,28,.1)', file:'smart_invest_assistant.html', plan:'gratuit', goals:['ia'], profiles:['ide','mre','pme','expert'] },
+  { id:'cockpit',  name:'Cockpit Management', desc:'EVM, Gantt, PERT, WBS, risques — 7 onglets', icon:'🎛️', iconBg:'rgba(30,77,107,.1)', file:'smart_invest_cockpit_management.html', plan:'pro', goals:['projet'], profiles:['ide','mre','pme','expert'] },
+  { id:'charte',   name:'Charte Investissement & Primes', desc:'Calcul primes MIP Loi 03-22, Forex, ROI', icon:'💰', iconBg:'rgba(184,134,42,.1)', file:'smart_invest_charte_investissement.html', plan:'pro', goals:['fiscal','financement'], profiles:['ide','mre','pme'] },
+  { id:'gis',      name:'GIS Foncier Interactif', desc:'18 ZAI — prix/m², disponibilités, contacts', icon:'🗾', iconBg:'rgba(26,107,60,.1)', file:'smart_invest_gis_foncier.html', plan:'pro', goals:['foncier'], profiles:['ide','mre','pme'] },
+  { id:'lean',     name:'Lean Six Sigma', desc:'FMEA, SIPOC, Pareto, DMAIC, SPC', icon:'📐', iconBg:'rgba(45,106,79,.1)', file:'smart_invest_lean_sixsigma.html', plan:'pro', goals:['projet'], profiles:['pme','expert'] },
+  { id:'agent',    name:'Agent IA InvestPilot', desc:'Pipeline IA autonome 5 nœuds, business plan', icon:'🧠', iconBg:'rgba(185,28,28,.1)', file:'smart_invest_v2_agent_ia.html', plan:'premium', goals:['ia','projet'], profiles:['ide','expert'] },
+  { id:'rapports', name:'Rapports IA + Annuaire B2B', desc:'Rapports sectoriels + 15 experts vérifiés', icon:'📑', iconBg:'rgba(185,28,28,.1)', file:'smart_invest_rapports_b2b.html', plan:'premium', goals:['ia','financement'], profiles:['ide','mre','expert'] },
+];
+
+const PROFILE_LABELS = {
+  ide:    { label:'Investisseur étranger (IDE)', icon:'🌍' },
+  mre:    { label:'MRE / Marocain diaspora', icon:'✈️' },
+  pme:    { label:'Entrepreneur / PME locale', icon:'🏭' },
+  expert: { label:'Conseiller / Expert', icon:'⚖️' },
+};
+
+function buildResults() {
+  // Scorer chaque module
+  const scored = MODULE_DB.map(mod => {
+    let score = 0;
+    if (selectedProfile && mod.profiles.includes(selectedProfile)) score += 3;
+    selectedGoals.forEach(g => { if (mod.goals.includes(g)) score += 2; });
+    if (mod.plan === 'gratuit') score += 1; // favoriser l'accessible
+    return { ...mod, score };
+  })
+  .filter(m => m.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 6);
+
+  // Sous-titre personnalisé
+  const pLabel = PROFILE_LABELS[selectedProfile];
+  const sub = pLabel
+    ? `Recommandations pour un <strong>${pLabel.label}</strong>${selectedSectors.size > 0 ? ` dans votre secteur` : ''}.`
+    : 'Modules recommandés selon vos objectifs.';
+  document.getElementById('resultSub').innerHTML = sub;
+
+  // Plan badge
+  const planBadge = (plan) => ({
+    gratuit: { cls:'mb-g', label:'🌱 Gratuit' },
+    pro:     { cls:'mb-p', label:'⚡ Pro' },
+    premium: { cls:'mb-e', label:'👑 Premium' },
+  })[plan] || { cls:'mb-g', label:'Gratuit' };
+
+  // Sauvegarder le profil
+  const profile = {
+    type: selectedProfile,
+    sectors: [...selectedSectors],
+    goals: [...selectedGoals],
+    completedAt: Date.now(),
+  };
+  localStorage.setItem('im_user_profile', JSON.stringify(profile));
+  localStorage.setItem('im_onboarding_done', '1');
+
+  // Sync avec AuthService
+  if (window.AuthService) {
+    const user = AuthService.getUser();
+    if (user) {
+      user.onboardingProfile = profile;
+      localStorage.setItem('im_auth_v2', JSON.stringify(user));
+    }
+  }
+
+  // Rendre les modules
+  const el = document.getElementById('modulesRecommended');
+  el.innerHTML = scored.map(mod => {
+    const pb = planBadge(mod.plan);
+    const accessible = mod.plan === 'gratuit' ||
+      (window.AuthService && (() => {
+        const pl = { gratuit:0, pro:1, premium:2 };
+        return pl[AuthService.getCurrentPlan()] >= pl[mod.plan];
+      })());
+    return `
+      <a class="mod-rec" href="${accessible ? mod.file : 'smart_invest_abonnements_v2.html?upgrade=' + mod.plan}" onclick="if(window.IMAnalytics)IMAnalytics.track('onboarding_module_click',{module:'${mod.file}'})">
+        <div class="mod-rec-icon" style="background:${mod.iconBg}">${mod.icon}</div>
+        <div class="mod-rec-body">
+          <div class="mod-rec-name">${mod.name}${!accessible ? ' 🔒' : ''}</div>
+          <div class="mod-rec-desc">${mod.desc}</div>
+        </div>
+        <span class="mod-rec-badge ${pb.cls}">${pb.label}</span>
+        <div class="mod-rec-arrow">→</div>
+      </a>`;
+  }).join('');
+
+  // Analytics
+  if (window.IMAnalytics) {
+    IMAnalytics.track('onboarding_complete', {
+      profile: selectedProfile,
+      goals: [...selectedGoals].join(','),
+      sectors: [...selectedSectors].join(','),
+    });
+  }
+}
+
+// ── SKIP ─────────────────────────────────────────────────
+function skipOnboarding() {
+  localStorage.setItem('im_onboarding_done', '1');
+  window.location.href = 'smart_invest_portail.html';
+}
+</script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portail — Tous les modules · Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;--ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;--bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;--ac:#1E4D6B;--ok:#1A6B3C;--wn:#C05820;--er:#B91C1C;--bd:rgba(0,0,0,0.09);--ft:"Syne",sans-serif;--fb:"Space Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--b2)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+.hd{position:sticky;top:0;z-index:100;height:56px;background:rgba(14,14,12,.98);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(184,134,42,.2)}
+.hl{display:flex;align-items:center;gap:12px}.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:var(--wh)}.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:9px;padding:3px 9px;border-radius:100px;color:var(--gl);background:rgba(184,134,42,.12);border:1px solid rgba(184,134,42,.25)}
+.back-home{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.4);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:6px;transition:all .2s}.back-home:hover{color:var(--gl);border-color:rgba(184,134,42,.4)}
+.search-input{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 14px 7px 34px;font-family:var(--fb);font-size:13px;color:var(--wh);outline:none;width:220px;transition:all .2s}.search-input:focus{border-color:rgba(184,134,42,.5);width:280px}.search-input::placeholder{color:rgba(255,255,255,.3)}
+.search-icon{position:absolute;left:10px;color:rgba(255,255,255,.3);font-size:13px;pointer-events:none}.search-container{position:relative;display:flex;align-items:center}
+.hero{background:var(--ink);padding:32px 28px 28px;border-bottom:1px solid rgba(255,255,255,.05)}.hero-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.hero-title{font-family:var(--ft);font-size:26px;font-weight:800;color:var(--wh);margin-bottom:6px}.hero-sub{font-size:14px;color:rgba(255,255,255,.5);line-height:1.6}
+.hero-stats{display:flex;gap:20px}.hs{text-align:center;padding:12px 16px;background:rgba(255,255,255,.04);border-radius:9px;border:1px solid rgba(255,255,255,.06)}.hs-n{font-family:var(--ft);font-size:24px;font-weight:800;color:var(--gl)}.hs-l{font-size:10px;color:rgba(255,255,255,.35);font-family:var(--fm);margin-top:2px}
+.main{max-width:1200px;margin:0 auto;padding:28px 28px 100px}
+.quick-strip{background:var(--ink);border-radius:14px;padding:20px 24px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.qs-title{font-family:var(--ft);font-size:15px;font-weight:700;color:var(--wh)}.qs-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px}.qs-links{display:flex;gap:8px;flex-wrap:wrap}
+.qs-link{padding:9px 16px;border-radius:9px;font-size:12px;font-weight:600;text-decoration:none;transition:all .2s;display:flex;align-items:center;gap:7px;cursor:pointer;border:none;letter-spacing:.01em}
+.qs-link:hover{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.qs-fiscal{background:#BA7517;color:#fff}
+.qs-cockpit{background:#185FA5;color:#fff}
+.qs-primes{background:#1A6B3C;color:#fff}
+.qs-assistant{background:#7A1C1C;color:#fff}
+.qs-alerte{background:#C05820;color:#fff}
+.qs-cgi{background:#1E3A6B;color:#fff}
+.qs-pilotage{background:#2D5F7A;color:#fff}
+.how-to{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:22px 24px;margin-bottom:32px}.how-to-title{font-family:var(--ft);font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.how-step{padding:14px;background:var(--bg);border-radius:10px;border:1px solid var(--bd)}.hs-num{font-family:var(--ft);font-size:22px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:6px}.hs-text{font-size:12.5px;color:var(--is);line-height:1.6}
+
+/* ── CARTE DE NAVIGATION ── */
+.nav-map-section{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:24px;margin-bottom:40px}
+.nav-map-title{font-family:var(--ft);font-size:16px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.nav-map-sub{font-size:12.5px;color:var(--sm);margin-bottom:20px;line-height:1.6}
+.nm-hub{cursor:pointer}.nm-hub rect,.nm-hub text{transition:fill .2s,stroke .2s}
+.nm-hub:hover rect{fill:#534AB7!important;stroke:#3C3489!important}.nm-hub:hover text{fill:#EEEDFE!important}
+.nm-mod{cursor:pointer}.nm-mod rect,.nm-mod text{transition:fill .2s,stroke .2s}
+.nm-amber:hover rect{fill:#BA7517!important;stroke:#854F0B!important}.nm-amber:hover text{fill:#FAEEDA!important}
+.nm-teal:hover rect{fill:#0F6E56!important;stroke:#085041!important}.nm-teal:hover text{fill:#E1F5EE!important}
+.nm-blue:hover rect{fill:#185FA5!important;stroke:#0C447C!important}.nm-blue:hover text{fill:#E6F1FB!important}
+.nm-coral:hover rect{fill:#993C1D!important;stroke:#712B13!important}.nm-coral:hover text{fill:#FAECE7!important}
+
+/* ── CLUSTER TABS ── */
+.clusters-section{margin-bottom:40px}
+.clusters-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:0;padding-bottom:0;border-bottom:none;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.1)}
+.ctab{padding:16px 20px;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;border:none;border-radius:0;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.01em;opacity:.8;border-right:1px solid rgba(255,255,255,.15)}
+.ctab:last-child{border-right:none}
+.ctab:hover{opacity:1;filter:brightness(1.08)}
+.ctab.active{opacity:1;filter:brightness(.88);box-shadow:inset 0 -3px 0 rgba(255,255,255,.4)}
+.ctab-fiscal{background:#BA7517;color:#fff}.ctab-fiscal:hover,.ctab-fiscal.active{background:#96690F}
+.ctab-invest{background:#0F6E56;color:#fff}.ctab-invest:hover,.ctab-invest.active{background:#085041}
+.ctab-pilotage{background:#185FA5;color:#fff}.ctab-pilotage:hover,.ctab-pilotage.active{background:#0C447C}
+.ctab-ia{background:#7A1C1C;color:#fff}.ctab-ia:hover,.ctab-ia.active{background:#5A1010}
+.ctab .ctab-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.5)}
+.ctab.active .ctab-dot{background:#fff;box-shadow:0 0 6px rgba(255,255,255,.6)}
+
+.cluster-panel{display:none;background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:24px;margin-top:14px}
+.cluster-panel.active{display:block}
+.cluster-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.cluster-icon{font-size:22px}.cluster-title{font-family:var(--ft);font-size:17px;font-weight:800}
+.cluster-count{font-family:var(--fm);font-size:10px;color:var(--sm);background:var(--b2);padding:3px 9px;border-radius:100px}
+.cluster-desc{font-size:13px;color:var(--sm);margin-left:auto}
+
+.modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mc{background:var(--wh);border:1.5px solid var(--bd);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;cursor:pointer;position:relative;overflow:hidden;text-decoration:none;color:inherit;transition:background-color 210ms ease,color 210ms ease,border-color 210ms ease,transform 210ms ease,box-shadow 210ms ease}
+.mc.pilotage{border-left:4px solid var(--ac)}.mc.fiscal{border-left:4px solid var(--gold)}.mc.ia{border-left:4px solid var(--er)}.mc.alerte{border-left:4px solid var(--wn)}.mc.cgi{border-left:4px solid #1E3A6B}.mc.teal{border-left:4px solid var(--ok)}.mc.coral{border-left:4px solid #993C1D}
+.mc[data-cs="fiscal"]:hover{background-color:#B8862A;color:#0E0E0C;border-color:#96690F;transform:translateY(-3px);box-shadow:0 8px 28px rgba(184,134,42,.28)}
+.mc[data-cs="pilotage"]:hover{background-color:#1E4D6B;color:#FFFFFE;border-color:#163B55;transform:translateY(-3px);box-shadow:0 8px 28px rgba(30,77,107,.28)}
+.mc[data-cs="ia"]:hover{background-color:#7A1C1C;color:#FFFFFE;border-color:#5A1010;transform:translateY(-3px);box-shadow:0 8px 28px rgba(185,28,28,.28)}
+.mc[data-cs="alerte"]:hover{background-color:#C05820;color:#FFFFFE;border-color:#9A4218;transform:translateY(-3px);box-shadow:0 8px 28px rgba(192,88,32,.28)}
+.mc[data-cs="cgi"]:hover{background-color:#1E3A6B;color:#FFFFFE;border-color:#142E56;transform:translateY(-3px);box-shadow:0 8px 28px rgba(30,58,107,.28)}
+.mc[data-cs="teal"]:hover{background-color:#0F6E56;color:#FFFFFE;border-color:#085041;transform:translateY(-3px);box-shadow:0 8px 28px rgba(15,110,86,.28)}
+.mc[data-cs="coral"]:hover{background-color:#993C1D;color:#FFFFFE;border-color:#712B13;transform:translateY(-3px);box-shadow:0 8px 28px rgba(153,60,29,.28)}
+.mc:hover .mc-num,.mc:hover .mc-desc,.mc:hover .mc-tag,.mc:hover .mc-footer,.mc:hover .mc-access{opacity:.85}.mc:hover .mc-name{opacity:1}.mc:hover .mc-arrow{color:inherit;transform:translateX(4px)}.mc:hover .mc-tag{background:rgba(255,255,255,.15);color:inherit}.mc:hover .mc-footer{border-top-color:rgba(255,255,255,.2)}
+.mc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.mc-icon-wrap{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background 210ms ease}.mc-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.mc-num{font-family:var(--fm);font-size:9px;color:var(--sm);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;transition:color 210ms ease}.mc-name{font-family:var(--ft);font-size:14px;font-weight:800;line-height:1.25;margin-bottom:6px}.mc-desc{font-size:12.5px;color:var(--sm);line-height:1.6;flex:1;transition:color 210ms ease}.mc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}.mc-tag{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px;background:var(--b2);color:var(--is);transition:all 210ms ease}
+.mc-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--bd);margin-top:auto;transition:border-color 210ms ease}.mc-access{font-family:var(--fm);font-size:10px;padding:3px 9px;border-radius:100px}.mc-access.gratuit{background:rgba(26,107,60,.1);color:var(--ok)}.mc-access.pro{background:rgba(30,77,107,.1);color:var(--ac)}.mc-access.ia{background:rgba(185,28,28,.1);color:var(--er)}.mc-arrow{font-size:16px;color:var(--gold);transition:transform 210ms ease,color 210ms ease}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}.status-dot.active{background:#4ADE80}.status-dot.beta{background:#FBBF24}.status-dot.new{background:var(--gold)}
+.pill{display:inline-block;font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px}.pill-new{background:rgba(184,134,42,.15);color:var(--gold);border:1px solid rgba(184,134,42,.3)}
+.mc.hidden{display:none}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--wh);padding:12px 20px;border-radius:10px;font-size:13px;opacity:0;transition:all .3s;z-index:999;border:1px solid rgba(184,134,42,.3);white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:1000px){.modules-grid{grid-template-columns:repeat(2,1fr)}.how-steps{grid-template-columns:1fr 1fr}.clusters-tabs{flex-wrap:wrap}}
+@media(max-width:640px){.modules-grid{grid-template-columns:1fr}.hero-inner{flex-direction:column}.hero-stats{flex-wrap:wrap}.ctab{padding:9px 14px;font-size:12px}}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+<header class="hd">
+  <div class="hl"><div class="logo">Smart-<span>Invest</span>.ia</div><span class="badge">Portail — Tous les modules</span></div>
+  <div class="search-container"><span class="search-icon">&#128269;</span><input class="search-input" id="searchInput" type="text" placeholder="Rechercher un module..." oninput="filterSearch(this.value)"></div>
+  <a href="landing.html" class="back-home">&#8592; Accueil</a>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div><div class="hero-title">&#128225; Portail Smart-Invest.ia</div><div class="hero-sub">Tous vos outils d'investissement au Maroc en un seul endroit.<br>Cliquez sur n'importe quelle carte pour ouvrir le module correspondant.</div></div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-n">38</div><div class="hs-l">Modules actifs</div></div>
+      <div class="hs"><div class="hs-n">4</div><div class="hs-l">Clusters</div></div>
+      <div class="hs"><div class="hs-n">8</div><div class="hs-l">Outils gratuits</div></div>
+      <div class="hs"><div class="hs-n">IA</div><div class="hs-l">Claude Sonnet 4</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ACCÈS RAPIDE -->
+<div class="quick-strip">
+  <div><div class="qs-title">&#9889; Accès rapide — Modules les plus utilisés</div><div class="qs-sub">Ouvrez directement les outils les plus courants</div></div>
+  <div class="qs-links">
+    <div class="qs-link qs-fiscal" onclick="openModule('simulateur_fiscal.html')">🧮 Simulateur fiscal</div>
+    <div class="qs-link qs-cockpit" onclick="openModule('cockpit_management.html')">🌓 Cockpit projet</div>
+    <div class="qs-link qs-primes" onclick="openModule('charte_investissements.html')">💰 Calculateur primes</div>
+    <div class="qs-link qs-assistant" onclick="openModule('assistant.html')">🤖 Assistant IA</div>
+    <div class="qs-link qs-alerte" onclick="openModule('alertes-fiscales.html')">🔔 Alertes fiscales</div>
+    <div class="qs-link qs-cgi" onclick="openModule('code_des_impots.html')">📘 CGI 2026</div>
+    <div class="qs-link qs-pilotage" onclick="openModule('architecture_de_projets.html')">🏗️ Architecture projet</div>
+    <div class="qs-link qs-pilotage" onclick="openModule('doc-generator.html')">📄 Générateur docs</div>
+    <div class="qs-link qs-fiscal" onclick="openModule('pricing.html')">💳 Tarifs & Plans</div>
+  </div>
+</div>
+
+<!-- COMMENT UTILISER -->
+<div class="how-to">
+  <div class="how-to-title">&#128214; Comment utiliser Smart-Invest.ia</div>
+  <div class="how-steps">
+    <div class="how-step"><div class="hs-num">1</div><div class="hs-text"><strong>Démarrez par votre profil</strong> — Investisseur étranger (IDE), MRE ou PME marocaine ? Chaque parcours a ses modules prioritaires.</div></div>
+    <div class="how-step"><div class="hs-num">2</div><div class="hs-text"><strong>Simulez votre fiscalité</strong> — IS, IR, TVA, primes ZAI. Le simulateur fiscal et la Charte Investissement calculent tout automatiquement.</div></div>
+    <div class="how-step"><div class="hs-num">3</div><div class="hs-text"><strong>Pilotez votre projet</strong> — Le Cockpit de Management suit EVM, Gantt, PERT, risques. Interconnecté avec la Charte d'Investissement.</div></div>
+    <div class="how-step"><div class="hs-num">4</div><div class="hs-text"><strong>Générez vos rapports</strong> — Rapports PDF prêts pour banques et investisseurs, depuis les modules Rapports &amp; B2B ou le Cockpit.</div></div>
+  </div>
+</div>
+
+<!-- CARTE DE NAVIGATION -->
+<div class="nav-map-section">
+  <div class="nav-map-title">&#128506; Carte de navigation du site</div>
+  <div class="nav-map-sub">Vue d'ensemble des 22 modules répartis en 4 clusters thématiques. Survolez pour l'effet colorshift, cliquez pour ouvrir le module.</div>
+  <svg width="100%" viewBox="0 0 680 450" xmlns="http://www.w3.org/2000/svg">
+    <defs><marker id="nma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+    <!-- HUB -->
+    <g class="nm-hub" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <rect x="250" y="10" width="180" height="28" rx="14" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+      <text x="340" y="24" text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="600" fill="#3C3489" font-family="'Space Grotesk',sans-serif">Carte de navigation</text>
+    </g>
+    <path d="M290 38 L139 74" fill="none" stroke="#534AB7" stroke-width="0.6" stroke-dasharray="3 3" marker-end="url(#nma)" opacity=".3"/>
+    <path d="M390 38 L541 74" fill="none" stroke="#534AB7" stroke-width="0.6" stroke-dasharray="3 3" marker-end="url(#nma)" opacity=".3"/>
+    <path d="M310 38 L139 270" fill="none" stroke="#534AB7" stroke-width="0.6" stroke-dasharray="3 3" marker-end="url(#nma)" opacity=".3"/>
+    <path d="M370 38 L541 270" fill="none" stroke="#534AB7" stroke-width="0.6" stroke-dasharray="3 3" marker-end="url(#nma)" opacity=".3"/>
+
+    <!-- ── CLUSTER A: FISCAL ── -->
+    <rect x="14" y="64" width="248" height="216" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="0.5"/>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')">
+      <rect x="14" y="64" width="248" height="22" rx="8" fill="#EF9F27"/>
+      <rect x="14" y="75" width="248" height="11" fill="#EF9F27"/>
+      <text x="138" y="75" text-anchor="middle" dominant-baseline="central" font-size="9.5" font-weight="700" fill="#3A1E00" font-family="'Space Grotesk',sans-serif">&#128202; Fiscal &amp; Juridique  ›</text>
+    </g>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')"><rect x="22" y="92" width="232" height="16" rx="4" fill="#FAC775" stroke="none"/><text x="138" y="100" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#412402" font-family="'Space Grotesk',sans-serif">Simulateur fiscal</text></g>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')"><rect x="22" y="112" width="232" height="16" rx="4" fill="#FAC775" stroke="none"/><text x="138" y="120" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#412402" font-family="'Space Grotesk',sans-serif">TVA avancée</text></g>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')"><rect x="22" y="132" width="232" height="16" rx="4" fill="#FAC775" stroke="none"/><text x="138" y="140" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#412402" font-family="'Space Grotesk',sans-serif">CNSS / Paie</text></g>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')"><rect x="22" y="152" width="232" height="16" rx="4" fill="#FAC775" stroke="none"/><text x="138" y="160" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#412402" font-family="'Space Grotesk',sans-serif">TNB 2025</text></g>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')"><rect x="22" y="172" width="232" height="16" rx="4" fill="#FAC775" stroke="none"/><text x="138" y="180" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#412402" font-family="'Space Grotesk',sans-serif">Forme juridique</text></g>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')"><rect x="22" y="192" width="232" height="16" rx="4" fill="#FAC775" stroke="none"/><text x="138" y="200" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#412402" font-family="'Space Grotesk',sans-serif">Coûts d'installation</text></g>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')"><rect x="22" y="212" width="232" height="16" rx="4" fill="#FAC775" stroke="none"/><text x="138" y="220" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#412402" font-family="'Space Grotesk',sans-serif">Alertes fiscales · CGI 2026</text></g>
+    <g class="nm-mod nm-amber" onclick="scrollToTab('fiscal')"><rect x="22" y="232" width="232" height="16" rx="4" fill="#FAC775" stroke="none"/><text x="138" y="240" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#412402" font-family="'Space Grotesk',sans-serif">Régime de change</text></g>
+    <rect x="14" y="64" width="248" height="216" rx="8" fill="none" stroke="#EF9F27" stroke-width="0.8"/>
+
+    <!-- ── CLUSTER B: INVESTISSEMENT ── -->
+    <rect x="418" y="64" width="248" height="216" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <g class="nm-mod nm-teal" onclick="scrollToTab('investzone')">
+      <rect x="418" y="64" width="248" height="22" rx="8" fill="#1D9E75"/>
+      <rect x="418" y="75" width="248" height="11" fill="#1D9E75"/>
+      <text x="542" y="75" text-anchor="middle" dominant-baseline="central" font-size="9.5" font-weight="700" fill="#E1F5EE" font-family="'Space Grotesk',sans-serif">&#128506; Investissement &amp; Zones  ›</text>
+    </g>
+    <g class="nm-mod nm-teal" onclick="scrollToTab('investzone')"><rect x="426" y="92" width="232" height="16" rx="4" fill="#9FE1CB" stroke="none"/><text x="542" y="100" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#04342C" font-family="'Space Grotesk',sans-serif">Aides &amp; financements</text></g>
+    <g class="nm-mod nm-teal" onclick="scrollToTab('investzone')"><rect x="426" y="112" width="232" height="16" rx="4" fill="#9FE1CB" stroke="none"/><text x="542" y="120" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#04342C" font-family="'Space Grotesk',sans-serif">Zones économiques</text></g>
+    <g class="nm-mod nm-teal" onclick="scrollToTab('investzone')"><rect x="426" y="132" width="232" height="16" rx="4" fill="#9FE1CB" stroke="none"/><text x="542" y="140" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#04342C" font-family="'Space Grotesk',sans-serif">GIS foncier ZAI</text></g>
+    <g class="nm-mod nm-teal" onclick="scrollToTab('investzone')"><rect x="426" y="152" width="232" height="16" rx="4" fill="#9FE1CB" stroke="none"/><text x="542" y="160" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#04342C" font-family="'Space Grotesk',sans-serif">Tracker CRI</text></g>
+    <g class="nm-mod nm-teal" onclick="scrollToTab('investzone')"><rect x="426" y="172" width="232" height="16" rx="4" fill="#9FE1CB" stroke="none"/><text x="542" y="180" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#04342C" font-family="'Space Grotesk',sans-serif">Guide investisseurs</text></g>
+    <g class="nm-mod nm-teal" onclick="scrollToTab('investzone')"><rect x="426" y="192" width="232" height="16" rx="4" fill="#9FE1CB" stroke="none"/><text x="542" y="200" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#04342C" font-family="'Space Grotesk',sans-serif">Charte investissement</text></g>
+    <g class="nm-mod nm-teal" onclick="scrollToTab('investzone')"><rect x="426" y="212" width="232" height="16" rx="4" fill="#9FE1CB" stroke="none"/><text x="542" y="220" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#04342C" font-family="'Space Grotesk',sans-serif">Acceptabilité environnementale</text></g>
+    <rect x="418" y="64" width="248" height="216" rx="8" fill="none" stroke="#1D9E75" stroke-width="0.8"/>
+
+    <!-- ── CLUSTER C: PILOTAGE ── -->
+    <rect x="14" y="298" width="248" height="136" rx="8" fill="#E6F1FB" stroke="#378ADD" stroke-width="0.5"/>
+    <g class="nm-mod nm-blue" onclick="scrollToTab('pilotage')">
+      <rect x="14" y="298" width="248" height="22" rx="8" fill="#378ADD"/>
+      <rect x="14" y="309" width="248" height="11" fill="#378ADD"/>
+      <text x="138" y="309" text-anchor="middle" dominant-baseline="central" font-size="9.5" font-weight="700" fill="#E6F1FB" font-family="'Space Grotesk',sans-serif">&#127763; Pilotage &amp; Finance  ›</text>
+    </g>
+    <g class="nm-mod nm-blue" onclick="scrollToTab('pilotage')"><rect x="22" y="326" width="232" height="16" rx="4" fill="#B5D4F4" stroke="none"/><text x="138" y="334" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#042C53" font-family="'Space Grotesk',sans-serif">Cockpit management</text></g>
+    <g class="nm-mod nm-blue" onclick="scrollToTab('pilotage')"><rect x="22" y="346" width="232" height="16" rx="4" fill="#B5D4F4" stroke="none"/><text x="138" y="354" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#042C53" font-family="'Space Grotesk',sans-serif">Formes de contrats</text></g>
+    <g class="nm-mod nm-blue" onclick="scrollToTab('pilotage')"><rect x="22" y="366" width="232" height="16" rx="4" fill="#B5D4F4" stroke="none"/><text x="138" y="374" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#042C53" font-family="'Space Grotesk',sans-serif">Lean six sigma</text></g>
+    <g class="nm-mod nm-blue" onclick="scrollToTab('pilotage')"><rect x="22" y="386" width="232" height="16" rx="4" fill="#B5D4F4" stroke="none"/><text x="138" y="394" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#042C53" font-family="'Space Grotesk',sans-serif">Ingénierie financière</text></g>
+    <g class="nm-mod nm-blue" onclick="scrollToTab('pilotage')"><rect x="22" y="406" width="232" height="16" rx="4" fill="#B5D4F4" stroke="none"/><text x="138" y="414" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#042C53" font-family="'Space Grotesk',sans-serif">Système bancaire</text></g>
+    <rect x="14" y="298" width="248" height="136" rx="8" fill="none" stroke="#378ADD" stroke-width="0.8"/>
+
+    <!-- ── CLUSTER D: ANALYSE ── -->
+    <rect x="418" y="298" width="248" height="116" rx="8" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+    <g class="nm-mod nm-coral" onclick="scrollToTab('ia')">
+      <rect x="418" y="298" width="248" height="22" rx="8" fill="#D85A30"/>
+      <rect x="418" y="309" width="248" height="11" fill="#D85A30"/>
+      <text x="542" y="309" text-anchor="middle" dominant-baseline="central" font-size="9.5" font-weight="700" fill="#FAECE7" font-family="'Space Grotesk',sans-serif">&#129302; Analyse &amp; Reporting  ›</text>
+    </g>
+    <g class="nm-mod nm-coral" onclick="scrollToTab('ia')"><rect x="426" y="326" width="232" height="16" rx="4" fill="#F5C4B3" stroke="none"/><text x="542" y="334" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#4A1B0C" font-family="'Space Grotesk',sans-serif">Bilan financier</text></g>
+    <g class="nm-mod nm-coral" onclick="scrollToTab('ia')"><rect x="426" y="346" width="232" height="16" rx="4" fill="#F5C4B3" stroke="none"/><text x="542" y="354" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#4A1B0C" font-family="'Space Grotesk',sans-serif">ESG / RSE</text></g>
+    <g class="nm-mod nm-coral" onclick="scrollToTab('ia')"><rect x="426" y="366" width="232" height="16" rx="4" fill="#F5C4B3" stroke="none"/><text x="542" y="374" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#4A1B0C" font-family="'Space Grotesk',sans-serif">Rapports B2B · Agent IA</text></g>
+    <g class="nm-mod nm-coral" onclick="scrollToTab('ia')"><rect x="426" y="386" width="232" height="16" rx="4" fill="#F5C4B3" stroke="none"/><text x="542" y="394" text-anchor="middle" dominant-baseline="central" font-size="9" fill="#4A1B0C" font-family="'Space Grotesk',sans-serif">Mécanismes de soutien</text></g>
+    <rect x="418" y="298" width="248" height="116" rx="8" fill="none" stroke="#D85A30" stroke-width="0.8"/>
+
+    <text x="340" y="440" text-anchor="middle" font-size="8.5" fill="#7A7A70" font-family="'JetBrains Mono',monospace">38 modules · cliquez pour naviguer vers l'onglet</text>
+  </svg>
+</div>
+
+<!-- CLUSTERS EN ONGLETS -->
+<div class="clusters-section">
+  <div class="clusters-tabs">
+    <button class="ctab ctab-fiscal active" onclick="switchTab('fiscal',this)"><span class="ctab-dot"></span>&#128202; Fiscal &amp; Juridique</button>
+    <button class="ctab ctab-invest" onclick="switchTab('investzone',this)"><span class="ctab-dot"></span>&#128506; Investissement &amp; Zones</button>
+    <button class="ctab ctab-pilotage" onclick="switchTab('pilotage',this)"><span class="ctab-dot"></span>&#127763; Pilotage &amp; Finance</button>
+    <button class="ctab ctab-ia" onclick="switchTab('ia',this)"><span class="ctab-dot"></span>&#129302; Analyse &amp; Reporting</button>
+  </div>
+
+  <!-- PANEL 1: FISCAL -->
+  <div class="cluster-panel active" id="panel-fiscal">
+    <div class="cluster-header"><span class="cluster-icon">&#128202;</span><div class="cluster-title">Fiscal &amp; Juridique</div><span class="cluster-count">14 modules</span><span class="cluster-desc">Simulateurs fiscaux, TVA, CNSS, RH, Comptabilité, TNB, formes juridiques, CGI 2026, tarifs, urbanisme</span></div>
+    <div class="modules-grid">
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('simulateur_fiscal.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#129518;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE 03</div><div class="mc-name">Simulateur Fiscal IS / IR / TVA</div><div class="mc-desc">Calculs IS, IR et TVA selon le CGI 2024 avec barèmes officiels. Régimes ZAI, normal, export, CFC.</div><div class="mc-tags"><span class="mc-tag">IS/IR/TVA</span><span class="mc-tag">CGI 2024</span><span class="mc-tag">ZAI</span><span class="mc-tag">CFC</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Aucune clé API requise</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('simulateur_tva_avance.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#129534;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE FISCAL</div><div class="mc-name">TVA Avancée CGI 2024</div><div class="mc-desc">Calcul TVA HT&#8596;TTC, taux par secteur. Comparatif régimes, stratégies récupération.</div><div class="mc-tags"><span class="mc-tag">TVA HT/TTC</span><span class="mc-tag">Secteurs</span><span class="mc-tag">Récupération</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Taux 2024 intégrés</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('simulateur_charges_sociales.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#128119;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE FISCAL</div><div class="mc-name">Simulateur CNSS &amp; Paie</div><div class="mc-desc">Cotisations patronales/salariales, barème IR 2024, bulletin de paie complet avec net à payer.</div><div class="mc-tags"><span class="mc-tag">CNSS</span><span class="mc-tag">IR Salaires</span><span class="mc-tag">Bulletin</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Bulletin imprimable</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc alerte" data-cs="alerte" onclick="openModule('simulateur_tnb.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(192,88,32,.1)">&#127959;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE 20</div><div class="mc-name">TNB 2025</div><div class="mc-desc">Calculateur TNB / Taxe foncière 2025. Grille des barèmes officiels, stratégies d'optimisation foncière.</div><div class="mc-tags"><span class="mc-tag">TNB</span><span class="mc-tag">Taxe foncière</span><span class="mc-tag">Barèmes 2025</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Barèmes 2025 intégrés</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('formes_juridiques.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(122,53,96,.1)">&#9878;&#65039;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE 05</div><div class="mc-name">Choix Forme Juridique</div><div class="mc-desc">Arbre de décision SARL / SA / SAS / Succursale / Auto-entrepreneur selon profil, secteur et montant.</div><div class="mc-tags"><span class="mc-tag">SARL</span><span class="mc-tag">SA</span><span class="mc-tag">Succursale</span><span class="mc-tag">MRE</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Checklist création incluse</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc alerte" data-cs="alerte" onclick="openModule('alertes-fiscales.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(192,88,32,.1)">&#128276;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE FISCAL</div><div class="mc-name">Alertes Fiscales</div><div class="mc-desc">Veille fiscale en temps réel. Loi de finances 2025, circulaires ADII, mesures DGI. Filtrage par thème et impact.</div><div class="mc-tags"><span class="mc-tag">LF 2025</span><span class="mc-tag">DGI</span><span class="mc-tag">ADII</span><span class="mc-tag">Veille</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Mise à jour continue</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc cgi" data-cs="cgi" onclick="openModule('code_des_impots.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,58,107,.1)">&#128216;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE RÉFÉRENCE</div><div class="mc-name">CGI 2026 — Recherche Intelligente</div><div class="mc-desc">Moteur de recherche fulltext dans le Code Général des Impôts 2026. Accès instantané aux articles et dispositions fiscales.</div><div class="mc-tags"><span class="mc-tag">CGI 2026</span><span class="mc-tag">Fulltext</span><span class="mc-tag">Articles</span><span class="mc-tag">IS/IR/TVA</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Code complet — 750 articles</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('pricing.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#128179;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE 26</div><div class="mc-name">Tarifs &amp; Plans</div><div class="mc-desc">Comparez les offres Gratuit, Pro 199 MAD/mois et Enterprise 990 MAD/mois. Tableau complet des fonctionnalités par plan.</div><div class="mc-tags"><span class="mc-tag">Gratuit</span><span class="mc-tag">Pro</span><span class="mc-tag">Enterprise</span><span class="mc-tag">Plans</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Accès immédiat</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('regime_de_change.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#128178;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE 28</div><div class="mc-name">Régime de Change</div><div class="mc-desc">Règles Office des Changes 2025 — convertibilité du compte capital, rapatriement dividendes, dotations IDE à l'étranger, infractions et sanctions.</div><div class="mc-tags"><span class="mc-tag">Office des Changes</span><span class="mc-tag">Devises</span><span class="mc-tag">IDE</span><span class="mc-tag">Dividendes</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Pro · 199 MAD/mois</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('comptabilite GA.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#128217;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE COMPTA</div><div class="mc-name">Comptabilité Générale &amp; Analytique</div><div class="mc-desc">Saisie comptable PCM/CGNC, grand livre, balance, journaux, états de synthèse. Comptabilité analytique par axe.</div><div class="mc-tags"><span class="mc-tag">PCM</span><span class="mc-tag">CGNC</span><span class="mc-tag">Grand livre</span><span class="mc-tag">Analytique</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Normes marocaines</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('RH manager.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#128101;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE RH</div><div class="mc-name">RH Manager — SIRH</div><div class="mc-desc">Gestion collaborateurs, contrats, congés, absences, bulletins de paie CNSS/IR. SIRH adapté au droit du travail marocain.</div><div class="mc-tags"><span class="mc-tag">SIRH</span><span class="mc-tag">Paie</span><span class="mc-tag">Congés</span><span class="mc-tag">Code du travail</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Droit travail marocain</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc alerte" data-cs="alerte" onclick="openModule('reglementation_tourisme.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(192,88,32,.1)">&#127965;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE TOURISME</div><div class="mc-name">Réglementation Tourisme</div><div class="mc-desc">Cadre légal hôtellerie, résidences touristiques, agences de voyages. Classement, licences, obligations réglementaires ONMT.</div><div class="mc-tags"><span class="mc-tag">Hôtellerie</span><span class="mc-tag">ONMT</span><span class="mc-tag">Licences</span><span class="mc-tag">Classement</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Réglementation complète</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('reglementation_urbanisme.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#127961;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE URBANISME</div><div class="mc-name">Réglementation Urbanisme &amp; Foncier</div><div class="mc-desc">Code de l'urbanisme marocain, permis de construire, titres fonciers, servitudes, procédures d'expropriation.</div><div class="mc-tags"><span class="mc-tag">Urbanisme</span><span class="mc-tag">Foncier</span><span class="mc-tag">Permis</span><span class="mc-tag">TF</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Droit foncier marocain</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc fiscal" data-cs="fiscal" onclick="openModule('couts_installation.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(184,134,42,.1)">&#128184;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE 06</div><div class="mc-name">Coûts d'Installation</div><div class="mc-desc">Estimation détaillée des coûts de création d'entreprise au Maroc : notaire, registre, capital, locaux, équipements.</div><div class="mc-tags"><span class="mc-tag">Création</span><span class="mc-tag">Budget</span><span class="mc-tag">Coûts fixes</span><span class="mc-tag">OMPIC</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Estimation gratuite</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: INVESTISSEMENT -->
+  <div class="cluster-panel" id="panel-investzone">
+    <div class="cluster-header"><span class="cluster-icon">&#128506;</span><div class="cluster-title">Investissement &amp; Zones</div><span class="cluster-count">7 modules</span><span class="cluster-desc">Aides, zones économiques, GIS foncier, CRI, guide IDE, charte, environnement</span></div>
+    <div class="modules-grid">
+      <div class="mc teal" data-cs="teal" onclick="openModule('primes_et_financements.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(26,107,60,.1)">&#127919;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE 04</div><div class="mc-name">Aides &amp; Financements</div><div class="mc-desc">Formulaire 4 étapes → recommandation personnalisée parmi 15+ programmes CCG, Maroc PME, FDII, MDM Invest.</div><div class="mc-tags"><span class="mc-tag">CCG</span><span class="mc-tag">Maroc PME</span><span class="mc-tag">FDII</span><span class="mc-tag">MDM Invest</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Matching automatique</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc teal" data-cs="teal" onclick="openModule('zones_economiques.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128506;&#65039;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE 07</div><div class="mc-name">Carte Zones Économiques</div><div class="mc-desc">ZAI, zones franches, CFC. Carte SVG interactive avec avantages fiscaux par région et contacts CRI directs.</div><div class="mc-tags"><span class="mc-tag">ZAI</span><span class="mc-tag">Zone franche</span><span class="mc-tag">CFC</span><span class="mc-tag">CRI</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">12 régions couvertes</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc teal" data-cs="teal" onclick="openModule('gis_foncier.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128205;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE 22</div><div class="mc-name">GIS Foncier ZAI</div><div class="mc-desc">Localisation et caractéristiques des zones d'accélération industrielle. Filtre par région, disponibilité foncière, coût terrain.</div><div class="mc-tags"><span class="mc-tag">ZAI</span><span class="mc-tag">Foncier</span><span class="mc-tag">Régions</span><span class="mc-tag">Terrain</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Données ONHYM / CRI</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('guide_de_creation.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128203;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE 21</div><div class="mc-name">Tracker Dossier CRI</div><div class="mc-desc">Suivi pas-à-pas du dossier d'investissement auprès des Centres Régionaux. Alertes délais, documents requis.</div><div class="mc-tags"><span class="mc-tag">CRI</span><span class="mc-tag">Dossier</span><span class="mc-tag">Délais</span><span class="mc-tag">Alertes</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">12 CRI couverts</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc teal" data-cs="teal" onclick="openModule('guide_des_investissements.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(26,107,60,.1)">&#127760;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE IDE</div><div class="mc-name">Guide Investisseurs</div><div class="mc-desc">Éligibilité IDE, procédure AMDI en 8 étapes, primes Charte 2022 (15–30%), contrôle des changes, checklist.</div><div class="mc-tags"><span class="mc-tag">IDE</span><span class="mc-tag">AMDI</span><span class="mc-tag">Charte 2022</span><span class="mc-tag">MRE</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Checklist complète</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('charte_investissements.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128176;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE 02</div><div class="mc-name">Levier Financier &amp; Charte</div><div class="mc-desc">Calculateur primes MIP, ZAI, FDII. ROI, TRI, VAN, payback. Convertisseur forex intégré. Export dossier bancaire PDF.</div><div class="mc-tags"><span class="mc-tag">Primes MIP</span><span class="mc-tag">ROI/TRI</span><span class="mc-tag">Forex</span><span class="mc-tag">PDF</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Dossier bancaire inclus</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc teal" data-cs="teal" onclick="openModule('acceptabilite_environnementale.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(26,107,60,.1)">&#127807;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE 27</div><div class="mc-name">Acceptabilité Environnementale</div><div class="mc-desc">Évaluation EIE, conformité réglementaire SEEE/ONEE, scoring d'impact environnemental et recommandations d'atténuation.</div><div class="mc-tags"><span class="mc-tag">EIE</span><span class="mc-tag">SEEE</span><span class="mc-tag">ONEE</span><span class="mc-tag">Impact</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Accès gratuit</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: PILOTAGE -->
+  <div class="cluster-panel" id="panel-pilotage">
+    <div class="cluster-header"><span class="cluster-icon">&#127763;</span><div class="cluster-title">Pilotage &amp; Finance</div><span class="cluster-count">12 modules</span><span class="cluster-desc">EVM, Gantt, PERT, Lean, contrats, ingénierie financière, architecture, documents, système bancaire, dashboard, communauté</span></div>
+    <div class="modules-grid">
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('cockpit_management.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#127763;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE 01</div><div class="mc-name">Cockpit de Management</div><div class="mc-desc">Tableau de bord EVM complet : CPI, SPI, VAC, EAC. Gantt interactif, PERT, WBS, matrice des risques, jalons.</div><div class="mc-tags"><span class="mc-tag">EVM</span><span class="mc-tag">Gantt</span><span class="mc-tag">PERT</span><span class="mc-tag">Risques</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Export PDF rapport</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('lean_six_sigma_tools.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128208;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE 08</div><div class="mc-name">Lean Six Sigma</div><div class="mc-desc">DMAIC complet, FMEA, SIPOC, Pareto, Ishikawa, VSM. Calcul Sigma Level, DPU, DPMO. Adapté industries marocaines.</div><div class="mc-tags"><span class="mc-tag">DMAIC</span><span class="mc-tag">FMEA</span><span class="mc-tag">SIPOC</span><span class="mc-tag">Sigma</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">7 outils qualité</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('options_contractuelles.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128203;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE 09</div><div class="mc-name">Formes de Contrats</div><div class="mc-desc">Arbre de décision : Forfait, Régie, Time &amp; Material, Remboursable. Analyse risques partagés, clauses recommandées.</div><div class="mc-tags"><span class="mc-tag">Forfait</span><span class="mc-tag">Régie</span><span class="mc-tag">T&amp;M</span><span class="mc-tag">Risques</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Clauses types incluses</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('van_et_tri.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128200;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE 23</div><div class="mc-name">Ingénierie Financière</div><div class="mc-desc">VAN, TRI, calcNPV, calcIRR. Cashflows dynamiques, vigilance investissement. Tableaux de sensibilité et scénarii.</div><div class="mc-tags"><span class="mc-tag">VAN/TRI</span><span class="mc-tag">Cashflows</span><span class="mc-tag">NPV/IRR</span><span class="mc-tag">Scénarios</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Scénarii multi-hypothèses</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('architecture_de_projets.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#127963;&#65039;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE 24</div><div class="mc-name">Architecture de Projets</div><div class="mc-desc">WBS, organigramme hiérarchique, jalons, dépendances et livrables. Visualisation structurée et export PDF dossier.</div><div class="mc-tags"><span class="mc-tag">WBS</span><span class="mc-tag">Organigramme</span><span class="mc-tag">Jalons</span><span class="mc-tag">Export PDF</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Structuration complète</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('doc-generator.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128196;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE 25</div><div class="mc-name">Générateur de Documents</div><div class="mc-desc">Statuts SARL/SA, NDA, contrats types, lettres d'intention, dossiers CRI. Génération automatique pré-remplie.</div><div class="mc-tags"><span class="mc-tag">Statuts</span><span class="mc-tag">NDA</span><span class="mc-tag">Contrats</span><span class="mc-tag">CRI</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Documents juridiques prêts</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('systeme_bancaire.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#127981;</div><div class="mc-badges"><div class="status-dot new"></div><span class="pill pill-new">NOUVEAU</span></div></div>
+        <div><div class="mc-num">MODULE 29</div><div class="mc-name">Système Bancaire Marocain</div><div class="mc-desc">Cartographie banques BAM, financement projet, taux directeur, ratios Bâle III, finance participative et produits Mourabaha.</div><div class="mc-tags"><span class="mc-tag">BAM</span><span class="mc-tag">Financement</span><span class="mc-tag">Bâle III</span><span class="mc-tag">Mourabaha</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Pro · 199 MAD/mois</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('dashboard_projets.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128293;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE DASH</div><div class="mc-name">Dashboard Projets</div><div class="mc-desc">Vue consolidée de tous vos projets d'investissement. Suivi budget, avancement, alertes et indicateurs clés en temps réel.</div><div class="mc-tags"><span class="mc-tag">Dashboard</span><span class="mc-tag">KPI</span><span class="mc-tag">Portefeuille</span><span class="mc-tag">Alertes</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Vue multi-projets</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('mondoscope.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#127758;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE GLOBAL</div><div class="mc-name">MondoScope</div><div class="mc-desc">Veille et benchmarking international — comparatifs fiscaux, environnement des affaires, données macro par pays.</div><div class="mc-tags"><span class="mc-tag">International</span><span class="mc-tag">Benchmark</span><span class="mc-tag">Macro</span><span class="mc-tag">Pays</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Données mondiales</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('live_data_invest.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128201;</div><div class="mc-badges"><div class="status-dot beta"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE LIVE</div><div class="mc-name">Live Data Invest</div><div class="mc-desc">Tableaux de bord en temps réel — taux BAM, cours devises, indices boursiers, données macro HCP fraîches.</div><div class="mc-tags"><span class="mc-tag">BAM</span><span class="mc-tag">Devises</span><span class="mc-tag">HCP</span><span class="mc-tag">Live</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Données temps réel</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('parcours_communaute.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128101;</div><div class="mc-badges"><div class="status-dot beta"></div><span class="mc-access gratuit">Gratuit</span></div></div>
+        <div><div class="mc-num">MODULE COMMUNAUTÉ</div><div class="mc-name">Parcours Communauté</div><div class="mc-desc">Espace collaboratif investisseurs, partage d'expériences, réseau MRE et IDE, accès aux événements CRI et AMDIE.</div><div class="mc-tags"><span class="mc-tag">Communauté</span><span class="mc-tag">MRE</span><span class="mc-tag">Réseau</span><span class="mc-tag">Événements</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Bêta — accès libre</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc pilotage" data-cs="pilotage" onclick="openModule('abonnements.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(30,77,107,.1)">&#128274;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE COMPTE</div><div class="mc-name">Abonnements &amp; Accès</div><div class="mc-desc">Gestion de votre abonnement, activation des modules Pro, historique de facturation et paramètres du compte.</div><div class="mc-tags"><span class="mc-tag">Abonnement</span><span class="mc-tag">Compte</span><span class="mc-tag">Facturation</span><span class="mc-tag">Pro</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Gestion compte</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4: ANALYSE & REPORTING (IA) -->
+  <div class="cluster-panel" id="panel-ia">
+    <div class="cluster-header"><span class="cluster-icon">&#129302;</span><div class="cluster-title">Analyse &amp; Reporting</div><span class="cluster-count">5 modules</span><span class="cluster-desc">Assistant Claude, agent autonome, rapports IA, bilan financier, ESG</span></div>
+    <div class="modules-grid">
+      <div class="mc ia" data-cs="ia" onclick="openModule('assistant.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(185,28,28,.1)">&#129302;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access ia">IA</span></div></div>
+        <div><div class="mc-num">MODULE 11</div><div class="mc-name">Assistant IA InvestBot</div><div class="mc-desc">Chat Claude Sonnet 4 spécialisé investissement Maroc. Questions fiscales, juridiques, sectorielles avec mémoire de session.</div><div class="mc-tags"><span class="mc-tag">Claude Sonnet 4</span><span class="mc-tag">Chat</span><span class="mc-tag">Fiscal</span><span class="mc-tag">Juridique</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Clé API Anthropic requise</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc ia" data-cs="ia" onclick="openModule('agent_ia_conseil.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(185,28,28,.1)">&#129504;</div><div class="mc-badges"><div class="status-dot beta"></div><span class="mc-access ia">IA</span></div></div>
+        <div><div class="mc-num">MODULE 12</div><div class="mc-name">InvestPilot — Agent IA</div><div class="mc-desc">Agent multi-étapes : veille sectorielle → analyse risques → business plan automatisé → recommandations stratégiques.</div><div class="mc-tags"><span class="mc-tag">Agent</span><span class="mc-tag">Pipeline</span><span class="mc-tag">Business plan</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Clé API requise · Mode avancé</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc ia" data-cs="ia" onclick="openModule('rapports_b2b.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(185,28,28,.1)">&#128209;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access ia">IA</span></div></div>
+        <div><div class="mc-num">MODULE 13</div><div class="mc-name">Rapports IA + Annuaire B2B</div><div class="mc-desc">Génération rapports sectoriels PDF par IA. Annuaire experts-comptables, avocats fiscalistes, experts CFC. Contacts CRI.</div><div class="mc-tags"><span class="mc-tag">Rapports PDF</span><span class="mc-tag">B2B</span><span class="mc-tag">Experts</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Rapport prêt en 30s</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc coral" data-cs="coral" onclick="openModule('business_plans_et_bilans.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(153,60,29,.1)">&#128202;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE FINANCE</div><div class="mc-name">Business Plan &amp; Bilan Financier</div><div class="mc-desc">P&amp;L prévisionnel, TRI/VAN, ratios bancaires, tableau de financement. Format prêt pour dépôt bancaire et CRI.</div><div class="mc-tags"><span class="mc-tag">P&amp;L</span><span class="mc-tag">TRI/VAN</span><span class="mc-tag">Ratios</span><span class="mc-tag">CRI</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Export Excel + PDF</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+      <div class="mc coral" data-cs="coral" onclick="openModule('scoring_esg_rse.html')">
+        <div class="mc-top"><div class="mc-icon-wrap" style="background:rgba(26,107,60,.1)">&#127807;</div><div class="mc-badges"><div class="status-dot active"></div><span class="mc-access pro">Pro</span></div></div>
+        <div><div class="mc-num">MODULE 19</div><div class="mc-name">ESG / RSE</div><div class="mc-desc">Questionnaire piliers ESG, score et grade automatiques, suivi live. Référentiel marocain et international GRI.</div><div class="mc-tags"><span class="mc-tag">ESG</span><span class="mc-tag">RSE</span><span class="mc-tag">GRI</span><span class="mc-tag">Score</span></div></div>
+        <div class="mc-footer"><span style="font-family:var(--fm);font-size:10px;color:var(--sm)">Rapport RSE exportable</span><span class="mc-arrow">&#8594;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<div class="toast" id="toast">Module ouvert dans un nouvel onglet</div>
+
+<script>
+function openModule(url){window.open(url,'_blank');showToast('Ouverture : '+url.replace('.html','').replace(/_/g,' '))}
+function switchTab(id,btn){
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.cluster-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+id).classList.add('active');
+}
+function scrollToTab(id){
+  const tabMap={fiscal:0,investzone:1,pilotage:2,ia:3};
+  const tabs=document.querySelectorAll('.ctab');
+  const idx=tabMap[id];
+  if(idx===undefined)return;
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.cluster-panel').forEach(p=>p.classList.remove('active'));
+  tabs[idx].classList.add('active');
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelector('.clusters-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function filterSearch(val){
+  const v=val.toLowerCase().trim();
+  document.querySelectorAll('.mc').forEach(card=>{
+    const t=card.textContent.toLowerCase();
+    card.classList.toggle('hidden',v&&!t.includes(v));
+  });
+  if(v){
+    document.querySelectorAll('.cluster-panel').forEach(p=>p.classList.add('active'));
+    document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));
+  } else {
+    document.querySelectorAll('.cluster-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-fiscal').classList.add('active');
+    document.querySelector('.ctab').classList.add('active');
+  }
+}
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500)}
+</script>
+<script src="lib/auth.js"></script>
+<script src="lib/portail-auth-patch.js"></script>
+<script src="lib/dashboard-banner.js"></script>
+<script src="lib/notifications.js"></script>
+<script src="lib/analytics.js"></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

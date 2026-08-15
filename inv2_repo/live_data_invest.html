@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Données Macro & Référence — Smart-Invest.ia V2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;--ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;--bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;--border:rgba(0,0,0,0.09);--font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.header{position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid rgba(184,134,42,.2)}
+.header-left{display:flex;align-items:center;gap:14px}
+.back-btn{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.mbadge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,.12);border:1px solid rgba(184,134,42,.25);padding:4px 10px;border-radius:100px}
+/* Indicateur statique honnête — remplace le faux dot live */
+.static-indicator{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.35)}
+.static-dot{width:6px;height:6px;border-radius:50%;background:#F59E0B}
+/* Indicateur live réel pour les taux */
+.live-indicator{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.35)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#4ADE80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── BANNER D'AVERTISSEMENT ── */
+.data-notice{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:12px 16px;margin-bottom:24px;display:flex;gap:10px;align-items:flex-start}
+.data-notice-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.data-notice-text{font-size:12px;color:var(--ink-soft);line-height:1.6}
+.data-notice-text strong{color:var(--ink);font-weight:600}
+
+.page{max-width:1200px;margin:0 auto;padding:28px 24px 80px}
+.tabs{display:flex;gap:4px;background:var(--bg2);border-radius:12px;padding:4px;width:fit-content;margin-bottom:32px}
+.tab{padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--smoke);transition:all .2s;font-family:var(--font-body)}
+.tab.active{background:var(--white);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+/* ── SECTION LABEL ── */
+.section-label{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:100px;margin-bottom:16px}
+.label-static{background:rgba(245,158,11,.1);color:#92400E;border:1px solid rgba(245,158,11,.2)}
+.label-live{background:rgba(26,107,60,.1);color:var(--success);border:1px solid rgba(26,107,60,.2)}
+.label-live::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--success);animation:pulse 2s infinite;margin-right:4px}
+
+/* ── MACRO DASHBOARD ── */
+.macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .25s}
+.kpi-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
+.kpi-card.green::before{background:var(--success)}
+.kpi-card.gold::before{background:var(--gold)}
+.kpi-card.blue::before{background:var(--accent)}
+.kpi-card.red::before{background:#B91C1C}
+.kpi-source{font-family:var(--font-mono);font-size:9px;color:var(--smoke);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.kpi-num{font-family:var(--font-title);font-size:28px;font-weight:800;line-height:1;margin-bottom:4px}
+.kpi-num.green{color:var(--success)}.kpi-num.gold{color:var(--gold)}.kpi-num.blue{color:var(--accent)}.kpi-num.red{color:#B91C1C}
+.kpi-label{font-size:12px;color:var(--smoke);line-height:1.4}
+.kpi-change{font-family:var(--font-mono);font-size:10px;margin-top:6px;padding:2px 7px;border-radius:100px;display:inline-block}
+.change-up{background:rgba(26,107,60,.1);color:var(--success)}
+.change-down{background:rgba(185,28,28,.1);color:#B91C1C}
+.change-neutral{background:rgba(0,0,0,.05);color:var(--smoke)}
+.kpi-date{font-family:var(--font-mono);font-size:9px;color:rgba(0,0,0,.22);position:absolute;bottom:8px;right:12px}
+
+/* EXCHANGE RATES */
+.rates-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px}
+.rates-title{font-family:var(--font-title);font-size:16px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.rates-subtitle{font-size:12px;color:var(--smoke);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rates-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.rate-item{text-align:center;padding:12px 8px;background:var(--bg);border-radius:8px;border:1px solid var(--border);position:relative}
+.rate-flag{font-size:18px;margin-bottom:4px}
+.rate-pair{font-family:var(--font-mono);font-size:9px;color:var(--smoke);margin-bottom:3px}
+.rate-val{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--ink)}
+.rate-chg{font-size:10px;font-family:var(--font-mono)}
+.rate-loading{font-family:var(--font-mono);font-size:10px;color:var(--smoke);text-align:center;padding:20px;grid-column:1/-1}
+.rate-skeleton{animation:shimmer 1.5s infinite linear}
+@keyframes shimmer{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+
+/* Source bar */
+.source-bar{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.source-info{font-family:var(--font-mono);font-size:9px;color:var(--smoke)}
+.source-link{font-family:var(--font-mono);font-size:9px;color:var(--gold);text-decoration:none}
+.source-link:hover{text-decoration:underline}
+.rates-update{font-family:var(--font-mono);font-size:9px;color:var(--smoke)}
+
+/* CHART SVG */
+.chart-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:24px}
+.chart-title{font-family:var(--font-title);font-size:15px;font-weight:700;margin-bottom:4px}
+.chart-sub{font-size:12px;color:var(--smoke);margin-bottom:16px}
+
+/* ── COMPARATEUR RÉGIONS ── */
+.comp-controls{display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
+.region-selector{padding:8px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--font-body);font-size:13px;background:var(--white);outline:none;cursor:pointer;min-width:160px}
+.region-selector:focus{border-color:var(--gold)}
+.comp-add-btn{padding:8px 16px;border-radius:9px;background:var(--gold);border:none;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--ink)}
+.reset-btn{padding:8px 14px;border-radius:9px;border:1px solid var(--border);background:none;cursor:pointer;font-size:12px;color:var(--smoke)}
+.comp-grid{display:grid;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.comp-header{display:grid;background:var(--ink);padding:12px 16px;align-items:center}
+.comp-header-cell{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.comp-header-cell:first-child{text-align:left}
+.comp-row{display:grid;padding:11px 16px;border-bottom:1px solid var(--border);align-items:center;transition:background .2s}
+.comp-row:last-child{border-bottom:none}
+.comp-row:hover{background:var(--gold-pale)}
+.comp-row-label{font-size:13px;font-weight:600;color:var(--ink-soft)}
+.comp-cell{text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--ink)}
+.comp-cell.best{color:var(--success);font-weight:700}
+.best-tag{font-size:9px;background:rgba(26,107,60,.1);color:var(--success);padding:1px 5px;border-radius:3px;display:block;margin-top:2px}
+
+/* ── FONCIER ZAI ── */
+.zones-foncier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.foncier-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .25s}
+.foncier-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.foncier-zone{font-family:var(--font-title);font-size:15px;font-weight:700;margin-bottom:4px}
+.foncier-region{font-size:11px;color:var(--smoke);margin-bottom:12px}
+.foncier-stat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.foncier-stat:last-of-type{border-bottom:none}
+.foncier-label{color:var(--ink-soft)}
+.foncier-val{font-family:var(--font-mono);font-weight:600;color:var(--ink)}
+.foncier-available{margin-top:12px;padding:8px;background:var(--bg);border-radius:7px;display:flex;justify-content:space-between;align-items:center}
+.avail-label{font-size:11px;color:var(--smoke)}
+.avail-note{font-size:9px;color:rgba(0,0,0,.3);margin-top:2px;font-family:var(--font-mono)}
+.avail-bar{height:4px;background:var(--bg2);border-radius:2px;margin-top:5px;overflow:hidden}
+.avail-fill{height:100%;border-radius:2px}
+.contact-cri-btn{width:100%;margin-top:12px;padding:9px;border-radius:8px;background:var(--ink);border:none;cursor:pointer;color:var(--gold-light);font-family:var(--font-body);font-size:12px;font-weight:600;transition:all .2s}
+.contact-cri-btn:hover{background:var(--ink-mid)}
+
+/* ── SECTEUR NEWS ── */
+.news-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:20px}
+.news-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s}
+.news-card:hover{border-color:var(--gold)}
+.news-source{font-family:var(--font-mono);font-size:9px;color:var(--gold);letter-spacing:.06em;margin-bottom:6px}
+.news-title{font-family:var(--font-title);font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.news-excerpt{font-size:12.5px;color:var(--smoke);line-height:1.6}
+.news-tags{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
+.news-tag{font-family:var(--font-mono);font-size:9px;background:var(--bg2);color:var(--ink-soft);padding:2px 7px;border-radius:100px}
+.news-disclaimer{margin-top:16px;padding:10px 14px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:8px;font-size:11px;color:var(--smoke);font-family:var(--font-mono)}
+
+/* Error state */
+.rate-error{font-family:var(--font-mono);font-size:10px;color:#B91C1C;text-align:center;padding:16px;grid-column:1/-1}
+</style>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="premium"></script>
+<script src='lib/upgrade-modal.js'></script>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="landing.html" class="back-btn">← Retour</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="mbadge">V2-B · Données Macro & Référence</div>
+  </div>
+  <!-- Indicateur honnête : taux de change live, reste statique -->
+  <div id="headerIndicator" class="static-indicator">
+    <div class="static-dot"></div>
+    <span>Taux de change : chargement…</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- ══ NOTICE GÉNÉRALE ══ -->
+  <div class="data-notice">
+    <div class="data-notice-icon">ℹ️</div>
+    <div class="data-notice-text">
+      <strong>Transparence sur les données affichées :</strong>
+      Les <strong>taux de change MAD</strong> sont récupérés en temps réel depuis l'API publique <em>fawazahmed0/currency-api</em> (source ECB + marché), sans clé requise.
+      Les <strong>indicateurs macro</strong> (PIB, IDE, IS, SMIG, CNSS) proviennent de publications officielles HCP, BAM, AMDIE, OMPIC et sont des <strong>données de référence statiques</strong>, mises à jour manuellement à chaque publication officielle.
+      Le <strong>foncier ZAI</strong> et le <strong>comparateur régions</strong> sont des données indicatives (AMDIE / CGI 2024) — vérifier auprès des CRI concernés.
+      Les <strong>actualités</strong> sont des entrées éditoriales à actualiser manuellement.
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('macro',this)">📊 Dashboard Macro</button>
+    <button class="tab" onclick="switchTab('comparateur',this)">🏙️ Comparateur Régions</button>
+    <button class="tab" onclick="switchTab('foncier',this)">🏭 Foncier ZAI</button>
+    <button class="tab" onclick="switchTab('actualites',this)">📰 Actualités IDE</button>
+  </div>
+
+  <!-- ══ MACRO ══ -->
+  <div id="tab-macro">
+
+    <div class="section-label label-static">📌 Données de référence officielles · Mise à jour manuelle</div>
+    <div class="macro-grid" id="kpiGrid"></div>
+
+    <!-- TAUX DE CHANGE LIVE -->
+    <div class="rates-card">
+      <div class="rates-title">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="#B8862A" stroke-width="1.3"/><path d="M6 6.5C6.5 5.5 7.5 5 9 5s3 1 3 2c0 1-1 1.5-3 2s-3 1.5-3 3c0 1.5 1.5 2.5 3 2.5s2.5-.5 3-1.5" stroke="#B8862A" stroke-width="1.3" stroke-linecap="round"/><path d="M9 4v1M9 13v1" stroke="#B8862A" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Taux de change MAD
+      </div>
+      <div class="rates-subtitle">
+        <span class="section-label label-live" style="margin-bottom:0">Données live · API temps réel</span>
+        <span style="font-size:11px;color:var(--smoke)">Source : <a href="https://github.com/fawazahmed0/exchange-api" target="_blank" class="source-link">fawazahmed0/currency-api</a> · Mise à jour quotidienne ECB + marchés</span>
+      </div>
+      <div class="rates-grid" id="ratesGrid">
+        <div class="rate-loading rate-skeleton">⏳ Récupération des taux en cours…</div>
+      </div>
+      <div class="source-bar">
+        <span class="source-info" id="ratesUpdateTime">—</span>
+        <a href="https://www.officedeschages.ma" target="_blank" class="source-link">Office des Changes ↗</a>
+      </div>
+    </div>
+
+    <!-- CHART IDE -->
+    <div class="chart-card">
+      <div class="section-label label-static">📌 Données officielles BAM / AMDIE · Arrêtées à 2023</div>
+      <div class="chart-title">Flux IDE entrants — Maroc</div>
+      <div class="chart-sub">En milliards MAD · Source : BAM / AMDIE 2019–2023 · Données publiées, non projetées</div>
+      <svg width="100%" height="160" viewBox="0 0 700 160" id="ideChart"></svg>
+    </div>
+  </div>
+
+  <!-- ══ COMPARATEUR RÉGIONS ══ -->
+  <div id="tab-comparateur" style="display:none">
+    <div class="section-label label-static">📌 Données indicatives · Sources AMDIE 2020 / CGI 2024 · Vérifier auprès des CRI</div>
+    <div style="font-family:var(--font-title);font-size:22px;font-weight:700;margin-bottom:8px">Comparateur inter-régional</div>
+    <div style="font-size:14px;color:var(--smoke);margin-bottom:20px">Sélectionnez jusqu'à 3 régions pour comparer fiscalité, coûts et infrastructure</div>
+    <div class="comp-controls">
+      <select class="region-selector" id="region1"><option value="">Région 1</option></select>
+      <select class="region-selector" id="region2"><option value="">Région 2</option></select>
+      <select class="region-selector" id="region3"><option value="">Région 3</option></select>
+      <button class="comp-add-btn" onclick="renderComparateur()">Comparer →</button>
+      <button class="reset-btn" onclick="resetComp()">↺ Réinitialiser</button>
+    </div>
+    <div id="compResult"></div>
+  </div>
+
+  <!-- ══ FONCIER ══ -->
+  <div id="tab-foncier" style="display:none">
+    <div class="section-label label-static">📌 Données indicatives 2024 · Disponibilités non contractuelles · Contacter le CRI</div>
+    <div style="font-family:var(--font-title);font-size:22px;font-weight:700;margin-bottom:6px">Disponibilité foncière — Zones ZAI</div>
+    <div style="font-size:14px;color:var(--smoke);margin-bottom:20px">Surfaces, prix au m² et délais d'occupation estimatifs · Les pourcentages de disponibilité sont <strong>indicatifs</strong> et ne reflètent pas l'état réel en temps réel</div>
+    <div class="zones-foncier-grid" id="foncierGrid"></div>
+  </div>
+
+  <!-- ══ ACTUALITÉS ══ -->
+  <div id="tab-actualites" style="display:none">
+    <div class="section-label label-static">📌 Entrées éditoriales statiques · Dernière mise à jour : Janvier 2025</div>
+    <div style="font-family:var(--font-title);font-size:22px;font-weight:700;margin-bottom:6px">Actualités IDE Maroc</div>
+    <div style="font-size:14px;color:var(--smoke);margin-bottom:20px">Annonces impactant les investisseurs · Sources : AMDIE, BAM, MAP, MEF</div>
+    <div class="news-grid" id="newsGrid"></div>
+    <div class="news-disclaimer">
+      ⚠ Ces actualités sont saisies manuellement et ne sont pas récupérées automatiquement. Pour les dernières annonces : <a href="https://www.amdie.gov.ma" target="_blank" style="color:var(--gold)">amdie.gov.ma</a> · <a href="https://www.bkam.ma" target="_blank" style="color:var(--gold)">bkam.ma</a> · <a href="https://www.mapnews.ma" target="_blank" style="color:var(--gold)">mapnews.ma</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// V2-B — Données Macro & Référence
+// Smart-Invest.ia — Expertt One
+// Honnêteté des données : taux live, reste statique
+// ══════════════════════════════════════════
+
+// ── TABS ──
+function switchTab(tab, btn) {
+  ['macro','comparateur','foncier','actualites'].forEach(t =>
+    document.getElementById('tab-'+t).style.display = t===tab?'block':'none');
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab==='comparateur') initComparateur();
+  if(tab==='foncier') renderFoncier();
+  if(tab==='actualites') renderActualites();
+}
+
+// ────────────────────────────────────────
+// ── DONNÉES MACRO (statiques, officielles)
+// Source : HCP, BAM, AMDIE, OMPIC, CGI, CNSS
+// Dernière vérification : Janvier 2025
+// À mettre à jour à chaque publication officielle
+// ────────────────────────────────────────
+const KPI_DATA = [
+  {
+    label: 'PIB Maroc 2023',
+    val: '1 341', unit: 'Mds MAD',
+    change: '+3,2% vs 2022', dir: 'up',
+    source: 'HCP · Note 2023',
+    color: 'green',
+    date: 'Publié T1 2024'
+  },
+  {
+    label: 'IDE entrants 2023',
+    val: '36,4', unit: 'Mds MAD',
+    change: '+23% vs 2022', dir: 'up',
+    source: 'AMDIE · Bilan 2023',
+    color: 'gold',
+    date: 'Publié mars 2024'
+  },
+  {
+    label: 'Inflation annuelle 2023',
+    val: '6,1', unit: '%',
+    change: 'Pic à 8,3% en 2022', dir: '',
+    source: 'BAM · Rapport annuel 2023',
+    color: 'blue',
+    date: '⚠ Vérifier BAM 2024'
+  },
+  {
+    label: 'Créations entreprises 2023',
+    val: '122 400', unit: 'immatr.',
+    change: '+11,3% vs 2022', dir: 'up',
+    source: 'OMPIC · Bilan 2023',
+    color: 'green',
+    date: 'Publié janv. 2024'
+  },
+  {
+    label: 'SMIG horaire',
+    val: '17,10', unit: 'MAD/h',
+    change: 'Revalorisé sept. 2024', dir: '',
+    source: 'Décret n°2-23-335',
+    color: 'gold',
+    date: 'En vigueur sept. 2024'
+  },
+  {
+    label: 'CNSS charge patronale',
+    val: '21,09', unit: '%',
+    change: 'Stable 2024', dir: '',
+    source: 'CNSS · Barème 2024',
+    color: 'blue',
+    date: 'À confirmer 2025'
+  },
+  {
+    label: 'IS taux normal max',
+    val: '31', unit: '%',
+    change: 'Barème progressif', dir: '',
+    source: 'Art. 19 CGI 2024',
+    color: 'gold',
+    date: 'LF 2024'
+  },
+  {
+    label: 'IS Zone ZAI (an. 1–5)',
+    val: '0', unit: '%',
+    change: '→ 15% à partir an 6', dir: 'up',
+    source: 'Art. 6 CGI 2024',
+    color: 'green',
+    date: 'LF 2024'
+  },
+];
+
+function renderKPIs() {
+  document.getElementById('kpiGrid').innerHTML = KPI_DATA.map(k => `
+    <div class="kpi-card ${k.color}">
+      <div class="kpi-source">${k.source}</div>
+      <div class="kpi-num ${k.color}">${k.val}<span style="font-size:14px;font-weight:400;margin-left:3px">${k.unit}</span></div>
+      <div class="kpi-label">${k.label}</div>
+      ${k.change ? `<span class="kpi-change ${k.dir==='up'?'change-up':k.dir==='down'?'change-down':'change-neutral'}">${k.change}</span>` : ''}
+      <div class="kpi-date">${k.date}</div>
+    </div>`).join('');
+}
+
+// ────────────────────────────────────────
+// ── TAUX DE CHANGE LIVE
+// API : fawazahmed0/currency-api (jsDelivr CDN)
+// Gratuit, sans clé, données quotidiennes ECB + marché
+// MAD supporté nativement
+// ────────────────────────────────────────
+const RATE_PAIRS = [
+  { flag: '🇪🇺', code: 'eur', label: 'EUR/MAD' },
+  { flag: '🇺🇸', code: 'usd', label: 'USD/MAD' },
+  { flag: '🇬🇧', code: 'gbp', label: 'GBP/MAD' },
+  { flag: '🇸🇦', code: 'sar', label: 'SAR/MAD' },
+  { flag: '🇨🇭', code: 'chf', label: 'CHF/MAD' },
+  { flag: '🇨🇦', code: 'cad', label: 'CAD/MAD' },
+];
+
+async function fetchRates() {
+  const grid = document.getElementById('ratesGrid');
+  const indicator = document.getElementById('headerIndicator');
+
+  // Afficher skeleton pendant le chargement
+  grid.innerHTML = RATE_PAIRS.map(() => `
+    <div class="rate-item">
+      <div class="rate-flag rate-skeleton">⏳</div>
+      <div class="rate-pair rate-skeleton">— / MAD</div>
+      <div class="rate-val rate-skeleton" style="font-size:13px;color:var(--smoke)">—</div>
+      <div class="rate-chg rate-skeleton">…</div>
+    </div>`).join('');
+
+  try {
+    // API primaire : jsDelivr CDN (sans CORS, gratuite, sans clé)
+    const url = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/mad.json';
+    const res = await fetch(url, { cache: 'no-cache' });
+    if (!res.ok) throw new Error('API primaire indisponible');
+    const data = await res.json();
+
+    const rates = data.mad; // { eur: 0.091..., usd: 0.099... }
+    const fetchDate = data.date;
+
+    // On a MAD comme base, donc 1 MAD = X devise → inverser pour avoir X devise = Y MAD
+    grid.innerHTML = RATE_PAIRS.map(p => {
+      const rateDevisePerMAD = rates[p.code]; // ex: 1 MAD = 0.091 EUR
+      if (!rateDevisePerMAD || rateDevisePerMAD === 0) {
+        return `<div class="rate-item">
+          <div class="rate-flag">${p.flag}</div>
+          <div class="rate-pair">${p.label}</div>
+          <div class="rate-val" style="font-size:12px;color:var(--smoke)">N/D</div>
+          <div class="rate-chg" style="color:var(--smoke)">—</div>
+        </div>`;
+      }
+      const madPerDevise = (1 / rateDevisePerMAD).toFixed(4);
+      return `<div class="rate-item">
+        <div class="rate-flag">${p.flag}</div>
+        <div class="rate-pair">${p.label}</div>
+        <div class="rate-val">${parseFloat(madPerDevise).toFixed(2)}</div>
+        <div class="rate-chg" style="color:var(--smoke)">au ${fetchDate}</div>
+      </div>`;
+    }).join('');
+
+    // Mettre à jour l'heure et le header
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('ratesUpdateTime').textContent =
+      `✓ Données récupérées le ${fetchDate} · Affiché à ${timeStr}`;
+
+    // Header : switcher vers indicateur live vert
+    indicator.className = 'live-indicator';
+    indicator.innerHTML = `<div class="live-dot"></div><span>Taux MAD · ${fetchDate}</span>`;
+
+  } catch (err) {
+    // Fallback : tenter API de secours
+    try {
+      const fallback = await fetch('https://latest.currency-api.pages.dev/v1/currencies/mad.json', { cache: 'no-cache' });
+      if (!fallback.ok) throw new Error('Fallback indisponible');
+      const data2 = await fallback.json();
+      const rates2 = data2.mad;
+      const fetchDate2 = data2.date || 'date inconnue';
+
+      grid.innerHTML = RATE_PAIRS.map(p => {
+        const r = rates2[p.code];
+        if (!r || r === 0) return `<div class="rate-item"><div class="rate-flag">${p.flag}</div><div class="rate-pair">${p.label}</div><div class="rate-val" style="font-size:12px;color:var(--smoke)">N/D</div><div class="rate-chg">—</div></div>`;
+        const mad = (1/r).toFixed(2);
+        return `<div class="rate-item"><div class="rate-flag">${p.flag}</div><div class="rate-pair">${p.label}</div><div class="rate-val">${mad}</div><div class="rate-chg" style="color:var(--smoke)">${fetchDate2}</div></div>`;
+      }).join('');
+
+      const timeStr2 = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('ratesUpdateTime').textContent = `✓ Via API secondaire · ${fetchDate2} · ${timeStr2}`;
+      indicator.className = 'live-indicator';
+      indicator.innerHTML = `<div class="live-dot"></div><span>Taux MAD · ${fetchDate2}</span>`;
+
+    } catch (err2) {
+      // Échec total : afficher message honnête
+      grid.innerHTML = `<div class="rate-error">
+        ⚠ Impossible de récupérer les taux en temps réel (API indisponible ou CORS).<br>
+        Consultez directement : <a href="https://www.officedeschages.ma" target="_blank" style="color:var(--gold)">officedeschages.ma</a>
+      </div>`;
+      indicator.className = 'static-indicator';
+      indicator.innerHTML = `<div class="static-dot"></div><span>Taux : non disponible</span>`;
+      document.getElementById('ratesUpdateTime').textContent = `⚠ Échec de récupération · ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
+    }
+  }
+}
+
+// ── CHART IDE (statique, données officielles) ──
+function renderIDEChart() {
+  const data = [
+    { year:'2019', val:18.2 }, { year:'2020', val:15.1 }, { year:'2021', val:19.8 },
+    { year:'2022', val:29.6 }, { year:'2023', val:36.4 }
+  ];
+  const W=700, H=140, PAD=40, maxVal=42;
+  const barW=80, barGap=(W-PAD*2-barW*data.length)/(data.length-1);
+  let svg = `<line x1="${PAD}" y1="0" x2="${PAD}" y2="${H}" stroke="#DDDDDD" stroke-width="1"/>`;
+  svg += `<line x1="${PAD}" y1="${H}" x2="${W-PAD}" y2="${H}" stroke="#DDDDDD" stroke-width="1"/>`;
+  data.forEach((d,i) => {
+    const x = PAD + i*(barW+barGap);
+    const barH = (d.val/maxVal)*(H-20);
+    const y = H-barH;
+    const isLast = i===data.length-1;
+    svg += `<rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4"
+      fill="${isLast?'#B8862A':'#EFEDE6'}" stroke="${isLast?'#B8862A':'#DDDDDD'}" stroke-width="1"/>`;
+    svg += `<text x="${x+barW/2}" y="${y-6}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11"
+      fill="${isLast?'#B8862A':'#7A7A70'}" font-weight="${isLast?'700':'400'}">${d.val}G</text>`;
+    svg += `<text x="${x+barW/2}" y="${H+16}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#7A7A70">${d.year}</text>`;
+  });
+  // Label "données 2024 à venir"
+  svg += `<text x="${W-PAD}" y="${H/2}" text-anchor="end" font-family="'JetBrains Mono'" font-size="9" fill="rgba(0,0,0,.25)">2024 : publication attendue</text>`;
+  document.getElementById('ideChart').innerHTML = svg;
+}
+
+// ────────────────────────────────────────
+// ── COMPARATEUR RÉGIONS (statique indicatif)
+// Sources : AMDIE 2020, CGI 2024
+// ────────────────────────────────────────
+const REGIONS_DATA = {
+  'Casa-Settat':    { is_zai:'0%→15%', smig:17.10, energie:0.70, foncier_zai:400, infra:5, cri:'casainvest.ma', zai:'Bouskoura · Nouaceur', port:'Casa (120 km)' },
+  'Tanger-TTH':     { is_zai:'0%→15%', smig:17.10, energie:0.74, foncier_zai:350, infra:5, cri:'investangier.com', zai:'Meloussa · TFZ', port:'Tanger Med (5 km)' },
+  'Rabat-SK':       { is_zai:'0%→15%', smig:17.10, energie:0.65, foncier_zai:380, infra:4, cri:'rabatinvest.ma', zai:'Kénitra (AFZ)', port:'Kénitra (15 km)' },
+  'Fès-Meknès':     { is_zai:'0%→15%', smig:17.10, energie:0.68, foncier_zai:280, infra:3, cri:'fesmeknesinvest.ma', zai:'Ain Chkef', port:'Casa (260 km)' },
+  'Marrakech-Safi': { is_zai:'Non ZAI', smig:17.10, energie:0.69, foncier_zai:null, infra:3, cri:'crimarrakech.ma', zai:'ZI Sidi Ghanem', port:'Safi (240 km)' },
+  'Souss-Massa':    { is_zai:'0%→15%', smig:17.10, energie:0.71, foncier_zai:290, infra:3, cri:'agadirinvest.com', zai:'Aït Melloul', port:'Agadir (10 km)' },
+  'Oriental':       { is_zai:'0%→15%', smig:17.10, energie:0.66, foncier_zai:220, infra:2, cri:'orientalinvest.ma', zai:'Selouane', port:'Nador (30 km)' },
+  'Laâyoune-SH':    { is_zai:'0%*', smig:17.10, energie:0.60, foncier_zai:150, infra:2, cri:'laayouneinvest.ma', zai:'Province Sud', port:'Laâyoune (5 km)' },
+};
+
+const REGION_NAMES = Object.keys(REGIONS_DATA);
+const CRITERIA = [
+  { key:'is_zai',      label:'IS ZAI applicable',        unit:'', lower:false, note:true },
+  { key:'smig',        label:'SMIG horaire (sept. 2024)', unit:' MAD/h', lower:true },
+  { key:'energie',     label:'kWh électricité HT (est.)',  unit:' MAD', lower:true },
+  { key:'foncier_zai', label:'Foncier ZAI estimé (m²)',   unit:' MAD/m²', lower:true },
+  { key:'infra',       label:'Score infra indicatif (/5)', unit:'/5', lower:false },
+  { key:'zai',         label:'ZAI disponible',             unit:'', note:true },
+  { key:'port',        label:'Port le plus proche',        unit:'', note:true },
+];
+
+function initComparateur() {
+  REGION_NAMES.forEach(r => {
+    ['region1','region2','region3'].forEach(id => {
+      const sel = document.getElementById(id);
+      if (!sel.querySelector(`option[value="${r}"]`)) {
+        const opt = document.createElement('option');
+        opt.value = r; opt.textContent = r;
+        sel.appendChild(opt);
+      }
+    });
+  });
+  document.getElementById('region1').value = 'Casa-Settat';
+  document.getElementById('region2').value = 'Tanger-TTH';
+  document.getElementById('region3').value = 'Rabat-SK';
+  renderComparateur();
+}
+
+function renderComparateur() {
+  const selected = ['region1','region2','region3']
+    .map(id => document.getElementById(id).value).filter(v => v);
+  if (selected.length < 2) {
+    document.getElementById('compResult').innerHTML = '<div style="color:var(--smoke);font-size:13px">Sélectionnez au moins 2 régions</div>';
+    return;
+  }
+  const cols = [200, ...selected.map(() => Math.floor(700/selected.length))];
+  let html = `<div class="comp-grid">
+    <div class="comp-header" style="grid-template-columns:${cols[0]}px ${selected.map(()=>`${cols[1]}px`).join(' ')}">
+      <div class="comp-header-cell" style="text-align:left">Critère</div>
+      ${selected.map(r=>`<div class="comp-header-cell">${r}</div>`).join('')}
+    </div>`;
+  CRITERIA.forEach(crit => {
+    const vals = selected.map(r => REGIONS_DATA[r]?.[crit.key]);
+    let bestIdx = -1;
+    if (!crit.note && vals.every(v => v !== null && v !== undefined)) {
+      const nums = vals.map(Number);
+      const best = crit.lower ? Math.min(...nums) : Math.max(...nums);
+      bestIdx = nums.indexOf(best);
+    }
+    html += `<div class="comp-row" style="grid-template-columns:${cols[0]}px ${selected.map(()=>`${cols[1]}px`).join(' ')}">
+      <div class="comp-row-label">${crit.label}</div>
+      ${vals.map((v,i) => `<div class="comp-cell ${i===bestIdx?'best':''}">
+        ${v !== null && v !== undefined ? (crit.note ? String(v) : String(v)+crit.unit) : '—'}
+        ${i===bestIdx?'<span class="best-tag">✓ Meilleur</span>':''}
+      </div>`).join('')}
+    </div>`;
+  });
+  html += `</div>
+  <div style="margin-top:12px;font-size:11px;color:var(--smoke);font-family:var(--font-mono)">
+    ⚠ Données indicatives · Sources : AMDIE 2020, CGI 2024, estimations sectorielles · SMIG revalorisé sept. 2024 · Vérifier auprès des CRI concernés
+  </div>`;
+  document.getElementById('compResult').innerHTML = html;
+}
+
+function resetComp() {
+  ['region1','region2','region3'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('compResult').innerHTML = '';
+}
+
+// ────────────────────────────────────────
+// ── FONCIER ZAI (statique indicatif)
+// Les % de disponibilité sont des estimations
+// NON mis à jour en temps réel — contacter les CRI
+// ────────────────────────────────────────
+const FONCIER_DATA = [
+  { zone:'ZAI Kénitra — Atlantic Free Zone', region:'Rabat-Salé-Kénitra', superficie:'345 ha total', disponible:62, prix_min:300, prix_max:450, delai:'3–6 mois', secteurs:['Automobile','Électronique','Logistique'], contact:'cri.kenitra@rabatinvest.ma', source:'Données AFZ 2024' },
+  { zone:'ZAI Tanger — Meloussa', region:'Tanger-Tétouan-Al Hoceïma', superficie:'2 300 ha total', disponible:38, prix_min:350, prix_max:520, delai:'4–8 mois', secteurs:['Automobile','Aéronautique','Textile'], contact:'contact@zat.ma', source:'ZAT 2024' },
+  { zone:'ZAI Casablanca — Bouskoura', region:'Casablanca-Settat', superficie:'280 ha', disponible:25, prix_min:400, prix_max:600, delai:'6–12 mois', secteurs:['Industrie','Logistique','Agro'], contact:'contact@casainvest.ma', source:'CasaInvest 2024' },
+  { zone:'ZAI Agadir — Aït Melloul', region:'Souss-Massa', superficie:'200 ha', disponible:55, prix_min:250, prix_max:380, delai:'3–5 mois', secteurs:['Agroalimentaire','Pêche','Artisanat'], contact:'contact@agadirinvest.com', source:'AgadirInvest 2024' },
+  { zone:'ZAI Fès — Ain Chkef', region:'Fès-Meknès', superficie:'350 ha', disponible:70, prix_min:220, prix_max:320, delai:'2–4 mois', secteurs:['Textile','Cuir','Agroalimentaire'], contact:'contact@fesmeknesinvest.ma', source:'FèsInvest 2024' },
+  { zone:'ZAI Oujda — Selouane', region:'Oriental', superficie:'115 ha', disponible:80, prix_min:180, prix_max:280, delai:'1–3 mois', secteurs:['Agro','Mines','Commerce'], contact:'contact@orientalinvest.ma', source:'OrientalInvest 2024' },
+];
+
+function renderFoncier() {
+  document.getElementById('foncierGrid').innerHTML = FONCIER_DATA.map(z => {
+    const availColor = z.disponible > 60 ? 'var(--success)' : z.disponible > 35 ? 'var(--gold)' : '#B91C1C';
+    return `<div class="foncier-card">
+      <div class="foncier-zone">${z.zone}</div>
+      <div class="foncier-region">📍 ${z.region}</div>
+      <div class="foncier-stat"><span class="foncier-label">Superficie totale</span><span class="foncier-val">${z.superficie}</span></div>
+      <div class="foncier-stat"><span class="foncier-label">Prix/m² indicatif (MAD)</span><span class="foncier-val">${z.prix_min}–${z.prix_max}</span></div>
+      <div class="foncier-stat"><span class="foncier-label">Délai occupation estimé</span><span class="foncier-val">${z.delai}</span></div>
+      <div class="foncier-stat"><span class="foncier-label">Secteurs prioritaires</span><span style="font-size:11px;color:var(--smoke)">${z.secteurs.join(', ')}</span></div>
+      <div class="foncier-available">
+        <div>
+          <div class="avail-label">Disponibilité estimée</div>
+          <div class="avail-note">⚠ Indicatif · non contractuel</div>
+          <div class="avail-bar" style="width:120px"><div class="avail-fill" style="width:${z.disponible}%;background:${availColor}"></div></div>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:18px;font-weight:800;color:${availColor}">${z.disponible}%</div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--smoke);margin-top:8px">Source : ${z.source}</div>
+      <button class="contact-cri-btn" onclick="alert('Contact CRI gestionnaire :\\n${z.contact}')">📧 Contacter le CRI gestionnaire</button>
+    </div>`;
+  }).join('');
+}
+
+// ────────────────────────────────────────
+// ── ACTUALITÉS (entrées manuelles statiques)
+// À mettre à jour à chaque nouvelle publication
+// Sources : AMDIE, BAM, MEF, HCP, OC, CCG
+// ────────────────────────────────────────
+const NEWS_DATA = [
+  {
+    source: 'AMDIE · Janvier 2025',
+    title: 'Nouveau guichet unique CRI : délai création réduit à 48h',
+    excerpt: "L'AMDIE annonce la mise en place d'une plateforme digitale unifiée permettant la création d'entreprise en 48h pour les SARL via le guichet unique des CRI.",
+    tags: ['SARL','CRI','Digital'],
+    url: 'https://www.amdie.gov.ma'
+  },
+  {
+    source: 'BAM · Décembre 2024',
+    title: 'Les IDE atteignent 36,4 Mds MAD en 2023, record historique',
+    excerpt: 'Bank Al-Maghrib confirme les flux IDE 2023. Le secteur automobile représente 28% des flux entrants. Données 2024 attendues T1 2025.',
+    tags: ['IDE','Record','Automobile'],
+    url: 'https://www.bkam.ma'
+  },
+  {
+    source: 'MEF · Novembre 2024',
+    title: 'Charte Investissement 2022 : premières primes versées',
+    excerpt: 'Le Ministère de l\'Économie et des Finances confirme le versement des premières primes de la Charte de l\'Investissement 2022 aux projets approuvés.',
+    tags: ['Charte 2022','Prime','FDII'],
+    url: 'https://www.finances.gov.ma'
+  },
+  {
+    source: 'HCP · Octobre 2024',
+    title: 'Création d\'entreprises : +11,3% en 2023 selon l\'OMPIC',
+    excerpt: "L'OMPIC enregistre 122 400 nouvelles immatriculations en 2023, principalement dans les services et le BTP.",
+    tags: ['OMPIC','Création','PME'],
+    url: 'https://www.hcp.ma'
+  },
+  {
+    source: 'OC · Septembre 2024',
+    title: 'Transfert de bénéfices : simplification des procédures IDE',
+    excerpt: "L'Office des Changes assouplit les procédures de rapatriement de dividendes. Délai réduit de 30 à 15 jours selon les nouvelles instructions.",
+    tags: ['Changes','Dividendes','IDE'],
+    url: 'https://www.officedeschages.ma'
+  },
+  {
+    source: 'CCG · Août 2024',
+    title: 'Lancement Damane Intelaka 2 : élargissement des bénéficiaires',
+    excerpt: 'La CCG lance une nouvelle version du programme Intelaka avec des conditions élargies pour inclure les porteurs de projets sans garanties réelles.',
+    tags: ['CCG','Garantie','PME'],
+    url: 'https://www.ccg.ma'
+  },
+];
+
+function renderActualites() {
+  document.getElementById('newsGrid').innerHTML = NEWS_DATA.map(n => `
+    <div class="news-card">
+      <div class="news-source">${n.source}</div>
+      <div class="news-title">${n.title}</div>
+      <div class="news-excerpt">${n.excerpt}</div>
+      <div class="news-tags">
+        ${n.tags.map(t=>`<span class="news-tag">${t}</span>`).join('')}
+        <a href="${n.url}" target="_blank" style="font-family:var(--font-mono);font-size:9px;color:var(--gold);text-decoration:none;padding:2px 7px;border-radius:100px;border:1px solid rgba(184,134,42,.3)">Source ↗</a>
+      </div>
+    </div>`).join('');
+}
+
+// ── INIT ──
+renderKPIs();
+renderIDEChart();
+fetchRates(); // seul appel vraiment live
+</script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

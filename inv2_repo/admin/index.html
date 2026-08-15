@@ -1,0 +1,498 @@
+﻿
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart-Invest.ia — Portail d'accès</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#B8862A;--gold2:#96690F;--gold3:#7A5510;
+  --ink:#1A1A16;--ink2:#FFFFFF;--ink3:#F0EEE8;
+  --muted:#5A5A4E;--dim:#7A7A6A;
+  --cream:#F7F6F0;--border:rgba(184,134,42,.25);
+  --border2:rgba(184,134,42,.15);
+  --green:#1A6B3C;--blue:#1A3D6B;--amber:#8A5A00;--red:#7A1A1A;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:#F4F2EB;color:var(--ink);min-height:100vh;overflow-x:hidden}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,253,245,.96);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 1px 12px rgba(0,0,0,.06);
+}
+.logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--gold)}
+.header-right{display:flex;align-items:center;gap:1rem}
+.btn-landing{
+  padding:6px 16px;border:1px solid var(--border);background:transparent;
+  color:var(--gold2);font-family:'Space Grotesk',sans-serif;font-size:11px;
+  letter-spacing:.08em;cursor:pointer;text-decoration:none;
+  transition:all .2s;
+}
+.btn-landing:hover{background:rgba(184,134,42,.08);border-color:var(--gold)}
+
+/* ── HERO ── */
+.hero{
+  padding:4rem 2rem 3rem;text-align:center;
+  background:linear-gradient(180deg,rgba(184,134,42,.07) 0%,rgba(244,242,235,0) 100%);
+  border-bottom:1px solid var(--border2);
+}
+.hero-tag{
+  display:inline-block;font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.15em;color:var(--gold2);
+  border:1px solid rgba(184,134,42,.35);padding:4px 12px;margin-bottom:1.5rem;
+  background:rgba(184,134,42,.06);
+}
+.hero h1{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,48px);
+  font-weight:800;letter-spacing:-.03em;line-height:1.1;
+  margin-bottom:.75rem;color:var(--ink);
+}
+.hero h1 span{color:var(--gold)}
+.hero p{font-size:15px;color:var(--muted);max-width:540px;margin:0 auto 2rem;line-height:1.7}
+.hero-cta{
+  display:inline-block;padding:12px 28px;background:var(--gold);
+  color:#fff;font-size:12px;letter-spacing:.1em;font-weight:600;
+  text-decoration:none;transition:background .2s;border-radius:4px;
+}
+.hero-cta:hover{background:var(--gold2)}
+
+/* ── SECTIONS ── */
+.section{padding:2.5rem 2rem;max-width:1100px;margin:0 auto}
+.section-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.15em;color:var(--gold2);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border2)}
+
+/* ── GRILLE MODULES ── */
+.grid{display:grid;gap:.75rem}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+
+@media(max-width:900px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}}
+
+/* ── MODULE CARD ── */
+.mod{
+  display:block;text-decoration:none;
+  border:1px solid var(--border2);background:#FFFFFF;
+  padding:1.125rem 1.25rem;
+  transition:all .2s;position:relative;overflow:hidden;
+  cursor:pointer;border-radius:8px;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.mod::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(184,134,42,.05) 0%,transparent 60%);
+  opacity:0;transition:opacity .2s;border-radius:8px;
+}
+.mod:hover{border-color:rgba(184,134,42,.5);background:#FDFBF5;transform:translateY(-2px);box-shadow:0 6px 18px rgba(184,134,42,.12)}
+.mod:hover::before{opacity:1}
+.mod-icon{font-size:20px;margin-bottom:.5rem;display:block}
+.mod-plan{
+  position:absolute;top:.625rem;right:.75rem;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;
+  padding:2px 6px;border-radius:3px;
+}
+.plan-free{color:#1A6B3C;border:1px solid rgba(26,107,60,.35);background:rgba(26,107,60,.08)}
+.plan-pro{color:#8A5A00;border:1px solid rgba(184,134,42,.4);background:rgba(184,134,42,.1)}
+.plan-ent{color:#1A3D6B;border:1px solid rgba(26,61,107,.35);background:rgba(26,61,107,.08)}
+.plan-admin{color:#9A2A2A;border:1px solid rgba(154,42,42,.35);background:rgba(154,42,42,.08)}
+.mod-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.2rem;padding-right:2.5rem}
+.mod-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ── MODULE FEATURED (large) ── */
+.mod-featured{
+  display:block;text-decoration:none;
+  border:1px solid var(--border2);background:#FFFFFF;
+  padding:1.5rem;transition:all .2s;position:relative;overflow:hidden;
+  border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.mod-featured:hover{border-color:var(--gold);background:#FDFBF5;transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,134,42,.14)}
+.mod-featured .mod-title{font-size:16px;font-weight:700;color:var(--gold2)}
+.mod-featured .mod-desc{font-size:12px;color:var(--muted);margin-top:.4rem;line-height:1.6}
+.mod-featured .mod-icon{font-size:28px;margin-bottom:.75rem}
+.mod-arrow{
+  position:absolute;bottom:1.25rem;right:1.25rem;
+  font-size:16px;color:var(--gold);opacity:.5;transition:all .2s;
+}
+.mod-featured:hover .mod-arrow{opacity:1;transform:translateX(3px)}
+
+/* ── SÉPARATEUR ── */
+hr{border:none;border-top:1px solid var(--border2);margin:0}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border2);padding:1.5rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--muted);flex-wrap:wrap;gap:.5rem;
+  background:#EDE9DF;
+}
+footer a{color:var(--dim);text-decoration:none}
+footer a:hover{color:var(--gold)}
+</style>
+</head>
+<body>
+<script>
+/* ══ GARDE-SESSION Smart-Invest.ia ══
+   OWNER : jamais redirigé — accès permanent en développement
+   Autres rôles : vérification session classique               */
+(function(){
+  var s = JSON.parse(localStorage.getItem('im_session') || 'null');
+  if(s && s.role === 'OWNER') return; /* owner bypass complet */
+  if(!s || s.expires_at < Date.now()){
+    window.location.href = '../Smart-Invest_login.html?redirect=admin%2Findex.html&expired=1';
+  }
+})();
+</script>
+
+<!-- HEADER -->
+
+  <!-- BANDEAU OWNER DEV -->
+  <div id="owner-bar" style="display:none;background:#0E0E0C;border-bottom:2px solid #B8862A;
+    padding:6px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:#F0C460;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <span>⚡ MODE OWNER · <strong id="ob-name">—</strong> · Accès permanent · Aucune restriction</span>
+    <span style="color:rgba(240,196,96,.45);font-size:10px" id="ob-info">—</span>
+    <button onclick="clearOwner()" style="background:rgba(184,134,42,.15);border:1px solid rgba(184,134,42,.3);
+      color:#F0C460;padding:3px 10px;border-radius:4px;font-family:inherit;font-size:10px;cursor:pointer">
+      Déconnecter Owner
+    </button>
+  </div>
+<header>
+  <a href="../index.html" class="logo">Invest<span>Maroc</span>.ia</a>
+  <div class="header-right">
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em">v2.1</span>
+    <a href="../Smart-Invest_landing.html" class="btn-landing">LANDING →</a>
+    <a href="../Smart-Invest_abonnements.html" class="btn-landing" style="color:var(--dim)">PLANS</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">PORTAIL D'ACCÈS — TOUS LES MODULES</div>
+  <h1>Investir au Maroc,<br><span>sans friction</span></h1>
+  <p>Guide IA complet pour investisseurs — simulateurs fiscaux, pilotage de projet, intelligence export et assistant expert.</p>
+  <a href="../Smart-Invest_landing.html" class="hero-cta">DÉCOUVRIR LA PLATEFORME →</a>
+</div>
+
+<!-- ══ SECTION 1 : INTELLIGENCE IA ══ -->
+<div class="section">
+  <div class="section-label">INTELLIGENCE IA</div>
+  <div class="grid grid-3">
+
+    <a href="../Smart-Invest_assistant.html" class="mod-featured">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">🤖</span>
+      <div class="mod-title">InvestBot IA</div>
+      <div class="mod-desc">Assistant conversationnel expert en droit des affaires marocain. 10 messages/jour en plan gratuit.</div>
+      <span class="mod-arrow">→</span>
+    </a>
+
+    <a href="../Smart-Invest_v2_agent_ia.html" class="mod-featured">
+      <span class="mod-plan plan-ent">ENTERPRISE</span>
+      <span class="mod-icon">🧠</span>
+      <div class="mod-title">InvestPilot Agent</div>
+      <div class="mod-desc">Agent IA autonome — analyse sectorielle, veille réglementaire, recommandations stratégiques.</div>
+      <span class="mod-arrow">→</span>
+    </a>
+
+    <a href="../Smart-Invest_rapports_b2b.html" class="mod-featured">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">📊</span>
+      <div class="mod-title">Rapports Sectoriels IA</div>
+      <div class="mod-desc">Génération de rapports sur 8 secteurs + annuaire 18 experts vérifiés. 3 rapports/mois en démo.</div>
+      <span class="mod-arrow">→</span>
+    </a>
+
+  </div>
+</div>
+
+<hr>
+
+<!-- ══ SECTION 2 : FISCAL & FINANCIER ══ -->
+<div class="section">
+  <div class="section-label">FISCAL & FINANCIER</div>
+  <div class="grid grid-4">
+
+    <a href="../Smart-Invest_simulateur_fiscal.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">🧮</span>
+      <div class="mod-title">Simulateur Fiscal IS/IR/TVA</div>
+      <div class="mod-desc">Barèmes CGI 2024 · 3 onglets · comparateur formes juridiques</div>
+    </a>
+
+    <a href="../Smart-Invest_matching_aides.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">🎯</span>
+      <div class="mod-title">Matching Aides & Financements</div>
+      <div class="mod-desc">10 programmes CCG / MarocPME / FDII · scoring éligibilité</div>
+    </a>
+
+    <a href="../Smart-Invest_charte_investissement.html" class="mod">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">📜</span>
+      <div class="mod-title">Charte Investissement</div>
+      <div class="mod-desc">Calculateur primes Charte 03-22 · levier financier</div>
+    </a>
+
+    <a href="../Smart-Invest_couts_installation.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">💰</span>
+      <div class="mod-title">Coûts d'Installation</div>
+      <div class="mod-desc">12 régions · SMIG · CNSS · énergie · benchmark 6 pays</div>
+    </a>
+
+    <a href="../Smart-Invest_tnb_2025.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">🏗️</span>
+      <div class="mod-title">Simulateur TNB 2025</div>
+      <div class="mod-desc">Taxe sur Terrains Non Bâtis · nouveaux taux 2025 · zones d'équipement · calcul annuel</div>
+    </a>
+
+  </div>
+</div>
+
+<hr>
+
+<!-- ══ SECTION 3 : JURIDIQUE & ZONES ══ -->
+<div class="section">
+  <div class="section-label">JURIDIQUE & ZONES ÉCONOMIQUES</div>
+  <div class="grid grid-4">
+
+    <a href="../Smart-Invest_forme_juridique.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">⚖️</span>
+      <div class="mod-title">Forme Juridique</div>
+      <div class="mod-desc">SA · SARL · Auto-entrepreneur · questionnaire 8 questions · checklist 10 étapes</div>
+    </a>
+
+    <a href="../Smart-Invest_zones_economiques.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">🗺️</span>
+      <div class="mod-title">Zones Économiques</div>
+      <div class="mod-desc">Carte SVG interactive · 15 zones · ZAI · ZF · CFC · Pôles · CRI</div>
+    </a>
+
+    <a href="../Smart-Invest_contrats.html" class="mod">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">📋</span>
+      <div class="mod-title">Sélecteur de Contrat</div>
+      <div class="mod-desc">Choix contrat adapté · analyse juridique · modèles</div>
+    </a>
+
+    <a href="../guide_annexes_protection_ip.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">🔒</span>
+      <div class="mod-title">Guide Protection IP</div>
+      <div class="mod-desc">Propriété intellectuelle · brevets · marques · droits au Maroc</div>
+    </a>
+
+    <a href="../Smart-Invest_tracker_cri.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">📋</span>
+      <div class="mod-title">Tracker Dossier CRI</div>
+      <div class="mod-desc">Suivi étapes création entreprise · 10 jalons CRI · documents requis · délais · coûts</div>
+    </a>
+
+    <a href="../Smart-Invest_gis_foncier.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">🗾</span>
+      <div class="mod-title">GIS Foncier ZAI</div>
+      <div class="mod-desc">Disponibilités foncières · 18 ZAI · prix/m² · délais · contact CRI gestionnaire</div>
+    </a>
+
+  </div>
+</div>
+
+<hr>
+
+<!-- ══ SECTION 4 : PILOTAGE PROJET ══ -->
+<div class="section">
+  <div class="section-label">PILOTAGE & GESTION DE PROJET</div>
+  <div class="grid grid-3">
+
+    <a href="../Smart-Invest_dashboard_projet.html" class="mod-featured">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">📁</span>
+      <div class="mod-title">Dashboard Mon Projet</div>
+      <div class="mod-desc">Multi-projets · 10 étapes · budget tracker · calendrier · documents · export JSON. Code : INVEST2024</div>
+      <span class="mod-arrow">→</span>
+    </a>
+
+    <a href="../Smart-Invest_cockpit_management.html" class="mod-featured">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">🎛️</span>
+      <div class="mod-title">Cockpit Management</div>
+      <div class="mod-desc">EVM · Gantt · PERT · indicateurs de performance projet en temps réel.</div>
+      <span class="mod-arrow">→</span>
+    </a>
+
+    <a href="../Smart-Invest_v2_parcours_communaute.html" class="mod-featured">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">🧭</span>
+      <div class="mod-title">Parcours + Communauté</div>
+      <div class="mod-desc">Parcours investisseur guidé · réseau · partage d'expériences · mentors.</div>
+      <span class="mod-arrow">→</span>
+    </a>
+
+  </div>
+
+  <!-- InvDemo — ligne dédiée -->
+  <div style="margin-top:12px">
+    <a href="../invdemo_module23.html" class="mod-featured" style="border-color:rgba(184,134,42,0.35);background:linear-gradient(135deg,rgba(184,134,42,0.06) 0%,#fff 55%)">
+      <span class="mod-plan plan-pro">PRO · MODULE 23</span>
+      <span class="mod-icon">📐</span>
+      <div class="mod-title" style="font-size:18px">Ingénierie Financière Haute Couture</div>
+      <div class="mod-desc" style="margin-top:6px">
+        Calculez votre VAN · TRI · Score de Vigilance · Stress Test · Comparateur A/B · Diagnostic ESG/RSE · Simulateur RH (CNSS + IDMAJ) · Subventions.
+      </div>
+      <span class="mod-arrow">→</span>
+    </a>
+  </div>
+
+</div>
+
+<hr>
+
+<!-- ══ SECTION 5 : EXCELLENCE OPÉRATIONNELLE ══ -->
+<div class="section">
+  <div class="section-label">EXCELLENCE OPÉRATIONNELLE</div>
+  <div class="grid grid-2">
+
+    <a href="../Smart-Invest_lean_sixsigma.html" class="mod">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">📐</span>
+      <div class="mod-title">Lean Six Sigma</div>
+      <div class="mod-desc">7 outils qualité · DMAIC · VSM · 5S · Kaizen · Ishikawa · Pareto · contrôle statistique</div>
+    </a>
+
+    <a href="../Smart-Invest_v2_donnees_live.html" class="mod">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">📡</span>
+      <div class="mod-title">Données Live & Macro</div>
+      <div class="mod-desc">Indicateurs BAM / HCP · taux de change · inflation · données économiques en temps réel</div>
+    </a>
+
+    <a href="../Smart-Invest_esg_rse.html" class="mod">
+      <span class="mod-plan plan-pro">PRO</span>
+      <span class="mod-icon">🌿</span>
+      <div class="mod-title">Scoring ESG / RSE</div>
+      <div class="mod-desc">21 critères E/S/G · taxonomie UE · GRI Standards · recommandations certifications · label CGEM</div>
+    </a>
+
+  </div>
+</div>
+
+<hr>
+
+<!-- ══ SECTION 6 : VEILLE & MONITORING ══ -->
+<div class="section">
+  <div class="section-label">VEILLE & MONITORING</div>
+  <div class="grid grid-2">
+
+    <a href="../moniteur_monde.html" class="mod">
+      <span class="mod-plan plan-free">GRATUIT</span>
+      <span class="mod-icon">🌍</span>
+      <div class="mod-title">Moniteur Monde</div>
+      <div class="mod-desc">Veille géopolitique et économique mondiale · flux d'actualité · signaux faibles</div>
+    </a>
+
+    <a href="../Smart-Invest_abonnements.html" class="mod">
+      <span class="mod-plan plan-free">TOUS PLANS</span>
+      <span class="mod-icon">💳</span>
+      <div class="mod-title">Abonnements & Accès</div>
+      <div class="mod-desc">Gratuit · Pro 199 MAD · Enterprise 990 MAD · gestion compte et facturation</div>
+    </a>
+
+  </div>
+</div>
+
+<hr>
+
+<!-- ══ SECTION 7 : ADMINISTRATION ══ -->
+<div class="section">
+  <div class="section-label">ADMINISTRATION</div>
+  <div class="grid grid-3">
+
+    <a href="../Smart-Invest_backoffice.html" class="mod">
+      <span class="mod-plan plan-admin">ADMIN</span>
+      <span class="mod-icon">🔐</span>
+      <div class="mod-title">Back-Office Administrateur</div>
+      <div class="mod-desc">Clé API Anthropic · modules actifs/inactifs · tarification · utilisateurs · codes promo · annonces · contenu éditorial</div>
+    </a>
+
+    <a href="index.html" class="mod">
+      <span class="mod-plan plan-admin">ADMIN</span>
+      <span class="mod-icon">🔧</span>
+      <div class="mod-title">Portail Admin (cette page)</div>
+      <div class="mod-desc">Vue développeur · accès direct à tous les modules · gestion session Owner · espace de contrôle</div>
+    </a>
+
+    <a href="../Smart-Invest_landing.html" class="mod" style="border-color:rgba(184,134,42,.5);background:linear-gradient(135deg,rgba(184,134,42,.07) 0%,#fff 55%)">
+      <span class="mod-plan plan-free" style="background:rgba(184,134,42,.15);color:#7A5510;border-color:rgba(184,134,42,.5)">⭐ PAGE DE GARDE</span>
+      <span class="mod-icon">🏠</span>
+      <div class="mod-title">Landing Page — Accueil public</div>
+      <div class="mod-desc" style="color:#5A5A3A"><strong>Point d'entrée principal du site.</strong> Page publique de présentation · chiffres clés · comparatif zones · CTA abonnements</div>
+    </a>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Smart-Invest.ia — Propulsé par Claude Sonnet 4</span>
+  <div style="display:flex;gap:1.5rem">
+    <a href="../Smart-Invest_landing.html">Accueil</a>
+    <a href="../Smart-Invest_abonnements.html">Plans</a>
+    <a href="index.html">Admin</a>
+  </div>
+  <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">23 modules · v2.2.1</span>
+</footer>
+
+
+<script>
+/* ══ OWNER INIT & DISPLAY ══ */
+(function(){
+  var s = JSON.parse(localStorage.getItem('im_session') || 'null');
+  var bar = document.getElementById('owner-bar');
+  if(!bar) return;
+  if(s && s.role === 'OWNER'){
+    bar.style.display = 'flex';
+    var n = document.getElementById('ob-name');
+    var i = document.getElementById('ob-info');
+    if(n) n.textContent = (s.prenom || '') + ' ' + (s.nom || 'Owner');
+    if(i) i.textContent = 'Session depuis : ' + new Date(s.created_at || Date.now()).toLocaleDateString('fr-FR') + ' · Plan : ' + (s.plan || 'OWNER');
+  }
+})();
+function clearOwner(){
+  if(confirm('Déconnecter le compte Owner ? Vous devrez relancer le script pour le réactiver.')){
+    localStorage.removeItem('im_session');
+    localStorage.removeItem('im_user');
+    window.location.href = '../Smart-Invest_login.html';
+  }
+}
+</script>
+
+<!-- ═══ Scripts Smart-Invest.ia ═══ -->
+<script src="auth.js"></script>
+<script src="portail-auth-patch.js"></script>
+<script src="dashboard-banner.js"></script>
+<script src="upgrade-modal.js"></script>
+<script src="notifications.js"></script>
+<script src="analytics.js"></script>
+</body>
+</html>

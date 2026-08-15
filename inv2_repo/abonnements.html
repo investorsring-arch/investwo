@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abonnements & Pricing — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--er:#B91C1C;--wn:#C05820;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* -- HEADER -- */
+.hd{position:sticky;top:0;z-index:100;height:56px;background:rgba(14,14,12,.98);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(184,134,42,.2)}
+.hl{display:flex;align-items:center;gap:12px}
+.back{font-size:11px;color:rgba(255,255,255,.35);text-decoration:none;padding:5px 10px;border:1px solid rgba(255,255,255,.1);border-radius:6px;transition:all .2s;font-family:var(--fm)}.back:hover{color:var(--gl);border-color:rgba(184,134,42,.4)}
+.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:#fff}.logo span{color:var(--gl)}
+.user-badge-wrap{display:flex;align-items:center;gap:8px}
+
+/* -- HERO -- */
+.hero{background:var(--ink);padding:48px 28px 40px;text-align:center}
+.hero-tag{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.hero-tag::before,.hero-tag::after{content:'';width:30px;height:1px;background:rgba(255,255,255,.1)}
+.hero-title{font-family:var(--ft);font-size:36px;font-weight:800;color:#fff;margin-bottom:12px;line-height:1.1}
+.hero-title span{color:var(--gl)}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.45);max-width:560px;margin:0 auto 28px;line-height:1.65}
+
+/* -- BILLING TOGGLE -- */
+.billing-toggle{display:inline-flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:4px;gap:4px;margin-bottom:8px}
+.bt-opt{padding:8px 22px;border-radius:100px;border:none;background:none;color:rgba(255,255,255,.45);font-family:var(--fb);font-size:13px;cursor:pointer;transition:all .25s}
+.bt-opt.active{background:var(--gold);color:var(--ink);font-weight:700}
+.save-badge{display:inline-block;background:rgba(26,107,60,.15);color:#4ADE80;border:1px solid rgba(74,222,128,.2);font-family:var(--fm);font-size:10px;padding:3px 10px;border-radius:100px;margin-left:6px}
+
+/* -- CURRENT PLAN BANNER -- */
+.cpb{max-width:960px;margin:0 auto 28px;padding:14px 20px;border-radius:12px;display:flex;align-items:center;gap:14px;font-size:13.5px}
+.cpb-icon{font-size:20px}
+.cpb-text{flex:1}
+.cpb-text strong{display:block;font-weight:700;margin-bottom:2px}
+.cpb-text span{font-size:12px;color:var(--sm)}
+.cpb-action{font-family:var(--fm);font-size:11px;padding:6px 14px;border-radius:8px;cursor:pointer;border:none;transition:all .2s}
+
+/* -- TABS NAV -- */
+.tabs-nav{display:flex;justify-content:center;gap:4px;padding:28px 28px 0;max-width:960px;margin:0 auto;border-bottom:1px solid var(--bd)}
+.tn-btn{padding:10px 22px;border:none;background:none;font-family:var(--fb);font-size:13px;color:var(--sm);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.tn-btn:hover{color:var(--gold)}
+.tn-btn.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:600}
+
+/* -- PANELS -- */
+.panel{display:none;max-width:960px;margin:0 auto;padding:32px 28px 80px}.panel.show{display:block}
+
+/* -- PRICING GRID -- */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px}
+.plan-card{background:var(--wh);border:2px solid var(--bd);border-radius:18px;padding:26px;transition:all .25s;position:relative;overflow:hidden}
+.plan-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.plan-card.popular{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,134,42,.1)}
+.plan-card.current-plan{border-color:var(--ok)}
+.pop-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-family:var(--fm);font-size:9px;padding:4px 16px;border-radius:0 0 8px 8px;font-weight:700;letter-spacing:.06em}
+.curr-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--ok);color:#fff;font-family:var(--fm);font-size:9px;padding:4px 16px;border-radius:0 0 8px 8px;font-weight:700;letter-spacing:.06em}
+.plan-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.plan-icon{font-size:28px}
+.plan-tag{font-family:var(--fm);font-size:9px;padding:3px 9px;border-radius:100px}
+.plan-name{font-family:var(--ft);font-size:18px;font-weight:800;margin-bottom:4px}
+.plan-tagline{font-size:12px;color:var(--sm);margin-bottom:18px;line-height:1.5}
+.plan-price-wrap{margin-bottom:6px}
+.plan-price{font-family:var(--ft);font-size:38px;font-weight:800;color:var(--gold);line-height:1}
+.plan-price small{font-size:15px;font-weight:400;color:var(--sm)}
+.plan-period{font-size:11px;color:var(--sm);font-family:var(--fm);margin-bottom:4px}
+.annual-note{font-family:var(--fm);font-size:10px;color:var(--ok);margin-bottom:18px}
+.plan-divider{height:1px;background:var(--bd);margin:16px 0}
+.plan-features{list-style:none}
+.plan-features li{font-size:13px;color:var(--is);padding:6px 0;display:flex;align-items:flex-start;gap:9px;line-height:1.5;border-bottom:1px solid rgba(0,0,0,.04)}
+.plan-features li:last-child{border:none}
+.fi-check{color:var(--ok);flex-shrink:0;font-size:13px;margin-top:1px}
+.fi-cross{color:var(--sm);flex-shrink:0;font-size:13px;margin-top:1px;opacity:.5}
+.fi-limit{color:var(--wn);flex-shrink:0;font-size:11px;margin-top:2px}
+.plan-cta{width:100%;padding:13px;border-radius:11px;border:none;cursor:pointer;font-family:var(--fb);font-size:13.5px;font-weight:700;margin-top:20px;transition:all .2s}
+.cta-gold{background:var(--gold);color:var(--ink)}.cta-gold:hover{background:var(--gl);transform:translateY(-1px)}
+.cta-blue{background:rgba(30,77,107,.1);color:var(--ac);border:1.5px solid rgba(30,77,107,.2)}.cta-blue:hover{background:rgba(30,77,107,.15)}
+.cta-green{background:rgba(26,107,60,.1);color:var(--ok);border:1.5px solid rgba(26,107,60,.2);cursor:default}
+.cta-outline{background:transparent;border:1.5px solid var(--bd);color:var(--sm);cursor:default}
+
+/* -- COMPARISON TABLE -- */
+.cmp-table{width:100%;border-collapse:collapse;margin-top:24px}
+.cmp-table th{padding:12px 16px;text-align:center;font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--sm);background:var(--b2);border-bottom:1px solid var(--bd)}
+.cmp-table th:first-child{text-align:left;width:40%}
+.cmp-table td{padding:11px 16px;border-bottom:1px solid var(--bd);font-size:13px;text-align:center}
+.cmp-table td:first-child{text-align:left;color:var(--is);font-weight:500}
+.cmp-table tr:hover td{background:rgba(184,134,42,.03)}
+.cmp-cat{background:rgba(184,134,42,.05);font-family:var(--fm);font-size:10px;letter-spacing:.06em;color:var(--gold);text-transform:uppercase;padding:8px 16px !important;font-weight:700;text-align:left !important;border-top:2px solid rgba(184,134,42,.15)}
+.cmp-yes{color:var(--ok);font-size:16px}
+.cmp-no{color:rgba(0,0,0,.15);font-size:16px}
+.cmp-limit{font-family:var(--fm);font-size:10px;color:var(--wn);background:rgba(192,88,32,.06);padding:2px 7px;border-radius:6px}
+.cmp-badge{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px}
+.cmp-hl{font-weight:700;color:var(--gold)}
+
+/* -- MODULE ACCESS PANEL -- */
+.mod-section{margin-bottom:28px}
+.mod-section-title{font-family:var(--ft);font-size:15px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.mod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.mod-item{padding:11px 14px;border-radius:10px;border:1px solid var(--bd);display:flex;align-items:center;gap:10px;transition:all .2s;cursor:pointer}
+.mod-item.unlocked{background:rgba(26,107,60,.04);border-color:rgba(26,107,60,.18)}
+.mod-item.locked-pro{background:var(--b2)}
+.mod-item.locked-prem{background:var(--b2);opacity:.75}
+.mod-item:hover.locked-pro,.mod-item:hover.locked-prem{border-color:var(--gold);opacity:1}
+.mod-icon{font-size:16px;flex-shrink:0}
+.mod-name{font-size:12.5px;font-weight:600;flex:1;color:var(--im)}
+.mod-plan-tag{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px;white-space:nowrap}
+.mpt-g{background:rgba(26,107,60,.1);color:var(--ok)}
+.mpt-p{background:rgba(184,134,42,.1);color:var(--gold)}
+.mpt-e{background:rgba(30,77,107,.1);color:var(--ac)}
+.mod-lock{font-size:13px;color:var(--sm)}
+.mod-open{font-size:13px;color:var(--ok)}
+
+/* -- ACCOUNT PANEL -- */
+.form-section{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:22px;margin-bottom:16px}
+.fs-title{font-family:var(--ft);font-size:14px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:.07em;color:var(--is);margin-bottom:5px;text-transform:uppercase;font-family:var(--fm)}
+.fg input,.fg select{width:100%;padding:10px 13px;border:1.5px solid var(--bd);border-radius:9px;font-family:var(--fb);font-size:13.5px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus{border-color:var(--gold);background:var(--wh)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-save{padding:11px 22px;background:var(--gold);color:var(--ink);border:none;border-radius:9px;font-family:var(--fb);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-save:hover{background:var(--gl)}
+.btn-danger{padding:11px 22px;background:transparent;color:var(--er);border:1.5px solid rgba(185,28,28,.2);border-radius:9px;font-family:var(--fb);font-size:13px;cursor:pointer;transition:all .2s}
+.btn-danger:hover{background:rgba(185,28,28,.06);border-color:var(--er)}
+
+/* -- PASSWORD PANEL -- */
+.pw-strength{margin-top:8px}
+.pw-bars{display:flex;gap:4px;margin-bottom:5px}
+.pw-bar{flex:1;height:3px;border-radius:2px;background:var(--b2);transition:background .3s}
+.pw-label{font-family:var(--fm);font-size:10px;color:var(--sm)}
+.pw-reqs{font-size:11px;color:var(--sm);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+.pw-req{display:flex;align-items:center;gap:4px;transition:color .2s}
+.pw-req.met{color:var(--ok)}
+
+/* -- PAYMENT MOCK -- */
+.payment-form{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:24px;margin-top:16px;display:none}
+.payment-form.show{display:block}
+.payment-method-tabs{display:flex;gap:8px;margin-bottom:20px}
+.pmt-btn{flex:1;padding:10px;border:1.5px solid var(--bd);border-radius:9px;background:none;font-family:var(--fb);font-size:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--is)}
+.pmt-btn.active,.pmt-btn:hover{border-color:var(--gold);background:rgba(184,134,42,.05);color:var(--gold)}
+.card-number-wrap{position:relative}
+.card-icons{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:4px;font-size:16px}
+.secure-notice{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(26,107,60,.05);border:1px solid rgba(26,107,60,.15);border-radius:8px;font-family:var(--fm);font-size:10px;color:var(--ok);margin-top:12px}
+
+/* -- USAGE BAR -- */
+.usage-card{background:var(--wh);border:1px solid var(--bd);border-radius:12px;padding:18px;margin-bottom:16px}
+.usage-row{margin-bottom:14px}
+.usage-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;color:var(--is)}
+.usage-bar{height:6px;background:var(--b2);border-radius:3px;overflow:hidden}
+.usage-fill{height:100%;border-radius:3px;transition:width .6s}
+.uf-ok{background:var(--ok)}
+.uf-warn{background:var(--wn)}
+.uf-full{background:var(--er)}
+
+/* -- INVOICE -- */
+.invoice-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.invoice-row:last-child{border:none}
+.inv-status{font-family:var(--fm);font-size:9px;padding:3px 8px;border-radius:100px}
+.inv-paid{background:rgba(26,107,60,.1);color:var(--ok)}
+.inv-pending{background:rgba(192,88,32,.1);color:var(--wn)}
+
+/* -- MODAL -- */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;display:none;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:var(--wh);border-radius:16px;padding:28px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-title{font-family:var(--ft);font-size:18px;font-weight:800;margin-bottom:8px}
+.modal-sub{font-size:13px;color:var(--sm);margin-bottom:24px;line-height:1.6}
+.modal-actions{display:flex;gap:10px}
+.modal-actions button{flex:1;padding:12px;border-radius:10px;border:none;cursor:pointer;font-family:var(--fb);font-size:13px;font-weight:600;transition:all .2s}
+
+/* -- ALERTS -- */
+.alert{display:none;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;line-height:1.5}
+.alert.show{display:flex}
+.alert-ok{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.15);border-left:3px solid var(--ok);color:var(--ok)}
+.alert-err{background:rgba(185,28,28,.06);border:1px solid rgba(185,28,28,.15);border-left:3px solid var(--er);color:var(--er)}
+
+@media(max-width:700px){
+  .pricing-grid{grid-template-columns:1fr}
+  .mod-grid{grid-template-columns:1fr}
+  .fg-row{grid-template-columns:1fr}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- -- HEADER -- -->
+<header class="hd">
+  <div class="hl">
+    <a href="landing.html" class="back">? Accueil</a>
+    <a href="#" class="logo">Smart-<span>Invest</span>.ia</a>
+  </div>
+  <div class="user-badge-wrap" id="userBadge">
+    <!-- Injecté par JS -->
+  </div>
+</header>
+
+<!-- -- HERO -- -->
+<div class="hero">
+  <div class="hero-tag">Abonnements & Accès</div>
+  <h1 class="hero-title">Choisissez votre <span>plan d'accès</span></h1>
+  <p class="hero-sub">Débloquez les modules selon vos besoins. Commencez gratuitement, montez en puissance quand vous êtes prêt.</p>
+  
+  <!-- Billing Toggle -->
+  <div class="billing-toggle">
+    <button class="bt-opt active" onclick="setBilling('monthly')">Mensuel</button>
+    <button class="bt-opt" onclick="setBilling('annual')">Annuel <span class="save-badge">-20%</span></button>
+  </div>
+</div>
+
+<!-- -- CURRENT PLAN BANNER -- -->
+<div style="background:var(--bg);padding:16px 28px">
+  <div class="cpb" id="cpbanner">
+    <!-- Injecté dynamiquement -->
+  </div>
+</div>
+
+<!-- -- TABS NAV -- -->
+<div style="background:var(--bg)">
+  <div class="tabs-nav">
+    <button class="tn-btn active" onclick="showTab('pricing')">?? Pricing</button>
+    <button class="tn-btn" onclick="showTab('modules')">?? Modules inclus</button>
+    <button class="tn-btn" onclick="showTab('compare')">?? Comparatif</button>
+    <button class="tn-btn" onclick="showTab('account')">?? Mon compte</button>
+    <button class="tn-btn" onclick="showTab('billing')">?? Facturation</button>
+  </div>
+</div>
+
+<!-- ------------------------------------------------------
+     PANEL 1 — PRICING
+------------------------------------------------------ -->
+<div class="panel show" id="panel-pricing">
+  
+  <div class="alert alert-ok" id="alertOk"><span>?</span><span id="alertOkMsg"></span></div>
+  <div class="alert alert-err" id="alertErr"><span>?</span><span id="alertErrMsg"></span></div>
+
+  <div class="pricing-grid" id="pricingGrid">
+    <!-- Généré par JS -->
+  </div>
+
+  <!-- PAYMENT FORM -->
+  <div class="payment-form" id="paymentForm">
+    <div style="font-family:var(--ft);font-size:16px;font-weight:800;margin-bottom:4px" id="payFormTitle">Passer au plan Pro</div>
+    <div style="font-size:13px;color:var(--sm);margin-bottom:20px" id="payFormSub">Activez votre abonnement en quelques secondes</div>
+
+    <div class="payment-method-tabs">
+      <button class="pmt-btn active" onclick="setPmTab(this,'card')">?? Carte bancaire</button>
+      <button class="pmt-btn" onclick="setPmTab(this,'virement')">?? Virement CIH/CMP</button>
+      <button class="pmt-btn" onclick="setPmTab(this,'cheque')">?? Chèque</button>
+    </div>
+
+    <div id="pmCard">
+      <div class="fg">
+        <label>Numéro de carte</label>
+        <div class="card-number-wrap">
+          <input type="text" id="cardNum" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
+          <div class="card-icons">??</div>
+        </div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Expiration</label><input type="text" placeholder="MM / AA" maxlength="7" oninput="formatExpiry(this)"></div>
+        <div class="fg"><label>CVV</label><input type="password" placeholder="•••" maxlength="3"></div>
+      </div>
+      <div class="fg"><label>Nom sur la carte</label><input type="text" placeholder="PRÉNOM NOM"></div>
+    </div>
+
+    <div id="pmVirement" style="display:none;padding:16px;background:var(--b2);border-radius:10px;font-size:13px;line-height:1.8;color:var(--is)">
+      <strong>Informations de virement :</strong><br>
+      RIB : 011 780 0000001234567890 12<br>
+      Banque : CIH Bank — Agence Casablanca Centre<br>
+      Bénéficiaire : Smart-Invest DIGITAL SARL<br>
+      Référence : <span style="font-family:var(--fm);color:var(--gold)" id="virRef">IM-2025-XXXX</span>
+    </div>
+
+    <div id="pmCheque" style="display:none;padding:16px;background:var(--b2);border-radius:10px;font-size:13px;line-height:1.8;color:var(--is)">
+      Chèque à l'ordre de <strong>Smart-Invest DIGITAL SARL</strong><br>
+      À envoyer à : 123 Boulevard Mohamed V, Casablanca 20000<br>
+      Mentionnez votre email au dos du chèque.
+    </div>
+
+    <div class="secure-notice">?? Paiement sécurisé · Chiffrement TLS 1.3 · Données non stockées</div>
+
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button onclick="processPay()" style="flex:1;padding:13px;background:var(--gold);color:var(--ink);border:none;border-radius:10px;font-family:var(--fb);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s" id="payBtn">
+        Confirmer l'abonnement
+      </button>
+      <button onclick="document.getElementById('paymentForm').classList.remove('show')" style="padding:13px 18px;background:transparent;border:1.5px solid var(--bd);border-radius:10px;font-family:var(--fb);font-size:13px;color:var(--sm);cursor:pointer">
+        Annuler
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ------------------------------------------------------
+     PANEL 2 — MODULES
+------------------------------------------------------ -->
+<div class="panel" id="panel-modules">
+  <div id="modulesContent"><!-- Généré JS --></div>
+</div>
+
+<!-- ------------------------------------------------------
+     PANEL 3 — COMPARATIF
+------------------------------------------------------ -->
+<div class="panel" id="panel-compare">
+  <table class="cmp-table" id="compareTable"><!-- Généré JS --></table>
+</div>
+
+<!-- ------------------------------------------------------
+     PANEL 4 — MON COMPTE
+------------------------------------------------------ -->
+<div class="panel" id="panel-account">
+  <div id="accountContent"><!-- Généré JS --></div>
+</div>
+
+<!-- ------------------------------------------------------
+     PANEL 5 — FACTURATION
+------------------------------------------------------ -->
+<div class="panel" id="panel-billing">
+  <div id="billingContent"><!-- Généré JS --></div>
+</div>
+
+<!-- -- MODAL CONFIRM -- -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="modal-actions">
+      <button onclick="closeModal()" style="background:var(--b2);color:var(--is)">Annuler</button>
+      <button id="modalConfirmBtn" style="background:var(--gold);color:var(--ink)">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<script src='lib/auth.js'></script>
+<script>
+// -- STATE -----------------------------------------------------------------
+let billingCycle = 'monthly';
+let selectedPlan = null;
+let currentUser = null;
+
+const PLANS_DATA = {
+  gratuit: {
+    name: 'Gratuit', icon: '??', tagline: 'Démarrez votre projet',
+    price: { monthly: 0, annual: 0 }, color: '#1A6B3C', bg: 'rgba(26,107,60,.1)',
+    tag: 'Essai', tagStyle: 'background:rgba(26,107,60,.1);color:#1A6B3C;',
+    features: [
+      { text: '6 modules de base', ok: true },
+      { text: 'Simulateur fiscal IS/IR', ok: true },
+      { text: 'Forme juridique', ok: true },
+      { text: 'Zones économiques', ok: true },
+      { text: 'Assistant IA — 10 msg/jour', ok: 'limit' },
+      { text: 'Rapports IA — 3/mois', ok: 'limit' },
+      { text: 'Modules Pilotage', ok: false },
+      { text: 'GIS Foncier', ok: false },
+      { text: 'Dashboard projet', ok: false },
+    ],
+    cta: 'Plan actuel', ctaClass: 'cta-green', upgrade: false
+  },
+  pro: {
+    name: 'Pro', icon: '?', tagline: 'Professionnels & PME',
+    price: { monthly: 490, annual: 392 }, color: '#B8862A', bg: 'rgba(184,134,42,.12)',
+    tag: 'Recommandé', tagStyle: 'background:rgba(184,134,42,.12);color:#B8862A;',
+    features: [
+      { text: 'Tout le plan Gratuit', ok: true },
+      { text: 'Cockpit Management (EVM/Gantt)', ok: true },
+      { text: 'Lean Six Sigma complet', ok: true },
+      { text: 'GIS Foncier interactif', ok: true },
+      { text: 'Charte Investissement & Primes', ok: true },
+      { text: 'Assistant IA — 100 msg/mois', ok: 'limit' },
+      { text: 'Rapports IA — 20/mois', ok: 'limit' },
+      { text: 'Dashboard projet avancé', ok: false },
+      { text: 'Agent IA autonome', ok: false },
+    ],
+    cta: 'Passer au Pro', ctaClass: 'cta-gold', upgrade: true, popular: true
+  },
+  premium: {
+    name: 'Premium', icon: '??', tagline: 'Entreprises & investisseurs',
+    price: { monthly: 990, annual: 792 }, color: '#1E4D6B', bg: 'rgba(30,77,107,.12)',
+    tag: 'Complet', tagStyle: 'background:rgba(30,77,107,.1);color:#1E4D6B;',
+    features: [
+      { text: 'Tout le plan Pro', ok: true },
+      { text: 'Dashboard Mon Projet', ok: true },
+      { text: 'Agent IA InvestPilot autonome', ok: true },
+      { text: 'Rapports B2B + Annuaire experts', ok: true },
+      { text: 'Données live & indicateurs', ok: true },
+      { text: 'Communauté investisseurs', ok: true },
+      { text: 'Assistant IA — illimité', ok: true },
+      { text: 'Rapports IA — illimité', ok: true },
+      { text: 'Support prioritaire', ok: true },
+    ],
+    cta: 'Passer au Premium', ctaClass: 'cta-blue', upgrade: true
+  }
+};
+
+// -- MODULES -------------------------------------------------------------
+const MODULE_SECTIONS = [
+  {
+    title: '?? Plan Gratuit (6 modules)', plan: 'gratuit',
+    modules: [
+      { icon: '??', name: 'Simulateur Fiscal IS/IR', file: 'smart_invest_simulateur_fiscal.html' },
+      { icon: '??', name: 'Forme Juridique', file: 'smart_invest_forme_juridique.html' },
+      { icon: '???', name: 'Zones Économiques Spéciales', file: 'smart_invest_zones_economiques.html' },
+      { icon: '??', name: 'Matching Aides & Subventions', file: 'smart_invest_matching_aides.html' },
+      { icon: '??', name: 'Tracker CRI', file: 'smart_invest_tracker_cri.html' },
+      { icon: '??', name: 'Coûts d\'Installation', file: 'smart_invest_couts_installation.html' },
+      { icon: '??', name: 'Assistant IA (10 msg/j)', file: 'smart_invest_assistant.html', limited: true },
+      { icon: '??', name: 'Global MondoScope', file: 'moniteur_monde.html' },
+      { icon: '??', name: 'Guide Protection IP', file: 'guide_annexes_protection_ip.html' },
+    ]
+  },
+  {
+    title: '? Plan Pro (10 modules supplémentaires)', plan: 'pro',
+    modules: [
+      { icon: '???', name: 'Cockpit Management', file: 'smart_invest_cockpit_management.html' },
+      { icon: '??', name: 'Charte Investissement & Primes', file: 'smart_invest_charte_investissement.html' },
+      { icon: '??', name: 'Lean Six Sigma', file: 'smart_invest_lean_sixsigma.html' },
+      { icon: '??', name: 'Sélecteur de Contrats', file: 'smart_invest_contrats.html' },
+      { icon: '???', name: 'GIS Foncier Interactif', file: 'smart_invest_gis_foncier.html' },
+      { icon: '??', name: 'Analyse Stop/Go', file: 'smart_invest_stopgo.html' },
+      { icon: '???', name: 'TNB 2025', file: 'smart_invest_tnb_2025.html' },
+      { icon: '??', name: 'ESG / RSE', file: 'smart_invest_esg_rse.html' },
+      { icon: '???', name: 'Base de Données Projets', file: 'db.html' },
+      { icon: '??', name: 'Module Démo Avancé', file: 'invdemo_module23.html' },
+    ]
+  },
+  {
+    title: '?? Plan Premium (7 modules exclusifs)', plan: 'premium',
+    modules: [
+      { icon: '??', name: 'Dashboard Mon Projet', file: 'smart_invest_dashboard_projet.html' },
+      { icon: '??', name: 'Rapports IA + Annuaire B2B', file: 'smart_invest_rapports_b2b.html' },
+      { icon: '??', name: 'Agent IA InvestPilot Autonome', file: 'smart_invest_v2_agent_ia.html' },
+      { icon: '??', name: 'Données Live & Indicateurs', file: 'smart_invest_v2_donnees_live.html' },
+      { icon: '??', name: 'Parcours Sectoriels & Communauté', file: 'smart_invest_v2_parcours_communaute.html' },
+      { icon: '??', name: 'Owner Setup', file: 'owner_setup.html' },
+      { icon: '??', name: 'Back-Office Admin', file: 'smart_invest_owner_setup.html' },
+    ]
+  }
+];
+
+// -- INIT -----------------------------------------------------------------
+window.addEventListener('load', () => {
+  currentUser = AuthService.getUser();
+  renderUserBadge();
+  renderCurrentPlanBanner();
+  renderPricingGrid();
+  renderModules();
+  renderCompareTable();
+  renderAccount();
+  renderBilling();
+  
+  // Check URL params
+  const p = new URLSearchParams(location.search);
+  if (p.get('upgrade')) {
+    const plan = p.get('upgrade');
+    setTimeout(() => openUpgrade(plan), 300);
+  }
+});
+
+// -- USER BADGE ------------------------------------------------------------
+function renderUserBadge() {
+  const el = document.getElementById('userBadge');
+  if (!currentUser) {
+    el.innerHTML = `<a href="smart_invest_login.html" style="font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.4);text-decoration:none;padding:5px 12px;border:1px solid rgba(255,255,255,.1);border-radius:6px;">Se connecter</a>`;
+    return;
+  }
+  const plan = AuthService.getCurrentPlan();
+  const pd = PLANS_DATA[plan];
+  const initials = (currentUser.name || 'U').split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="showTab('account')">
+      <div style="width:28px;height:28px;border-radius:50%;background:${pd.bg};border:1.5px solid ${pd.color}40;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${pd.color}">${initials}</div>
+      <span style="font-family:var(--fm);font-size:9px;padding:3px 9px;border-radius:100px;background:${pd.bg};color:${pd.color};border:1px solid ${pd.color}30;">${pd.icon} ${pd.name}</span>
+    </div>`;
+}
+
+// -- CURRENT PLAN BANNER ---------------------------------------------------
+function renderCurrentPlanBanner() {
+  const el = document.getElementById('cpbanner');
+  const plan = AuthService.getCurrentPlan();
+  const pd = PLANS_DATA[plan];
+  
+  const bannerStyles = {
+    gratuit: 'background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.15)',
+    pro:     'background:rgba(184,134,42,.07);border:1px solid rgba(184,134,42,.2)',
+    premium: 'background:rgba(30,77,107,.07);border:1px solid rgba(30,77,107,.15)',
+  };
+  el.style.cssText = (bannerStyles[plan] || '') + ';border-radius:12px';
+
+  const nextPlan = plan === 'gratuit' ? 'Pro' : plan === 'pro' ? 'Premium' : null;
+  const trialHtml = (currentUser?.isTrial && currentUser?.trialEnd) 
+    ? `<span style="font-family:var(--fm);font-size:10px;color:var(--wn)">• Période d'essai : ${Math.max(0, Math.ceil((currentUser.trialEnd - Date.now()) / 86400000))} jours restants</span>` : '';
+
+  el.innerHTML = `
+    <div class="cpb-icon">${pd.icon}</div>
+    <div class="cpb-text">
+      <strong style="color:${pd.color}">Plan actuel : ${pd.name}</strong>
+      <span>${currentUser ? `Connecté en tant que ${currentUser.email}` : 'Non connecté'}  ${trialHtml}</span>
+    </div>
+    ${nextPlan ? `<button class="cpb-action" style="background:${pd.bg};color:${pd.color};border:1px solid ${pd.color}30" onclick="openUpgrade('${nextPlan.toLowerCase()}')">Passer au ${nextPlan} ?</button>` : '<span style="font-family:var(--fm);font-size:10px;color:var(--ok)">? Plan complet</span>'}
+  `;
+}
+
+// -- PRICING GRID ----------------------------------------------------------
+function renderPricingGrid() {
+  const currentPlan = AuthService.getCurrentPlan();
+  const grid = document.getElementById('pricingGrid');
+  const PLAN_LEVEL = { gratuit: 0, pro: 1, premium: 2 };
+
+  grid.innerHTML = Object.entries(PLANS_DATA).map(([id, pd]) => {
+    const price = pd.price[billingCycle];
+    const isCurrent = id === currentPlan;
+    const isLower = PLAN_LEVEL[id] < PLAN_LEVEL[currentPlan];
+    const annualNote = billingCycle === 'annual' && price > 0 
+      ? `<div class="annual-note">?? Soit ${price * 12} MAD/an (économisez ${Math.round(pd.price.monthly * 12 * 0.2)} MAD)</div>` : '';
+
+    let ctaClass = pd.ctaClass;
+    let ctaText = pd.cta;
+    if (isCurrent) { ctaClass = 'cta-green'; ctaText = '? Plan actuel'; }
+    else if (isLower) { ctaClass = 'cta-outline'; ctaText = 'Rétrograder'; }
+
+    const featHtml = pd.features.map(f => {
+      const icon = f.ok === true ? '<span class="fi-check">?</span>' : f.ok === 'limit' ? '<span class="fi-limit">?</span>' : '<span class="fi-cross">?</span>';
+      return `<li>${icon} ${f.text}</li>`;
+    }).join('');
+
+    return `
+      <div class="plan-card ${pd.popular ? 'popular' : ''} ${isCurrent ? 'current-plan' : ''}">
+        ${pd.popular && !isCurrent ? '<div class="pop-badge">? RECOMMANDÉ</div>' : ''}
+        ${isCurrent ? '<div class="curr-badge">? ACTUEL</div>' : ''}
+        <div class="plan-top">
+          <div class="plan-icon">${pd.icon}</div>
+          <span class="plan-tag" style="${pd.tagStyle};border-radius:100px;font-family:var(--fm);font-size:9px;padding:3px 9px">${pd.tag}</span>
+        </div>
+        <div class="plan-name">${pd.name}</div>
+        <div class="plan-tagline">${pd.tagline}</div>
+        <div class="plan-price-wrap">
+          <div class="plan-price">${price === 0 ? '0' : price}<small> MAD</small></div>
+        </div>
+        <div class="plan-period">${price === 0 ? 'Toujours gratuit' : (billingCycle === 'monthly' ? 'par mois HT' : 'par mois (facturé annuellement)')}</div>
+        ${annualNote}
+        <div class="plan-divider"></div>
+        <ul class="plan-features">${featHtml}</ul>
+        <button class="${'plan-cta ' + ctaClass}" onclick="handlePlanCta('${id}', ${isCurrent}, ${isLower})">${ctaText}</button>
+      </div>`;
+  }).join('');
+}
+
+function handlePlanCta(planId, isCurrent, isLower) {
+  if (isCurrent) return;
+  if (isLower) {
+    showModal('Rétrograder votre plan ?', 'Vous perdrez accès aux modules avancés à la fin de votre période de facturation actuelle.', () => {
+      AuthService.upgradePlan(planId);
+      showAlert('ok', 'Votre plan a été modifié.');
+      setTimeout(() => location.reload(), 1200);
+    });
+    return;
+  }
+  openUpgrade(planId);
+}
+
+function openUpgrade(planId) {
+  selectedPlan = planId;
+  const pd = PLANS_DATA[planId];
+  const price = pd.price[billingCycle];
+  document.getElementById('payFormTitle').textContent = `Passer au plan ${pd.name}`;
+  document.getElementById('payFormSub').textContent = `${price} MAD/${billingCycle === 'monthly' ? 'mois' : 'mois (annuel)'} · Accès immédiat après confirmation`;
+  document.getElementById('virRef').textContent = 'IM-' + new Date().getFullYear() + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
+  document.getElementById('paymentForm').classList.add('show');
+  document.getElementById('paymentForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function processPay() {
+  if (!selectedPlan) return;
+  const btn = document.getElementById('payBtn');
+  btn.textContent = 'Traitement…';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    const result = AuthService.upgradePlan(selectedPlan, { cycle: billingCycle });
+    if (result.ok) {
+      document.getElementById('paymentForm').classList.remove('show');
+      showAlert('ok', `?? Félicitations ! Vous êtes maintenant sur le plan ${PLANS_DATA[selectedPlan].name}. Tous vos modules sont débloqués.`);
+      setTimeout(() => location.reload(), 2000);
+    } else {
+      showAlert('err', result.error);
+    }
+    btn.textContent = 'Confirmer l\'abonnement';
+    btn.disabled = false;
+  }, 1500);
+}
+
+// -- BILLING TOGGLE --------------------------------------------------------
+function setBilling(cycle) {
+  billingCycle = cycle;
+  document.querySelectorAll('.bt-opt').forEach((b, i) => {
+    b.classList.toggle('active', (cycle === 'monthly' && i === 0) || (cycle === 'annual' && i === 1));
+  });
+  renderPricingGrid();
+}
+
+// -- MODULES PANEL ---------------------------------------------------------
+function renderModules() {
+  const userPlan = AuthService.getCurrentPlan();
+  const PLAN_LEVEL = { gratuit: 0, pro: 1, premium: 2 };
+  const userLevel = PLAN_LEVEL[userPlan] ?? 0;
+
+  const html = MODULE_SECTIONS.map(sec => {
+    const secLevel = PLAN_LEVEL[sec.plan] ?? 0;
+    const secUnlocked = userLevel >= secLevel;
+
+    const modsHtml = sec.modules.map(m => {
+      const modLevel = PLAN_LEVEL[sec.plan] ?? 0;
+      const unlocked = userLevel >= modLevel;
+      const tagStyle = {
+        gratuit: 'mpt-g', pro: 'mpt-p', premium: 'mpt-e'
+      }[sec.plan];
+      const tagLabel = { gratuit: '?? Gratuit', pro: '? Pro', premium: '?? Premium' }[sec.plan];
+      const limitedHtml = m.limited ? `<span style="font-family:var(--fm);font-size:9px;color:var(--wn)">limité</span>` : '';
+
+      return `
+        <div class="mod-item ${unlocked ? 'unlocked' : 'locked-' + (sec.plan === 'pro' ? 'pro' : 'prem')}"
+             onclick="${unlocked ? `window.location.href='${m.file}'` : `openUpgrade('${sec.plan}')`}">
+          <div class="mod-icon">${m.icon}</div>
+          <div class="mod-name">${m.name} ${limitedHtml}</div>
+          <span class="mod-plan-tag ${tagStyle}">${tagLabel}</span>
+          <div class="${unlocked ? 'mod-open' : 'mod-lock'}">${unlocked ? '?' : '??'}</div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="mod-section">
+        <div class="mod-section-title">${sec.title} ${secUnlocked ? '<span style="font-family:var(--fm);font-size:10px;color:var(--ok);font-weight:400">? Débloqué</span>' : ''}</div>
+        <div class="mod-grid">${modsHtml}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('modulesContent').innerHTML = html;
+}
+
+// -- COMPARE TABLE ---------------------------------------------------------
+function renderCompareTable() {
+  const rows = [
+    { cat: 'Modules & Accès', items: [
+      ['Modules Gratuits', '9', '9', '9'],
+      ['Modules Pro', '?', '10', '10'],
+      ['Modules Premium', '?', '?', '7'],
+      ['Total modules', '9', '19', '26'],
+    ]},
+    { cat: 'Intelligence Artificielle', items: [
+      ['Messages IA / mois', '<span class="cmp-limit">10/jour</span>', '<span class="cmp-limit">100/mois</span>', '<span class="cmp-hl">Illimité</span>'],
+      ['Rapports IA / mois', '<span class="cmp-limit">3</span>', '<span class="cmp-limit">20</span>', '<span class="cmp-hl">Illimité</span>'],
+      ['Agent IA autonome', '?', '?', '?'],
+    ]},
+    { cat: 'Pilotage & Gestion', items: [
+      ['Cockpit EVM/Gantt/PERT', '?', '?', '?'],
+      ['GIS Foncier interactif', '?', '?', '?'],
+      ['Dashboard projet perso', '?', '?', '?'],
+      ['Lean Six Sigma', '?', '?', '?'],
+    ]},
+    { cat: 'Données & Communauté', items: [
+      ['Données live économiques', '?', '?', '?'],
+      ['Parcours sectoriels', '?', '?', '?'],
+      ['Annuaire B2B experts', '?', '?', '?'],
+      ['Communauté investisseurs', '?', '?', '?'],
+    ]},
+    { cat: 'Support & Administration', items: [
+      ['Support email', '?', '?', '?'],
+      ['Support prioritaire', '?', '?', '?'],
+      ['Back-office admin', '?', '?', '?'],
+      ['Projets simultanés', '1', '5', 'Illimité'],
+    ]},
+    { cat: 'Tarifs', items: [
+      ['Mensuel', 'Gratuit', '490 MAD', '990 MAD'],
+      ['Annuel (-20%)', 'Gratuit', '392 MAD/m', '792 MAD/m'],
+    ]},
+  ];
+
+  let html = `
+    <thead><tr>
+      <th>Fonctionnalité</th>
+      <th style="color:#1A6B3C">?? Gratuit</th>
+      <th style="color:#B8862A">? Pro</th>
+      <th style="color:#1E4D6B">?? Premium</th>
+    </tr></thead><tbody>`;
+
+  rows.forEach(({ cat, items }) => {
+    html += `<tr><td colspan="4" class="cmp-cat">${cat}</td></tr>`;
+    items.forEach(([label, g, p, e]) => {
+      const fmt = v => v === '?' ? '<span class="cmp-yes">?</span>' : v === '?' ? '<span class="cmp-no">?</span>' : v;
+      html += `<tr><td>${label}</td><td>${fmt(g)}</td><td>${fmt(p)}</td><td>${fmt(e)}</td></tr>`;
+    });
+  });
+
+  html += '</tbody>';
+  document.getElementById('compareTable').innerHTML = html;
+}
+
+// -- ACCOUNT PANEL ---------------------------------------------------------
+function renderAccount() {
+  if (!currentUser) {
+    document.getElementById('accountContent').innerHTML = `
+      <div style="text-align:center;padding:40px;color:var(--sm)">
+        <div style="font-size:40px;margin-bottom:12px">??</div>
+        <div style="font-family:var(--ft);font-size:18px;font-weight:700;margin-bottom:8px">Connexion requise</div>
+        <a href="smart_invest_login.html" style="display:inline-block;padding:12px 24px;background:var(--gold);color:var(--ink);border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px">Se connecter</a>
+      </div>`;
+    return;
+  }
+
+  const usage = currentUser.usage || { aiMessages: 0, reports: 0 };
+  const plan = AuthService.getCurrentPlan();
+  const pd = PLANS_DATA[plan];
+  const msgLimit = pd.price.monthly === 0 ? 10 : plan === 'pro' ? 100 : -1;
+  const repLimit = plan === 'gratuit' ? 3 : plan === 'pro' ? 20 : -1;
+  const msgPct = msgLimit === -1 ? 0 : Math.min(100, (usage.aiMessages / msgLimit) * 100);
+  const repPct = repLimit === -1 ? 0 : Math.min(100, (usage.reports / repLimit) * 100);
+
+  document.getElementById('accountContent').innerHTML = `
+    <!-- Profil -->
+    <div class="form-section">
+      <div class="fs-title">?? Informations du compte</div>
+      <div class="fg-row">
+        <div class="fg"><label>Prénom & Nom</label><input type="text" id="acc_name" value="${currentUser.name || ''}"></div>
+        <div class="fg"><label>Email</label><input type="email" id="acc_email" value="${currentUser.email || ''}" readonly style="opacity:.6;cursor:not-allowed"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Entreprise</label><input type="text" id="acc_company" value="${currentUser.company || ''}"></div>
+        <div class="fg"><label>Secteur</label>
+          <select id="acc_sector">
+            ${['Automobile','Aéronautique','Textile','Agroalimentaire','TIC','Tourisme','Immobilier','Industrie','Services','Autre'].map(s => 
+              `<option ${currentUser.sector === s ? 'selected' : ''}>${s}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <button class="btn-save" onclick="saveProfile()">Sauvegarder le profil</button>
+    </div>
+
+    <!-- Usage -->
+    <div class="usage-card">
+      <div style="font-family:var(--ft);font-size:14px;font-weight:700;margin-bottom:14px">?? Utilisation ce mois</div>
+      <div class="usage-row">
+        <div class="usage-label">
+          <span>Messages IA</span>
+          <span style="font-family:var(--fm);font-size:11px">${usage.aiMessages} / ${msgLimit === -1 ? '8' : msgLimit}</span>
+        </div>
+        <div class="usage-bar"><div class="usage-fill ${msgPct > 80 ? 'uf-full' : msgPct > 50 ? 'uf-warn' : 'uf-ok'}" style="width:${msgPct}%"></div></div>
+      </div>
+      <div class="usage-row">
+        <div class="usage-label">
+          <span>Rapports générés</span>
+          <span style="font-family:var(--fm);font-size:11px">${usage.reports} / ${repLimit === -1 ? '8' : repLimit}</span>
+        </div>
+        <div class="usage-bar"><div class="usage-fill ${repPct > 80 ? 'uf-full' : repPct > 50 ? 'uf-warn' : 'uf-ok'}" style="width:${repPct}%"></div></div>
+      </div>
+      ${plan !== 'premium' ? `<div style="margin-top:12px;font-size:12px;color:var(--sm)">Passez au plan supérieur pour des limites plus élevées ? <a href="#" onclick="showTab('pricing');return false" style="color:var(--gold)">Voir les plans</a></div>` : ''}
+    </div>
+
+    <!-- Password -->
+    <div class="form-section">
+      <div class="fs-title">?? Modifier le mot de passe</div>
+      <div class="fg"><label>Mot de passe actuel</label>
+        <div style="position:relative"><input type="password" id="pw_current" placeholder="••••••••">
+        <button class="pw-toggle" type="button" onclick="togglePw('pw_current',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:14px;color:var(--sm)">??</button></div></div>
+      <div class="fg"><label>Nouveau mot de passe</label>
+        <div style="position:relative"><input type="password" id="pw_new" placeholder="••••••••" oninput="updatePwStrength(this.value)">
+        <button class="pw-toggle" type="button" onclick="togglePw('pw_new',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:14px;color:var(--sm)">??</button></div>
+        <div class="pw-strength" id="pwStrength" style="margin-top:8px;display:none">
+          <div class="pw-bars"><div class="pw-bar" id="pb1"></div><div class="pw-bar" id="pb2"></div><div class="pw-bar" id="pb3"></div><div class="pw-bar" id="pb4"></div></div>
+          <div class="pw-label" id="pwLabel"></div>
+          <div class="pw-reqs" style="font-size:11px;color:var(--sm);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap">
+            <span id="req-len" style="display:flex;align-items:center;gap:3px">? 8 caractères min</span>
+            <span id="req-maj" style="display:flex;align-items:center;gap:3px">? Majuscule</span>
+            <span id="req-num" style="display:flex;align-items:center;gap:3px">? Chiffre</span>
+          </div>
+        </div>
+      </div>
+      <div class="fg"><label>Confirmer le nouveau mot de passe</label><input type="password" id="pw_confirm" placeholder="••••••••"></div>
+      <button class="btn-save" onclick="changePassword()">Changer le mot de passe</button>
+    </div>
+
+    <!-- Danger zone -->
+    <div class="form-section" style="border-color:rgba(185,28,28,.2)">
+      <div class="fs-title" style="color:var(--er)">?? Zone dangereuse</div>
+      <div style="font-size:13px;color:var(--sm);margin-bottom:14px;line-height:1.6">La résiliation de votre abonnement prend effet à la fin de la période actuelle. Vos données sont conservées pendant 30 jours.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        ${plan !== 'gratuit' ? `<button class="btn-danger" onclick="cancelSub()">Résilier l'abonnement</button>` : ''}
+        <button class="btn-danger" onclick="doLogout()">Se déconnecter</button>
+      </div>
+    </div>`;
+}
+
+function saveProfile() {
+  const user = AuthService.getUser();
+  if (!user) return;
+  user.name = document.getElementById('acc_name').value;
+  user.company = document.getElementById('acc_company').value;
+  user.sector = document.getElementById('acc_sector').value;
+  localStorage.setItem('im_auth_v2', JSON.stringify(user));
+  showAlert('ok', 'Profil mis à jour avec succès.');
+}
+
+function changePassword() {
+  const cur = document.getElementById('pw_current').value;
+  const nw  = document.getElementById('pw_new').value;
+  const cnf = document.getElementById('pw_confirm').value;
+  if (!cur || !nw || !cnf) { showAlert('err', 'Tous les champs sont requis.'); return; }
+  if (nw !== cnf) { showAlert('err', 'Les mots de passe ne correspondent pas.'); return; }
+  if (nw.length < 8 || !/[A-Z]/.test(nw) || !/[0-9]/.test(nw)) {
+    showAlert('err', 'Le mot de passe doit contenir 8 caractères, une majuscule et un chiffre.'); return;
+  }
+  showAlert('ok', 'Mot de passe modifié avec succès. Reconnectez-vous au prochain accès.');
+}
+
+function updatePwStrength(pw) {
+  const wrap = document.getElementById('pwStrength');
+  wrap.style.display = pw ? 'block' : 'none';
+  if (!pw) return;
+  const checks = [pw.length >= 8, /[A-Z]/.test(pw), /[0-9]/.test(pw), /[^A-Za-z0-9]/.test(pw)];
+  const score = checks.filter(Boolean).length;
+  const labels = ['','Faible','Moyen','Fort','Très fort'];
+  const colors = ['','uf-full','uf-warn','uf-ok','uf-ok'];
+  for (let i = 1; i <= 4; i++) {
+    const bar = document.getElementById('pb' + i);
+    bar.className = 'pw-bar ' + (i <= score ? colors[score] : '');
+  }
+  document.getElementById('pwLabel').textContent = labels[score] || '';
+  document.getElementById('req-len').style.color = checks[0] ? 'var(--ok)' : '';
+  document.getElementById('req-maj').style.color = checks[1] ? 'var(--ok)' : '';
+  document.getElementById('req-num').style.color = checks[2] ? 'var(--ok)' : '';
+}
+
+function cancelSub() {
+  showModal('Résilier votre abonnement ?', 'Votre accès aux modules Pro/Premium sera maintenu jusqu\'à la fin de la période facturée actuelle. Vous passerez ensuite au plan Gratuit.', () => {
+    AuthService.cancelSubscription();
+    showAlert('ok', 'Résiliation enregistrée. Votre accès est maintenu jusqu\'à la fin de la période.');
+  });
+}
+
+function doLogout() {
+  AuthService.logout();
+}
+
+// -- BILLING PANEL ---------------------------------------------------------
+function renderBilling() {
+  if (!currentUser) { document.getElementById('billingContent').innerHTML = '<div style="text-align:center;padding:40px;color:var(--sm)">Connectez-vous pour voir votre facturation.</div>'; return; }
+  const plan = AuthService.getCurrentPlan();
+  const pd = PLANS_DATA[plan];
+  const invoices = [
+    { date: '01/05/2025', amount: pd.price.monthly || 0, status: 'paid' },
+    { date: '01/04/2025', amount: pd.price.monthly || 0, status: 'paid' },
+  ].filter(i => i.amount > 0);
+
+  document.getElementById('billingContent').innerHTML = `
+    <div class="form-section">
+      <div class="fs-title">?? Récapitulatif d'abonnement</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px">
+        <div style="flex:1;min-width:180px;padding:14px;background:var(--b2);border-radius:10px">
+          <div style="font-family:var(--fm);font-size:10px;color:var(--sm);margin-bottom:4px">PLAN ACTUEL</div>
+          <div style="font-family:var(--ft);font-size:18px;font-weight:800;color:${pd.color}">${pd.icon} ${pd.name}</div>
+        </div>
+        <div style="flex:1;min-width:180px;padding:14px;background:var(--b2);border-radius:10px">
+          <div style="font-family:var(--fm);font-size:10px;color:var(--sm);margin-bottom:4px">PROCHAINE ÉCHÉANCE</div>
+          <div style="font-family:var(--ft);font-size:18px;font-weight:800">${plan === 'gratuit' ? '—' : '01/06/2025'}</div>
+        </div>
+        <div style="flex:1;min-width:180px;padding:14px;background:var(--b2);border-radius:10px">
+          <div style="font-family:var(--fm);font-size:10px;color:var(--sm);margin-bottom:4px">MONTANT MENSUEL</div>
+          <div style="font-family:var(--ft);font-size:18px;font-weight:800;color:var(--gold)">${pd.price.monthly === 0 ? 'Gratuit' : pd.price.monthly + ' MAD'}</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="fs-title">?? Historique de facturation</div>
+      ${invoices.length === 0 ? '<div style="color:var(--sm);font-size:13px">Aucune facture pour le moment.</div>' :
+        invoices.map(inv => `
+          <div class="invoice-row">
+            <div>
+              <div style="font-weight:600">${inv.date}</div>
+              <div style="font-size:12px;color:var(--sm)">Abonnement Smart-Invest.ia ${pd.name}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-weight:700">${inv.amount} MAD</span>
+              <span class="inv-status ${inv.status === 'paid' ? 'inv-paid' : 'inv-pending'}">${inv.status === 'paid' ? '? Payé' : '? En attente'}</span>
+              <a href="#" style="font-family:var(--fm);font-size:10px;color:var(--gold)">PDF</a>
+            </div>
+          </div>`).join('')}
+    </div>`;
+}
+
+// -- TABS -----------------------------------------------------------------
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+  document.getElementById('panel-' + id).classList.add('show');
+  document.querySelectorAll('.tn-btn').forEach(b => b.classList.remove('active'));
+  const tabs = ['pricing','modules','compare','account','billing'];
+  const idx = tabs.indexOf(id);
+  if (idx >= 0) document.querySelectorAll('.tn-btn')[idx].classList.add('active');
+}
+
+// -- MODAL -----------------------------------------------------------------
+function showModal(title, sub, onConfirm) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalSub').textContent = sub;
+  document.getElementById('modalConfirmBtn').onclick = () => { closeModal(); onConfirm(); };
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+
+// -- PAYMENT TABS ----------------------------------------------------------
+function setPmTab(btn, method) {
+  document.querySelectorAll('.pmt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['pmCard','pmVirement','pmCheque'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('pm' + method.charAt(0).toUpperCase() + method.slice(1)).style.display = '';
+}
+
+// -- CARD FORMAT -----------------------------------------------------------
+function formatCard(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+  input.value = v;
+}
+
+// -- ALERTS ----------------------------------------------------------------
+function showAlert(type, msg) {
+  const id = type === 'ok' ? 'alertOk' : 'alertErr';
+  const msgId = type === 'ok' ? 'alertOkMsg' : 'alertErrMsg';
+  document.getElementById(id).classList.add('show');
+  document.getElementById(msgId).textContent = msg;
+  setTimeout(() => document.getElementById(id).classList.remove('show'), 5000);
+}
+
+// -- PASSWORD TOGGLE -------------------------------------------------------
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  if (inp) { inp.type = inp.type === 'password' ? 'text' : 'password'; btn.textContent = inp.type === 'password' ? '??' : '??'; }
+}
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>
+

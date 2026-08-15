@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--er:#B91C1C;--wn:#C05820;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{min-height:100vh}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.hd{height:56px;background:rgba(14,14,12,.98);display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(184,134,42,.2);position:sticky;top:0;z-index:50}
+.logo{font-family:var(--ft);font-size:18px;font-weight:800;color:#fff;text-decoration:none}.logo span{color:var(--gl)}
+.hd-right{display:flex;align-items:center;gap:10px}
+.hd-link{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.4);text-decoration:none;padding:5px 12px;border:1px solid rgba(255,255,255,.1);border-radius:6px;transition:all .2s}.hd-link:hover{color:var(--gl);border-color:rgba(184,134,42,.4)}
+
+/* ── MAIN ── */
+main{flex:1;padding:2rem 1rem 4rem;
+  background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(184,134,42,.06) 0%,transparent 60%)}
+.wrap{width:100%;max-width:540px;margin:0 auto}
+
+/* ── STEP INDICATOR ── */
+.steps{display:flex;align-items:center;margin-bottom:24px}
+.step-item{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.step-item:not(:last-child)::after{content:'';position:absolute;top:14px;left:60%;right:-60%;height:2px;background:var(--bd);z-index:0}
+.step-circle{width:28px;height:28px;border-radius:50%;border:2px solid var(--bd);background:var(--wh);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:11px;font-weight:700;color:var(--sm);position:relative;z-index:1;transition:all .3s}
+.step-circle.active{border-color:var(--gold);background:var(--gold);color:var(--ink)}
+.step-circle.done{border-color:var(--ok);background:var(--ok);color:#fff}
+.step-label{font-size:10px;color:var(--sm);margin-top:4px;font-family:var(--fm);letter-spacing:.03em;text-align:center}
+.step-label.active{color:var(--gold)}
+
+/* ── ALERTS ── */
+.alert{display:none;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;line-height:1.5}
+.alert.show{display:flex}
+.alert-ok{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.15);border-left:3px solid var(--ok);color:var(--ok)}
+.alert-err{background:rgba(185,28,28,.06);border:1px solid rgba(185,28,28,.15);border-left:3px solid var(--er);color:var(--er)}
+.alert-info{background:rgba(184,134,42,.07);border:1px solid rgba(184,134,42,.2);border-left:3px solid var(--gold);color:var(--is)}
+
+/* ── CARD ── */
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,.04)}
+.card-hd{padding:22px 26px 18px;border-bottom:1px solid var(--bd)}
+.card-title{font-family:var(--ft);font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.card-title span{color:var(--gold)}
+.card-sub{font-size:13px;color:var(--sm)}
+.card-body{padding:22px 26px}
+
+/* ── FORM ── */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--is);margin-bottom:5px;text-transform:uppercase;font-family:var(--fm)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg-pos{position:relative}
+input[type=email],input[type=password],input[type=text],select{
+  width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;
+  font-family:var(--fb);font-size:14px;color:var(--ink);background:var(--bg);
+  outline:none;transition:border-color .2s;-webkit-appearance:none;
+}
+input:focus,select:focus{border-color:var(--gold);background:var(--wh)}
+input.valid{border-color:var(--ok)}
+input.error{border-color:var(--er)}
+input::placeholder{color:rgba(0,0,0,.25)}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--sm)}
+.field-hint{font-size:11px;color:var(--sm);margin-top:4px}
+.field-err{font-size:11px;color:var(--er);margin-top:4px;display:none}
+.field-err.show{display:block}
+
+/* ── PASSWORD STRENGTH ── */
+.pw-strength{margin-top:8px}
+.pw-bars{display:flex;gap:4px;margin-bottom:5px}
+.pw-bar{flex:1;height:3px;border-radius:2px;background:var(--b2);transition:background .3s}
+.pw-bar.s1{background:var(--er)}
+.pw-bar.s2{background:var(--wn)}
+.pw-bar.s3{background:#86efac}
+.pw-bar.s4{background:var(--ok)}
+.pw-label{font-family:var(--fm);font-size:10px;color:var(--sm)}
+.pw-reqs{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.pw-req{font-size:11px;color:var(--sm);display:flex;align-items:center;gap:3px;transition:color .2s}
+.pw-req.met{color:var(--ok)}
+
+/* ── PLAN SELECTOR ── */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+.plan-card{border:2px solid var(--bd);border-radius:12px;padding:14px 10px;cursor:pointer;transition:all .25s;text-align:center;position:relative}
+.plan-card:hover{border-color:rgba(184,134,42,.4);transform:translateY(-2px)}
+.plan-card.selected{border-color:var(--gold);background:rgba(184,134,42,.04);box-shadow:0 4px 16px rgba(184,134,42,.12)}
+.plan-card.plan-popular::before{content:'★ RECOMMANDÉ';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-family:var(--fm);font-size:8px;padding:3px 10px;border-radius:100px;white-space:nowrap;font-weight:700}
+.pc-icon{font-size:22px;margin-bottom:6px}
+.pc-name{font-family:var(--ft);font-size:13px;font-weight:800;margin-bottom:4px}
+.pc-price{font-family:var(--fm);font-size:11px;color:var(--sm);margin-bottom:6px}
+.pc-price strong{font-size:14px;color:var(--gold)}
+.pc-feats{font-size:11px;color:var(--sm);line-height:1.6;text-align:left}
+.pc-feat{display:flex;align-items:flex-start;gap:5px;padding:2px 0}
+.pc-tick{color:var(--ok);font-size:11px;flex-shrink:0}
+
+/* ── TRIAL BADGE ── */
+.trial-badge{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(184,134,42,.07);border:1px solid rgba(184,134,42,.18);border-radius:8px;font-size:12px;color:var(--is);margin-bottom:14px;line-height:1.5}
+
+/* ── CHECKBOX ── */
+.check-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--is);margin-bottom:10px;cursor:pointer;line-height:1.5}
+.check-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold);margin-top:2px;flex-shrink:0}
+.check-row a{color:var(--gold);text-decoration:none}.check-row a:hover{text-decoration:underline}
+
+/* ── BUTTONS ── */
+.btn-primary{width:100%;padding:13px;background:var(--gold);color:var(--ink);border:none;border-radius:10px;font-family:var(--fb);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:hover:not(:disabled){background:var(--gl);transform:translateY(-1px);box-shadow:0 6px 20px rgba(184,134,42,.25)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.spinner{width:16px;height:16px;border:2px solid rgba(0,0,0,.15);border-top-color:var(--ink);border-radius:50%;animation:spin .6s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn-back{padding:11px 20px;background:transparent;border:1.5px solid var(--bd);border-radius:10px;font-family:var(--fb);font-size:13px;color:var(--sm);cursor:pointer;transition:all .2s}
+.btn-back:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── PROGRESS BAR ── */
+.prog-bar{height:3px;background:var(--b2);border-radius:2px;margin-bottom:20px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gl));border-radius:2px;transition:width .4s}
+
+/* ── SUCCESS STATE ── */
+.success-card{text-align:center;padding:40px 24px}
+.success-icon{font-size:52px;margin-bottom:16px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(0.5) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.success-title{font-family:var(--ft);font-size:24px;font-weight:800;margin-bottom:8px}
+.success-sub{font-size:14px;color:var(--sm);margin-bottom:24px;line-height:1.65}
+.plan-confirm-badge{display:inline-block;padding:8px 18px;border-radius:100px;font-family:var(--fm);font-size:11px;font-weight:700;margin-bottom:20px}
+
+/* ── STEP PANELS ── */
+.sp{display:none}.sp.show{display:block}
+
+@media(max-width:600px){.fg-row{grid-template-columns:1fr}.plan-grid{grid-template-columns:1fr}}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="hd">
+  <a href="landing.html" class="logo">Smart-<span>Invest</span>.ia</a>
+  <div class="hd-right">
+    <a href="smart_invest_login.html" class="hd-link">Déjà un compte ? Connexion →</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- ALERT -->
+    <div class="alert alert-ok" id="alertOk"><span>✓</span><span id="alertOkMsg"></span></div>
+    <div class="alert alert-err" id="alertErr"><span>✕</span><span id="alertErrMsg"></span></div>
+
+    <!-- STEPS INDICATOR -->
+    <div class="steps" id="stepsWrap">
+      <div class="step-item">
+        <div class="step-circle active" id="sc1">1</div>
+        <div class="step-label active" id="sl1">Informations</div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" id="sc2">2</div>
+        <div class="step-label" id="sl2">Plan</div>
+      </div>
+      <div class="step-item">
+        <div class="step-circle" id="sc3">3</div>
+        <div class="step-label" id="sl3">Confirmation</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:33%"></div></div>
+
+    <!-- ══ ÉTAPE 1 — INFORMATIONS ══ -->
+    <div class="sp show" id="step1">
+      <div class="alert alert-info" style="display:flex">
+        <span>🎁</span>
+        <span>Essai <strong>7 jours gratuit</strong> sur le plan Pro — aucune carte requise pour commencer.</span>
+      </div>
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-title">Créer un <span>compte</span></div>
+          <div class="card-sub">Accès immédiat à votre espace Smart-Invest.ia</div>
+        </div>
+        <div class="card-body">
+          <div class="fg-row">
+            <div class="fg">
+              <label>Prénom</label>
+              <input type="text" id="fname" placeholder="Khalid" autocomplete="given-name">
+              <div class="field-err" id="fnameErr"></div>
+            </div>
+            <div class="fg">
+              <label>Nom</label>
+              <input type="text" id="lname" placeholder="Benali" autocomplete="family-name">
+              <div class="field-err" id="lnameErr"></div>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Adresse email professionnelle</label>
+            <input type="email" id="email" placeholder="khalid@entreprise.ma" autocomplete="email" oninput="validateEmail(this)">
+            <div class="field-err" id="emailErr"></div>
+          </div>
+          <div class="fg-row">
+            <div class="fg">
+              <label>Entreprise</label>
+              <input type="text" id="company" placeholder="SARL Benali & Associés" autocomplete="organization">
+            </div>
+            <div class="fg">
+              <label>Secteur d'activité</label>
+              <select id="sector">
+                <option value="">Sélectionner…</option>
+                <option>Automobile</option><option>Aéronautique</option><option>Textile</option>
+                <option>Agroalimentaire</option><option>TIC / Digital</option><option>Tourisme</option>
+                <option>Immobilier</option><option>Industrie</option><option>Services</option>
+                <option>Finance</option><option>Énergie</option><option>Santé</option><option>Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Mot de passe</label>
+            <div class="fg-pos">
+              <input type="password" id="password" placeholder="Minimum 8 caractères" autocomplete="new-password" oninput="updateStrength(this.value)">
+              <button class="pw-toggle" type="button" onclick="togglePw('password',this)">👁</button>
+            </div>
+            <div class="pw-strength" id="pwStrength" style="display:none">
+              <div class="pw-bars">
+                <div class="pw-bar" id="pb1"></div><div class="pw-bar" id="pb2"></div>
+                <div class="pw-bar" id="pb3"></div><div class="pw-bar" id="pb4"></div>
+              </div>
+              <div class="pw-label" id="pwLabel"></div>
+              <div class="pw-reqs">
+                <span class="pw-req" id="req-len">○ 8 caractères</span>
+                <span class="pw-req" id="req-maj">○ Majuscule</span>
+                <span class="pw-req" id="req-num">○ Chiffre</span>
+                <span class="pw-req" id="req-spec">○ Symbole</span>
+              </div>
+            </div>
+            <div class="field-err" id="pwErr"></div>
+          </div>
+          <div class="fg">
+            <label>Confirmer le mot de passe</label>
+            <div class="fg-pos">
+              <input type="password" id="pwConfirm" placeholder="••••••••" autocomplete="new-password" oninput="checkConfirm()">
+              <button class="pw-toggle" type="button" onclick="togglePw('pwConfirm',this)">👁</button>
+            </div>
+            <div class="field-err" id="pwCErr"></div>
+          </div>
+
+          <label class="check-row">
+            <input type="checkbox" id="cgv" required>
+            J'accepte les <a href="#">Conditions Générales d'Utilisation</a> et la <a href="#">Politique de confidentialité</a>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" id="newsletter" checked>
+            Recevoir les actualités réglementaires et fiscales marocaines
+          </label>
+
+          <button class="btn-primary" id="btn1" onclick="goStep2()">
+            <div class="spinner" id="sp1"></div>
+            <span>Continuer — Choisir mon plan →</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ÉTAPE 2 — CHOIX DU PLAN ══ -->
+    <div class="sp" id="step2">
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-title">Choisissez votre <span>plan</span></div>
+          <div class="card-sub">Changez à tout moment · Pas de carte requise pour l'essai</div>
+        </div>
+        <div class="card-body">
+          <div class="trial-badge">
+            🎁 <span>Essai <strong>Pro 7 jours gratuit</strong> — Accès à tous les modules Pro sans engagement</span>
+          </div>
+
+          <div class="plan-grid">
+            <!-- GRATUIT -->
+            <div class="plan-card" id="pc-gratuit" onclick="selectPlan('gratuit')">
+              <div class="pc-icon">🌱</div>
+              <div class="pc-name">Gratuit</div>
+              <div class="pc-price">Toujours <strong>0</strong> MAD</div>
+              <div class="pc-feats">
+                <div class="pc-feat"><span class="pc-tick">✓</span> 9 modules de base</div>
+                <div class="pc-feat"><span class="pc-tick">✓</span> Simulateur fiscal</div>
+                <div class="pc-feat"><span class="pc-tick">✓</span> IA 10 msg/j</div>
+              </div>
+            </div>
+            <!-- PRO -->
+            <div class="plan-card plan-popular selected" id="pc-pro" onclick="selectPlan('pro')">
+              <div class="pc-icon">⚡</div>
+              <div class="pc-name">Pro</div>
+              <div class="pc-price"><strong>490</strong> MAD/mois</div>
+              <div class="pc-feats">
+                <div class="pc-feat"><span class="pc-tick">✓</span> 19 modules</div>
+                <div class="pc-feat"><span class="pc-tick">✓</span> Cockpit EVM/Gantt</div>
+                <div class="pc-feat"><span class="pc-tick">✓</span> IA 100 msg/mois</div>
+              </div>
+            </div>
+            <!-- PREMIUM -->
+            <div class="plan-card" id="pc-premium" onclick="selectPlan('premium')">
+              <div class="pc-icon">👑</div>
+              <div class="pc-name">Premium</div>
+              <div class="pc-price"><strong>990</strong> MAD/mois</div>
+              <div class="pc-feats">
+                <div class="pc-feat"><span class="pc-tick">✓</span> 26 modules</div>
+                <div class="pc-feat"><span class="pc-tick">✓</span> Agent IA autonome</div>
+                <div class="pc-feat"><span class="pc-tick">✓</span> IA illimitée</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="planNote" style="font-size:12px;color:var(--sm);text-align:center;margin-bottom:16px;font-family:var(--fm)">
+            ⚡ Plan Pro sélectionné — Essai 7 jours gratuit, sans engagement
+          </div>
+
+          <div style="display:flex;gap:10px">
+            <button class="btn-back" onclick="goStep1()">← Retour</button>
+            <button class="btn-primary" id="btn2" onclick="goStep3()" style="flex:1">
+              <div class="spinner" id="sp2"></div>
+              <span id="btn2txt">Créer mon compte →</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ÉTAPE 3 — SUCCÈS ══ -->
+    <div class="sp" id="step3">
+      <div class="card">
+        <div class="success-card" id="successContent">
+          <div class="success-icon">🎉</div>
+          <div class="success-title">Compte créé avec succès !</div>
+          <div id="successSub" class="success-sub">Votre espace Smart-Invest.ia est prêt.</div>
+          <div class="plan-confirm-badge" id="planBadge"></div>
+          <a href="landing.html" class="btn-primary" style="display:inline-flex;text-decoration:none;max-width:300px;margin:0 auto">
+            Accéder à mes modules →
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src='lib/auth.js'></script>
+<script>
+let currentStep = 1;
+let selectedPlan = 'pro';
+
+// ── PLAN SELECT ───────────────────────────────────────────────────────────
+function selectPlan(planId) {
+  selectedPlan = planId;
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('pc-' + planId).classList.add('selected');
+  const notes = {
+    gratuit: '🌱 Plan Gratuit — Accès permanent, 9 modules inclus',
+    pro: '⚡ Plan Pro sélectionné — Essai 7 jours gratuit, sans engagement',
+    premium: '👑 Plan Premium — Accès complet à tous les 26 modules'
+  };
+  document.getElementById('planNote').textContent = notes[planId];
+  const btnTxt = planId === 'gratuit' ? 'Commencer gratuitement →' : `Démarrer l'essai ${planId === 'pro' ? 'Pro' : 'Premium'} →`;
+  document.getElementById('btn2txt').textContent = btnTxt;
+}
+
+// ── STEP 1 → 2 ───────────────────────────────────────────────────────────
+function goStep2() {
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const pw = document.getElementById('password').value;
+  const pwc = document.getElementById('pwConfirm').value;
+  const cgv = document.getElementById('cgv').checked;
+  let ok = true;
+
+  clearErrors();
+  if (!fname) { showFErr('fnameErr', 'Prénom requis'); ok = false; }
+  if (!lname) { showFErr('lnameErr', 'Nom requis'); ok = false; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showFErr('emailErr', 'Email invalide'); ok = false; }
+  if (pw.length < 8) { showFErr('pwErr', 'Minimum 8 caractères'); ok = false; }
+  else if (!/[A-Z]/.test(pw)) { showFErr('pwErr', 'Doit contenir une majuscule'); ok = false; }
+  else if (!/[0-9]/.test(pw)) { showFErr('pwErr', 'Doit contenir un chiffre'); ok = false; }
+  if (pw !== pwc) { showFErr('pwCErr', 'Les mots de passe ne correspondent pas'); ok = false; }
+  if (!cgv) { showAlert('err', 'Veuillez accepter les conditions générales.'); ok = false; }
+  if (!ok) return;
+
+  setLoading(true, '1');
+  setTimeout(() => { setLoading(false, '1'); switchStep(2); }, 500);
+}
+
+// ── STEP 2 → 3 ───────────────────────────────────────────────────────────
+function goStep3() {
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const pw = document.getElementById('password').value;
+  const company = document.getElementById('company').value.trim();
+  const sector = document.getElementById('sector').value;
+
+  setLoading(true, '2');
+
+  setTimeout(() => {
+    const result = AuthService.register({
+      email, password: pw,
+      name: fname + ' ' + lname,
+      company, sector,
+      selectedPlan,
+    });
+window.location.href = 'smart_invest_onboarding.html';
+
+    setLoading(false, '2');
+
+    if (result.ok) {
+      const planLabels = { gratuit: '🌱 Plan Gratuit', pro: '⚡ Plan Pro — Essai 7 jours', premium: '👑 Plan Premium' };
+      const planColors = {
+        gratuit: 'background:rgba(26,107,60,.1);color:#1A6B3C;border:1.5px solid rgba(26,107,60,.2)',
+        pro: 'background:rgba(184,134,42,.1);color:#B8862A;border:1.5px solid rgba(184,134,42,.25)',
+        premium: 'background:rgba(30,77,107,.1);color:#1E4D6B;border:1.5px solid rgba(30,77,107,.2)',
+      };
+      document.getElementById('successSub').textContent = `Bienvenue, ${fname} ! Votre espace est prêt. ${selectedPlan !== 'gratuit' ? `Essai de 7 jours activé — aucune carte requise.` : ''}`;
+      document.getElementById('planBadge').textContent = planLabels[selectedPlan];
+      document.getElementById('planBadge').style.cssText = planColors[selectedPlan] + ';font-family:var(--fm);font-size:11px;padding:8px 18px;border-radius:100px;display:inline-block;margin-bottom:20px';
+      switchStep(3);
+    } else {
+      showAlert('err', result.error);
+    }
+  }, 900);
+}
+
+function goStep1() { switchStep(1); }
+
+// ── SWITCH STEP ───────────────────────────────────────────────────────────
+function switchStep(n) {
+  currentStep = n;
+  document.querySelectorAll('.sp').forEach((p, i) => p.classList.toggle('show', i + 1 === n));
+  document.getElementById('progFill').style.width = (n * 33.33) + '%';
+
+  for (let i = 1; i <= 3; i++) {
+    const sc = document.getElementById('sc' + i);
+    const sl = document.getElementById('sl' + i);
+    if (i < n) { sc.classList.remove('active'); sc.classList.add('done'); sc.textContent = '✓'; sl.classList.remove('active'); }
+    else if (i === n) { sc.classList.add('active'); sc.classList.remove('done'); sc.textContent = i; sl.classList.add('active'); }
+    else { sc.classList.remove('active','done'); sc.textContent = i; sl.classList.remove('active'); }
+  }
+
+  if (n === 3) document.getElementById('stepsWrap').style.display = 'none';
+}
+
+// ── PASSWORD STRENGTH ─────────────────────────────────────────────────────
+function updateStrength(pw) {
+  const wrap = document.getElementById('pwStrength');
+  wrap.style.display = pw ? 'block' : 'none';
+  if (!pw) return;
+  const c = [pw.length >= 8, /[A-Z]/.test(pw), /[0-9]/.test(pw), /[^A-Za-z0-9]/.test(pw)];
+  const score = c.filter(Boolean).length;
+  const cls = ['','s1','s2','s3','s4'];
+  const labels = ['','Trop faible','Faible','Fort','Très fort'];
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('pb' + i).className = 'pw-bar ' + (i <= score ? cls[score] : '');
+  }
+  document.getElementById('pwLabel').textContent = labels[score];
+  document.getElementById('req-len').className = 'pw-req ' + (c[0] ? 'met' : '');
+  document.getElementById('req-maj').className = 'pw-req ' + (c[1] ? 'met' : '');
+  document.getElementById('req-num').className = 'pw-req ' + (c[2] ? 'met' : '');
+  document.getElementById('req-spec').className = 'pw-req ' + (c[3] ? 'met' : '');
+}
+
+function checkConfirm() {
+  const pw = document.getElementById('password').value;
+  const c = document.getElementById('pwConfirm').value;
+  if (c && pw !== c) showFErr('pwCErr','Ne correspond pas');
+  else document.getElementById('pwCErr').classList.remove('show');
+}
+
+// ── EMAIL VALIDATE ────────────────────────────────────────────────────────
+function validateEmail(input) {
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+  input.classList.toggle('valid', ok && input.value.length > 0);
+  input.classList.toggle('error', !ok && input.value.length > 0);
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+}
+
+function setLoading(on, step) {
+  const btn = document.getElementById('btn' + step);
+  const sp = document.getElementById('sp' + step);
+  btn.disabled = on;
+  sp.style.display = on ? 'block' : 'none';
+}
+
+function showAlert(type, msg) {
+  const id = type === 'ok' ? 'alertOk' : 'alertErr';
+  const mid = type === 'ok' ? 'alertOkMsg' : 'alertErrMsg';
+  document.getElementById(id).classList.add('show');
+  document.getElementById(mid).textContent = msg;
+  setTimeout(() => document.getElementById(id).classList.remove('show'), 5000);
+}
+
+function showFErr(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function clearErrors() {
+  document.querySelectorAll('.field-err').forEach(e => e.classList.remove('show'));
+}
+
+// Redirect si déjà connecté
+if (AuthService.isLoggedIn()) window.location.href = 'index.html';
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

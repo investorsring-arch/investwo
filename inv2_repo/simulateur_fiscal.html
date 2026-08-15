@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur Fiscal Maroc — CGI 2026 · Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#B8862A; --gl:#F0C460; --gp:#FBF0D0;
+  --ink:#0A0A08; --im:#1F1F18; --is:#3A3A30; --sm:#7A7A6A;
+  --bg:#F5F4EE; --b2:#ECEAE0; --b3:#E2E0D4; --wh:#FEFEFE;
+  --ac:#1E4D6B; --ok:#1A6B3C; --er:#B03030; --warn:#C87000;
+  --bd:rgba(0,0,0,.08); --bds:rgba(0,0,0,.14);
+  --ft:'Syne',sans-serif; --fb:'DM Sans',sans-serif; --fm:'JetBrains Mono',monospace;
+  --r:12px; --sh:0 2px 16px rgba(0,0,0,.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── Header ─────────────────────────────────────────── */
+.hdr{position:sticky;top:0;z-index:100;height:56px;background:rgba(10,10,8,.97);
+  backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;border-bottom:1px solid rgba(184,134,42,.18)}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.logo{font-family:var(--ft);font-size:15px;font-weight:800;color:#fff}
+.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:9px;color:var(--gl);background:rgba(184,134,42,.14);
+  border:1px solid rgba(184,134,42,.28);padding:3px 9px;border-radius:100px;letter-spacing:.04em}
+.badge.warn{color:#F59E0B;background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.3)}
+.disc{font-size:10px;color:rgba(255,255,255,.22);font-family:var(--fm)}
+
+/* ── Nav ancres ─────────────────────────────────────── */
+.subnav{background:rgba(10,10,8,.97);border-bottom:1px solid rgba(184,134,42,.12);
+  display:flex;gap:8px;padding:10px 28px;overflow-x:auto;align-items:center;flex-wrap:wrap}
+.subnav a{font-family:var(--fb);font-size:12px;font-weight:700;text-decoration:none;
+  padding:9px 18px;letter-spacing:.02em;white-space:nowrap;
+  border-radius:8px;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:6px;
+  line-height:1}
+.subnav a:hover{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.subnav a:active{transform:translateY(0)}
+
+/* Couleurs individuelles par module */
+.subnav a[href="#sec-is"]   {background:linear-gradient(135deg,#B8862A,#D4A840);color:#0A0A08}
+.subnav a[href="#sec-ir"]   {background:linear-gradient(135deg,#1E4D6B,#2E6E96);color:#fff}
+.subnav a[href="#sec-tva"]  {background:linear-gradient(135deg,#1A6B3C,#27A05A);color:#fff}
+.subnav a[href="#sec-comp"] {background:linear-gradient(135deg,#5A3A8A,#7B52B8);color:#fff}
+.subnav a[href="#sec-consol"]{background:linear-gradient(135deg,#0D6E6E,#14A0A0);color:#fff}
+.subnav a[href="#sec-charte"]{background:linear-gradient(135deg,#B03030,#D05050);color:#fff}
+.subnav a[href="#sec-ae"]   {background:linear-gradient(135deg,#7A5200,#B87A00);color:#fff}
+
+@media(max-width:860px){
+  .subnav{gap:6px;padding:8px 14px}
+  .subnav a{font-size:11px;padding:8px 13px}
+}
+
+/* ── Layout ─────────────────────────────────────────── */
+.page{max-width:1160px;margin:0 auto;padding:32px 24px 80px}
+
+/* ── Section titres ─────────────────────────────────── */
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-top:8px}
+.sec-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0}
+.sec-icon.gold{background:linear-gradient(135deg,#B8862A,#F0C460)}
+.sec-icon.blue{background:linear-gradient(135deg,#1E4D6B,#3A7FA0)}
+.sec-icon.green{background:linear-gradient(135deg,#1A6B3C,#2DA062)}
+.sec-icon.purple{background:linear-gradient(135deg,#5A3A8A,#8A60C0)}
+.sec-icon.red{background:linear-gradient(135deg,#B03030,#D06050)}
+.sec-title{font-family:var(--ft);font-size:18px;font-weight:800}
+.sec-sub{font-size:12px;color:var(--sm);margin-top:2px;font-family:var(--fm)}
+.sec-sep{height:1px;background:var(--b3);margin:36px 0 28px}
+
+/* ── Grid sim ───────────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:start}
+@media(max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ── Cards ──────────────────────────────────────────── */
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);padding:20px;
+  box-shadow:var(--sh)}
+.card + .card{margin-top:16px}
+.card-title{font-family:var(--ft);font-size:13px;font-weight:800;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;color:var(--im)}
+.card-badge{font-family:var(--fm);font-size:8px;padding:2px 7px;border-radius:100px;
+  background:rgba(184,134,42,.12);color:var(--gold);border:1px solid rgba(184,134,42,.2)}
+.card-badge.new{background:rgba(26,107,60,.12);color:var(--ok);border-color:rgba(26,107,60,.2)}
+
+/* ── Form ───────────────────────────────────────────── */
+.fg{margin-bottom:13px}
+.fg label{display:block;font-size:10px;font-weight:600;letter-spacing:.07em;color:var(--is);
+  margin-bottom:5px;text-transform:uppercase;font-family:var(--fm)}
+.fg input,.fg select{width:100%;padding:9px 12px;border:1.5px solid var(--b3);border-radius:9px;
+  font-family:var(--fb);font-size:13.5px;color:var(--ink);background:var(--bg);outline:none;
+  transition:border-color .18s,background .18s}
+.fg input:focus,.fg select:focus{border-color:var(--gold);background:var(--wh)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg-hint{font-size:10px;color:var(--sm);margin-top:4px;font-family:var(--fm);line-height:1.4}
+
+/* ── Bouton calc ────────────────────────────────────── */
+.btn-calc{width:100%;padding:12px;background:var(--gold);color:var(--ink);border:none;border-radius:9px;
+  font-family:var(--fb);font-size:13.5px;font-weight:700;cursor:pointer;transition:all .18s;margin-top:4px}
+.btn-calc:hover{background:var(--gl);transform:translateY(-1px)}
+
+/* ── Hero résultat ───────────────────────────────────── */
+.r-hero{background:linear-gradient(135deg,#0A0A08 0%,#1A1A12 100%);
+  border-radius:var(--r);padding:20px 22px;color:#fff;margin-bottom:14px;
+  border:1px solid rgba(184,134,42,.2)}
+.r-label{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:6px}
+.r-amount{font-family:var(--ft);font-size:36px;font-weight:800;color:var(--gl);line-height:1;margin-bottom:3px}
+.r-sub{font-size:11px;color:rgba(255,255,255,.35)}
+
+/* ── Rows résultat ───────────────────────────────────── */
+.r-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;
+  border-bottom:1px solid var(--bd);font-size:13px}
+.r-row:last-child{border:none}
+.r-row.tot{font-weight:700;font-size:13.5px;padding-top:12px}
+.r-row .rl{color:var(--is)}
+.r-row .rv{font-family:var(--fm);font-weight:600}
+.rv.gold{color:var(--gold)}
+.rv.ok{color:var(--ok)}
+.rv.er{color:var(--er)}
+.rv.blue{color:var(--ac)}
+
+/* ── Tableaux tranches ───────────────────────────────── */
+.t-table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:10px}
+.t-table th{padding:6px 10px;background:var(--b2);color:var(--sm);font-family:var(--fm);
+  font-size:8.5px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--bd);text-align:left}
+.t-table td{padding:7px 10px;border-bottom:1px solid var(--bd)}
+.t-table tr:last-child td{border:none}
+.t-table tr.active-tranche td{background:rgba(184,134,42,.06);font-weight:600}
+
+/* ── Comparateur multi-régimes ───────────────────────── */
+.cmp-grid{display:grid;gap:8px;margin-top:10px}
+.cmp-item{background:var(--b2);border-radius:9px;padding:12px 14px;
+  display:flex;justify-content:space-between;align-items:center;
+  border:1.5px solid transparent;transition:all .2s}
+.cmp-item.best{border-color:var(--ok);background:rgba(26,107,60,.05)}
+.cmp-item.worst{border-color:rgba(176,48,48,.25);background:rgba(176,48,48,.03)}
+.cmp-name{font-family:var(--ft);font-size:11.5px;font-weight:700}
+.cmp-val{font-family:var(--fm);font-size:14px;font-weight:700;color:var(--gold)}
+.cmp-rate{font-size:10px;color:var(--sm);margin-top:2px}
+.cmp-badge{font-size:9px;padding:2px 7px;border-radius:100px;font-family:var(--fm)}
+.cmp-badge.ok{background:rgba(26,107,60,.12);color:var(--ok)}
+.cmp-badge.er{background:rgba(176,48,48,.1);color:var(--er)}
+
+/* ── Alertes ─────────────────────────────────────────── */
+.alert{border-radius:8px;padding:9px 13px;font-size:11.5px;margin-top:10px;line-height:1.5}
+.alert.ok{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.2);border-left:3px solid var(--ok);color:var(--ok)}
+.alert.warn{background:rgba(200,112,0,.06);border:1px solid rgba(200,112,0,.2);border-left:3px solid var(--warn);color:var(--is)}
+.alert.er{background:rgba(176,48,48,.05);border:1px solid rgba(176,48,48,.2);border-left:3px solid var(--er);color:var(--er)}
+.alert.info{background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.2);border-left:3px solid var(--ac);color:var(--ac)}
+
+/* ── KPI box ─────────────────────────────────────────── */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.kpi{background:var(--b2);border-radius:9px;padding:13px 12px;text-align:center}
+.kpi-val{font-family:var(--ft);font-size:18px;font-weight:800;color:var(--gold);margin-bottom:3px}
+.kpi-lbl{font-size:10px;color:var(--sm);font-family:var(--fm)}
+
+/* ── Source tag ──────────────────────────────────────── */
+.src{font-family:var(--fm);font-size:9px;color:var(--sm);margin-top:10px;text-align:right}
+
+/* ── Barème visuel ───────────────────────────────────── */
+.barem-bar{height:8px;border-radius:4px;margin-top:4px;background:var(--b3);overflow:hidden}
+.barem-fill{height:100%;border-radius:4px;transition:width .4s ease;
+  background:linear-gradient(90deg,var(--ok),var(--gold),var(--er))}
+
+/* ── Consolidated box ────────────────────────────────── */
+.consol-block{background:linear-gradient(135deg,rgba(10,10,8,.96),rgba(26,26,18,.96));
+  border-radius:var(--r);padding:22px;color:#fff;border:1px solid rgba(184,134,42,.25)}
+.consol-title{font-family:var(--ft);font-size:13px;font-weight:800;color:var(--gl);margin-bottom:14px}
+.consol-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12.5px}
+.consol-row:last-child{border:none;padding-top:12px;margin-top:4px}
+.consol-row .cl{color:rgba(255,255,255,.5)}
+.consol-row .cv{font-family:var(--fm);font-weight:600;color:#fff}
+.consol-row.tot .cv{color:var(--gl);font-size:16px;font-family:var(--ft);font-weight:800}
+
+/* ── Charte invest ───────────────────────────────────── */
+.prime-row{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px dashed var(--bd);font-size:12.5px}
+.prime-row:last-child{border:none}
+.prime-lbl{color:var(--is)}
+.prime-val{font-family:var(--fm);font-weight:700;color:var(--ok)}
+.prime-val.zero{color:var(--sm)}
+
+/* ── Gauge SVG ───────────────────────────────────────── */
+.gauge-wrap{text-align:center;margin:10px 0}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media(max-width:600px){
+  .hdr{padding:0 14px}
+  .subnav{padding:0 14px}
+  .page{padding:20px 14px 60px}
+  .r-amount{font-size:28px}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════ -->
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="badge">Simulateur Fiscal CGI 2026</span>
+    <span class="badge warn">⚠ Barèmes LF n°60-24 — LF n°50-25</span>
+  </div>
+  <div class="disc">⚖ Outil indicatif — non opposable à l'administration fiscale</div>
+</header>
+<nav class="subnav">
+  <a href="#sec-is">🏢 IS — Sociétés</a>
+  <a href="#sec-ir">👤 IR — Revenus</a>
+  <a href="#sec-tva">🔄 TVA</a>
+  <a href="#sec-comp">⚖️ IS vs IR</a>
+  <a href="#sec-consol">💼 Charge Dirigeant</a>
+  <a href="#sec-charte">🏆 Charte Invest.</a>
+  <a href="#sec-ae">🚀 Auto-Entrepreneur</a>
+</nav>
+
+<!-- ══ PAGE ════════════════════════════════════════════════════════ -->
+<div class="page">
+
+<!-- ════════════════════════════════════════════════════
+     MODULE 1 — IS
+═════════════════════════════════════════════════════ -->
+<section id="sec-is">
+  <div class="sec-head">
+    <div class="sec-icon gold">🏢</div>
+    <div>
+      <div class="sec-title">Impôt sur les Sociétés (IS)</div>
+      <div class="sec-sub">CGI Art.19 · LF n°50-22/2023 — Taux 20% flat · Cotisation minimale 0,5%</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <!-- Inputs IS -->
+    <div>
+      <div class="card">
+        <div class="card-title">⚙ Paramètres IS</div>
+
+        <div class="fg">
+          <label>Régime fiscal</label>
+          <select id="is_regime" oninput="calcIS()">
+            <option value="normal">Taux normal 20% (SARL/SA/SAS — bénéfice &lt; 100M MAD)</option>
+            <option value="mega">Taux 35% — Grandes sociétés (bénéfice ≥ 100M MAD)</option>
+            <option value="banque">Banques, Assurances — 37%</option>
+            <option value="export_exo">Export/Hôtellerie/Mines — Exo 5 ans puis 20%</option>
+            <option value="zai">ZAI / Zone Franche — Exo 5 ans puis 20%</option>
+            <option value="cfc">CFC — Casablanca Finance City (15%)</option>
+            <option value="agri">Agricole — 17,5% (CGI Art.46)</option>
+          </select>
+          <div class="fg-hint" id="is_regime_hint">→ CGI Art.19-I-A : taux unique 20% pour bénéfice net &lt; 100 000 000 MAD</div>
+        </div>
+
+        <div class="fg" id="is_annee_wrap" style="display:none">
+          <label>Année d'exploitation (exo 5 ans, réduit 6-10)</label>
+          <input type="number" id="is_annee" value="1" min="1" max="20" oninput="calcIS()">
+        </div>
+
+        <div class="fg">
+          <label>Résultat fiscal — Bénéfice imposable (MAD)</label>
+          <input type="number" id="is_benefice" value="850000" min="0" oninput="calcIS()">
+        </div>
+
+        <div class="fg">
+          <label>Chiffre d'affaires HT (base cotisation minimale)</label>
+          <input type="number" id="is_ca" value="3000000" min="0" oninput="calcIS()">
+          <div class="fg-hint">Cotis. min. = 0,5% × CA HT — exigible même en cas de perte</div>
+        </div>
+
+        <div class="fg">
+          <label>Exercice déficitaire ?</label>
+          <select id="is_deficit" oninput="calcIS()">
+            <option value="non">Non — résultat positif</option>
+            <option value="oui">Oui — perte d'exploitation</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Résultats IS -->
+    <div>
+      <div class="r-hero">
+        <div class="r-label">IS à payer</div>
+        <div class="r-amount" id="is_montant_du">—</div>
+        <div class="r-sub" id="is_regime_lbl">Renseignez le résultat fiscal</div>
+      </div>
+
+      <div class="card" id="is_detail_card">
+        <div class="card-title">📋 Détail du calcul IS</div>
+        <div id="is_rows"></div>
+
+        <div id="is_alert_wrap"></div>
+
+        <div class="kpi-grid" id="is_kpis" style="display:none">
+          <div class="kpi"><div class="kpi-val" id="kpi_is_eff">—</div><div class="kpi-lbl">Taux effectif</div></div>
+          <div class="kpi"><div class="kpi-val" id="kpi_is_net">—</div><div class="kpi-lbl">Résultat net</div></div>
+          <div class="kpi"><div class="kpi-val" id="kpi_is_cm">—</div><div class="kpi-lbl">Cotis. min.</div></div>
+        </div>
+
+        <div id="is_tranche_wrap" style="display:none">
+          <div class="card-title" style="margin-top:12px;margin-bottom:8px">📊 Détail tranches</div>
+          <table class="t-table" id="is_tranches"></table>
+        </div>
+        <div class="src" id="is_src"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparateur multi-régimes IS -->
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">⚖ Comparateur multi-régimes IS <span class="card-badge new">Auto</span></div>
+    <div id="is_comp_grid"></div>
+  </div>
+</section>
+
+<div class="sec-sep"></div>
+
+<!-- ════════════════════════════════════════════════════
+     MODULE 2 — IR
+═════════════════════════════════════════════════════ -->
+<section id="sec-ir">
+  <div class="sec-head">
+    <div class="sec-icon blue">👤</div>
+    <div>
+      <div class="sec-title">Impôt sur le Revenu (IR)</div>
+      <div class="sec-sub">CGI Art.73 · LF n°60-24 2025 — Barème mis à jour · Seuil exo 40 000 MAD · Max 37%</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <!-- Inputs IR -->
+    <div>
+      <div class="card">
+        <div class="card-title">⚙ Paramètres IR</div>
+
+        <div class="fg">
+          <label>Catégorie de revenu</label>
+          <select id="ir_cat" oninput="calcIR()">
+            <option value="salarie">Salarié / Revenu professionnel (RNR/RNS)</option>
+            <option value="foncier_inf">Revenus fonciers &lt; 120 000 MAD/an (10% libératoire)</option>
+            <option value="foncier_sup">Revenus fonciers ≥ 120 000 MAD/an (barème)</option>
+            <option value="capitaux">Revenus de capitaux mobiliers — Dividendes (10% RAS)</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>Revenu annuel brut (MAD)</label>
+          <input type="number" id="ir_revenu" value="180000" min="0" oninput="calcIR()">
+        </div>
+
+        <div class="fg">
+          <label>Charges déductibles professionnelles (MAD)</label>
+          <input type="number" id="ir_charges" value="0" min="0" oninput="calcIR()">
+          <div class="fg-hint">CNSS salarié, frais de formation, cotisations retraite...</div>
+        </div>
+
+        <div class="fg">
+          <label>Personnes à charge (max 6)</label>
+          <input type="number" id="ir_personnes" value="2" min="0" max="6" oninput="calcIR()">
+          <div class="fg-hint">Déduction : 360 MAD/personne/an · plafond 2 160 MAD/an</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Résultats IR -->
+    <div>
+      <div class="r-hero">
+        <div class="r-label">IR à payer</div>
+        <div class="r-amount" id="ir_montant_du">—</div>
+        <div class="r-sub" id="ir_regime_lbl">Renseignez le revenu annuel</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📋 Détail barème IR</div>
+        <div id="ir_rows"></div>
+
+        <div class="kpi-grid" id="ir_kpis" style="display:none">
+          <div class="kpi"><div class="kpi-val" id="kpi_ir_moy">—</div><div class="kpi-lbl">Taux moyen</div></div>
+          <div class="kpi"><div class="kpi-val" id="kpi_ir_marg">—</div><div class="kpi-lbl">Taux marginal</div></div>
+          <div class="kpi"><div class="kpi-val" id="kpi_ir_net">—</div><div class="kpi-lbl">Revenu net</div></div>
+        </div>
+
+        <table class="t-table" id="ir_tranches" style="margin-top:12px"></table>
+
+        <!-- Barème visuel -->
+        <div style="margin-top:14px">
+          <div style="font-size:10px;color:var(--sm);font-family:var(--fm);margin-bottom:5px">BARÈME CGI ART.73 — LF n°60-24 (2025)</div>
+          <div id="ir_barem_visual"></div>
+        </div>
+        <div class="src" id="ir_src"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-sep"></div>
+
+<!-- ════════════════════════════════════════════════════
+     MODULE 3 — TVA
+═════════════════════════════════════════════════════ -->
+<section id="sec-tva">
+  <div class="sec-head">
+    <div class="sec-icon green">🧾</div>
+    <div>
+      <div class="sec-title">TVA — Calcul & Gestion du Crédit</div>
+      <div class="sec-sub">CGI Art.88-125 · Taux 20%/14%/10%/7%/0% · Remboursement Art.103</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <div class="card-title">⚙ Paramètres TVA</div>
+
+        <div class="fg">
+          <label>Montant HT (MAD)</label>
+          <input type="number" id="tva_ht" value="100000" min="0" oninput="calcTVA()">
+        </div>
+
+        <div class="fg">
+          <label>Type d'opération / produit</label>
+          <select id="tva_type" oninput="calcTVA()">
+            <optgroup label="Taux 20% — Normal">
+              <option value="20">20% — Taux normal (produits & services standard)</option>
+            </optgroup>
+            <optgroup label="Taux 14%">
+              <option value="14-transport">14% — Transport (CGI Art.99-2°)</option>
+              <option value="14-energie">14% — Électricité, gaz de ville</option>
+              <option value="14-btp">14% — Corps gras alimentaires (beurre, huile...)</option>
+            </optgroup>
+            <optgroup label="Taux 10%">
+              <option value="10-hotel">10% — Hôtellerie / Restauration (Art.99-3°)</option>
+              <option value="10-banque">10% — Opérations bancaires & de crédit</option>
+              <option value="10-eau-ind">10% — Eau industrielle</option>
+              <option value="10-location">10% — Location de matériel agricole</option>
+            </optgroup>
+            <optgroup label="Taux 7%">
+              <option value="7-eau">7% — Eau potable & assainissement</option>
+              <option value="7-medicament">7% — Médicaments (hors exo Art.91)</option>
+              <option value="7-sucre">7% — Sucre raffiné</option>
+              <option value="7-conserves">7% — Conserves de sardines</option>
+            </optgroup>
+            <optgroup label="Taux 0% — Exonérations">
+              <option value="0-export">0% — Exportations (Art.92) — droit à déduction</option>
+              <option value="0-invest">0% — Biens d'investissement 36 mois (Art.92-I-6°)</option>
+              <option value="0-zai">0% — ZAI / Zone Franche d'exportation</option>
+              <option value="0-etat">0% — Marchés état (Art.92-I-2°)</option>
+              <option value="exo-agri">Exo. — Agriculture, pêche (Art.91)</option>
+              <option value="exo-edu">Exo. — Enseignement, formation pro (Art.91)</option>
+              <option value="exo-sante">Exo. — Soins médicaux (Art.91)</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>TVA déductible sur achats (MAD)</label>
+          <input type="number" id="tva_ded" value="0" min="0" oninput="calcTVA()">
+          <div class="fg-hint">TVA sur intrants, matières, services deductibles</div>
+        </div>
+
+        <div class="fg">
+          <label>Droit à déduction ?</label>
+          <select id="tva_droit" oninput="calcTVA()">
+            <option value="oui">Oui — activité taxable (Art.101)</option>
+            <option value="non">Non — activité exonérée sans droit</option>
+            <option value="partiel">Partiel — prorata (activité mixte)</option>
+          </select>
+        </div>
+
+        <div class="fg" id="tva_prorata_wrap" style="display:none">
+          <label>Prorata de déduction (%)</label>
+          <input type="number" id="tva_prorata" value="70" min="1" max="100" oninput="calcTVA()">
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="r-hero">
+        <div class="r-label">TVA nette</div>
+        <div class="r-amount" id="tva_montant">—</div>
+        <div class="r-sub" id="tva_lbl">Renseignez le montant HT</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📋 Résultat TVA</div>
+        <div id="tva_rows"></div>
+        <div id="tva_alerts"></div>
+        <div class="src" id="tva_src"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-sep"></div>
+
+<!-- ════════════════════════════════════════════════════
+     MODULE 4 — COMPARATEUR IS vs IR
+═════════════════════════════════════════════════════ -->
+<section id="sec-comp">
+  <div class="sec-head">
+    <div class="sec-icon purple">⚖</div>
+    <div>
+      <div class="sec-title">Comparateur IS vs IR — Décision de structure</div>
+      <div class="sec-sub">Outil de décision pour le choix du régime fiscal de l'entreprise · données partagées avec IS & IR</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <div class="card-title">⚙ Scénario d'arbitrage</div>
+
+        <div class="fg">
+          <label>Bénéfice annuel prévisionnel (MAD)</label>
+          <input type="number" id="cmp_benefice" value="600000" min="0" oninput="calcComp()">
+        </div>
+
+        <div class="fg">
+          <label>Rémunération prélevée par le dirigeant (MAD)</label>
+          <input type="number" id="cmp_remun" value="240000" min="0" oninput="calcComp()">
+          <div class="fg-hint">Déductible de l'IS · Imposable à l'IR comme revenu professionnel</div>
+        </div>
+
+        <div class="fg">
+          <label>Personnes à charge (dirigeant)</label>
+          <input type="number" id="cmp_charges_fam" value="2" min="0" max="6" oninput="calcComp()">
+        </div>
+
+        <div class="fg">
+          <label>Part des bénéfices redistribuée (dividendes %)</label>
+          <input type="number" id="cmp_dist_pct" value="50" min="0" max="100" oninput="calcComp()">
+          <div class="fg-hint">Dividendes soumis à RAS 10% (CGI Art.73-II-B-7°)</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">📊 Résultat comparatif</div>
+        <div id="comp_result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-sep"></div>
+
+<!-- ════════════════════════════════════════════════════
+     MODULE 5 — CHARGE CONSOLIDÉE DIRIGEANT
+═════════════════════════════════════════════════════ -->
+<section id="sec-consol">
+  <div class="sec-head">
+    <div class="sec-icon gold">💼</div>
+    <div>
+      <div class="sec-title">Charge Fiscale Consolidée — Dirigeant</div>
+      <div class="sec-sub">Vision globale : IS société + RAS dividendes + IR personnel = charge totale réelle</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <div class="card-title">⚙ Structure dirigeant</div>
+
+        <div class="fg">
+          <label>Bénéfice de la société avant IS (MAD)</label>
+          <input type="number" id="cons_benefice" value="1200000" min="0" oninput="calcConsol()">
+        </div>
+
+        <div class="fg">
+          <label>Rémunération prélevée (déductible IS)</label>
+          <input type="number" id="cons_remun" value="360000" min="0" oninput="calcConsol()">
+        </div>
+
+        <div class="fg">
+          <label>Dividendes distribués (MAD)</label>
+          <input type="number" id="cons_div" value="300000" min="0" oninput="calcConsol()">
+          <div class="fg-hint">RAS 10% (libératoire) — CGI Art.73-II-B-7°</div>
+        </div>
+
+        <div class="fg">
+          <label>Autres revenus IR dirigeant (MAD)</label>
+          <input type="number" id="cons_autres" value="0" min="0" oninput="calcConsol()">
+        </div>
+
+        <div class="fg">
+          <label>Personnes à charge</label>
+          <input type="number" id="cons_charges_fam" value="2" min="0" max="6" oninput="calcConsol()">
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="consol-block" id="consol_result">
+        <div class="consol-title">Vision consolidée — calcul en cours...</div>
+      </div>
+      <div class="card" style="margin-top:14px" id="consol_detail_card">
+        <div class="card-title">📊 Analyse & Recommandations</div>
+        <div id="consol_recomm"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-sep"></div>
+
+<!-- ════════════════════════════════════════════════════
+     MODULE 6 — CHARTE INVESTISSEMENT 2023
+═════════════════════════════════════════════════════ -->
+<section id="sec-charte">
+  <div class="sec-head">
+    <div class="sec-icon green">🏗</div>
+    <div>
+      <div class="sec-title">Charte de l'Investissement 2023</div>
+      <div class="sec-sub">Dahir n°1-22-74 · Prime de base + Territoriale + Sectorielle + PME · Cumul max 30%</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <div class="card-title">⚙ Paramètres du projet</div>
+
+        <div class="fg">
+          <label>Montant d'investissement (MAD)</label>
+          <input type="number" id="ch_invest" value="50000000" min="0" oninput="calcCharte()">
+          <div class="fg-hint">Seuil structurant : ≥ 20M MAD ou ≥ 50 emplois</div>
+        </div>
+
+        <div class="fg">
+          <label>Secteur d'activité</label>
+          <select id="ch_secteur" oninput="calcCharte()">
+            <option value="industrie">Industrie manufacturière</option>
+            <option value="agro">Agro-industrie / Agroalimentaire</option>
+            <option value="tourisme">Tourisme & Hospitality</option>
+            <option value="tech">Technologies & Numérique</option>
+            <option value="energie">Énergies renouvelables</option>
+            <option value="sante">Santé & Pharmaco</option>
+            <option value="logistique">Logistique & Transport</option>
+            <option value="immobilier">Immobilier industriel / Entrepôts</option>
+            <option value="autre">Autre secteur</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>Région d'implantation</label>
+          <select id="ch_region" oninput="calcCharte()">
+            <option value="casablanca">Casablanca-Settat (région centrale)</option>
+            <option value="rabat">Rabat-Salé-Kénitra</option>
+            <option value="tanger">Tanger-Tétouan-Al Hoceima</option>
+            <option value="marrakech">Marrakech-Safi</option>
+            <option value="fes">Fès-Meknès</option>
+            <option value="souss">Souss-Massa</option>
+            <option value="oriental">Oriental</option>
+            <option value="laayoune">Laâyoune-Sakia El Hamra (zones Sud)</option>
+            <option value="dakhla">Dakhla-Oued Eddahab</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>Taille de l'entreprise</label>
+          <select id="ch_taille" oninput="calcCharte()">
+            <option value="pme">PME (CA &lt; 200M MAD)</option>
+            <option value="eti">ETI / Grande entreprise</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>Emplois directs créés</label>
+          <input type="number" id="ch_emplois" value="60" min="0" oninput="calcCharte()">
+        </div>
+
+        <div class="fg">
+          <label>Projet dans une ZAI ?</label>
+          <select id="ch_zai" oninput="calcCharte()">
+            <option value="non">Non</option>
+            <option value="oui">Oui — Zone d'Accélération Industrielle</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">💰 Primes calculées — Charte 2023</div>
+        <div id="charte_result"></div>
+        <div class="src">Base légale : Dahir n°1-22-74 du 24/01/2023 — Loi n°60-22</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec-sep"></div>
+
+<!-- ════════════════════════════════════════════════════
+     MODULE 7 — AUTO-ENTREPRENEUR
+═════════════════════════════════════════════════════ -->
+<section id="sec-ae">
+  <div class="sec-head">
+    <div class="sec-icon red">🛠</div>
+    <div>
+      <div class="sec-title">Régime Auto-Entrepreneur</div>
+      <div class="sec-sub">CGI Art.42 bis · Plafonds CA · Cotisation libératoire · Comparateur vs régime normal</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <div class="card-title">⚙ Paramètres auto-entrepreneur</div>
+
+        <div class="fg">
+          <label>Type d'activité</label>
+          <select id="ae_type" oninput="calcAE()">
+            <option value="commerce">Commerce / Artisanat (plafond 500 000 MAD)</option>
+            <option value="service">Prestataire de services (plafond 200 000 MAD)</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>Chiffre d'affaires annuel encaissé (MAD)</label>
+          <input type="number" id="ae_ca" value="150000" min="0" oninput="calcAE()">
+        </div>
+
+        <div class="fg">
+          <label>Charges professionnelles réelles (MAD)</label>
+          <input type="number" id="ae_charges" value="40000" min="0" oninput="calcAE()">
+          <div class="fg-hint">Pour comparaison avec régime RNR</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">📊 Cotisation & comparaison régimes</div>
+        <div id="ae_result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Footer ══════════════════════════════════════════════════════ -->
+<div style="margin-top:48px;padding:20px 0;border-top:1px solid var(--b3);text-align:center">
+  <div style="font-family:var(--fm);font-size:10px;color:var(--sm);line-height:1.8">
+    <strong style="color:var(--is)">Bases légales :</strong> CGI 2026 (LF n°50-25) · Art.19 IS · Art.73 IR · Art.88-125 TVA · Art.42bis AE · Charte Investissement Dahir n°1-22-74<br>
+    Barèmes IR mis à jour par LF n°60-24 pour 2025 · IS : taux 20% flat depuis LF n°50-22/2023 · Cotisation minimale : 0,5% CA (Art.144)<br>
+    <span style="color:var(--er)">⚠ Simulation indicative — Non opposable à l'Administration fiscale — Consultez un expert-comptable agréé</span>
+  </div>
+</div>
+
+</div><!-- end .page -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CALCULS JAVASCRIPT PURS — CGI 2026
+════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── Formatage ──────────────────────────────────────────────────── */
+const fmt  = n => n == null ? '—' : Number(n).toLocaleString('fr-MA',{minimumFractionDigits:0,maximumFractionDigits:0}) + ' MAD';
+const fmtd = n => n == null ? '—' : Number(n).toLocaleString('fr-MA',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' MAD';
+const pct  = n => n == null ? '—' : Number(n).toLocaleString('fr-MA',{minimumFractionDigits:1,maximumFractionDigits:1}) + ' %';
+const set  = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; }
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE IS — CGI Art.19 (LF n°50-22/2023)
+   Taux : 20% flat pour bénéfice < 100M MAD
+          35% pour bénéfice ≥ 100M MAD
+          37% banques/assurances
+   Cotisation minimale : 0,5% × CA HT
+══════════════════════════════════════════════════════════════════ */
+function calcIS() {
+  const regime   = document.getElementById('is_regime').value;
+  const benefice = parseFloat(document.getElementById('is_benefice').value) || 0;
+  const ca       = parseFloat(document.getElementById('is_ca').value) || 0;
+  const deficit  = document.getElementById('is_deficit').value === 'oui';
+  const annee    = parseInt(document.getElementById('is_annee').value) || 1;
+
+  // Afficher/masquer année
+  const wrapAnnee = document.getElementById('is_annee_wrap');
+  wrapAnnee.style.display = ['export_exo','zai'].includes(regime) ? 'block' : 'none';
+
+  // Hint régime
+  const hints = {
+    normal:    '→ CGI Art.19-I-A : taux unique 20% · applicable si bénéfice net < 100 000 000 MAD',
+    mega:      '→ CGI Art.19-I-B : taux 35% · sociétés dont bénéfice ≥ 100 000 000 MAD',
+    banque:    '→ CGI Art.19-II : taux 37% · établissements de crédit, banques, assurances',
+    export_exo:'→ CGI Art.6-II-B : exonération 5 ans, taux 20% années 6-10',
+    zai:       '→ CGI Art.6-II-B-8° : ZAI — exonération 5 ans, taux 20% années 6-10',
+    cfc:       '→ CGI Art.6-I-D (CFC) : taux réduit 15%',
+    agri:      '→ CGI Art.46 : taux IS agricole 17,5%',
+  };
+  document.getElementById('is_regime_hint').textContent = hints[regime] || '';
+
+  // Calcul IS
+  let tauxApplique = 0, isCalcule = 0, label = '', tranches = [], exonere = false;
+  const beneficeImpo = deficit ? 0 : benefice;
+
+  if(regime === 'normal') {
+    label = 'Taux normal 20%';
+    tauxApplique = 20;
+    isCalcule = beneficeImpo * 0.20;
+    tranches = [{label:'Bénéfice net',taux:20,montant:beneficeImpo,is:isCalcule}];
+  } else if(regime === 'mega') {
+    label = 'Taux 35% (bénéfice ≥ 100M MAD)';
+    tauxApplique = 35;
+    isCalcule = beneficeImpo * 0.35;
+    tranches = [{label:'Bénéfice net',taux:35,montant:beneficeImpo,is:isCalcule}];
+  } else if(regime === 'banque') {
+    label = 'Banques / Assurances 37%';
+    tauxApplique = 37;
+    isCalcule = beneficeImpo * 0.37;
+    tranches = [{label:'Bénéfice net',taux:37,montant:beneficeImpo,is:isCalcule}];
+  } else if(regime === 'export_exo' || regime === 'zai') {
+    if(annee <= 5) {
+      label = `Exonération totale (année ${annee}/5)`;
+      tauxApplique = 0; isCalcule = 0; exonere = true;
+    } else if(annee <= 10) {
+      label = `Taux réduit 20% (année ${annee}/10)`;
+      tauxApplique = 20; isCalcule = beneficeImpo * 0.20;
+    } else {
+      label = `Taux normal 20% (après année 10)`;
+      tauxApplique = 20; isCalcule = beneficeImpo * 0.20;
+    }
+    tranches = [{label:'Bénéfice net',taux:tauxApplique,montant:beneficeImpo,is:isCalcule}];
+  } else if(regime === 'cfc') {
+    label = 'CFC — Casablanca Finance City 15%';
+    tauxApplique = 15; isCalcule = beneficeImpo * 0.15;
+    tranches = [{label:'Bénéfice net',taux:15,montant:beneficeImpo,is:isCalcule}];
+  } else if(regime === 'agri') {
+    label = 'IS Agricole 17,5%';
+    tauxApplique = 17.5; isCalcule = beneficeImpo * 0.175;
+    tranches = [{label:'Bénéfice net',taux:17.5,montant:beneficeImpo,is:isCalcule}];
+  }
+
+  // Cotisation minimale : 0,5% × CA HT
+  const cotisMin = ca * 0.005;
+  // IS dû = max(IS calculé, cotisation minimale) — sauf exonération
+  const isDu = exonere ? 0 : Math.max(isCalcule, cotisMin);
+  const cmAppliquee = isDu === cotisMin && !exonere && cotisMin > isCalcule;
+  const resultatNet = benefice - isDu;
+  const tauxEff = benefice > 0 ? (isDu / benefice) * 100 : 0;
+
+  // Affichage hero
+  set('is_montant_du', exonere ? '0 MAD' : fmt(isDu));
+  set('is_regime_lbl', label);
+
+  // Rows
+  document.getElementById('is_rows').innerHTML = `
+    <div class="r-row"><span class="rl">Régime fiscal</span><span class="rv blue" style="font-size:11px">${label}</span></div>
+    <div class="r-row"><span class="rl">Bénéfice fiscal</span><span class="rv">${fmt(beneficeImpo)}</span></div>
+    <div class="r-row"><span class="rl">IS calculé (${tauxApplique}%)</span><span class="rv gold">${fmt(isCalcule)}</span></div>
+    <div class="r-row"><span class="rl">Cotisation minimale (0,5% × CA)</span><span class="rv ${cmAppliquee?'er':''}">${fmt(cotisMin)}</span></div>
+    <div class="r-row tot"><span class="rl">IS effectivement dû</span><span class="rv gold">${fmt(isDu)}</span></div>
+    <div class="r-row"><span class="rl">Taux effectif</span><span class="rv">${pct(tauxEff)}</span></div>
+    <div class="r-row"><span class="rl">Résultat net après IS</span><span class="rv ok">${fmt(resultatNet)}</span></div>
+  `;
+
+  // KPIs
+  document.getElementById('is_kpis').style.display = 'grid';
+  set('kpi_is_eff', pct(tauxEff));
+  set('kpi_is_net', fmt(resultatNet));
+  set('kpi_is_cm', fmt(cotisMin));
+
+  // Alertes
+  let alerts = '';
+  if(exonere) alerts += `<div class="alert ok">✅ Exonération totale IS — Aucun impôt dû pour l'année ${annee}. Cotisation minimale suspendue pendant 36 mois (CGI Art.144-C).</div>`;
+  if(cmAppliquee) alerts += `<div class="alert warn">⚠ Cotisation minimale appliquée : ${fmt(cotisMin)} > IS calculé ${fmt(isCalcule)}. L'IS calculé est en dessous du minimum légal.</div>`;
+  if(deficit) alerts += `<div class="alert info">ℹ Exercice déficitaire : IS calculé = 0. La cotisation minimale de ${fmt(cotisMin)} reste due (CGI Art.144-A).</div>`;
+  if(regime === 'normal' && benefice >= 100000000) alerts += `<div class="alert er">⚠ Bénéfice ≥ 100M MAD détecté — Le taux applicable est 35% (Art.19-I-B), non 20%. Vérifiez le régime.</div>`;
+  document.getElementById('is_alert_wrap').innerHTML = alerts;
+
+  // Tableau tranches
+  if(tranches.length > 0) {
+    document.getElementById('is_tranche_wrap').style.display = 'block';
+    document.getElementById('is_tranches').innerHTML = `
+      <thead><tr><th>Base imposable</th><th>Taux</th><th>IS</th></tr></thead>
+      <tbody>${tranches.map(t=>`<tr><td>${fmt(t.montant)}</td><td style="font-family:var(--fm)">${t.taux}%</td><td style="font-family:var(--fm);color:var(--gold)">${fmt(t.is)}</td></tr>`).join('')}</tbody>
+    `;
+  }
+
+  // Source
+  set('is_src', 'Source : CGI 2026 Art.19 (LF n°50-22/2023) · Art.144 Cotisation minimale');
+
+  // Comparateur multi-régimes
+  const regimes = [
+    {nom:'Taux normal 20%',         taux:20,   is:beneficeImpo*0.20},
+    {nom:'Grandes sociétés 35%',    taux:35,   is:beneficeImpo*0.35},
+    {nom:'Banques/Assurances 37%',  taux:37,   is:beneficeImpo*0.37},
+    {nom:'Export/ZAI — Exo 5 ans',  taux:0,    is:0},
+    {nom:'CFC 15%',                 taux:15,   is:beneficeImpo*0.15},
+    {nom:'Agricole 17,5%',          taux:17.5, is:beneficeImpo*0.175},
+  ];
+  const best = regimes.reduce((a,b)=>a.is<=b.is?a:b);
+  document.getElementById('is_comp_grid').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      ${regimes.map(r=>`
+        <div class="cmp-item ${r.nom===best.nom?'best':''}">
+          <div>
+            <div class="cmp-name">${r.nom}</div>
+            <div class="cmp-rate">Taux : ${r.taux}%</div>
+          </div>
+          <div style="text-align:right">
+            <div class="cmp-val">${fmt(Math.max(r.is,cotisMin))}</div>
+            ${r.nom===best.nom?'<span class="cmp-badge ok">✓ Optimal</span>':''}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="alert info" style="margin-top:10px">ℹ Base de comparaison : bénéfice de <strong>${fmt(beneficeImpo)}</strong>. Le régime optimal pour votre situation est <strong>${best.nom}</strong> (IS : ${fmt(Math.max(best.is,cotisMin))}).</div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE IR — CGI Art.73 (LF n°60-24, barème 2025)
+   Barème :
+   0%    ≤ 40 000 MAD
+   10%   40 001 — 60 000 MAD
+   20%   60 001 — 80 000 MAD
+   30%   80 001 — 100 000 MAD
+   34%   100 001 — 180 000 MAD
+   37%   > 180 000 MAD
+══════════════════════════════════════════════════════════════════ */
+const IR_TRANCHES = [
+  {min:0,        max:40000,   taux:0,   lbl:'≤ 40 000 MAD'},
+  {min:40001,    max:60000,   taux:10,  lbl:'40 001 — 60 000 MAD'},
+  {min:60001,    max:80000,   taux:20,  lbl:'60 001 — 80 000 MAD'},
+  {min:80001,    max:100000,  taux:30,  lbl:'80 001 — 100 000 MAD'},
+  {min:100001,   max:180000,  taux:34,  lbl:'100 001 — 180 000 MAD'},
+  {min:180001,   max:Infinity,taux:37,  lbl:'> 180 000 MAD'},
+];
+
+function calcIR_bareme(base) {
+  let total = 0;
+  const detail = [];
+  for(const t of IR_TRANCHES) {
+    if(base <= t.min - 1) break;
+    const imposable = Math.min(base, t.max) - t.min + 1;
+    if(imposable <= 0) continue;
+    const ir = imposable * (t.taux / 100);
+    detail.push({...t, imposable, ir});
+    total += ir;
+  }
+  return {total, detail};
+}
+
+function calcIR() {
+  const cat      = document.getElementById('ir_cat').value;
+  const revenu   = parseFloat(document.getElementById('ir_revenu').value) || 0;
+  const charges  = parseFloat(document.getElementById('ir_charges').value) || 0;
+  const personnes= parseInt(document.getElementById('ir_personnes').value) || 0;
+
+  let irDu = 0, label = '', base = 0, detail = [], tauxMarg = 0;
+
+  if(cat === 'foncier_inf') {
+    // 10% libératoire sur montant brut
+    irDu = revenu * 0.10;
+    label = 'Revenus fonciers < 120K MAD — 10% libératoire (CGI Art.73-II-B-5°)';
+    document.getElementById('ir_montant_du').textContent = fmt(irDu);
+    document.getElementById('ir_regime_lbl').textContent = label;
+    document.getElementById('ir_kpis').style.display = 'grid';
+    set('kpi_ir_moy', pct(10)); set('kpi_ir_marg', pct(10)); set('kpi_ir_net', fmt(revenu - irDu));
+    document.getElementById('ir_rows').innerHTML = `
+      <div class="r-row"><span class="rl">Revenu foncier brut</span><span class="rv">${fmt(revenu)}</span></div>
+      <div class="r-row tot"><span class="rl">IR libératoire 10%</span><span class="rv gold">${fmt(irDu)}</span></div>
+      <div class="r-row"><span class="rl">Revenu net</span><span class="rv ok">${fmt(revenu - irDu)}</span></div>
+    `;
+    document.getElementById('ir_tranches').innerHTML = '';
+    set('ir_src','CGI Art.73-II-B-5° · Retenue libératoire — dispense de déclaration');
+    renderIRBarem(revenu, 10);
+    return;
+  }
+
+  if(cat === 'capitaux') {
+    // RAS 10% dividendes libératoire
+    irDu = revenu * 0.10;
+    label = 'Dividendes / RCM — RAS 10% libératoire (CGI Art.73-II-B-7°)';
+    document.getElementById('ir_montant_du').textContent = fmt(irDu);
+    document.getElementById('ir_regime_lbl').textContent = label;
+    document.getElementById('ir_kpis').style.display = 'grid';
+    set('kpi_ir_moy', pct(10)); set('kpi_ir_marg', pct(10)); set('kpi_ir_net', fmt(revenu - irDu));
+    document.getElementById('ir_rows').innerHTML = `
+      <div class="r-row"><span class="rl">Produits d'actions / dividendes</span><span class="rv">${fmt(revenu)}</span></div>
+      <div class="r-row tot"><span class="rl">RAS IR 10% (libératoire)</span><span class="rv gold">${fmt(irDu)}</span></div>
+      <div class="r-row"><span class="rl">Net perçu après RAS</span><span class="rv ok">${fmt(revenu - irDu)}</span></div>
+    `;
+    document.getElementById('ir_tranches').innerHTML = '';
+    set('ir_src','CGI Art.73-II-B-7° · RAS libératoire sur dividendes résidents');
+    renderIRBarem(revenu, 10);
+    return;
+  }
+
+  // Salariés / RNR / foncier sup
+  const dedPerso = Math.min(personnes * 360, 2160);
+  base = Math.max(0, revenu - charges - dedPerso);
+  const {total, detail: tranches} = calcIR_bareme(base);
+  irDu = total;
+
+  // Cotisation minimale IR : 0,5% × revenu pour RNR/RNS professionnels (hors salariés)
+  const cotMinIR = cat === 'foncier_sup' ? revenu * 0.005 : 0;
+  irDu = Math.max(irDu, cotMinIR);
+
+  const tauxMoyen = revenu > 0 ? (irDu / revenu) * 100 : 0;
+  tauxMarg = tranches.length > 0 ? tranches[tranches.length-1].taux : 0;
+
+  label = cat === 'foncier_sup'
+    ? 'Revenus fonciers ≥ 120K MAD — Barème progressif'
+    : 'Revenus salariaux / professionnels — Barème progressif';
+
+  document.getElementById('ir_montant_du').textContent = fmt(irDu);
+  document.getElementById('ir_regime_lbl').textContent = label;
+  document.getElementById('ir_kpis').style.display = 'grid';
+  set('kpi_ir_moy', pct(tauxMoyen));
+  set('kpi_ir_marg', pct(tauxMarg));
+  set('kpi_ir_net', fmt(revenu - irDu));
+
+  document.getElementById('ir_rows').innerHTML = `
+    <div class="r-row"><span class="rl">Revenu brut</span><span class="rv">${fmt(revenu)}</span></div>
+    <div class="r-row"><span class="rl">Charges déductibles</span><span class="rv">${fmt(charges)}</span></div>
+    <div class="r-row"><span class="rl">Déduction personnes à charge (${personnes} × 360)</span><span class="rv">${fmt(dedPerso)}</span></div>
+    <div class="r-row"><span class="rl">Base imposable nette</span><span class="rv">${fmt(base)}</span></div>
+    <div class="r-row"><span class="rl">IR calculé (barème)</span><span class="rv gold">${fmt(total)}</span></div>
+    ${cotMinIR > total ? `<div class="r-row"><span class="rl">Cotisation minimale (0,5%)</span><span class="rv er">${fmt(cotMinIR)}</span></div>` : ''}
+    <div class="r-row tot"><span class="rl">IR effectivement dû</span><span class="rv gold">${fmt(irDu)}</span></div>
+    <div class="r-row"><span class="rl">Revenu net après IR</span><span class="rv ok">${fmt(revenu - irDu)}</span></div>
+  `;
+
+  document.getElementById('ir_tranches').innerHTML = `
+    <thead><tr><th>Tranche (CGI Art.73)</th><th>Taux</th><th>Base imposable</th><th>IR / tranche</th></tr></thead>
+    <tbody>${IR_TRANCHES.map(t=>{
+      const found = tranches.find(d=>d.min===t.min);
+      const active = found && found.ir > 0;
+      return `<tr class="${active?'active-tranche':''}">
+        <td>${t.lbl}</td>
+        <td style="font-family:var(--fm)">${t.taux}%</td>
+        <td style="font-family:var(--fm)">${found?fmt(found.imposable):'—'}</td>
+        <td style="font-family:var(--fm);color:${active?'var(--gold)':'var(--sm)'}">${found?fmt(found.ir):'—'}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  `;
+
+  set('ir_src','Source : CGI 2026 Art.73-I · LF n°60-24 pour 2025 — Barème mis à jour (seuil exo 40 000 MAD, max 37%)');
+  renderIRBarem(revenu, tauxMoyen);
+}
+
+function renderIRBarem(revenu, tauxMoyen) {
+  const barems = IR_TRANCHES;
+  const maxRev = Math.max(revenu, 200000);
+  const html = barems.map(t=>{
+    const colors = ['#E8F5E9','#C5E1A5','#FFF9C4','#FFE0B2','#FFCCBC','#FFCDD2'];
+    const idx = barems.indexOf(t);
+    const w = Math.min(100, ((Math.min(t.max===Infinity?maxRev:t.max,maxRev))/maxRev)*100);
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:10px">
+      <div style="width:55px;font-family:var(--fm);color:var(--sm);text-align:right">${t.taux}%</div>
+      <div style="flex:1;height:6px;background:var(--b3);border-radius:3px;overflow:hidden">
+        <div style="width:${w}%;height:100%;background:${idx<2?'var(--ok)':idx<4?'var(--gold)':'var(--er)'};border-radius:3px"></div>
+      </div>
+      <div style="font-family:var(--fm);color:var(--sm);font-size:9px;width:120px">${t.lbl}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('ir_barem_visual').innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE TVA
+══════════════════════════════════════════════════════════════════ */
+function calcTVA() {
+  const ht      = parseFloat(document.getElementById('tva_ht').value) || 0;
+  const type    = document.getElementById('tva_type').value;
+  const dedBrut = parseFloat(document.getElementById('tva_ded').value) || 0;
+  const droit   = document.getElementById('tva_droit').value;
+  const prorata = parseFloat(document.getElementById('tva_prorata').value) || 100;
+
+  document.getElementById('tva_prorata_wrap').style.display = droit === 'partiel' ? 'block' : 'none';
+
+  const tvaMap = {
+    '20':20,'14-transport':14,'14-energie':14,'14-btp':14,
+    '10-hotel':10,'10-banque':10,'10-eau-ind':10,'10-location':10,
+    '7-eau':7,'7-medicament':7,'7-sucre':7,'7-conserves':7,
+    '0-export':0,'0-invest':0,'0-zai':0,'0-etat':0,
+    'exo-agri':0,'exo-edu':0,'exo-sante':0,
+  };
+  const exonere = type.startsWith('exo-');
+  const taux = tvaMap[type] ?? 20;
+  const tvaCollectee = ht * (taux / 100);
+  const ttc = ht + tvaCollectee;
+
+  let tvaDedReel = 0;
+  if(!exonere && droit === 'oui') tvaDedReel = dedBrut;
+  else if(!exonere && droit === 'partiel') tvaDedReel = dedBrut * (prorata / 100);
+
+  const tvaNette = Math.max(0, tvaCollectee - tvaDedReel);
+  const creditTVA = tvaCollectee - tvaDedReel < 0 ? tvaDedReel - tvaCollectee : 0;
+
+  const isZeroWithDed = taux === 0 && !exonere;
+  const remboursable  = isZeroWithDed && (type === '0-export');
+
+  set('tva_montant', exonere ? '0 MAD' : fmt(tvaNette));
+  set('tva_lbl', exonere ? 'Opération exonérée sans TVA' : `Taux ${taux}% · TVA nette à reverser`);
+
+  document.getElementById('tva_rows').innerHTML = `
+    <div class="r-row"><span class="rl">Base HT</span><span class="rv">${fmt(ht)}</span></div>
+    <div class="r-row"><span class="rl">Taux TVA appliqué</span><span class="rv" style="font-size:20px;font-family:var(--ft)">${taux}%</span></div>
+    <div class="r-row"><span class="rl">TVA collectée</span><span class="rv gold">${fmt(tvaCollectee)}</span></div>
+    <div class="r-row"><span class="rl">TVA déductible (${droit==='partiel'?prorata+'%':droit==='oui'?'100%':'0%'})</span><span class="rv ok">${fmt(tvaDedReel)}</span></div>
+    <div class="r-row tot"><span class="rl">TVA nette à reverser</span><span class="rv gold">${fmt(tvaNette)}</span></div>
+    ${creditTVA > 0 ? `<div class="r-row"><span class="rl">Crédit de TVA</span><span class="rv ok">${fmt(creditTVA)}</span></div>` : ''}
+    <div class="r-row"><span class="rl">Montant TTC</span><span class="rv">${fmt(ttc)}</span></div>
+  `;
+
+  let alerts = '';
+  if(exonere) alerts += `<div class="alert ok">✅ Opération exonérée (CGI Art.91) — Aucune TVA collectée ni déductible. Pas de droit à remboursement.</div>`;
+  if(isZeroWithDed) alerts += `<div class="alert ok">✅ Taux 0% avec droit à déduction — La TVA sur vos achats est récupérable.</div>`;
+  if(remboursable) alerts += `<div class="alert ok">✅ Exportateur — Crédit TVA remboursable (CGI Art.103). Formulaire à déposer auprès de la DGI.</div>`;
+  if(creditTVA > 0 && !remboursable) alerts += `<div class="alert info">ℹ Crédit de TVA de ${fmt(creditTVA)} reportable sur la déclaration suivante.</div>`;
+  if(droit === 'non' && dedBrut > 0) alerts += `<div class="alert warn">⚠ Activité exonérée sans droit à déduction — La TVA sur achats (${fmt(dedBrut)}) constitue un coût définitif.</div>`;
+  document.getElementById('tva_alerts').innerHTML = alerts;
+
+  const articles = {
+    '20':'Art.96 CGI','14-transport':'Art.99-2°','14-energie':'Art.99-3°',
+    '10-hotel':'Art.99-4°','10-banque':'Art.99-5°','7-eau':'Art.99-6°',
+    '7-medicament':'Art.99-6°','0-export':'Art.92-I-1°','0-invest':'Art.92-I-6°',
+    '0-zai':'Art.92-I (ZAI)','exo-agri':'Art.91','exo-edu':'Art.91','exo-sante':'Art.91',
+  };
+  set('tva_src', `Base légale : CGI 2026 ${articles[type]||'Art.96'}`);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE COMPARATEUR IS vs IR
+══════════════════════════════════════════════════════════════════ */
+function calcComp() {
+  const benefice    = parseFloat(document.getElementById('cmp_benefice').value) || 0;
+  const remun       = parseFloat(document.getElementById('cmp_remun').value) || 0;
+  const chargesFam  = parseInt(document.getElementById('cmp_charges_fam').value) || 0;
+  const distPct     = parseFloat(document.getElementById('cmp_dist_pct').value) || 0;
+
+  // ── RÉGIME IS ─────────────────────────────────────────
+  // Bénéfice imposable IS = bénéfice total - rémunération dirigeant (déductible)
+  const beneficeIS = Math.max(0, benefice - remun);
+  const isCalc     = beneficeIS * 0.20;
+  const cotMinIS   = (benefice * 0.8) * 0.005; // approx CA = 80% du bénéfice
+  const isDu       = Math.max(isCalc, cotMinIS);
+  const resNetIS   = beneficeIS - isDu;
+  // IR sur rémunération du dirigeant
+  const dedPersIS  = Math.min(chargesFam * 360, 2160);
+  const baseIRDir  = Math.max(0, remun - dedPersIS);
+  const irDir      = calcIR_bareme(baseIRDir).total;
+  // RAS sur dividendes distribués
+  const dividendes = resNetIS * (distPct / 100);
+  const rasDiv     = dividendes * 0.10;
+  // Charge totale IS
+  const chargeTotIS = isDu + irDir + rasDiv;
+  const pctIS       = benefice > 0 ? (chargeTotIS / benefice) * 100 : 0;
+
+  // ── RÉGIME IR ─────────────────────────────────────────
+  // Toute le bénéfice est imposé à l'IR du dirigeant
+  const dedPersIR = Math.min(chargesFam * 360, 2160);
+  const baseIR    = Math.max(0, benefice - dedPersIR);
+  const irTotal   = calcIR_bareme(baseIR).total;
+  const pctIR     = benefice > 0 ? (irTotal / benefice) * 100 : 0;
+
+  const isWinner  = chargeTotIS <= irTotal;
+
+  document.getElementById('comp_result').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="${isWinner?'consol-block':'card'}" style="padding:16px">
+        <div style="font-size:10px;font-family:var(--fm);color:${isWinner?'rgba(255,255,255,.4)':'var(--sm)'};margin-bottom:6px;text-transform:uppercase">RÉGIME IS</div>
+        <div style="font-family:var(--ft);font-size:26px;font-weight:800;color:${isWinner?'var(--gl)':'var(--gold)'}">${fmt(chargeTotIS)}</div>
+        <div style="font-size:11px;color:${isWinner?'rgba(255,255,255,.4)':'var(--sm)'}">Charge totale ${pct(pctIS)}</div>
+        ${isWinner?'<div style="margin-top:8px;font-size:10px;color:var(--ok);font-family:var(--fm)">✓ OPTIMAL</div>':''}
+      </div>
+      <div class="${!isWinner?'consol-block':'card'}" style="padding:16px">
+        <div style="font-size:10px;font-family:var(--fm);color:${!isWinner?'rgba(255,255,255,.4)':'var(--sm)'};margin-bottom:6px;text-transform:uppercase">RÉGIME IR</div>
+        <div style="font-family:var(--ft);font-size:26px;font-weight:800;color:${!isWinner?'var(--gl)':'var(--gold)'}">${fmt(irTotal)}</div>
+        <div style="font-size:11px;color:${!isWinner?'rgba(255,255,255,.4)':'var(--sm)'}">Charge totale ${pct(pctIR)}</div>
+        ${!isWinner?'<div style="margin-top:8px;font-size:10px;color:var(--ok);font-family:var(--fm)">✓ OPTIMAL</div>':''}
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--is);margin-bottom:10px">
+      <strong>Économie réalisable :</strong> <span style="color:var(--ok);font-family:var(--fm);font-weight:700">${fmt(Math.abs(chargeTotIS - irTotal))}</span>
+      en optant pour le régime ${isWinner ? 'IS' : 'IR'}.
+    </div>
+
+    <table class="t-table">
+      <thead><tr><th>Élément</th><th>Régime IS</th><th>Régime IR</th></tr></thead>
+      <tbody>
+        <tr><td>IS société</td><td style="font-family:var(--fm);color:var(--gold)">${fmt(isDu)}</td><td style="font-family:var(--fm);color:var(--sm)">—</td></tr>
+        <tr><td>IR dirigeant</td><td style="font-family:var(--fm)">${fmt(irDir)}</td><td style="font-family:var(--fm);color:var(--gold)">${fmt(irTotal)}</td></tr>
+        <tr><td>RAS dividendes (10%)</td><td style="font-family:var(--fm)">${fmt(rasDiv)}</td><td style="font-family:var(--fm);color:var(--sm)">—</td></tr>
+        <tr style="font-weight:700"><td>Charge totale</td><td style="font-family:var(--fm);color:var(--gold)">${fmt(chargeTotIS)}</td><td style="font-family:var(--fm);color:var(--gold)">${fmt(irTotal)}</td></tr>
+        <tr><td>Taux effectif global</td><td style="font-family:var(--fm)">${pct(pctIS)}</td><td style="font-family:var(--fm)">${pct(pctIR)}</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert info" style="margin-top:10px">
+      ℹ <strong>Note :</strong> L'IS permet de piloter la fiscalité via la rémunération du dirigeant.
+      L'IR est avantageux en cas de déficit reportable sur le foyer fiscal.
+      Ce calcul est indicatif et ne tient pas compte des cotisations sociales (CNSS/CIMR).
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE CHARGE CONSOLIDÉE DIRIGEANT
+══════════════════════════════════════════════════════════════════ */
+function calcConsol() {
+  const benefice  = parseFloat(document.getElementById('cons_benefice').value) || 0;
+  const remun     = parseFloat(document.getElementById('cons_remun').value) || 0;
+  const dividendes= parseFloat(document.getElementById('cons_div').value) || 0;
+  const autres    = parseFloat(document.getElementById('cons_autres').value) || 0;
+  const chargesFam= parseInt(document.getElementById('cons_charges_fam').value) || 0;
+
+  // IS
+  const beneficeIS = Math.max(0, benefice - remun);
+  const isDu       = Math.max(beneficeIS * 0.20, benefice * 0.005);
+
+  // RAS dividendes
+  const rasDivTot = dividendes * 0.10;
+
+  // IR sur rémunération + autres revenus
+  const dedPers   = Math.min(chargesFam * 360, 2160);
+  const baseIR    = Math.max(0, remun + autres - dedPers);
+  const irPerso   = calcIR_bareme(baseIR).total;
+
+  const totalFisc = isDu + rasDivTot + irPerso;
+  const pctGlobal = benefice > 0 ? (totalFisc / benefice) * 100 : 0;
+  const netDirig  = remun + dividendes - irPerso - rasDivTot;
+
+  document.getElementById('consol_result').innerHTML = `
+    <div class="consol-block">
+      <div class="consol-title">💼 Vision Consolidée — Exercice ${new Date().getFullYear()}</div>
+      <div class="consol-row"><span class="cl">Bénéfice avant IS</span><span class="cv">${fmt(benefice)}</span></div>
+      <div class="consol-row"><span class="cl">IS société payé</span><span class="cv">${fmt(isDu)}</span></div>
+      <div class="consol-row"><span class="cl">Rémunération dirigeant</span><span class="cv">${fmt(remun)}</span></div>
+      <div class="consol-row"><span class="cl">IR sur rémunération</span><span class="cv">${fmt(irPerso)}</span></div>
+      <div class="consol-row"><span class="cl">Dividendes distribués</span><span class="cv">${fmt(dividendes)}</span></div>
+      <div class="consol-row"><span class="cl">RAS dividendes (10%)</span><span class="cv">${fmt(rasDivTot)}</span></div>
+      <div class="consol-row tot"><span class="cl" style="color:rgba(255,255,255,.7)">CHARGE FISCALE TOTALE</span><span class="cv">${fmt(totalFisc)}</span></div>
+      <div style="margin-top:10px;padding:10px;background:rgba(184,134,42,.12);border-radius:8px">
+        <div style="font-size:9px;color:rgba(255,255,255,.35);font-family:var(--fm);text-transform:uppercase;margin-bottom:5px">Taux effectif global</div>
+        <div style="font-family:var(--ft);font-size:28px;font-weight:800;color:var(--gl)">${pct(pctGlobal)}</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px">du bénéfice brut</div>
+      </div>
+      <div style="margin-top:10px;padding:10px;background:rgba(26,107,60,.12);border-radius:8px">
+        <div style="font-size:9px;color:rgba(255,255,255,.35);font-family:var(--fm);text-transform:uppercase;margin-bottom:4px">Net perçu par le dirigeant</div>
+        <div style="font-family:var(--ft);font-size:22px;font-weight:800;color:#6FCF97">${fmt(netDirig)}</div>
+      </div>
+    </div>
+  `;
+
+  const taux_moyen_ir = remun > 0 ? (irPerso / remun) * 100 : 0;
+  let recomms = '';
+  if(pctGlobal > 30) recomms += `<div class="alert warn">⚠ Taux effectif global élevé (${pct(pctGlobal)}). Envisagez une optimisation : arbitrage rémunération/dividendes, avantages en nature, plan épargne retraite (CGI Art.28-IV).</div>`;
+  if(pctGlobal <= 20) recomms += `<div class="alert ok">✅ Charge fiscale bien optimisée (${pct(pctGlobal)}). La structure actuelle est efficiente.</div>`;
+  if(dividendes > beneficeIS * 0.7) recomms += `<div class="alert info">ℹ Taux de distribution élevé (${pct((dividendes/Math.max(beneficeIS,1))*100)}). Conserver des réserves améliore la capacité d'investissement et réduit la charge fiscale immédiate.</div>`;
+  recomms += `<div class="alert info">ℹ Poste IS : ${fmt(isDu)} · RAS div. : ${fmt(rasDivTot)} · IR dirigeant : ${fmt(irPerso)}. La rémunération optimal est de <strong>${fmt(Math.min(remun, 180000))}</strong> (tranche 34%).</div>`;
+
+  document.getElementById('consol_recomm').innerHTML = recomms;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE CHARTE INVESTISSEMENT 2023
+══════════════════════════════════════════════════════════════════ */
+function calcCharte() {
+  const invest   = parseFloat(document.getElementById('ch_invest').value) || 0;
+  const secteur  = document.getElementById('ch_secteur').value;
+  const region   = document.getElementById('ch_region').value;
+  const taille   = document.getElementById('ch_taille').value;
+  const emplois  = parseInt(document.getElementById('ch_emplois').value) || 0;
+  const zai      = document.getElementById('ch_zai').value === 'oui';
+
+  // Structurant ? ≥ 20M MAD OU ≥ 50 emplois
+  const structurant = invest >= 20000000 || emplois >= 50;
+
+  // Prime de base : 10-15% selon montant
+  let primeBase = 0;
+  if(structurant) {
+    if(invest >= 500000000) primeBase = 15;
+    else if(invest >= 100000000) primeBase = 12;
+    else primeBase = 10;
+  }
+
+  // Prime territoriale
+  const primesTerrit = {
+    casablanca:0, rabat:0, tanger:5,
+    marrakech:5, fes:5, souss:10,
+    oriental:10, laayoune:15, dakhla:15,
+  };
+  const primeTerrit = structurant ? (primesTerrit[region] || 5) : 0;
+
+  // Prime sectorielle
+  const primesSectoMap = {
+    industrie:5, agro:5, tourisme:5, tech:5,
+    energie:5, sante:5, logistique:0, immobilier:0, autre:0,
+  };
+  const primeSectorielle = structurant ? (primesSectoMap[secteur] || 0) : 0;
+
+  // Prime PME
+  const primePME = (taille === 'pme' && structurant) ? 5 : 0;
+
+  // Cumul (plafond 30%)
+  const totalPct  = Math.min(primeBase + primeTerrit + primeSectorielle + primePME, 30);
+  const montantPrime = invest * (totalPct / 100);
+
+  // IS en ZAI
+  const isZAIExo = zai ? `Exonération IS 5 ans + taux réduit 20% (années 6-10)` : null;
+
+  if(!structurant) {
+    document.getElementById('charte_result').innerHTML = `
+      <div class="alert warn">⚠ Projet non éligible : investissement < 20M MAD ET emplois < 50. Le seuil structurant (Charte 2023) n'est pas atteint. Les primes de base ne s'appliquent pas.</div>
+      <div style="margin-top:12px;font-size:12px;color:var(--is)">
+        Seuils d'éligibilité :<br>
+        — Montant : ≥ 20 000 000 MAD <em>(actuel : ${fmt(invest)})</em><br>
+        — Emplois : ≥ 50 directs <em>(actuel : ${emplois})</em>
+      </div>
+    `;
+    return;
+  }
+
+  document.getElementById('charte_result').innerHTML = `
+    <div class="prime-row"><span class="prime-lbl">Prime de base</span><span class="prime-val">${primeBase}%</span></div>
+    <div class="prime-row"><span class="prime-lbl">Prime territoriale (${region})</span><span class="prime-val ${primeTerrit===0?'zero':''}">${primeTerrit}%</span></div>
+    <div class="prime-row"><span class="prime-lbl">Prime sectorielle (${secteur})</span><span class="prime-val ${primeSectorielle===0?'zero':''}">${primeSectorielle}%</span></div>
+    <div class="prime-row"><span class="prime-lbl">Prime PME</span><span class="prime-val ${primePME===0?'zero':''}">${primePME}%</span></div>
+    <div style="height:1px;background:var(--bd);margin:4px 0"></div>
+    <div class="prime-row" style="font-weight:700">
+      <span class="prime-lbl">Cumul des primes</span>
+      <span style="font-family:var(--ft);font-size:22px;font-weight:800;color:var(--gold)">${totalPct}% <span style="font-size:12px;color:var(--sm)">/ 30% max</span></span>
+    </div>
+
+    <div class="r-hero" style="margin-top:14px">
+      <div class="r-label">Prime d'investissement estimée</div>
+      <div class="r-amount">${fmt(montantPrime)}</div>
+      <div class="r-sub">Sur investissement de ${fmt(invest)}</div>
+    </div>
+
+    ${isZAIExo ? `<div class="alert ok">✅ ZAI activée : ${isZAIExo}</div>` : ''}
+    <div class="alert info">ℹ Les primes sont versées après validation par la Commission des Investissements. Un cahier des charges est signé avec l'État (engagement sur emplois et montant investi).</div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE AUTO-ENTREPRENEUR — CGI Art.42 bis
+   Commerce : 0,5% CA encaissé ≤ 500 000 MAD
+   Service  : 1% CA encaissé ≤ 200 000 MAD
+══════════════════════════════════════════════════════════════════ */
+function calcAE() {
+  const type    = document.getElementById('ae_type').value;
+  const ca      = parseFloat(document.getElementById('ae_ca').value) || 0;
+  const charges = parseFloat(document.getElementById('ae_charges').value) || 0;
+
+  const plafond = type === 'commerce' ? 500000 : 200000;
+  const taux    = type === 'commerce' ? 0.5 : 1.0;
+  const hors_plafond = ca > plafond;
+  const cotis   = Math.min(ca, plafond) * (taux / 100);
+  const netAE   = ca - cotis;
+
+  // Comparaison régime RNR/RNS (barème progressif)
+  const baseRNR   = Math.max(0, ca - charges);
+  const irRNR     = calcIR_bareme(baseRNR).total;
+  const tauxRNR   = ca > 0 ? (irRNR / ca) * 100 : 0;
+  const tauxAE    = ca > 0 ? (cotis / ca) * 100 : 0;
+  const aeWinner  = cotis <= irRNR;
+
+  document.getElementById('ae_result').innerHTML = `
+    <div class="r-hero">
+      <div class="r-label">Cotisation auto-entrepreneur</div>
+      <div class="r-amount">${fmt(cotis)}</div>
+      <div class="r-sub">Taux ${taux}% sur CA encaissé ≤ ${fmt(plafond)}</div>
+    </div>
+
+    <div class="r-row"><span class="rl">CA déclaré</span><span class="rv">${fmt(ca)}</span></div>
+    <div class="r-row"><span class="rl">Plafond AE (${type})</span><span class="rv ${hors_plafond?'er':''}">${fmt(plafond)}</span></div>
+    <div class="r-row"><span class="rl">Cotisation libératoire ${taux}%</span><span class="rv gold">${fmt(cotis)}</span></div>
+    <div class="r-row tot"><span class="rl">Net après cotisation</span><span class="rv ok">${fmt(netAE)}</span></div>
+
+    ${hors_plafond ? `<div class="alert er">⚠ CA de ${fmt(ca)} dépasse le plafond AE (${fmt(plafond)}). Au-delà, sortie obligatoire du régime et passage au régime RNR/RNS. Cotisation calculée sur ${fmt(plafond)} uniquement.</div>` : ''}
+
+    <div style="margin-top:16px">
+      <div class="card-title">⚖ Comparaison AE vs Régime Normal (RNR)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        <div class="${aeWinner?'consol-block':'card'}" style="padding:14px">
+          <div style="font-size:9px;font-family:var(--fm);color:${aeWinner?'rgba(255,255,255,.4)':'var(--sm)'};text-transform:uppercase;margin-bottom:4px">AE</div>
+          <div style="font-family:var(--ft);font-size:22px;font-weight:800;color:${aeWinner?'var(--gl)':'var(--gold)'}">${fmt(cotis)}</div>
+          <div style="font-size:10px;color:${aeWinner?'rgba(255,255,255,.35)':'var(--sm)'}">Taux ${pct(tauxAE)}</div>
+          ${aeWinner?'<div style="font-size:9px;color:var(--ok);margin-top:6px;font-family:var(--fm)">✓ OPTIMAL</div>':''}
+        </div>
+        <div class="${!aeWinner?'consol-block':'card'}" style="padding:14px">
+          <div style="font-size:9px;font-family:var(--fm);color:${!aeWinner?'rgba(255,255,255,.4)':'var(--sm)'};text-transform:uppercase;margin-bottom:4px">RNR/RNS</div>
+          <div style="font-family:var(--ft);font-size:22px;font-weight:800;color:${!aeWinner?'var(--gl)':'var(--gold)'}">${fmt(irRNR)}</div>
+          <div style="font-size:10px;color:${!aeWinner?'rgba(255,255,255,.35)':'var(--sm)'}">Taux ${pct(tauxRNR)}</div>
+          ${!aeWinner?'<div style="font-size:9px;color:var(--ok);margin-top:6px;font-family:var(--fm)">✓ OPTIMAL</div>':''}
+        </div>
+      </div>
+    </div>
+
+    <div class="src">CGI Art.42 bis · LF n°60-24/2025 · Plafonds : Commerce 500K / Services 200K MAD</div>
+  `;
+}
+
+/* ── Init auto-calcul ─────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  calcIS();
+  calcIR();
+  calcTVA();
+  calcComp();
+  calcConsol();
+  calcCharte();
+  calcAE();
+});
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

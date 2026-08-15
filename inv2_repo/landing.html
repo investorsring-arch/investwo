@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart-Invest.ia — Votre guide IA pour investir au Maroc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#96690F;--gold-light:#B8862A;--gold-pale:#FBF3DE;
+  --ink:#1A1A16;--ink2:#4A4A40;--ink3:#8A8880;
+  --white:#FFFFFE;--bg:#F4F2EB;--border:#E5E0D2;--border2:#D8D0BC;
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--font-body);border:none;background:none}
+
+header{background:rgba(255,253,245,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(184,134,42,.2);position:sticky;top:0;z-index:200}
+.hdr{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;height:60px;gap:1.5rem}
+.logo{font-family:var(--font-title);font-size:19px;font-weight:800}
+.logo .gold{color:var(--gold)}
+.hdr-actions{margin-left:auto;display:flex;gap:8px}
+.btn-in{padding:8px 16px;font-size:11.5px;font-weight:500;color:var(--ink2);border:1px solid var(--border2);border-radius:7px;transition:all .15s}
+.btn-in:hover{border-color:var(--gold);color:var(--gold)}
+.btn-home{padding:8px 18px;font-size:11.5px;font-weight:600;background:var(--gold);color:#fff;border-radius:7px}
+.btn-home:hover{background:var(--gold-light)}
+
+.main{max-width:1240px;margin:0 auto;padding:3rem 2rem 1rem;text-align:center}
+.hero-h1{font-family:var(--font-title);font-size:clamp(22px,3.5vw,38px);font-weight:800;line-height:1.15;letter-spacing:-.02em;max-width:720px;margin:0 auto}
+.hero-h1 .gold{color:var(--gold)}
+.hero-p{margin:.75rem auto 0;font-size:14.5px;color:var(--ink3);line-height:1.65;max-width:600px}
+.chat-box{margin:1.5rem auto 0;border:1px solid var(--border2);background:var(--gold-pale);border-radius:12px;padding:.9rem 1.25rem;display:flex;align-items:center;gap:1rem;max-width:700px;text-align:left}
+.chat-box-label{font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap}
+.chat-box input{flex:1;border:none;background:none;font-family:var(--font-body);font-size:13.5px;color:var(--ink2);outline:none}
+.chat-box input::placeholder{color:var(--ink3)}
+.chat-box button{background:var(--ink);color:#fff;padding:9px 18px;border-radius:8px;font-size:11.5px;font-weight:600;letter-spacing:.04em}
+.chat-box button:hover{background:var(--gold)}
+
+.stats-row{display:flex;justify-content:center;gap:0;margin-top:2.5rem;max-width:900px;margin-left:auto;margin-right:auto}
+.stat-item{flex:1;padding:0 1.5rem;border-left:1px solid var(--border)}
+.stat-item:first-child{border-left:none}
+.stat-num{font-family:var(--font-title);font-size:26px;font-weight:800;color:var(--gold)}
+.stat-label{font-size:11px;color:var(--ink3);line-height:1.4;margin-top:4px}
+
+.preview-block{display:flex;gap:2.5rem;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:20px;padding:2.5rem}
+.preview-text{flex:1;text-align:left}
+.preview-text .section-title{text-align:left}
+.preview-mock{flex:1;background:var(--bg);border-radius:14px;padding:1.5rem;border:1px solid var(--border2)}
+.mock-row{display:flex;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid var(--border);font-size:13px}
+.mock-row:last-child{border-bottom:none}
+.mock-highlight{color:var(--gold);font-weight:700}
+.btn-primary{padding:12px 24px;border-radius:9px;background:var(--ink);color:#fff;font-size:13px;font-weight:600}
+.btn-primary:hover{background:var(--gold)}
+
+.section{max-width:1240px;margin:0 auto;padding:2.25rem 2rem}
+.section-eyebrow{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem}
+.section-title{font-family:var(--font-title);font-size:24px;font-weight:800;margin-bottom:.5rem}
+.section-sub{font-size:13px;color:var(--ink3);max-width:640px;line-height:1.6;margin-bottom:1.25rem}
+
+/* HUBS — points d'entrée, une ligne par module, regroupés visuellement par leur nature de "hub" */
+.hub-list{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--white)}
+.hub-card{border-bottom:1px solid var(--border);padding:1.1rem 1.4rem;display:flex;gap:1.1rem;align-items:center;transition:all .15s;cursor:pointer}
+.hub-list .hub-card:last-child{border-bottom:none}
+.hub-card:hover{background:var(--gold-pale)}
+.hub-code{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--gold);min-width:38px;letter-spacing:.03em}
+.hub-name{font-size:14.5px;color:var(--ink);font-weight:600;margin-bottom:.2rem}
+.hub-desc{font-size:12.5px;color:var(--ink3);line-height:1.5}
+
+/* PARCOURS — sections par etape, chaque etape = un type de besoin, modules affichés en tuiles compactes */
+.journey{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--white)}
+.stage{border-bottom:1px solid var(--border)}
+.stage:last-child{border-bottom:none}
+.stage-hdr{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;background:var(--white)}
+.stage-body-inner{padding:0 1.4rem 1.4rem 4rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.stage-num{font-family:var(--font-title);font-size:19px;color:var(--gold);font-weight:800;min-width:30px}
+.stage-title{font-size:14.5px;color:var(--ink);font-weight:600}
+.stage-sub{font-size:11.5px;color:var(--ink3);margin-top:2px}
+.mod-chip{border:1px solid var(--border2);padding:7px 13px;border-radius:8px;font-size:11.5px;color:var(--ink2);background:var(--bg);cursor:pointer;transition:all .15s}
+.mod-chip:hover,.mod-chip.chip-active{border-color:var(--gold);color:var(--gold);background:var(--gold-pale);font-weight:600}
+.mod-chip.chip-seen{border-style:dashed;color:var(--ink3);font-style:italic}
+.mod-chip.chip-seen:hover,.mod-chip.chip-seen.chip-active{border-style:solid;color:var(--gold);font-style:normal}
+.stage-note{width:100%;font-size:11.5px;color:var(--ink3);font-style:italic;margin-top:.4rem;line-height:1.55}
+
+/* RESSOURCES — module transversaux, secondaires, hors parcours obligatoire */
+.res-grid{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--white)}
+
+footer{border-top:1px solid var(--border);padding:1.5rem 2rem;margin-top:2rem}
+.footer-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:11px;color:var(--ink3)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:all .3s;z-index:999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* PROFILS — étape 1 */
+.section-center{text-align:center;margin-bottom:1.5rem}
+.section-center .section-title{margin-bottom:.4rem}
+.section-center .section-sub{margin:0 auto 1.5rem;text-align:center}
+.profiles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.profile-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:28px 24px;cursor:pointer;transition:all .2s}
+.profile-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.06)}
+.profile-icon{width:40px;height:40px;border-radius:10px;background:var(--gold-pale);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin-bottom:16px}
+.profile-title{font-family:var(--font-title);font-size:17px;font-weight:700;margin-bottom:8px}
+.profile-desc{font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:16px}
+.profile-link{font-size:12px;font-weight:600;color:var(--gold)}
+
+/* LES ESSENTIELS — étape 2 */
+.essentials-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.ess-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px 16px;cursor:pointer;transition:all .2s}
+.ess-card:hover{border-color:var(--gold);background:var(--gold-pale)}
+.ess-num{font-family:var(--font-mono);font-size:10px;color:var(--gold);margin-bottom:9px}
+.ess-name{font-family:var(--font-title);font-size:14px;font-weight:700;line-height:1.3;margin-bottom:7px}
+.ess-desc{font-size:11.5px;color:var(--ink3);line-height:1.5}
+.essentials-footnote{text-align:center;margin-top:24px;font-size:13px;color:var(--ink3)}
+.essentials-footnote a{color:var(--gold);font-weight:600;cursor:pointer}
+
+/* POURQUOI */
+.why-block{background:var(--ink);color:#fff;border-radius:20px;padding:2.5rem 2rem}
+.why-block .section-eyebrow{color:var(--gold-light)}
+.why-block .section-title{color:#fff}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:1.25rem}
+.why-item-title{font-family:var(--font-title);font-size:15px;font-weight:700;margin-bottom:9px;color:var(--gold-light)}
+.why-item-desc{font-size:13px;color:rgba(255,255,255,.65);line-height:1.6}
+
+/* CTA finale */
+.cta-final{text-align:center}
+.cta-final .section-sub{margin-left:auto;margin-right:auto}
+.cta-btn-row{display:flex;gap:12px;justify-content:center;margin-top:22px}
+.btn-outline{padding:12px 24px;border-radius:9px;border:1px solid var(--border2);font-size:13px;font-weight:600;color:var(--ink2)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+@media(max-width:900px){
+  .profiles-grid{grid-template-columns:1fr}
+  .essentials-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:1fr}
+  .preview-block{flex-direction:column}
+  .stats-row{flex-wrap:wrap;gap:1.25rem 0}
+  .stat-item{flex:1 1 40%;border-left:none;border-top:1px solid var(--border);padding-top:1rem}
+}
+
+@media(max-width:800px){
+  .hdr{padding:0 1rem}
+  .stage-body-inner{padding-left:1.4rem}
+  .main,.section{padding-left:1.25rem;padding-right:1.25rem}
+  .chat-box{flex-wrap:wrap}
+  .chat-box input{flex-basis:100%;order:3}
+}
+</style>
+</head>
+<body>
+
+<header><div class="hdr">
+  <div class="logo">Smart-<span class="gold">Invest</span>.ia</div>
+  <div class="hdr-actions">
+    <button class="btn-in" onclick="scrollTo('journey')">Voir les modules</button>
+    <button class="btn-home" onclick="scrollTo('journey')">Voir le parcours</button>
+  </div>
+</div></header>
+
+<div class="main">
+  <h1 class="hero-h1"><span style="white-space:nowrap">Tout ce que les sites officiels</span><br>ne vous <span class="gold">donnent pas</span></h1>
+  <p class="hero-p">Simulateurs fiscaux à jour, aides et exonérations identifiées automatiquement, réponses immédiates à vos questions juridiques et administratives. Un seul endroit, une seule interface.</p>
+  <div class="chat-box">
+    <span class="chat-box-label">Posez vos questions</span>
+    <input type="text" placeholder="Ex. : je veux calculer mes exonérations et savoir dans quelle zone m'implanter…" id="heroAsk">
+    <button onclick="navigateTo('assistant.html','Assistant IA')">DEMANDER →</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">Programmes d'aides identifiés automatiquement</div></div>
+    <div class="stat-item"><div class="stat-num">0%</div><div class="stat-label">IS pendant 5 ans en zone d'accélération</div></div>
+    <div class="stat-item"><div class="stat-num">72h</div><div class="stat-label">Délai de création au Centre Régional</div></div>
+    <div class="stat-item"><div class="stat-num">37</div><div class="stat-label">Modules réunis en un seul endroit</div></div>
+  </div>
+</div>
+
+<!-- ══════════ APERÇU — montrer le calcul, pas seulement l'affirmer ══════════ -->
+<div class="section">
+  <div class="preview-block">
+    <div class="preview-text">
+      <div class="section-eyebrow">Aperçu</div>
+      <div class="section-title">Voyez le calcul, pas seulement la promesse</div>
+      <p class="hero-p" style="text-align:left;margin:0 0 1.25rem;max-width:none">Exemple réel : PME industrielle installée en Zone d'Accélération Industrielle, chiffre d'affaires annuel de 4M MAD.</p>
+      <button class="btn-primary" onclick="navigateTo('simulateur_fiscal.html','Simulateur Fiscal')">Lancer le simulateur →</button>
+    </div>
+    <div class="preview-mock">
+      <div class="mock-row"><span>Régime</span><strong>Zone d'Accélération Industrielle</strong></div>
+      <div class="mock-row"><span>IS années 1 à 5</span><strong class="mock-highlight">0%</strong></div>
+      <div class="mock-row"><span>IS années 6 à 10</span><strong>17,5%</strong></div>
+      <div class="mock-row"><span>Économie estimée sur 5 ans</span><strong class="mock-highlight">612 000 MAD</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ÉTAPE 1 — ORIENTATION ══════════ -->
+<div class="section section-center">
+  <div class="section-eyebrow">Étape 1 — Orientation</div>
+  <div class="section-title">Quel est votre profil ?</div>
+  <div class="section-sub">Chaque profil ouvre un parcours différent. Pas de catalogue à parcourir — cliquez sur le vôtre.</div>
+  <div class="profiles-grid">
+    <div class="profile-card" onclick="navigateTo('guide_de_creation.html','Guide Investisseurs')">
+      <div class="profile-icon">IDE</div>
+      <div class="profile-title">Investisseur étranger</div>
+      <div class="profile-desc">Multinationale ou entrepreneur étranger souhaitant s'implanter au Maroc. Zones d'accélération, avantages fiscaux, création de filiale.</div>
+      <div class="profile-link">Commencer mon parcours →</div>
+    </div>
+    <div class="profile-card" onclick="navigateTo('regime_de_change.html','Régime de Change')">
+      <div class="profile-icon">MRE</div>
+      <div class="profile-title">Marocain du monde</div>
+      <div class="profile-desc">Marocain établi à l'étranger voulant investir au pays. Programme MDM Invest, transferts de devises, avantages spécifiques.</div>
+      <div class="profile-link">Commencer mon parcours →</div>
+    </div>
+    <div class="profile-card" onclick="navigateTo('primes_et_financements.html','Aides et Financements')">
+      <div class="profile-icon">PME</div>
+      <div class="profile-title">TPE / PME marocaine</div>
+      <div class="profile-desc">Entreprise en création ou en extension cherchant des aides CCG, Maroc PME, subventions FDII et garanties bancaires.</div>
+      <div class="profile-link">Commencer mon parcours →</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ÉTAPE 2 — LES 5 ESSENTIELS ══════════ -->
+<div class="section section-center" style="background:var(--white);border-radius:20px;border:1px solid var(--border);">
+  <div class="section-eyebrow">Étape 2 — Ce qui répond à un vrai blocage</div>
+  <div class="section-title">Les 5 questions que tout investisseur se pose</div>
+  <div class="section-sub">Pas de gadgets, pas de modules premium ici — uniquement ce qui débloque une décision concrète.</div>
+  <div class="essentials-grid">
+    <div class="ess-card" onclick="navigateTo('simulateur_fiscal.html','Simulateur Fiscal')">
+      <div class="ess-num">01</div>
+      <div class="ess-name">Combien vais-je payer d'impôts</div>
+      <div class="ess-desc">Simulateur IS / IR / TVA, barèmes CGI 2024.</div>
+    </div>
+    <div class="ess-card" onclick="navigateTo('primes_et_financements.html','Aides et Financements')">
+      <div class="ess-num">02</div>
+      <div class="ess-name">À quelles aides ai-je droit</div>
+      <div class="ess-desc">15+ programmes CCG, Maroc PME, FDII, MDM Invest.</div>
+    </div>
+    <div class="ess-card" onclick="navigateTo('couts_installation.html','Coûts Installation')">
+      <div class="ess-num">03</div>
+      <div class="ess-name">Combien coûte mon installation</div>
+      <div class="ess-desc">SMIG, CNSS, énergie, benchmark 12 régions.</div>
+    </div>
+    <div class="ess-card" onclick="navigateTo('formes_juridiques.html','Forme Juridique')">
+      <div class="ess-num">04</div>
+      <div class="ess-name">Quelle structure juridique choisir</div>
+      <div class="ess-desc">SARL, SA, SAS, succursale, auto-entrepreneur.</div>
+    </div>
+    <div class="ess-card" onclick="navigateTo('guide_de_creation.html','Guide de Création')">
+      <div class="ess-num">05</div>
+      <div class="ess-name">Quelles sont les démarches et délais</div>
+      <div class="ess-desc">Procédure CRI en 8 étapes, documents requis.</div>
+    </div>
+  </div>
+  <div class="essentials-footnote">Besoin d'aller plus loin ? <a onclick="scrollTo('journey')">Voir les 32 autres modules du portail →</a></div>
+</div>
+
+<!-- ══════════ HUBS — les points d'entrée les plus utilisés ══════════ -->
+<div class="section">
+  <div class="section-title">Vos points d'entrée</div>
+  <div class="section-sub" style="max-width:none">Six modules à forte utilisation directe. Chacun ouvre logiquement la suite du parcours dont vous aurez besoin.</div>
+  <div class="hub-list">
+    <a class="hub-card" href="#stage-1" onclick="event.preventDefault();navigateTo('assistant.html','Assistant IA')">
+      <span class="hub-code">IA</span>
+      <div><div class="hub-name">Assistant IA InvestBot</div><div class="hub-desc">Chat Claude Sonnet 4 spécialisé investissement Maroc — le point de départ le plus rapide pour une question précise.</div></div>
+    </a>
+    <a class="hub-card" href="#stage-2" onclick="event.preventDefault();navigateTo('simulateur_fiscal.html','Simulateur Fiscal')">
+      <span class="hub-code">FIS</span>
+      <div><div class="hub-name">Simulateur Fiscal IS / IR / TVA</div><div class="hub-desc">Calculs selon le CGI 2024 — la première question de tout investisseur, avant tout autre calcul.</div></div>
+    </a>
+    <a class="hub-card" href="#stage-2" onclick="event.preventDefault();navigateTo('primes_et_financements.html','Aides et Financements')">
+      <span class="hub-code">AID</span>
+      <div><div class="hub-name">Aides &amp; Financements</div><div class="hub-desc">Profilage en 4 étapes vers 15+ programmes — la douleur classique de l'information dispersée, résolue en un formulaire.</div></div>
+    </a>
+    <a class="hub-card" href="#stage-3" onclick="event.preventDefault();navigateTo('formes_juridiques.html','Choix Forme Juridique')">
+      <span class="hub-code">JUR</span>
+      <div><div class="hub-name">Choix Forme Juridique</div><div class="hub-desc">Arbre de décision SARL / SA / SAS / Succursale — une décision structurante et difficile à revenir en arrière.</div></div>
+    </a>
+    <a class="hub-card" href="#stage-4" onclick="event.preventDefault();navigateTo('business_plans_et_bilans.html','Business Plan')">
+      <span class="hub-code">BP</span>
+      <div><div class="hub-name">Business Plan &amp; Bilan Financier</div><div class="hub-desc">Format prêt pour dépôt bancaire et CRI — le livrable qui matérialise tout le travail des étapes précédentes.</div></div>
+    </a>
+    <a class="hub-card" href="#stage-4" onclick="event.preventDefault();navigateTo('alertes-fiscales.html','Alertes Fiscales')">
+      <span class="hub-code">VRG</span>
+      <div><div class="hub-name">Alertes Fiscales</div><div class="hub-desc">Veille en temps réel sur la Loi de Finances et les circulaires ADII — le module qui fait revenir régulièrement.</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════ PARCOURS — les 37 modules groupés par type/étape ══════════ -->
+<div class="section" id="journey">
+  <div class="section-eyebrow">Le parcours d'un projet</div>
+  <div class="section-title">De l'orientation au pilotage, sans rechercher deux fois</div>
+  <div class="section-sub">Modules d'étapes et fonctionnalités regroupés par types de vos besoins.</div>
+
+  <div class="journey">
+
+    <div class="stage" id="stage-1">
+      <div class="stage-hdr">
+        <span class="stage-num">01</span>
+        <div><div class="stage-title">Orientation</div><div class="stage-sub">Comprendre la procédure, identifier son profil</div></div>
+        
+      </div>
+      <div class="stage-body-inner">
+        <span class="mod-chip chip-seen" onclick="navigateTo('assistant.html','Assistant IA')">↑ Assistant IA InvestBot</span>
+        <span class="mod-chip" onclick="navigateTo('guide_de_creation.html','Guide Investisseurs')">Guide Investisseurs — procédure AMDI 8 étapes</span>
+        <span class="mod-chip" onclick="navigateTo('guide_de_creation.html','Tracker CRI')">Tracker Dossier CRI</span>
+        <span class="mod-chip" onclick="navigateTo('guide_des_investissements.html','Guide des IDE')">Guide des IDE — investisseurs étrangers</span>
+        <div class="stage-note">Type : information et navigation. Aucun calcul ici — l'objectif est de savoir où aller ensuite.</div>
+      </div>
+    </div>
+
+    <div class="stage" id="stage-2">
+      <div class="stage-hdr">
+        <span class="stage-num">02</span>
+        <div><div class="stage-title">Cadrage financier</div><div class="stage-sub">Fiscalité, coûts, aides disponibles</div></div>
+        
+      </div>
+      <div class="stage-body-inner">
+        <span class="mod-chip chip-seen" onclick="navigateTo('simulateur_fiscal.html','Simulateur Fiscal')">↑ Simulateur Fiscal IS / IR / TVA</span>
+        <span class="mod-chip chip-seen" onclick="navigateTo('primes_et_financements.html','Aides et Financements')">↑ Aides &amp; Financements</span>
+        <span class="mod-chip" onclick="navigateTo('couts_installation.html','Coûts Installation')">Coûts d'Installation</span>
+        <span class="mod-chip" onclick="navigateTo('simulateur_tva_avance.html','TVA Avancée')">TVA Avancée CGI 2024</span>
+        <span class="mod-chip" onclick="navigateTo('simulateur_charges_sociales.html','CNSS et Paie')">Simulateur CNSS &amp; Paie</span>
+        <span class="mod-chip" onclick="navigateTo('van_et_tri.html','Ingénierie Financière')">Ingénierie Financière — VAN / TRI</span>
+        <div class="stage-note">Type : simulateurs de chiffrage. Toutes ces pages produisent des montants réutilisés à l'étape 4.</div>
+      </div>
+    </div>
+
+    <div class="stage" id="stage-3">
+      <div class="stage-hdr">
+        <span class="stage-num">03</span>
+        <div><div class="stage-title">Implantation</div><div class="stage-sub">Structure juridique, zones, foncier, réglementation locale</div></div>
+        
+      </div>
+      <div class="stage-body-inner">
+        <span class="mod-chip chip-seen" onclick="navigateTo('formes_juridiques.html','Choix Forme Juridique')">↑ Choix Forme Juridique</span>
+        <span class="mod-chip" onclick="navigateTo('zones_economiques.html','Zones Économiques')">Carte Zones Économiques</span>
+        <span class="mod-chip" onclick="navigateTo('gis_foncier.html','GIS Foncier ZAI')">GIS Foncier ZAI</span>
+        <span class="mod-chip" onclick="navigateTo('reglementation_urbanisme.html','Urbanisme et Foncier')">Réglementation Urbanisme &amp; Foncier</span>
+        <span class="mod-chip" onclick="navigateTo('regime_de_change.html','Régime de Change')">Régime de Change</span>
+        <span class="mod-chip" onclick="navigateTo('simulateur_tnb.html','TNB 2025')">TNB 2025 — Taxe Foncière</span>
+        <span class="mod-chip" onclick="navigateTo('acceptabilite_environnementale.html','Acceptabilité Environnementale')">Acceptabilité Environnementale</span>
+        <span class="mod-chip" onclick="navigateTo('reglementation_tourisme.html','Réglementation Tourisme')">Réglementation Tourisme</span>
+        <div class="stage-note">Type : décisions d'ancrage géographique et structurel. Cluster le plus dense — la zone choisie ici conditionne les primes calculées à l'étape 4.</div>
+      </div>
+    </div>
+
+    <div class="stage" id="stage-4">
+      <div class="stage-hdr">
+        <span class="stage-num">04</span>
+        <div><div class="stage-title">Montage du dossier</div><div class="stage-sub">Primes, business plan, documents, veille</div></div>
+        
+      </div>
+      <div class="stage-body-inner">
+        <span class="mod-chip" onclick="navigateTo('charte_investissements.html','Levier Financier et Charte')">Levier Financier &amp; Charte — primes cumulables</span>
+        <span class="mod-chip chip-seen" onclick="navigateTo('business_plans_et_bilans.html','Business Plan')">↑ Business Plan &amp; Bilan Financier</span>
+        <span class="mod-chip" onclick="navigateTo('doc-generator.html','Générateur de Documents')">Générateur de Documents</span>
+        <span class="mod-chip" onclick="navigateTo('code_des_impots.html','CGI 2026')">CGI 2026 — Recherche Intelligente</span>
+        <span class="mod-chip chip-seen" onclick="navigateTo('alertes-fiscales.html','Alertes Fiscales')">↑ Alertes Fiscales</span>
+        <span class="mod-chip" onclick="navigateTo('options_contractuelles.html','Formes de Contrats')">Formes de Contrats</span>
+        <div class="stage-note">Type : production du dossier bancable. Le Générateur de Documents devrait à terme être auto-alimenté par les choix des étapes 2 et 3 — c'est le nœud à automatiser en priorité.</div>
+      </div>
+    </div>
+
+    <div class="stage" id="stage-5">
+      <div class="stage-hdr">
+        <span class="stage-num">05</span>
+        <div><div class="stage-title">Pilotage &amp; conformité</div><div class="stage-sub">Une fois l'entreprise créée — gestion courante</div></div>
+        
+      </div>
+      <div class="stage-body-inner">
+        <span class="mod-chip" onclick="navigateTo('comptabilite GA.html','Comptabilité Générale')">Comptabilité Générale &amp; Analytique</span>
+        <span class="mod-chip" onclick="navigateTo('RH manager.html','RH Manager SIRH')">RH Manager — SIRH</span>
+        <span class="mod-chip" onclick="navigateTo('systeme_bancaire.html','Système Bancaire')">Système Bancaire Marocain</span>
+        <span class="mod-chip" onclick="navigateTo('cockpit_management.html','Cockpit de Management')">Cockpit de Management</span>
+        <span class="mod-chip" onclick="navigateTo('lean_six_sigma_tools.html','Lean Six Sigma')">Lean Six Sigma</span>
+        <span class="mod-chip" onclick="navigateTo('architecture_de_projets.html','Architecture de Projets')">Architecture de Projets</span>
+        <span class="mod-chip" onclick="navigateTo('dashboard_projets.html','Dashboard Projets')">Dashboard Projets</span>
+        <span class="mod-chip" onclick="navigateTo('scoring_esg_rse.html','ESG / RSE')">ESG / RSE</span>
+        <div class="stage-note">Type : gestion post-lancement. Accessible uniquement après création effective — jamais mis en avant sur la page d'accueil.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ RESSOURCES — modules transversaux, hors parcours obligatoire ══════════ -->
+<div class="section">
+  <div class="section-title">Veille stratégique et aides à la décision</div>
+  <div class="section-sub">Vos analyses stratégiques prêtes à l'emploi.</div>
+  <div class="res-grid hub-list">
+    <a class="hub-card" onclick="navigateTo('mondoscope.html','Global MondoScope')">
+      <span class="hub-code">MDS</span>
+      <div><div class="hub-name">Global MondoScope</div><div class="hub-desc">Veille et benchmarking international — comparatifs fiscaux et macroéconomiques par pays.</div></div>
+    </a>
+    <a class="hub-card" onclick="navigateTo('live_data_invest.html','Données Live')">
+      <span class="hub-code">LIV</span>
+      <div><div class="hub-name">Live Data Invest</div><div class="hub-desc">Tableaux de bord temps réel — taux BAM, devises, indices, données HCP.</div></div>
+    </a>
+    <a class="hub-card" onclick="navigateTo('parcours_communaute.html','Parcours et Communauté')">
+      <span class="hub-code">COM</span>
+      <div><div class="hub-name">Parcours &amp; Communauté</div><div class="hub-desc">Espace collaboratif investisseurs, forum, réseau MRE et IDE, événements CRI.</div></div>
+    </a>
+    <a class="hub-card" onclick="navigateTo('rapports_b2b.html','Rapports IA')">
+      <span class="hub-code">RPT</span>
+      <div><div class="hub-name">Rapports IA + Annuaire B2B</div><div class="hub-desc">Rapports sectoriels générés par IA et annuaire d'experts vérifiés — comptables, avocats, CRI.</div></div>
+    </a>
+    <a class="hub-card" onclick="navigateTo('agent_ia_conseil.html','InvestPilot')">
+      <span class="hub-code">PLT</span>
+      <div><div class="hub-name">InvestPilot — Agent IA</div><div class="hub-desc">Agent multi-étapes : veille sectorielle, analyse de risques, business plan automatisé.</div></div>
+    </a>
+    <a class="hub-card" onclick="navigateTo('abonnements.html','Tarifs et Abonnements')">
+      <span class="hub-code">TRF</span>
+      <div><div class="hub-name">Tarifs &amp; Abonnements</div><div class="hub-desc">Comparatif Gratuit / Pro / Enterprise et gestion de votre accès.</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- ══════════ POURQUOI — la douleur nommée sans détour ══════════ -->
+<div class="section">
+  <div class="why-block">
+    <div class="section-eyebrow">Pourquoi Smart-Invest.ia</div>
+    <div class="section-title">Trois frictions que les sites officiels n'éliminent pas</div>
+    <div class="why-grid">
+      <div>
+        <div class="why-item-title">L'opacité fiscale</div>
+        <div class="why-item-desc">Le CGI change chaque année. Sans veille dédiée, une exonération ratée ou un redressement mal anticipé coûte cher. Nos alertes fiscales et notre moteur de recherche dans le CGI 2026 traduisent le texte juridique en règles applicables.</div>
+      </div>
+      <div>
+        <div class="why-item-title">L'asymétrie géographique</div>
+        <div class="why-item-desc">Savoir où s'implanter pour maximiser les exonérations demande de croiser zones franches, foncier disponible et primes régionales. C'est fait pour vous, pas à reconstituer région par région.</div>
+      </div>
+      <div>
+        <div class="why-item-title">Le parcours administratif</div>
+        <div class="why-item-desc">Interlocuteurs multiples, pièces manquantes, délais flous. L'assistant IA répond en un échange à ce qui prendrait des heures de recherche dans des documents juridiques dispersés.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CTA FINALE ══════════ -->
+<div class="section cta-final">
+  <div class="section-eyebrow">Vous avez fait le tour</div>
+  <div class="section-title">Une dernière question ?</div>
+  <div class="section-sub">Posez-la directement à l'assistant IA en haut de page — pas besoin de chercher plus loin.</div>
+  <div class="cta-btn-row">
+    <button class="btn-primary" onclick="focusAsk()">Poser ma question ↑</button>
+    <button class="btn-outline" onclick="window.open('mailto:contact@Smart-Invest.ia')">Contacter l'équipe</button>
+  </div>
+</div>
+
+<footer><div class="footer-inner">
+  <div>Smart-Invest.ia — Portail des modules</div>
+  <div>37 modules · 5 étapes · veille stratégique</div>
+</div></footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+document.querySelectorAll('.hub-card[href^="#"]').forEach(function(card){
+  card.addEventListener('click', function(e){
+    var href = card.getAttribute('href');
+    if(href && href.startsWith('#')){
+      var target = document.querySelector(href);
+      if(target){
+        target.classList.add('open');
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
+  });
+});
+function scrollTo(id){ var el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); }
+function focusAsk(){
+  var input = document.getElementById('heroAsk');
+  input.scrollIntoView({behavior:'smooth', block:'center'});
+  input.focus();
+}
+const MODULE_FILES = {
+  'assistant.html':true,'simulateur_fiscal.html':true,'primes_et_financements.html':true,'zones_economiques.html':true,
+  'formes_juridiques.html':true,'couts_installation.html':true,'dashboard_projets.html':true,'rapports_b2b.html':true,
+  'agent_ia_conseil.html':true,'live_data_invest.html':true,'parcours_communaute.html':true,'cockpit_management.html':true,
+  'charte_investissements.html':true,'options_contractuelles.html':true,'lean_six_sigma_tools.html':true,
+  'reglementation_urbanisme.html':true,'abonnements.html':true,'mondoscope.html':true,
+  'simulateur_tnb.html':true,'guide_de_creation.html':true,'guide_des_investissements.html':true,'gis_foncier.html':true,'scoring_esg_rse.html':true,
+  'alertes-fiscales.html':true,'code_des_impots.html':true,'architecture_de_projets.html':true,'doc-generator.html':true,
+  'systeme_bancaire.html':true,'regime_de_change.html':true,'acceptabilite_environnementale.html':true,
+  'van_et_tri.html':true,'business_plans_et_bilans.html':true,'simulateur_tva_avance.html':true,
+  'simulateur_charges_sociales.html':true,'reglementation_tourisme.html':true,'comptabilite GA.html':true,
+  'RH manager.html':true
+};
+let toastTimer;
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'),3000);
+}
+function navigateTo(filename, moduleName){
+  if (MODULE_FILES[filename]) { window.open(encodeURI(filename), '_blank'); }
+  else { showToast(`${moduleName} — module en cours de développement`); }
+}
+document.querySelectorAll('.mod-chip').forEach(function(chip){
+  chip.addEventListener('click', function(){
+    this.classList.add('chip-active');
+    setTimeout(() => this.classList.remove('chip-active'), 450);
+  });
+});
+</script>
+</body>
+</html>

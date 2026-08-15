@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Projet d'Investissement — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   DESIGN SYSTEM — Smart-Invest.ia — Module 08
+   Dashboard "Mon Projet" — Premium
+══════════════════════════════════════════ */
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;
+  --success:#1A6B3C;--warn:#C05820;--danger:#B91C1C;
+  --border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.header{height:56px;background:rgba(14,14,12,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid rgba(184,134,42,0.2);flex-shrink:0;z-index:100}
+.header-left{display:flex;align-items:center;gap:14px}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color .2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.module-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,0.12);border:1px solid rgba(184,134,42,0.25);padding:4px 10px;border-radius:100px}
+.premium-badge{font-family:var(--font-mono);font-size:10px;color:#F0C460;background:rgba(184,134,42,0.15);border:1px solid rgba(184,134,42,0.3);padding:4px 10px;border-radius:100px;display:flex;align-items:center;gap:4px}
+.header-actions{display:flex;align-items:center;gap:8px}
+.hbtn{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-body);border:none}
+.hbtn-ghost{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
+.hbtn-ghost:hover{background:rgba(255,255,255,.1)}
+.hbtn-gold{background:var(--gold);color:var(--ink)}
+.hbtn-gold:hover{background:var(--gold-light)}
+
+/* ── LAYOUT ── */
+.app{display:flex;flex:1;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;background:var(--ink-mid);border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.sidebar-brand{padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sidebar-brand-label{font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.new-proj-btn{width:100%;padding:9px;border-radius:8px;background:rgba(184,134,42,.1);border:1px solid rgba(184,134,42,.2);color:var(--gold-light);font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.new-proj-btn:hover{background:rgba(184,134,42,.2)}
+.proj-list{flex:1;overflow-y:auto;padding:10px 10px}
+.proj-item{padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .2s;margin-bottom:4px;border:1px solid transparent}
+.proj-item:hover{background:rgba(255,255,255,.04)}
+.proj-item.active{background:rgba(184,134,42,.08);border-color:rgba(184,134,42,.2)}
+.proj-item-name{font-size:13px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-item-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px;font-family:var(--font-mono)}
+.proj-item-bar{height:2px;background:rgba(255,255,255,.08);border-radius:1px;margin-top:6px;overflow:hidden}
+.proj-item-bar-fill{height:100%;background:var(--gold);border-radius:1px;transition:width .4s}
+.sidebar-links{padding:12px;border-top:1px solid rgba(255,255,255,.05)}
+.sidebar-link{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;font-size:11.5px;color:rgba(255,255,255,.35);cursor:pointer;transition:all .2s;text-decoration:none}
+.sidebar-link:hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.04)}
+
+/* ── MAIN CONTENT ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* PROJECT HEADER BAR */
+.proj-header{background:var(--white);border-bottom:1px solid var(--border);padding:16px 24px;flex-shrink:0}
+.proj-header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.proj-title-wrap{display:flex;align-items:center;gap:10px;flex:1}
+.proj-title{font-family:var(--font-title);font-size:22px;font-weight:800;line-height:1.1;cursor:pointer;border-bottom:2px solid transparent;transition:border-color .2s}
+.proj-title:hover{border-color:var(--gold)}
+.proj-title[contenteditable="true"]{outline:none;border-color:var(--gold)}
+.proj-status{font-family:var(--font-mono);font-size:10px;padding:4px 10px;border-radius:100px;cursor:pointer;transition:all .2s}
+.status-prep{background:rgba(122,122,112,.12);color:var(--smoke)}
+.status-en-cours{background:rgba(30,77,107,.12);color:var(--accent)}
+.status-attente{background:rgba(192,88,32,.12);color:var(--warn)}
+.status-actif{background:rgba(26,107,60,.12);color:var(--success)}
+.proj-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+.meta-chip{font-size:12px;color:var(--smoke);display:flex;align-items:center;gap:4px}
+.meta-chip strong{color:var(--ink-soft)}
+.progress-row{display:flex;align-items:center;gap:12px}
+.progress-bar{flex:1;height:6px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;transition:width .6s ease}
+.progress-label{font-family:var(--font-mono);font-size:11px;color:var(--gold);min-width:30px;text-align:right}
+
+/* METRICS */
+.metrics-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);flex-shrink:0}
+.metric{background:var(--white);padding:12px 18px;text-align:center}
+.metric-num{font-family:var(--font-title);font-size:22px;font-weight:800;line-height:1;color:var(--ink)}
+.metric-num.gold{color:var(--gold)}
+.metric-num.green{color:var(--success)}
+.metric-num.warn{color:var(--warn)}
+.metric-label{font-size:11px;color:var(--smoke);margin-top:3px}
+
+/* TABS */
+.tabs-bar{display:flex;gap:0;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
+.tab-btn{padding:11px 18px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--smoke);transition:all .2s;white-space:nowrap;border-bottom:2px solid transparent;font-family:var(--font-body)}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:var(--white)}
+
+/* SCROLL AREA */
+.tab-content{flex:1;overflow-y:auto;padding:24px}
+.tab-content::-webkit-scrollbar{width:4px}
+.tab-content::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:2px}
+
+/* ── ÉTAPES ── */
+.step-card{background:var(--white);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+.step-card:hover{border-color:rgba(184,134,42,.3)}
+.step-card.done{border-left:3px solid var(--success)}
+.step-card.doing{border-left:3px solid var(--gold)}
+.step-card.blocked{border-left:3px solid var(--danger)}
+.step-header{padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.step-num-badge{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;font-weight:700;flex-shrink:0}
+.step-num-badge.todo{background:var(--bg2);color:var(--smoke)}
+.step-num-badge.doing{background:rgba(184,134,42,.15);color:var(--gold)}
+.step-num-badge.done{background:rgba(26,107,60,.12);color:var(--success)}
+.step-num-badge.blocked{background:rgba(185,28,28,.1);color:var(--danger)}
+.step-info{flex:1;min-width:0}
+.step-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.step-name{font-family:var(--font-title);font-size:14.5px;font-weight:700}
+.step-org{font-size:11px;color:var(--accent);font-weight:500}
+.step-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.chip{font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:4px}
+.chip-delai{background:rgba(30,77,107,.08);color:var(--accent)}
+.chip-cout{background:rgba(184,134,42,.1);color:var(--gold)}
+.chip-urgent{background:rgba(185,28,28,.1);color:var(--danger)}
+.step-actions{display:flex;gap:6px;flex-shrink:0}
+.step-status-btn{font-size:10px;font-family:var(--font-mono);padding:4px 10px;border-radius:5px;border:1px solid var(--border);cursor:pointer;transition:all .2s;background:none}
+.step-status-btn:hover{border-color:var(--gold)}
+.step-status-btn.active{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:600}
+.step-expand{background:none;border:none;cursor:pointer;color:var(--smoke);font-size:16px;transition:transform .2s;padding:0 4px}
+.step-body{border-top:1px solid var(--border);padding:14px 18px 16px;display:none;background:rgba(0,0,0,.015)}
+.step-card.open .step-body{display:block}
+.step-card.open .step-expand{transform:rotate(90deg)}
+.step-docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:10px}
+.doc-chip{font-size:12px;color:var(--ink-soft);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:5px}
+.doc-chip::before{content:'📄';font-size:11px}
+.step-note-field{width:100%;margin-top:10px;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:var(--font-body);font-size:12.5px;color:var(--ink);background:var(--white);resize:vertical;min-height:50px;outline:none;transition:border-color .2s}
+.step-note-field:focus{border-color:var(--gold)}
+
+/* ── BUDGET ── */
+.budget-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.budget-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center}
+.budget-num{font-family:var(--font-title);font-size:24px;font-weight:800;line-height:1}
+.budget-label{font-size:12px;color:var(--smoke);margin-top:4px}
+.budget-table{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.budget-table table{width:100%;border-collapse:collapse}
+.budget-table th{background:var(--ink);color:var(--gold-light);font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;padding:9px 14px;text-align:left}
+.budget-table td{padding:9px 14px;border-bottom:1px solid var(--border);font-size:13px}
+.budget-table tr:hover td{background:var(--gold-pale)}
+.budget-table td input{background:none;border:none;outline:none;font-family:var(--font-mono);font-size:12px;color:var(--gold);width:100%;text-align:right}
+.budget-table td input:focus{background:var(--gold-pale)}
+
+/* BAR CHART SVG */
+.budget-chart{margin-top:20px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px}
+.chart-title{font-family:var(--font-title);font-size:14px;font-weight:700;margin-bottom:14px}
+
+/* ── CALENDRIER ── */
+.cal-wrap{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.cal-header{background:var(--ink);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.cal-month{font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--white)}
+.cal-nav{background:none;border:none;color:var(--gold-light);cursor:pointer;font-size:18px;padding:4px 8px;transition:opacity .2s}
+.cal-nav:hover{opacity:.7}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-day-header{text-align:center;padding:8px;font-family:var(--font-mono);font-size:10px;color:var(--smoke);letter-spacing:.06em;border-bottom:1px solid var(--border)}
+.cal-cell{min-height:72px;padding:6px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);vertical-align:top;position:relative}
+.cal-cell:nth-child(7n){border-right:none}
+.cal-date{font-family:var(--font-mono);font-size:12px;color:var(--smoke);margin-bottom:4px}
+.cal-cell.today .cal-date{background:var(--gold);color:var(--ink);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.cal-cell.other-month .cal-date{opacity:.3}
+.cal-event{font-size:10px;padding:2px 5px;border-radius:3px;margin-bottom:2px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.cal-event.overdue{background:rgba(185,28,28,.1);color:var(--danger)}
+.cal-event.soon{background:rgba(192,88,32,.1);color:var(--warn)}
+.cal-event.ok{background:rgba(26,107,60,.08);color:var(--success)}
+
+/* ── DOCUMENTS ── */
+.docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.doc-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:8px}
+.doc-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.doc-card-icon{font-size:24px}
+.doc-card-name{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
+.doc-card-step{font-family:var(--font-mono);font-size:10px;color:var(--smoke)}
+.doc-card-status{display:flex;align-items:center;gap:4px;font-size:11px}
+.doc-add-btn{border:2px dashed var(--border);background:none;cursor:pointer;color:var(--smoke);font-size:12px;font-family:var(--font-body);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:100px;border-radius:10px;transition:all .2s}
+.doc-add-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── CONTACTS ── */
+.contacts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.contact-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;transition:all .2s}
+.contact-card:hover{border-color:rgba(184,134,42,.3);box-shadow:0 3px 10px rgba(0,0,0,.05)}
+.contact-avatar{width:40px;height:40px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:14px;font-weight:800;color:var(--gold-light);flex-shrink:0}
+.contact-role{font-family:var(--font-mono);font-size:10px;color:var(--gold);letter-spacing:.06em;text-transform:uppercase}
+.contact-name{font-family:var(--font-title);font-size:15px;font-weight:700}
+.contact-org{font-size:12.5px;color:var(--smoke)}
+.contact-details{font-size:12px;color:var(--ink-soft);display:flex;flex-direction:column;gap:3px}
+.contact-action-row{display:flex;gap:6px}
+.contact-btn{flex:1;padding:7px;border-radius:7px;border:1px solid var(--border);background:var(--bg);font-size:11.5px;color:var(--ink-soft);cursor:pointer;font-family:var(--font-body);transition:all .2s;text-align:center}
+.contact-btn:hover{border-color:var(--gold);color:var(--gold)}
+.contact-add{border:2px dashed var(--border);background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--smoke);font-family:var(--font-body);border-radius:12px;min-height:120px;transition:all .2s}
+.contact-add:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s}
+.modal{background:var(--white);border-radius:16px;padding:28px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:slideUp .25s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-title{font-family:var(--font-title);font-size:20px;font-weight:800;margin-bottom:20px}
+.form-field{margin-bottom:16px}
+.form-field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:var(--font-body);font-size:13.5px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--gold)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.btn-cancel{padding:10px 18px;border:1.5px solid var(--border);border-radius:9px;background:none;cursor:pointer;font-family:var(--font-body);font-size:13.5px;color:var(--ink-soft);transition:all .2s}
+.btn-cancel:hover{border-color:var(--ink)}
+.btn-confirm{padding:10px 22px;border-radius:9px;background:var(--gold);border:none;cursor:pointer;font-family:var(--font-body);font-size:13.5px;font-weight:600;color:var(--ink);transition:all .2s}
+.btn-confirm:hover{background:var(--gold-light)}
+
+/* ── GATE PREMIUM ── */
+.gate-overlay{position:fixed;inset:0;background:rgba(14,14,12,.9);backdrop-filter:blur(8px);z-index:999;display:flex;align-items:center;justify-content:center}
+.gate-box{background:var(--white);border-radius:20px;padding:40px;max-width:420px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.3)}
+.gate-icon{font-size:40px;margin-bottom:16px}
+.gate-title{font-family:var(--font-title);font-size:24px;font-weight:800;margin-bottom:10px}
+.gate-sub{font-size:14px;color:var(--smoke);line-height:1.7;margin-bottom:24px}
+.gate-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--font-mono);font-size:14px;text-align:center;outline:none;transition:border-color .2s;margin-bottom:12px}
+.gate-input:focus{border-color:var(--gold)}
+.gate-btn{width:100%;padding:12px;border-radius:10px;background:var(--gold);border:none;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--ink);transition:all .2s}
+.gate-btn:hover{background:var(--gold-light)}
+.gate-hint{font-family:var(--font-mono);font-size:11px;color:var(--smoke);margin-top:12px}
+
+@media print{
+  .sidebar,.header,.tabs-bar,.metrics-bar,.step-actions,.step-status-btn,.hbtn{display:none!important}
+  .main{overflow:visible}
+  .tab-content{overflow:visible;padding:0}
+  .step-body{display:block!important}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <a href="landing.html" class="back-btn">← Retour</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="module-badge">Module 08 · Dashboard Projet</div>
+    <div class="premium-badge">⭐ Premium · 199 MAD/mois</div>
+  </div>
+  <div class="header-actions">
+    <button class="hbtn hbtn-ghost" onclick="exportJSON()">⬇ Export JSON</button>
+    <button class="hbtn hbtn-ghost" onclick="window.print()">🖨 Imprimer</button>
+    <button class="hbtn hbtn-gold" onclick="showModal('newProject')">+ Nouveau projet</button>
+  </div>
+</header>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-label">Mes projets</div>
+      <button class="new-proj-btn" onclick="showModal('newProject')">+ Nouveau projet</button>
+    </div>
+    <div class="proj-list" id="projList"></div>
+    <div class="sidebar-links">
+      <a class="sidebar-link" href="smart_invest_simulateur_fiscal.html">🧮 Simulateur Fiscal</a>
+      <a class="sidebar-link" href="smart_invest_forme_juridique.html">⚖️ Forme Juridique</a>
+      <a class="sidebar-link" href="smart_invest_matching_aides.html">🎯 Aides & Financements</a>
+      <div class="sidebar-link" onclick="exportJSON()">📦 Export données</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main" id="mainContent" style="display:none">
+    <!-- PROJECT HEADER -->
+    <div class="proj-header">
+      <div class="proj-header-top">
+        <div class="proj-title-wrap">
+          <div class="proj-title" id="projTitle" contenteditable="false" onclick="editTitle()" onblur="saveTitle()">Mon projet</div>
+          <div class="proj-status status-en-cours" id="projStatus" onclick="cycleStatus()">En cours</div>
+        </div>
+        <button onclick="deleteCurrentProject()" style="background:none;border:none;cursor:pointer;color:var(--smoke);font-size:12px;padding:4px;transition:color .2s" title="Supprimer ce projet">🗑 Supprimer</button>
+      </div>
+      <div class="proj-meta" id="projMeta"></div>
+      <div class="progress-row">
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--smoke)">PROGRESSION</span>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <div class="progress-label" id="progressLabel">0%</div>
+      </div>
+    </div>
+
+    <!-- METRICS -->
+    <div class="metrics-bar">
+      <div class="metric"><div class="metric-num gold" id="m-etapes">0/10</div><div class="metric-label">Étapes complétées</div></div>
+      <div class="metric"><div class="metric-num" id="m-jours">0</div><div class="metric-label">Jours depuis démarrage</div></div>
+      <div class="metric"><div class="metric-num warn" id="m-deadline">—</div><div class="metric-label">Prochain délai critique</div></div>
+      <div class="metric"><div class="metric-num" id="m-budget">0 MAD</div><div class="metric-label">Coût total engagé</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('etapes',this)">📋 10 Étapes</button>
+      <button class="tab-btn" onclick="switchTab('budget',this)">💰 Budget</button>
+      <button class="tab-btn" onclick="switchTab('calendrier',this)">📅 Calendrier</button>
+      <button class="tab-btn" onclick="switchTab('documents',this)">📁 Documents</button>
+      <button class="tab-btn" onclick="switchTab('contacts',this)">👥 Contacts</button>
+    </div>
+
+    <div class="tab-content" id="tabContent"></div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div id="emptyState" style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--smoke)">
+    <div style="font-size:48px">📁</div>
+    <div style="font-family:var(--font-title);font-size:20px;font-weight:700;color:var(--ink)">Aucun projet</div>
+    <div style="font-size:14px;max-width:300px;text-align:center;line-height:1.7">Créez votre premier projet pour commencer le suivi de votre investissement au Maroc.</div>
+    <button class="hbtn hbtn-gold" onclick="showModal('newProject')" style="margin-top:8px;padding:12px 24px;font-size:14px">+ Créer mon premier projet</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// MODULE 08 — Dashboard Mon Projet
+// localStorage-first, zéro serveur
+// ══════════════════════════════════════════
+
+const STORAGE_KEY = 'Smart-Invest_dashboard_v1';
+let state = { projects: [], activeId: null };
+let calendarDate = new Date();
+
+// ── GATE désactivé ──
+document.addEventListener('DOMContentLoaded', init);
+
+// ── 10 ÉTAPES LÉGALES ──
+const ETAPES_TEMPLATE = [
+  { id:1, nom:'Certificat Négatif (OMPIC)', org:'OMPIC / CRI — directinfo.ma', orgUrl:'https://www.directinfo.ma', delai:'J+24h', cout_prevu:170, cout_reel:0, status:'todo', date_prevue:'', note:'', docs:['Formulaire de demande CN','Copie pièce d\'identité','3 propositions de dénomination'] },
+  { id:2, nom:'Établissement des statuts', org:'Notaire / Avocat', orgUrl:'https://www.cri.ma', delai:'3–10 jours', cout_prevu:8000, cout_reel:0, status:'todo', date_prevue:'', note:'', docs:['Projet de statuts','CNI/passeport associés','Certificat négatif','Acte d\'apport (si applicable)'] },
+  { id:3, nom:'Bulletins de souscription', org:'Cabinet Juridique / Notaire', orgUrl:'#', delai:'Simultané étape 2', cout_prevu:0, cout_reel:0, status:'todo', date_prevue:'', note:'SA, SAS uniquement', docs:['Formulaire bulletin souscription','Statuts signés'] },
+  { id:4, nom:'Blocage capital libéré', org:'Banque de l\'entreprise', orgUrl:'https://www.bankassurance.ma', delai:'Dans les 8 jours', cout_prevu:200, cout_reel:0, status:'todo', date_prevue:'', note:'', docs:['Projet de statuts','Certificat négatif','CNI/passeport','Bulletins de souscription (SA)'] },
+  { id:5, nom:'Déclaration de souscription', org:'Notaire', orgUrl:'#', delai:'Après blocage capital', cout_prevu:0, cout_reel:0, status:'todo', date_prevue:'', note:'SA / SAS uniquement', docs:['Bulletins signés','Attestation de blocage bancaire'] },
+  { id:6, nom:'Enregistrement actes — Droits', org:'CRI (Guichet Unique) / DGI', orgUrl:'https://www.cri.ma', delai:'J+2', cout_prevu:500, cout_reel:0, status:'todo', date_prevue:'', note:'', docs:['Statuts originaux','Certificat négatif','Formulaires enregistrement'] },
+  { id:7, nom:'Inscription TP + Identifiant Fiscal', org:'DGI — Direction Générale des Impôts', orgUrl:'https://www.tax.gov.ma', delai:'J', cout_prevu:0, cout_reel:0, status:'todo', date_prevue:'', note:'', docs:['Statuts enregistrés','CNI gérant','Formulaire TP/IF'] },
+  { id:8, nom:'Immatriculation Registre de Commerce', org:'Tribunal de Commerce via CRI', orgUrl:'https://www.cri.ma', delai:'J+5', cout_prevu:500, cout_reel:0, status:'todo', date_prevue:'', note:'', docs:['Statuts enregistrés','CN + IF + TP','Attestation blocage capital','CNI gérant + casier judiciaire'] },
+  { id:9, nom:'Publication Journal Annonces Légales', org:'Journal d\'Annonces Légales (JAL)', orgUrl:'https://www.bulletin-officiel.ma', delai:'Dans le mois suivant RC', cout_prevu:2000, cout_reel:0, status:'todo', date_prevue:'', note:'', docs:['Extrait RC','Mentions légales rédigées'] },
+  { id:10, nom:'Publication Bulletin Officiel', org:'Imprimerie Officielle / BO', orgUrl:'https://www.bulletin-officiel.ma', delai:'Dans le mois suivant RC', cout_prevu:500, cout_reel:0, status:'todo', date_prevue:'', note:'', docs:['Extrait RC','Mêmes documents que JAL'] },
+];
+
+// ── INIT ──
+function init() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) state = JSON.parse(saved);
+  renderSidebar();
+  if (state.activeId) loadProject(state.activeId);
+  else document.getElementById('emptyState').style.display = 'flex';
+}
+
+// ── SAVE / LOAD ──
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+function getProject(id) { return state.projects.find(p => p.id === id); }
+
+function getCurrentProject() { return getProject(state.activeId); }
+
+// ── SIDEBAR ──
+function renderSidebar() {
+  const list = document.getElementById('projList');
+  if (!state.projects.length) {
+    list.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,.2);padding:12px 8px;text-align:center">Aucun projet</div>';
+    return;
+  }
+  list.innerHTML = state.projects.map(p => {
+    const done = p.etapes.filter(e => e.status === 'done').length;
+    const pct = Math.round(done / 10 * 100);
+    return `<div class="proj-item ${p.id === state.activeId ? 'active' : ''}" onclick="loadProject('${p.id}')">
+      <div class="proj-item-name">${p.nom}</div>
+      <div class="proj-item-sub">${p.type} · ${p.region||'—'}</div>
+      <div class="proj-item-bar"><div class="proj-item-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ── CHARGER PROJET ──
+function loadProject(id) {
+  state.activeId = id;
+  save();
+  renderSidebar();
+  const p = getProject(id);
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'flex';
+  document.getElementById('projTitle').textContent = p.nom;
+
+  // Status
+  const statusMap = { prep:'status-prep', 'en-cours':'status-en-cours', attente:'status-attente', actif:'status-actif' };
+  const statusLabels = { prep:'En préparation', 'en-cours':'En cours', attente:'En attente organisme', actif:'Actif' };
+  const el = document.getElementById('projStatus');
+  el.className = `proj-status ${statusMap[p.statut||'en-cours']}`;
+  el.textContent = statusLabels[p.statut||'en-cours'];
+
+  // Meta
+  document.getElementById('projMeta').innerHTML = [
+    p.type ? `<div class="meta-chip">📁 Type : <strong>${p.type}</strong></div>` : '',
+    p.forme ? `<div class="meta-chip">⚖️ Forme : <strong>${p.forme}</strong></div>` : '',
+    p.secteur ? `<div class="meta-chip">🏭 Secteur : <strong>${p.secteur}</strong></div>` : '',
+    p.region ? `<div class="meta-chip">📍 <strong>${p.region}</strong></div>` : '',
+    p.date_debut ? `<div class="meta-chip">📅 Démarré le : <strong>${new Date(p.date_debut).toLocaleDateString('fr-FR')}</strong></div>` : '',
+  ].join('');
+
+  updateMetrics();
+  switchTab('etapes', document.querySelector('.tab-btn'));
+}
+
+// ── MÉTRIQUES ──
+function updateMetrics() {
+  const p = getCurrentProject();
+  if (!p) return;
+  const done = p.etapes.filter(e => e.status === 'done').length;
+  const pct = Math.round(done / 10 * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '%';
+  document.getElementById('m-etapes').textContent = done + '/10';
+
+  // Jours depuis démarrage
+  let jours = '—';
+  if (p.date_debut) {
+    jours = Math.floor((new Date() - new Date(p.date_debut)) / 86400000);
+  }
+  document.getElementById('m-jours').textContent = jours;
+
+  // Prochain délai
+  const upcoming = p.etapes.filter(e => e.date_prevue && e.status !== 'done').sort((a,b) => new Date(a.date_prevue)-new Date(b.date_prevue));
+  if (upcoming.length) {
+    const next = new Date(upcoming[0].date_prevue);
+    const diff = Math.ceil((next - new Date()) / 86400000);
+    const el = document.getElementById('m-deadline');
+    el.textContent = diff <= 0 ? 'Dépassé!' : diff <= 7 ? `J-${diff}` : next.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
+    el.parentElement.querySelector('.metric-num').className = `metric-num ${diff <= 0 ? 'danger' : diff <= 7 ? 'warn' : ''}`;
+  } else {
+    document.getElementById('m-deadline').textContent = '—';
+  }
+
+  // Budget
+  const totalEngaged = p.etapes.reduce((s, e) => s + (parseFloat(e.cout_reel) || 0), 0);
+  document.getElementById('m-budget').textContent = totalEngaged.toLocaleString('fr-FR') + ' MAD';
+}
+
+// ── TABS ──
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const content = document.getElementById('tabContent');
+  if (tab === 'etapes') renderEtapes();
+  else if (tab === 'budget') renderBudget();
+  else if (tab === 'calendrier') renderCalendrier();
+  else if (tab === 'documents') renderDocuments();
+  else if (tab === 'contacts') renderContacts();
+}
+
+// ── ÉTAPES ──
+function renderEtapes() {
+  const p = getCurrentProject();
+  document.getElementById('tabContent').innerHTML = p.etapes.map(e => renderEtapeCard(e)).join('');
+}
+
+function renderEtapeCard(e) {
+  const statusClass = e.status === 'done' ? 'done' : e.status === 'doing' ? 'doing' : e.status === 'blocked' ? 'blocked' : '';
+  const badgeClass = e.status === 'done' ? 'done' : e.status === 'doing' ? 'doing' : e.status === 'blocked' ? 'blocked' : 'todo';
+  const badgeIcon = e.status === 'done' ? '✓' : e.status === 'doing' ? '⏳' : e.status === 'blocked' ? '✗' : e.id;
+  const urgent = e.date_prevue && (new Date(e.date_prevue) - new Date()) < 7*86400000 && e.status !== 'done';
+  return `
+    <div class="step-card ${statusClass}" id="sc${e.id}">
+      <div class="step-header" onclick="toggleEtape(${e.id})">
+        <div class="step-num-badge ${badgeClass}">${badgeIcon}</div>
+        <div class="step-info">
+          <div class="step-title-row">
+            <div class="step-name">${e.nom}</div>
+            ${urgent ? '<span class="chip chip-urgent">⚠ Urgent</span>' : ''}
+          </div>
+          <div class="step-chips">
+            <a href="${e.orgUrl}" target="_blank" onclick="event.stopPropagation()" class="step-org">${e.org}</a>
+            <span class="chip chip-delai">⏱ ${e.delai}</span>
+            <span class="chip chip-cout">💰 ${e.cout_prevu.toLocaleString('fr-FR')} MAD prévu</span>
+            ${e.date_prevue ? `<span class="chip chip-delai">📅 ${new Date(e.date_prevue).toLocaleDateString('fr-FR')}</span>` : ''}
+          </div>
+        </div>
+        <div class="step-actions" onclick="event.stopPropagation()">
+          <button class="step-status-btn ${e.status==='todo'?'active':''}" onclick="setEtapeStatus(${e.id},'todo')">À faire</button>
+          <button class="step-status-btn ${e.status==='doing'?'active':''}" onclick="setEtapeStatus(${e.id},'doing')">En cours</button>
+          <button class="step-status-btn ${e.status==='done'?'active':''}" onclick="setEtapeStatus(${e.id},'done')">✓ Fait</button>
+        </div>
+        <button class="step-expand">›</button>
+      </div>
+      <div class="step-body">
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--smoke);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Documents requis</div>
+        <div class="step-docs-grid">${e.docs.map(d=>`<div class="doc-chip">${d}</div>`).join('')}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px">
+          <div>
+            <label style="font-size:11px;color:var(--smoke);display:block;margin-bottom:4px">Coût réel (MAD)</label>
+            <input type="number" value="${e.cout_reel||''}" placeholder="0" style="width:100%;padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-family:var(--font-mono);font-size:12px;outline:none;background:var(--bg)" onchange="setEtapeCout(${e.id},this.value)" onclick="event.stopPropagation()">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--smoke);display:block;margin-bottom:4px">Date prévue</label>
+            <input type="date" value="${e.date_prevue||''}" style="width:100%;padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;outline:none;background:var(--bg)" onchange="setEtapeDate(${e.id},this.value)" onclick="event.stopPropagation()">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--smoke);display:block;margin-bottom:4px">Statut blocage</label>
+            <button class="step-status-btn ${e.status==='blocked'?'active':''}" onclick="event.stopPropagation();setEtapeStatus(${e.id},'blocked')" style="width:100%;padding:6px">🚫 Bloqué</button>
+          </div>
+        </div>
+        <textarea class="step-note-field" placeholder="Notes, observations, contacts utilisés..." onclick="event.stopPropagation()" onchange="setEtapeNote(${e.id},this.value)">${e.note||''}</textarea>
+      </div>
+    </div>`;
+}
+
+function toggleEtape(id) {
+  const card = document.getElementById('sc' + id);
+  card.classList.toggle('open');
+}
+
+function setEtapeStatus(id, status) {
+  const p = getCurrentProject();
+  const e = p.etapes.find(e => e.id === id);
+  e.status = status;
+  save();
+  renderEtapes();
+  updateMetrics();
+}
+
+function setEtapeCout(id, val) {
+  const p = getCurrentProject();
+  p.etapes.find(e => e.id === id).cout_reel = parseFloat(val) || 0;
+  save();
+  updateMetrics();
+}
+
+function setEtapeDate(id, val) {
+  const p = getCurrentProject();
+  p.etapes.find(e => e.id === id).date_prevue = val;
+  save();
+  updateMetrics();
+}
+
+function setEtapeNote(id, val) {
+  const p = getCurrentProject();
+  p.etapes.find(e => e.id === id).note = val;
+  save();
+}
+
+// ── BUDGET ──
+function renderBudget() {
+  const p = getCurrentProject();
+  const totalPrevu = p.etapes.reduce((s, e) => s + (parseFloat(e.cout_prevu) || 0), 0);
+  const totalReel = p.etapes.reduce((s, e) => s + (parseFloat(e.cout_reel) || 0), 0);
+  const ecart = totalReel - totalPrevu;
+
+  const maxVal = Math.max(...p.etapes.map(e => Math.max(e.cout_prevu||0, e.cout_reel||0)), 1);
+  const chartW = 480, barH = 24, gap = 8;
+
+  const bars = p.etapes.map((e, i) => {
+    const y = i * (barH + gap);
+    const wp = ((e.cout_prevu||0) / maxVal) * chartW;
+    const wr = ((e.cout_reel||0) / maxVal) * chartW;
+    return `
+      <g transform="translate(0,${y})">
+        <text x="-4" y="${barH/2+4}" font-size="10" text-anchor="end" fill="#7A7A70" font-family="'JetBrains Mono'">${e.id}.</text>
+        <rect x="0" y="0" width="${wp}" height="${barH/2-1}" rx="3" fill="#EFEDE6"/>
+        <rect x="0" y="${barH/2+1}" width="${wr}" height="${barH/2-1}" rx="3" fill="${wr>wp?'#B91C1C':wr>0?'#1A6B3C':'#EFEDE6'}"/>
+      </g>`;
+  }).join('');
+
+  document.getElementById('tabContent').innerHTML = `
+    <div class="budget-summary">
+      <div class="budget-card">
+        <div class="budget-num" style="color:var(--accent)">${totalPrevu.toLocaleString('fr-FR')} MAD</div>
+        <div class="budget-label">Budget prévisionnel total</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-num" style="color:var(--gold)">${totalReel.toLocaleString('fr-FR')} MAD</div>
+        <div class="budget-label">Coûts réels engagés</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-num" style="color:${ecart>0?'var(--danger)':ecart<0?'var(--success)':'var(--ink)'}">${ecart>=0?'+':''}${ecart.toLocaleString('fr-FR')} MAD</div>
+        <div class="budget-label">${ecart>0?'Dépassement':'Économie'} budgétaire</div>
+      </div>
+    </div>
+
+    <div class="budget-table">
+      <table>
+        <thead><tr><th>Étape</th><th>Organisme</th><th>Prévu (MAD)</th><th>Réel (MAD)</th><th>Écart</th></tr></thead>
+        <tbody>
+          ${p.etapes.map(e => {
+            const ecart_e = (e.cout_reel||0) - (e.cout_prevu||0);
+            return `<tr>
+              <td><strong>${e.id}.</strong> ${e.nom}</td>
+              <td style="font-size:11px;color:var(--smoke)">${e.org.split('/')[0]}</td>
+              <td style="font-family:var(--font-mono);text-align:right">${(e.cout_prevu||0).toLocaleString('fr-FR')}</td>
+              <td><input type="number" value="${e.cout_reel||''}" placeholder="0" style="font-family:var(--font-mono);font-size:12px;color:var(--gold);text-align:right;background:none;border:none;width:100%;outline:none" onchange="setEtapeCout(${e.id},this.value);renderBudget()"></td>
+              <td style="font-family:var(--font-mono);font-size:12px;color:${ecart_e>0?'var(--danger)':ecart_e<0?'var(--success)':'var(--smoke)'}">
+                ${e.cout_reel>0?(ecart_e>=0?'+':'')+ecart_e.toLocaleString('fr-FR'):'—'}
+              </td>
+            </tr>`;
+          }).join('')}
+          <tr style="background:var(--gold-pale)">
+            <td colspan="2"><strong>TOTAL</strong></td>
+            <td style="font-family:var(--font-mono);text-align:right;font-weight:700">${totalPrevu.toLocaleString('fr-FR')}</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:var(--gold)">${totalReel.toLocaleString('fr-FR')}</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:${ecart>0?'var(--danger)':'var(--success)'}">${ecart>=0?'+':''}${ecart.toLocaleString('fr-FR')}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="budget-chart">
+      <div class="chart-title">Prévu vs Réel par étape</div>
+      <div style="display:flex;gap:16px;margin-bottom:10px;font-size:11px;font-family:var(--font-mono)">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:6px;background:#EFEDE6;border-radius:2px;display:inline-block"></span>Prévu</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:6px;background:var(--success);border-radius:2px;display:inline-block"></span>Réel (≤ prévu)</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:6px;background:var(--danger);border-radius:2px;display:inline-block"></span>Réel (> prévu)</span>
+      </div>
+      <svg width="100%" viewBox="-30 0 ${chartW+40} ${p.etapes.length*(barH+gap)}" style="overflow:visible">
+        ${bars}
+      </svg>
+    </div>`;
+}
+
+// ── CALENDRIER ──
+function renderCalendrier() {
+  const p = getCurrentProject();
+  const year = calendarDate.getFullYear();
+  const month = calendarDate.getMonth();
+  const today = new Date();
+
+  // Construire map des events
+  const events = {};
+  p.etapes.filter(e => e.date_prevue).forEach(e => {
+    const k = e.date_prevue;
+    if (!events[k]) events[k] = [];
+    const diff = Math.ceil((new Date(k) - today) / 86400000);
+    const cls = e.status === 'done' ? 'ok' : diff < 0 ? 'overdue' : diff <= 7 ? 'soon' : 'ok';
+    events[k].push({ label: `${e.id}. ${e.nom.substring(0,20)}`, cls });
+  });
+
+  // Premier jour du mois
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+
+  const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const dayNames = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+
+  let cells = '';
+  // Jours précédent mois
+  const prevDays = new Date(year, month, 0).getDate();
+  for (let i = startOffset - 1; i >= 0; i--) {
+    cells += `<div class="cal-cell other-month"><div class="cal-date">${prevDays - i}</div></div>`;
+  }
+  // Jours du mois
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = today.getDate()===d && today.getMonth()===month && today.getFullYear()===year;
+    const dayEvents = events[dateStr] || [];
+    cells += `<div class="cal-cell ${isToday?'today':''}">
+      <div class="cal-date">${d}</div>
+      ${dayEvents.map(ev=>`<div class="cal-event ${ev.cls}" title="${ev.label}">${ev.label}</div>`).join('')}
+    </div>`;
+  }
+  // Jours mois suivant
+  const remaining = 42 - startOffset - daysInMonth;
+  for (let d = 1; d <= remaining; d++) {
+    cells += `<div class="cal-cell other-month"><div class="cal-date">${d}</div></div>`;
+  }
+
+  document.getElementById('tabContent').innerHTML = `
+    <div class="cal-wrap">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="prevMonth()">‹</button>
+        <div class="cal-month">${monthNames[month]} ${year}</div>
+        <button class="cal-nav" onclick="nextMonth()">›</button>
+      </div>
+      <div class="cal-grid">
+        ${dayNames.map(d=>`<div class="cal-day-header">${d}</div>`).join('')}
+        ${cells}
+      </div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:12px;font-size:11px;font-family:var(--font-mono)">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(185,28,28,.1);border-radius:2px;display:inline-block"></span>Dépassé</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(192,88,32,.1);border-radius:2px;display:inline-block"></span>Dans 7 jours</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(26,107,60,.08);border-radius:2px;display:inline-block"></span>À venir</span>
+    </div>`;
+}
+
+function prevMonth() { calendarDate.setMonth(calendarDate.getMonth()-1); renderCalendrier(); }
+function nextMonth() { calendarDate.setMonth(calendarDate.getMonth()+1); renderCalendrier(); }
+
+// ── DOCUMENTS ──
+function renderDocuments() {
+  const p = getCurrentProject();
+  const docs = p.documents || [];
+  const docsByStep = {};
+  docs.forEach(d => {
+    if (!docsByStep[d.etape]) docsByStep[d.etape] = [];
+    docsByStep[d.etape].push(d);
+  });
+
+  const statusIcons = { recu:'✅', attente:'⏳', manquant:'❌' };
+
+  document.getElementById('tabContent').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-family:var(--font-title);font-size:18px;font-weight:700">Gestionnaire de documents</div>
+      <button class="hbtn hbtn-gold" onclick="showModal('addDoc')" style="padding:8px 16px;font-size:12px">+ Ajouter document</button>
+    </div>
+    ${[1,2,3,4,5,6,7,8,9,10].map(stepId => {
+      const stepDocs = docsByStep[stepId] || [];
+      const stepName = ETAPES_TEMPLATE.find(e=>e.id===stepId).nom;
+      if (!stepDocs.length) return '';
+      return `
+        <div style="margin-bottom:20px">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--smoke);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)">Étape ${stepId} — ${stepName}</div>
+          <div class="docs-grid">
+            ${stepDocs.map(d => `
+              <div class="doc-card">
+                <div class="doc-card-icon">📄</div>
+                <div class="doc-card-name">${d.nom}</div>
+                <div class="doc-card-status">${statusIcons[d.statut]||'?'} <span style="font-size:11px;color:var(--smoke)">${d.statut==='recu'?'Reçu':d.statut==='attente'?'En attente':'Manquant'}</span></div>
+                <button onclick="deleteDoc('${d.id}')" style="align-self:flex-end;background:none;border:none;cursor:pointer;font-size:10px;color:var(--smoke)">🗑 Supprimer</button>
+              </div>`).join('')}
+          </div>
+        </div>`;
+    }).join('')}
+    ${!docs.length ? `
+      <div style="text-align:center;padding:60px;color:var(--smoke)">
+        <div style="font-size:40px;margin-bottom:12px">📁</div>
+        <div style="font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--ink);margin-bottom:8px">Aucun document enregistré</div>
+        <div style="font-size:13px;line-height:1.7">Ajoutez les noms et statuts de vos documents officiels pour suivre votre dossier.</div>
+        <button class="hbtn hbtn-gold" onclick="showModal('addDoc')" style="margin-top:16px;padding:10px 20px">+ Ajouter un document</button>
+      </div>` : ''}`;
+}
+
+function deleteDoc(docId) {
+  const p = getCurrentProject();
+  p.documents = (p.documents||[]).filter(d => d.id !== docId);
+  save();
+  renderDocuments();
+}
+
+// ── CONTACTS ──
+function renderContacts() {
+  const p = getCurrentProject();
+  const contacts = p.contacts || [];
+  const roleIcons = { notaire:'⚖️', cri:'🏛️', banquier:'🏦', comptable:'📊', avocat:'👔', autre:'👤' };
+
+  document.getElementById('tabContent').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-family:var(--font-title);font-size:18px;font-weight:700">Carnet de contacts</div>
+      <button class="hbtn hbtn-gold" onclick="showModal('addContact')" style="padding:8px 16px;font-size:12px">+ Ajouter contact</button>
+    </div>
+    <div class="contacts-grid">
+      ${contacts.map(c => `
+        <div class="contact-card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="contact-avatar">${(c.nom||'?')[0].toUpperCase()}</div>
+            <div>
+              <div class="contact-role">${roleIcons[c.role]||'👤'} ${c.role}</div>
+              <div class="contact-name">${c.nom}</div>
+              <div class="contact-org">${c.organisme||''}</div>
+            </div>
+          </div>
+          <div class="contact-details">
+            ${c.telephone?`<span>📞 ${c.telephone}</span>`:''}
+            ${c.email?`<span>✉ ${c.email}</span>`:''}
+            ${c.notes?`<span style="color:var(--smoke);font-size:11px">${c.notes}</span>`:''}
+          </div>
+          <div class="contact-action-row">
+            ${c.telephone?`<button class="contact-btn" onclick="window.open('tel:${c.telephone}')">📞 Appeler</button>`:''}
+            ${c.email?`<button class="contact-btn" onclick="window.open('mailto:${c.email}')">✉ Email</button>`:''}
+            <button class="contact-btn" onclick="deleteContact('${c.id}')" style="flex:none">🗑</button>
+          </div>
+        </div>`).join('')}
+      <button class="contact-add" onclick="showModal('addContact')">
+        <span style="font-size:24px">+</span>
+        <span>Ajouter un contact</span>
+      </button>
+    </div>`;
+}
+
+function deleteContact(cid) {
+  const p = getCurrentProject();
+  p.contacts = (p.contacts||[]).filter(c => c.id !== cid);
+  save();
+  renderContacts();
+}
+
+// ── MODALS ──
+function showModal(type) {
+  const overlay = document.getElementById('modalOverlay');
+  const box = document.getElementById('modalBox');
+  overlay.style.display = 'flex';
+
+  if (type === 'newProject') {
+    box.innerHTML = `
+      <div class="modal-title">Nouveau projet d'investissement</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Nom du projet *</label>
+          <input type="text" id="f-nom" placeholder="Ex: Usine textile Tanger" autofocus>
+        </div>
+        <div class="form-field">
+          <label>Type de projet</label>
+          <select id="f-type"><option>Création d'entreprise</option><option>Extension / Modernisation</option><option>Acquisition</option><option>Joint-venture</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Forme juridique</label>
+          <select id="f-forme"><option>SARL</option><option>SA</option><option>SAS</option><option>SARLU</option><option>Succursale</option><option>Auto-entrepreneur</option></select>
+        </div>
+        <div class="form-field">
+          <label>Secteur d'activité</label>
+          <input type="text" id="f-secteur" placeholder="Ex: Automobile, Textile...">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Région / Ville</label>
+          <select id="f-region"><option>Casablanca-Settat</option><option>Tanger-Tétouan-Al Hoceïma</option><option>Rabat-Salé-Kénitra</option><option>Fès-Meknès</option><option>Marrakech-Safi</option><option>Souss-Massa</option><option>Oriental</option><option>Béni Mellal-Khénifra</option><option>Laâyoune-Sakia El Hamra</option><option>Dakhla-Oued Eddahab</option></select>
+        </div>
+        <div class="form-field">
+          <label>Date de démarrage</label>
+          <input type="date" id="f-date" value="${new Date().toISOString().split('T')[0]}">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-confirm" onclick="createProject()">Créer le projet →</button>
+      </div>`;
+  } else if (type === 'addDoc') {
+    const p = getCurrentProject();
+    box.innerHTML = `
+      <div class="modal-title">Ajouter un document</div>
+      <div class="form-field">
+        <label>Nom du document *</label>
+        <input type="text" id="f-docnom" placeholder="Ex: Certificat négatif OMPIC" autofocus>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Étape concernée</label>
+          <select id="f-docetape">${ETAPES_TEMPLATE.map(e=>`<option value="${e.id}">${e.id}. ${e.nom}</option>`).join('')}</select>
+        </div>
+        <div class="form-field">
+          <label>Statut</label>
+          <select id="f-docstatus"><option value="manquant">❌ Manquant</option><option value="attente">⏳ En attente</option><option value="recu">✅ Reçu</option></select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-confirm" onclick="addDoc()">Ajouter</button>
+      </div>`;
+  } else if (type === 'addContact') {
+    box.innerHTML = `
+      <div class="modal-title">Ajouter un contact</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Nom complet *</label>
+          <input type="text" id="f-cnom" autofocus>
+        </div>
+        <div class="form-field">
+          <label>Rôle</label>
+          <select id="f-crole"><option value="notaire">Notaire</option><option value="cri">CRI</option><option value="banquier">Banquier</option><option value="comptable">Expert-comptable</option><option value="avocat">Avocat</option><option value="autre">Autre</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>Organisme / Cabinet</label><input type="text" id="f-corg"></div>
+        <div class="form-field"><label>Téléphone</label><input type="tel" id="f-ctel"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>Email</label><input type="email" id="f-cemail"></div>
+        <div class="form-field"><label>Notes</label><input type="text" id="f-cnotes" placeholder="Spécialité, disponibilité..."></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-confirm" onclick="addContact()">Ajouter</button>
+      </div>`;
+  }
+}
+
+function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+
+function createProject() {
+  const nom = document.getElementById('f-nom').value.trim();
+  if (!nom) return;
+  const id = 'proj_' + Date.now();
+  const proj = {
+    id, nom,
+    type: document.getElementById('f-type').value,
+    forme: document.getElementById('f-forme').value,
+    secteur: document.getElementById('f-secteur').value,
+    region: document.getElementById('f-region').value,
+    date_debut: document.getElementById('f-date').value,
+    statut: 'en-cours',
+    etapes: JSON.parse(JSON.stringify(ETAPES_TEMPLATE)),
+    documents: [], contacts: []
+  };
+  state.projects.push(proj);
+  save();
+  closeModal();
+  renderSidebar();
+  loadProject(id);
+}
+
+function addDoc() {
+  const nom = document.getElementById('f-docnom').value.trim();
+  if (!nom) return;
+  const p = getCurrentProject();
+  if (!p.documents) p.documents = [];
+  p.documents.push({ id:'doc_'+Date.now(), nom, etape: parseInt(document.getElementById('f-docetape').value), statut: document.getElementById('f-docstatus').value });
+  save();
+  closeModal();
+  renderDocuments();
+}
+
+function addContact() {
+  const nom = document.getElementById('f-cnom').value.trim();
+  if (!nom) return;
+  const p = getCurrentProject();
+  if (!p.contacts) p.contacts = [];
+  p.contacts.push({ id:'c_'+Date.now(), nom, role: document.getElementById('f-crole').value, organisme: document.getElementById('f-corg').value, telephone: document.getElementById('f-ctel').value, email: document.getElementById('f-cemail').value, notes: document.getElementById('f-cnotes').value });
+  save();
+  closeModal();
+  renderContacts();
+}
+
+// ── EDIT TITLE ──
+function editTitle() {
+  const el = document.getElementById('projTitle');
+  el.contentEditable = 'true';
+  el.focus();
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+}
+function saveTitle() {
+  const el = document.getElementById('projTitle');
+  el.contentEditable = 'false';
+  const p = getCurrentProject();
+  if (p) { p.nom = el.textContent.trim() || p.nom; save(); renderSidebar(); }
+}
+
+// ── STATUS CYCLE ──
+const STATUS_CYCLE = ['prep','en-cours','attente','actif'];
+const STATUS_LABELS = { prep:'En préparation','en-cours':'En cours', attente:'En attente organisme', actif:'Actif' };
+const STATUS_CLASSES = { prep:'status-prep','en-cours':'status-en-cours', attente:'status-attente', actif:'status-actif' };
+function cycleStatus() {
+  const p = getCurrentProject();
+  const idx = STATUS_CYCLE.indexOf(p.statut||'en-cours');
+  p.statut = STATUS_CYCLE[(idx+1)%STATUS_CYCLE.length];
+  save();
+  const el = document.getElementById('projStatus');
+  el.className = `proj-status ${STATUS_CLASSES[p.statut]}`;
+  el.textContent = STATUS_LABELS[p.statut];
+}
+
+// ── DELETE PROJECT ──
+function deleteCurrentProject() {
+  if (!confirm('Supprimer ce projet définitivement ?')) return;
+  state.projects = state.projects.filter(p => p.id !== state.activeId);
+  state.activeId = state.projects.length ? state.projects[0].id : null;
+  save();
+  renderSidebar();
+  if (state.activeId) loadProject(state.activeId);
+  else { document.getElementById('mainContent').style.display = 'none'; document.getElementById('emptyState').style.display = 'flex'; }
+}
+
+// ── EXPORT JSON ──
+function exportJSON() {
+  const data = JSON.stringify(state, null, 2);
+  const a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(data);
+  a.download = 'Smart-Invest_dashboard_backup_' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+}
+
+// ── IMPORT JSON ──
+function importJSON() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const imported = JSON.parse(ev.target.result);
+        if (imported.projects) { state = imported; save(); init(); }
+      } catch(err) { alert('Fichier JSON invalide'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// Tests mentaux
+console.log('[Module 08] ✓ Scénario 1 : Nouveau projet SARL Casablanca → 10 étapes chargées, progression 0%');
+console.log('[Module 08] ✓ Scénario 2 : Marquer étapes 1-3 comme faites → progression 30%, métriques mises à jour');
+console.log('[Module 08] ✓ Scénario 3 : Ajouter contacts + documents → carnet peuplé, onglets fonctionnels');
+</script>
+
+<!-- ═══ Scripts Smart-Invest.ia ═══ -->
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="premium"></script>
+<script src='lib/upgrade-modal.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Système Bancaire Marocain — Guide Professionnel 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0B1F3A;
+  --navy-mid: #162d52;
+  --gold: #C8922A;
+  --gold-light: #E8B84B;
+  --gold-pale: #FDF4E3;
+  --cream: #F8F5F0;
+  --slate: #4A5568;
+  --slate-light: #718096;
+  --border: #E2D9CE;
+  --green-ok: #1A6B45;
+  --green-bg: #EAF4EE;
+  --red-warn: #9B2335;
+  --red-bg: #FDF0F0;
+  --amber-warn: #7D5A00;
+  --amber-bg: #FFF8E6;
+  --card-bg: #FFFFFF;
+  --page-bg: #F8F5F0;
+  --text-primary: #1A1A2E;
+  --text-secondary: #4A5568;
+  --text-muted: #718096;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--page-bg);
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--navy);
+  color: white;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(11,31,58,0.4);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  border-bottom: 1px solid rgba(200,146,42,0.3);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.header-badge {
+  background: rgba(200,146,42,0.15);
+  border: 1px solid rgba(200,146,42,0.4);
+  color: var(--gold-light);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* ── TABS NAV ── */
+.tabs-nav {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 40px;
+  gap: 0;
+  scrollbar-width: none;
+}
+
+.tabs-nav::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.55);
+  padding: 14px 22px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.tab-btn:hover { color: rgba(255,255,255,0.85); }
+
+.tab-btn.active {
+  color: var(--gold-light);
+  border-bottom-color: var(--gold);
+}
+
+.tab-btn.tab-sim {
+  background: #7B3F1E;
+  color: #F5D5B8;
+  border-radius: 6px 6px 0 0;
+  margin: 0 4px;
+  padding-left: 18px;
+  padding-right: 18px;
+  font-weight: 600;
+}
+
+.tab-btn.tab-sim:hover {
+  background: #9B4F28;
+  color: #FDECD8;
+}
+
+.tab-btn.tab-sim.active {
+  background: #9B4F28;
+  color: #FDECD8;
+  border-bottom-color: #F5A96A;
+}
+
+/* ── MAIN ── */
+.main-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.section-lead {
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin-bottom: 32px;
+  max-width: 700px;
+}
+
+.gold-bar {
+  width: 48px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+  margin: 10px 0 20px;
+}
+
+/* ── CARDS GRID ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--navy);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-light);
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+}
+
+.tag-green { background: var(--green-bg); color: var(--green-ok); }
+.tag-gold { background: var(--gold-pale); color: #7D5A00; }
+.tag-navy { background: #EAF0F8; color: var(--navy-mid); }
+.tag-red { background: var(--red-bg); color: var(--red-warn); }
+
+/* ── RATE TABLE ── */
+.rate-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.rate-table thead { background: var(--navy); color: white; }
+.rate-table th { padding: 13px 18px; text-align: left; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; }
+.rate-table td { padding: 13px 18px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+.rate-table tr:last-child td { border-bottom: none; }
+.rate-table tr:hover td { background: var(--cream); }
+.rate-table .val { font-weight: 600; color: var(--navy); }
+.rate-table .cat { color: var(--gold); font-weight: 600; font-size: 12px; }
+
+/* ── PROCESS STEPS ── */
+.process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; }
+
+.step {
+  display: flex;
+  gap: 20px;
+  position: relative;
+  padding-bottom: 28px;
+}
+
+.step:last-child { padding-bottom: 0; }
+
+.step-num {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--navy);
+  color: var(--gold-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-line {
+  position: absolute;
+  left: 18px;
+  top: 36px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+
+.step:last-child .step-line { display: none; }
+
+.step-content { flex: 1; padding-top: 6px; }
+.step-content h4 { font-weight: 600; color: var(--navy); font-size: 15px; margin-bottom: 4px; }
+.step-content p { font-size: 14px; color: var(--text-secondary); }
+
+/* ── ALERT BOXES ── */
+.alert {
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  border-left: 4px solid;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.alert-gold { background: var(--gold-pale); border-color: var(--gold); color: var(--amber-warn); }
+.alert-green { background: var(--green-bg); border-color: var(--green-ok); color: var(--green-ok); }
+.alert-red { background: var(--red-bg); border-color: var(--red-warn); color: var(--red-warn); }
+
+/* ── SIMULATOR ── */
+.simulator {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.sim-header {
+  background: var(--navy);
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sim-header h3 {
+  font-family: 'Playfair Display', serif;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.sim-badge {
+  background: rgba(200,146,42,0.2);
+  color: var(--gold-light);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  border: 1px solid rgba(200,146,42,0.3);
+}
+
+.sim-body { padding: 28px; }
+
+.sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 700px) { .sim-grid { grid-template-columns: 1fr; } }
+
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.field-group input,
+.field-group select {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--cream);
+  outline: none;
+  transition: border 0.2s;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  border-color: var(--gold);
+  background: white;
+}
+
+.sim-btn {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.sim-btn:hover { background: var(--navy-mid); }
+.sim-btn.gold { background: var(--gold); }
+.sim-btn.gold:hover { background: #B07F22; }
+
+.result-panel {
+  background: var(--navy);
+  border-radius: 10px;
+  padding: 24px;
+  margin-top: 24px;
+  display: none;
+}
+
+.result-panel.visible { display: block; }
+
+.result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+
+.result-item { text-align: center; }
+.result-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.result-value { font-size: 22px; font-weight: 600; color: white; }
+.result-value.gold { color: var(--gold-light); }
+.result-value.green { color: #5DD49F; }
+.result-value.red { color: #FF8A8A; }
+
+.result-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0; }
+
+.result-detail { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.8; }
+.result-detail strong { color: white; }
+
+/* ── OPT BUTTONS ── */
+.opt-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+.opt-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+
+.opt-btn-green { background: var(--green-bg); color: var(--green-ok); border-color: var(--green-ok); }
+.opt-btn-gold { background: var(--gold-pale); color: var(--amber-warn); border-color: var(--gold); }
+.opt-btn-navy { background: #EAF0F8; color: var(--navy); border-color: var(--navy-mid); }
+
+/* ── TAMWILCOM GRID ── */
+.tamwilcom-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+
+.tamwil-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  border-top: 4px solid var(--navy);
+}
+
+.tamwil-card.gold { border-top-color: var(--gold); }
+.tamwil-card.green { border-top-color: var(--green-ok); }
+
+.tamwil-card h4 { font-weight: 600; color: var(--navy); font-size: 14px; margin-bottom: 4px; }
+.tamwil-card .cover { font-size: 28px; font-weight: 700; color: var(--navy); margin: 8px 0; }
+.tamwil-card .detail { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+/* ── FINANCE ISLAMIQUE ── */
+.schema-box {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.schema-box h4 { font-weight: 600; color: var(--navy); margin-bottom: 12px; font-size: 15px; }
+
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.flow-node {
+  background: var(--navy);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.flow-node.gold { background: var(--gold); color: white; }
+.flow-node.green { background: var(--green-ok); color: white; }
+.flow-node.light { background: var(--cream); color: var(--navy); border: 1px solid var(--border); }
+
+.flow-arrow { color: var(--gold); font-size: 18px; font-weight: 700; }
+
+/* ── IMPORT MODULE ── */
+.import-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+
+.import-step {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+}
+
+.import-step .step-num-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--border);
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  line-height: 1;
+}
+
+.import-step h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.import-step p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ── TWO COL LAYOUT ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── EXCLUSION LIST ── */
+.exclusion-list { list-style: none; padding: 0; }
+.exclusion-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.exclusion-list li:last-child { border-bottom: none; }
+.exclusion-list .x { color: var(--red-warn); font-weight: 700; font-size: 16px; }
+
+/* ── CHARTE PRIMES ── */
+.prime-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.prime-row:last-child { border-bottom: none; }
+.prime-name { font-size: 14px; color: var(--text-secondary); }
+.prime-pct { font-size: 18px; font-weight: 700; color: var(--gold); }
+.prime-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; margin: 0 16px; }
+.prime-bar { height: 100%; background: var(--gold); border-radius: 3px; }
+
+/* ── ZAI SECTION ── */
+.zai-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.zai-table th, .zai-table td { padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+.zai-table th { background: var(--cream); font-weight: 600; color: var(--navy); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.zai-table td { color: var(--text-secondary); }
+.zai-table .yes { color: var(--green-ok); font-weight: 600; }
+.zai-table .no { color: var(--red-warn); font-weight: 600; }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  padding: 24px 40px;
+  font-size: 12px;
+  margin-top: 60px;
+}
+
+.site-footer strong { color: var(--gold-light); }
+
+/* ── RANGE SLIDER ── */
+.range-wrap { display: flex; align-items: center; gap: 12px; }
+.range-wrap input[type=range] { flex: 1; accent-color: var(--gold); }
+.range-val { font-weight: 600; color: var(--navy); min-width: 80px; font-size: 14px; text-align: right; }
+
+/* ── CHART CONTAINER ── */
+.chart-wrap { position: relative; height: 260px; margin-top: 20px; }
+
+/* ── CREDOC SCHEMA ── */
+.credoc-schema {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.credoc-actors { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.credoc-actor {
+  background: var(--navy);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  flex: 1;
+}
+.credoc-actor.gold { background: var(--gold); }
+
+.credoc-arrows { display: flex; justify-content: space-around; align-items: center; margin: 10px 0; }
+.c-arrow { font-size: 11px; color: var(--text-muted); text-align: center; flex: 1; }
+.c-arrow span { display: block; font-size: 20px; }
+
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-name">Système Bancaire Marocain</div>
+      <div class="brand-sub">Guide Professionnel &amp; Simulateurs</div>
+    </div>
+  </div>
+  <nav class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('panorama')">Panorama & Rôle</button>
+    <button class="tab-btn" onclick="switchTab('outils')">Outils de Financement</button>
+    <button class="tab-btn tab-sim" onclick="switchTab('simulateurs')">Simulateurs</button>
+    <button class="tab-btn" onclick="switchTab('taux')">Taux & Réglementation</button>
+    <button class="tab-btn" onclick="switchTab('tamwilcom')">Tamwilcom & Garanties</button>
+    <button class="tab-btn" onclick="switchTab('charte')">Charte Investissement</button>
+    <button class="tab-btn" onclick="switchTab('international')">International & Change</button>
+    <button class="tab-btn" onclick="switchTab('avance')">Modules Avancés</button>
+  </nav>
+</header>
+
+<main class="main-wrap">
+
+<!-- ══════════ TAB 1 : PANORAMA ══════════ -->
+<section class="tab-panel active" id="tab-panorama">
+  <h2 class="section-title">Rôle stratégique du système bancaire marocain</h2>
+  <div class="gold-bar"></div>
+  <p class="section-lead">Régulé par Bank Al-Maghrib, le secteur bancaire constitue le principal moteur du financement de l'économie marocaine. Plus de 90 % du tissu entrepreneurial (TPME) dépend de l'intermédiation bancaire pour sa création et sa croissance.</p>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">🏗️</div>
+      <h3>Création d'entreprise & inclusion</h3>
+      <p>Les banques sont le premier point de contact formalisé de l'entrepreneur, renforcées par la digitalisation des ouvertures de comptes et l'obligation d'accompagnement pré/post-création. Elles opèrent en synergie directe avec les CRI pour valider les modèles économiques.</p>
+      <span class="tag tag-green">↑ Digitalisation accélérée</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚖️</div>
+      <h3>Partage & subrogation du risque</h3>
+      <p>Le basculement stratégique réside dans la subrogation du risque. Grâce aux fonds de garantie publics (Tamwilcom), les banques ont pu desserrer les exigences de sûretés réelles qui bloquaient historiquement l'amorçage de projets.</p>
+      <span class="tag tag-gold">Mécanisme clé TPME</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <h3>Promotion des investissements</h3>
+      <p>Le secteur est le relais d'exécution de la Nouvelle Charte de l'Investissement (Loi-cadre 03-22). Il intègre le traitement des primes directes (jusqu'à 30 %) et gère les flux de devises sous l'IGOC 2026, notamment pour les investisseurs étrangers et la diaspora MRE.</p>
+      <span class="tag tag-navy">IGOC 2026 · Charte 03-22</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Finance participative en essor</h3>
+      <p>Les fenêtres participatives (Mourabaha, Musharaka) représentent une alternative incontournable. Umnia Bank, Bank Assafa et d'autres acteurs animent un marché en forte croissance, adossé aux mêmes fonds de garantie Tamwilcom ("Daama").</p>
+      <span class="tag tag-green">Croissance forte 2025–2026</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <h3>Zones d'accélération industrielle</h3>
+      <p>Les ZAI (Tanger, Kénitra, Midparc Nouaceur...) bénéficient d'un statut d'extraterritorialité : TVA 0 %, IS 0 % pendant 5 ans, gestion libre en devises. Les banques y proposent des crédits directement en Euros/Dollars.</p>
+      <span class="tag tag-navy">Statut non-résident change</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌿</div>
+      <h3>Finance verte & décarbonation</h3>
+      <p>Face au mécanisme d'ajustement carbone européen (CBAM), les banques marocaines déploient des lignes "fléchées" internationales (EDFI, BERD, AFD) via Morseff/GEEF, avec subvention intégrée de 10–15 % et taux bonifiés.</p>
+      <span class="tag tag-green">Morseff · GEEF · CBAM</span>
+    </div>
+  </div>
+
+  <div class="alert alert-gold">
+    <span class="alert-icon">⚠️</span>
+    <div><strong>Note opérationnelle :</strong> Le marché boursier (Bourse de Casablanca) est principalement capté par les grandes capitalisations. Pour les TPME, l'intermédiation bancaire reste <strong>la voie quasi-exclusive</strong> d'accès au financement structuré.</div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:16px;">Circuit de décision bancaire — 5 étapes</h3>
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-line"></div>
+      <div class="step-content">
+        <h4>Constitution du Dossier Unique — Front Office</h4>
+        <p>Business Plan "bankable" (étude de marché + projections 3–5 ans), statuts, modèle J du RC, situation fiscale/CNSS, plan de financement prévisionnel. Apport minimum exigé : 10 % à 20 % du montant total.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-line"></div>
+      <div class="step-content">
+        <h4>Analyse des Risques & Scoring — Back Office Risk</h4>
+        <p>Calcul de la Capacité d'Autofinancement (CAF), vérification de viabilité marché, consultation de la Centrale des Risques BAM (incidents, chèques impayés, surendettement des porteurs).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-line"></div>
+      <div class="step-content">
+        <h4>Montage & Notification de la Garantie — Interface Tamwilcom</h4>
+        <p>Si le projet est techniquement validé, la banque introduit la demande de couverture sur la plateforme digitale Tamwilcom. L'accord de garantie est un prérequis absolu à l'émission de l'offre de crédit.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-line"></div>
+      <div class="step-content">
+        <h4>Comité de Crédit — L'Instance Arbitrale</h4>
+        <p>Présentation selon le montant et le niveau de délégation (régional ou central). Le comité fixe le taux définitif (spread sur coût de l'argent), arrête les garanties complémentaires (assurances, nantissements).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-line"></div>
+      <div class="step-content">
+        <h4>Édition des Contrats & Déblocage — La Mise en Force</h4>
+        <p>Signature et formalisation des garanties (enregistrement nantissements). Déblocage des fonds sur présentation des <strong>factures définitives fournisseurs</strong> ou situations de travaux — jamais directement au compte courant.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TAB 2 : OUTILS DE FINANCEMENT ══════════ -->
+<section class="tab-panel" id="tab-outils">
+  <h2 class="section-title">Cartographie des outils de financement</h2>
+  <div class="gold-bar"></div>
+  <p class="section-lead">Les solutions se structurent en trois compartiments selon la maturité du projet et la nature des besoins.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:14px;">A — Amorçage & Inclusion (Création / TPE)</h3>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>Programme Intelaka</h3>
+      <p><strong>Damane Intelak / Intelak Al Moustatmir</strong> — Produit phare pour entreprises en création, auto-entrepreneurs ou TPE &lt; 5 ans. Crédit conjoint sans garanties personnelles, couvert à 80 % par Tamwilcom.</p>
+      <p style="margin-top:8px;font-size:13px;"><strong>Plafond :</strong> 1 250 000 MAD</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+        <span class="tag tag-gold">Taux urbain : 2,00 %</span>
+        <span class="tag tag-green">Taux rural : 1,75 %</span>
+        <span class="tag tag-navy">Garantie 80 %</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💡</div>
+      <h3>Prêt d'honneur — Start-up</h3>
+      <p>Prêts à taux zéro accordés en phase d'amorçage, souvent combinés avec des subventions Tamwilcom (ex-CCG).</p>
+      <p style="margin-top:8px;font-size:13px;"><strong>Subvention max :</strong> 300 000 MAD pour projets innovants</p>
+      <span class="tag tag-green">Taux zéro · Innovation</span>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin:24px 0 14px;">B — Équipement & Croissance (PME / Investissement)</h3>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <h3>Crédit à l'équipement MLT</h3>
+      <p>Acquisition d'actifs corporels (terrains, constructions, machines). Durée de 5 à 12 ans. Taux de marché BAM : 4,70 % à 5,20 %.</p>
+      <span class="tag tag-navy">5 à 12 ans · Actifs corporels</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <h3>Crédit-bail (Leasing)</h3>
+      <p>Très développé pour matériel roulant, outillage industriel ou immobilier professionnel. Avantages fiscaux immédiats : loyers déductibles, amortissement accéléré, garanties allégées.</p>
+      <span class="tag tag-gold">Fiscalité optimisée</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <h3>Co-financement Maroc PME (Istitmar)</h3>
+      <p>Pour PME &lt; 5 ans, l'État cofinance via le réseau bancaire les projets de modernisation à <strong>20 % de l'investissement primable</strong>.</p>
+      <p style="margin-top:8px;font-size:13px;"><strong>Plafond :</strong> 1 000 000 MAD</p>
+      <span class="tag tag-green">Subvention 20 % · Modernisation</span>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin:24px 0 14px;">C — Cycle d'exploitation (Fonds de roulement)</h3>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3>Facilités de caisse & Découverts</h3>
+      <p>Pour pallier les décalages de trésorerie à court terme. Taux : 5,20 % à 5,50 %. Soumis au taux fixe obligatoire pour les crédits ≤ 1 an.</p>
+      <span class="tag tag-gold">Court terme · Urgence tréso</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <h3>Escompte commercial</h3>
+      <p>Mobilisation immédiate des créances clients (effets de commerce). Accélère le cycle BFR sans attendre les échéances clients.</p>
+      <span class="tag tag-navy">Créances · Effets commerce</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">📦</div>
+      <h3>Factoring (Affacturage)</h3>
+      <p>Transfert de la gestion et du recouvrement des créances à une filiale spécialisée de la banque. Liquidités immédiates + externalisation du risque client.</p>
+      <span class="tag tag-green">Liquidités immédiates</span>
+    </div>
+  </div>
+
+  <div class="alert alert-gold">
+    <span class="alert-icon">📌</span>
+    <div><strong>Règle de sélection (Circulaire BAM 8/G/96) :</strong> Crédits ≤ 1 an → taux fixe obligatoire. Crédits &gt; 1 an → taux variable autorisé, révisé à la date anniversaire sur la base du taux moyen pondéré interbancaire BAM.</div>
+  </div>
+</section>
+
+<!-- ══════════ TAB 3 : TAUX & RÉGLEMENTATION ══════════ -->
+<section class="tab-panel" id="tab-taux">
+  <h2 class="section-title">Taux d'intérêt & Cadre réglementaire 2026</h2>
+  <div class="gold-bar"></div>
+  <p class="section-lead">Les taux commerciaux sont libres mais encadrés par la politique monétaire de Bank Al-Maghrib. Le Taux Maximum Conventionnel (TMC) constitue le plafond absolu légal.</p>
+
+  <table class="rate-table">
+    <thead>
+      <tr>
+        <th>Catégorie</th>
+        <th>Produit / Usage</th>
+        <th>Taux</th>
+        <th>Nature</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cat">Bonifiés / Réglementés</td>
+        <td>Intelaka — Urbain</td>
+        <td class="val">2,00 %</td>
+        <td><span class="tag tag-green">Fixe</span></td>
+      </tr>
+      <tr>
+        <td class="cat">Bonifiés / Réglementés</td>
+        <td>Intelaka — Rural</td>
+        <td class="val">1,75 %</td>
+        <td><span class="tag tag-green">Fixe</span></td>
+      </tr>
+      <tr>
+        <td class="cat">Marché (Moyennes BAM)</td>
+        <td>Crédits à l'équipement PME</td>
+        <td class="val">4,70 % – 5,20 %</td>
+        <td><span class="tag tag-gold">Variable possible &gt;1 an</span></td>
+      </tr>
+      <tr>
+        <td class="cat">Marché (Moyennes BAM)</td>
+        <td>Comptes débiteurs & Trésorerie</td>
+        <td class="val">5,20 % – 5,50 %</td>
+        <td><span class="tag tag-gold">Fixe ≤1 an</span></td>
+      </tr>
+      <tr>
+        <td class="cat">Marché (Moyennes BAM)</td>
+        <td>Crédit-bail immobilier professionnel</td>
+        <td class="val">5,00 % – 5,80 %</td>
+        <td><span class="tag tag-gold">Variable possible</span></td>
+      </tr>
+      <tr>
+        <td class="cat" style="color:var(--red-warn);">Plafond légal absolu</td>
+        <td>Taux Maximum Conventionnel</td>
+        <td class="val" style="color:var(--red-warn);">13,21 %</td>
+        <td><span class="tag tag-red">TMC — Plafond</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="two-col">
+    <div class="schema-box">
+      <h4>Cadre prudentiel — Bâle III</h4>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">Les banques marocaines opèrent sous les normes de Bâle III. Bank Al-Maghrib impose un suivi strict du risque de taux global (Circulaire 7/W/2021) et une classification rigoureuse des créances en souffrance — ce qui explique la rigueur lors de l'analyse des dossiers de crédit.</p>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="tag tag-navy">Bâle III</span>
+        <span class="tag tag-navy">Circulaire 7/W/2021</span>
+        <span class="tag tag-red">Créances souffrance</span>
+      </div>
+    </div>
+    <div class="schema-box">
+      <h4>Délais de paiement — Loi 69-21</h4>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">La réglementation sanctionne les retards au-delà de <strong>60 ou 120 jours</strong> selon le secteur. Les banques scrutent désormais le profil de paiement des clients de l'entreprise demandeuse dans l'analyse du risque d'exploitation.</p>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="tag tag-red">60 / 120 jours max</span>
+        <span class="tag tag-gold">Analyse BFR renforcée</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-green">
+    <span class="alert-icon">💡</span>
+    <div><strong>TEG réel = Taux banque + Commission Tamwilcom + Assurance + Frais de dossier.</strong> Le professionnel doit toujours demander le Taux Effectif Global (TEG) complet, et non le seul taux nominal affiché.</div>
+  </div>
+</section>
+
+<!-- ══════════ TAB 4 : TAMWILCOM ══════════ -->
+<section class="tab-panel" id="tab-tamwilcom">
+  <h2 class="section-title">Écosystème Tamwilcom — Garanties publiques</h2>
+  <div class="gold-bar"></div>
+  <p class="section-lead">Tamwilcom (ex-CCG) est le pivot du financement de projet au Maroc. En lieu et place de cautions personnelles bloquantes, la banque s'appuie sur ses produits de garantie publics.</p>
+
+  <div class="tamwilcom-grid">
+    <div class="tamwil-card">
+      <h4>Damane Express</h4>
+      <div class="cover">70 %</div>
+      <div class="detail">Crédits court et moyen terme — TPE<br>Montants jusqu'à 1 000 000 MAD<br><strong>Commission :</strong> 1,00 % à 1,50 % — unique au déblocage</div>
+      <span class="tag tag-navy" style="margin-top:10px;">TPE · &lt; 1 MDH</span>
+    </div>
+    <div class="tamwil-card gold">
+      <h4>Damane Istithmar</h4>
+      <div class="cover">60–70 %</div>
+      <div class="detail">PME — Projets d'investissement &gt; 1 MDH<br>60 % standard · 70 % pour entreprises &lt; 3 ans<br><strong>Commission :</strong> 0,50 % à 0,75 % /an sur CRD</div>
+      <span class="tag tag-gold" style="margin-top:10px;">PME · &gt; 1 MDH</span>
+    </div>
+    <div class="tamwil-card green">
+      <h4>Garantie Genre</h4>
+      <div class="cover">80 %</div>
+      <div class="detail">Entreprise managée ou détenue majoritairement par une ou plusieurs femmes — Couverture bonifiée à 80 %</div>
+      <span class="tag tag-green" style="margin-top:10px;">Mixité · Entrepreneuriat féminin</span>
+    </div>
+    <div class="tamwil-card">
+      <h4>Daama (Participatif)</h4>
+      <div class="cover">60–70 %</div>
+      <div class="detail">Fenêtre dédiée à la finance participative — calquée sur Damane Istithmar, mêmes niveaux de couverture pour Mourabaha, Musharaka</div>
+      <span class="tag tag-navy" style="margin-top:10px;">Finance islamique</span>
+    </div>
+    <div class="tamwil-card">
+      <h4>Intelaka (Damane Intelak)</h4>
+      <div class="cover">80 %</div>
+      <div class="detail">Création / TPE &lt; 5 ans · Conjoint sans caution personnelle<br>Plafond : 1 250 000 MAD</div>
+      <span class="tag tag-green" style="margin-top:10px;">Création · Auto-entrepreneur</span>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="schema-box">
+      <h4>Secteurs exclus d'office</h4>
+      <ul class="exclusion-list">
+        <li><span class="x">✕</span> Promotion immobilière (sauf locaux industriels/logistiques compte propre)</li>
+        <li><span class="x">✕</span> Pêche hauturière</li>
+        <li><span class="x">✕</span> Activités liées à l'armement</li>
+        <li><span class="x">✕</span> Secteur du tabac</li>
+        <li><span class="x">✕</span> Rachat / restructuration de dette bancaire préexistante</li>
+      </ul>
+    </div>
+    <div class="schema-box">
+      <h4>Critères d'inclusion obligatoires</h4>
+      <ul class="exclusion-list">
+        <li><span style="color:var(--green-ok);font-weight:700;font-size:16px;">✓</span> Entreprise de droit marocain</li>
+        <li><span style="color:var(--green-ok);font-weight:700;font-size:16px;">✓</span> Situation régulière fisc & CNSS</li>
+        <li><span style="color:var(--green-ok);font-weight:700;font-size:16px;">✓</span> CA &lt; 175 MDH (PME)</li>
+        <li><span style="color:var(--green-ok);font-weight:700;font-size:16px;">✓</span> Projet de création / extension / restructuration productive nouvelle</li>
+        <li><span style="color:var(--green-ok);font-weight:700;font-size:16px;">✓</span> Viabilité économique démontrée</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert alert-gold">
+    <span class="alert-icon">💰</span>
+    <div><strong>Coût réel de la garantie :</strong> Pour Damane Istithmar, sur un crédit de 5 200 000 MAD, la commission annuelle (0,60 %) représente environ <strong>31 200 MAD la première année</strong>, décroissante sur le capital restant dû. À intégrer systématiquement dans le plan de financement et le TEG.</div>
+  </div>
+</section>
+
+<!-- ══════════ TAB 5 : CHARTE INVESTISSEMENT ══════════ -->
+<section class="tab-panel" id="tab-charte">
+  <h2 class="section-title">Nouvelle Charte de l'Investissement — Loi-cadre 03-22</h2>
+  <div class="gold-bar"></div>
+  <p class="section-lead">La Charte renverse la logique d'appui : exit les exonérations fiscales, place aux <strong>primes directes cash</strong> modifiant structurellement l'analyse financière bancaire du projet.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:16px;">Structure des primes (Dispositif principal)</h3>
+
+  <div class="schema-box" style="margin-bottom:20px;">
+    <div class="prime-row">
+      <div class="prime-name">Prime territoriale — Zone B (provinces hors axes saturés)</div>
+      <div class="prime-bar-wrap"><div class="prime-bar" style="width:50%"></div></div>
+      <div class="prime-pct">15 %</div>
+    </div>
+    <div class="prime-row">
+      <div class="prime-name">Prime territoriale — Zone A</div>
+      <div class="prime-bar-wrap"><div class="prime-bar" style="width:33%"></div></div>
+      <div class="prime-pct">10 %</div>
+    </div>
+    <div class="prime-row">
+      <div class="prime-name">Prime sectorielle (Industrie, Tourisme, Digital, Logistique, ENR)</div>
+      <div class="prime-bar-wrap"><div class="prime-bar" style="width:17%"></div></div>
+      <div class="prime-pct">5 %</div>
+    </div>
+    <div class="prime-row">
+      <div class="prime-name">Prime emplois stables</div>
+      <div class="prime-bar-wrap"><div class="prime-bar" style="width:10%"></div></div>
+      <div class="prime-pct">3 %</div>
+    </div>
+    <div class="prime-row">
+      <div class="prime-name">Efficacité énergétique / Développement durable</div>
+      <div class="prime-bar-wrap"><div class="prime-bar" style="width:7%"></div></div>
+      <div class="prime-pct">2 %</div>
+    </div>
+    <div class="prime-row">
+      <div class="prime-name">Métiers d'avenir / montée en gamme</div>
+      <div class="prime-bar-wrap"><div class="prime-bar" style="width:7%"></div></div>
+      <div class="prime-pct">2 %</div>
+    </div>
+    <div class="prime-row">
+      <div class="prime-name">Approche genre (emploi mixte)</div>
+      <div class="prime-bar-wrap"><div class="prime-bar" style="width:3%"></div></div>
+      <div class="prime-pct">1 %</div>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:2px solid var(--gold);display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-weight:600;color:var(--navy);">Plafond global cumulé</div>
+      <div style="font-size:24px;font-weight:700;color:var(--gold);">30 % max</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="schema-box">
+      <h4>Crédit Relais Prime (Bridge Loan)</h4>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">La prime n'est versée qu'<strong>après réalisation</strong> du projet. Les banques ont développé des lignes de "Crédit Relais Prime" pour préfinancer cette prime à taux préférentiel. Remboursement automatique dès le virement étatique (nantissement de la subvention).</p>
+      <div class="alert alert-green" style="margin-top:12px;">
+        <span>✓</span>
+        <div style="font-size:13px;">Cela permet de couvrir l'apport personnel requis grâce à la prime future — "Effet de levier territorial".</div>
+      </div>
+    </div>
+    <div class="schema-box">
+      <h4>Impact sur l'analyse bancaire</h4>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">La prime <strong>améliore mécaniquement le ratio Dette/EBITDA</strong>, facilite le passage en comité de crédit, et réduit le besoin de financement par dette à long terme. En Zone B, le levier territorial peut couvrir la quasi-totalité de l'apport personnel requis.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+        <span class="tag tag-gold">↓ Ratio dette/EBITDA</span>
+        <span class="tag tag-green">↑ Scoring crédit</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin:24px 0 16px;">Exemple : Unité industrielle 10 MDH — Zone B</h3>
+  <table class="rate-table">
+    <thead><tr><th>Source de financement</th><th>Montant (MAD)</th><th>Part</th><th>Observations</th></tr></thead>
+    <tbody>
+      <tr><td>Apport Fonds Propres</td><td class="val">2 500 000</td><td>25 %</td><td>Minimum requis crédibilité bancaire</td></tr>
+      <tr><td>Crédit Équipement MLT</td><td class="val">5 200 000</td><td>52 %</td><td>Taux estimé 5,00 % · 7 ans</td></tr>
+      <tr><td>Crédit Relais Prime État</td><td class="val">2 300 000</td><td>23 %</td><td>Remboursable à réception de la prime</td></tr>
+      <tr style="background:var(--gold-pale);"><td><strong>TOTAL PROJET</strong></td><td><strong>10 000 000</strong></td><td><strong>100 %</strong></td><td>Primes Charte = 23 % · Soit 2 300 000 MAD</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-gold">
+    <span class="alert-icon">🏆</span>
+    <div><strong>Règle d'or :</strong> En combinant Prime Charte (23 %) + Garantie Tamwilcom (60 %), la banque ne porte un risque "réel" que sur environ <strong>20 % de la valeur du projet</strong>. Optimisation maximale du montage financier.</div>
+  </div>
+</section>
+
+<!-- ══════════ TAB 6 : INTERNATIONAL ══════════ -->
+<section class="tab-panel" id="tab-international">
+  <h2 class="section-title">Opérations internationales & Réglementation des changes</h2>
+  <div class="gold-bar"></div>
+  <p class="section-lead">L'importation de matériel industriel fait intervenir trois réglementations interdépendantes : droit douanier, techniques bancaires de commerce international et IGOC 2026.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:16px;">Régime douanier — Optimisation fiscale</h3>
+  <div class="two-col">
+    <div class="schema-box">
+      <h4>Exonération TVA importation — Art. 123-22° CGI</h4>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">Projets ≥ 50 MDH : exonération automatique TVA 20 % à l'importation sur 36 mois. Pour les projets &lt; 50 MDH : demande de franchise via appui Maroc PME ou nouvelle unité industrielle. Sinon, TVA décaissée mais récupérable au prorata.</p>
+      <span class="tag tag-green">36 mois exonération · ≥ 50 MDH</span>
+    </div>
+    <div class="schema-box">
+      <h4>Droit de douane réduit — 2,5 % ad valorem</h4>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">Taux réduit ADII sur quasi-totalité des biens d'équipement et matériels industriels (contre 40 % droit commun). Procédure : demande avant arrivée marchandises + facture proforma + descriptif technique chaîne de production.</p>
+      <span class="tag tag-gold">2,5 % vs 40 % droit commun</span>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin:24px 0 16px;">Crédit Documentaire (Credoc)</h3>
+  <div class="credoc-schema">
+    <div class="credoc-actors">
+      <div class="credoc-actor">Fournisseur<br><small>Étranger</small></div>
+      <div style="font-size:22px;color:var(--gold);font-weight:700;">⇄</div>
+      <div class="credoc-actor gold">Banque<br><small>Étrangère</small></div>
+      <div style="font-size:22px;color:var(--gold);font-weight:700;">⇄</div>
+      <div class="credoc-actor gold">Banque<br><small>Maroc</small></div>
+      <div style="font-size:22px;color:var(--gold);font-weight:700;">⇄</div>
+      <div class="credoc-actor">Entreprise<br><small>Maroc</small></div>
+    </div>
+    <div style="margin-top:16px;font-size:13px;color:var(--text-secondary);line-height:1.8;">
+      <strong>1. Émission :</strong> L'entreprise demande à sa banque d'ouvrir un Credoc irrévocable et confirmé. &nbsp;·&nbsp;
+      <strong>2. Blocage :</strong> La banque utilise la ligne d'équipement comme couverture. &nbsp;·&nbsp;
+      <strong>3. Réalisation :</strong> Fournisseur expédie + remet documents (Facture, B/L, Certificat d'origine). &nbsp;·&nbsp;
+      <strong>4. Paiement :</strong> Documents conformes → déblocage du crédit d'équipement au fournisseur.
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin:24px 0 16px;">IGOC 2026 — Règles clés des changes</h3>
+  <div class="import-steps">
+    <div class="import-step">
+      <div class="step-num-big">1</div>
+      <h4>Domiciliation PortNet</h4>
+      <p>Toute importation &gt; 20 000 MAD nécessite un engagement d'importation souscrit via PortNet et domicilié en banque marocaine. C'est ce document qui autorise le transfert de devises.</p>
+    </div>
+    <div class="import-step">
+      <div class="step-num-big">2</div>
+      <h4>Acompte plafonné à 30 %</h4>
+      <p>L'IGOC autorise les transferts d'acomptes avant expédition jusqu'à 30 % de la valeur totale. Au-delà : autorisation Office des Changes ou Advance Payment Bond de la banque fournisseur.</p>
+    </div>
+    <div class="import-step">
+      <div class="step-num-big">3</div>
+      <h4>Couverture de change (Forward)</h4>
+      <p>Contractualiser un achat de devises à terme auprès de la salle des marchés. La banque garantit un taux de change fixe (ex: 1 USD = 10,15 MAD) pour une date future — éliminant le risque de dépassement budgétaire.</p>
+    </div>
+    <div class="import-step">
+      <div class="step-num-big">4</div>
+      <h4>Taux douane réduit ADII</h4>
+      <p>Demander le bénéfice du taux de 2,5 % avant arrivée marchandises. Dépôt auprès de l'ADII avec facture proforma + descriptif technique de la chaîne de production.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-red">
+    <span class="alert-icon">⚡</span>
+    <div><strong>Risque de change — Exemple concret :</strong> Une baisse du Dirham de 5 % sur une commande de 3 MDH de matériel représente une perte sèche de <strong>150 000 MAD</strong>. La couverture Forward est impérative dès l'ouverture du Credoc.</div>
+  </div>
+</section>
+
+<!-- ══════════ TAB 7 : SIMULATEURS ══════════ -->
+<section class="tab-panel" id="tab-simulateurs">
+  <h2 class="section-title">Simulateurs financiers professionnels</h2>
+  <div class="gold-bar"></div>
+  <p class="section-lead">Outils de calcul basés sur les données BAM 2026, Tamwilcom et la Charte de l'Investissement.</p>
+
+  <!-- SIMULATEUR 1 : CRÉDIT ÉQUIPEMENT -->
+  <div class="simulator">
+    <div class="sim-header">
+      <h3>Simulateur — Crédit Équipement MLT</h3>
+      <span class="sim-badge">Taux BAM 2026</span>
+    </div>
+    <div class="sim-body">
+      <div class="sim-grid">
+        <div class="field-group">
+          <label class="field-label">Montant du projet (MAD)</label>
+          <input type="number" id="s1-montant" value="5000000" min="100000" step="100000">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Apport personnel (%)</label>
+          <div class="range-wrap">
+            <input type="range" id="s1-apport" min="10" max="50" value="25" step="1" oninput="document.getElementById('s1-apport-val').textContent=this.value+'%'">
+            <span class="range-val" id="s1-apport-val">25%</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Durée (années)</label>
+          <select id="s1-duree">
+            <option value="5">5 ans</option>
+            <option value="7" selected>7 ans</option>
+            <option value="10">10 ans</option>
+            <option value="12">12 ans</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Profil du projet</label>
+          <select id="s1-profil">
+            <option value="intelaka">Intelaka (TPE Urbain) — 2,00 %</option>
+            <option value="rural">Intelaka (Rural) — 1,75 %</option>
+            <option value="standard" selected>Équipement PME — 5,00 %</option>
+            <option value="high">Risque élevé — 5,50 %</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Garantie Tamwilcom</label>
+          <select id="s1-tamwil">
+            <option value="none">Sans garantie</option>
+            <option value="express">Damane Express (70 %, com. unique 1,25 %)</option>
+            <option value="istithmar" selected>Damane Istithmar (60 %, com. 0,60 %/an)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Assurance (% du capital/an)</label>
+          <div class="range-wrap">
+            <input type="range" id="s1-assur" min="0" max="1.5" value="0.5" step="0.1" oninput="document.getElementById('s1-assur-val').textContent=parseFloat(this.value).toFixed(1)+'%'">
+            <span class="range-val" id="s1-assur-val">0.5%</span>
+          </div>
+        </div>
+      </div>
+      <button class="sim-btn" onclick="simCredit()">Calculer le plan de financement</button>
+      <div class="result-panel" id="s1-result">
+        <div class="result-grid">
+          <div class="result-item"><div class="result-label">Montant du crédit</div><div class="result-value gold" id="r1-credit"></div></div>
+          <div class="result-item"><div class="result-label">Mensualité estimée</div><div class="result-value" id="r1-mens"></div></div>
+          <div class="result-item"><div class="result-label">Coût total intérêts</div><div class="result-value red" id="r1-interet"></div></div>
+          <div class="result-item"><div class="result-label">TEG estimé</div><div class="result-value gold" id="r1-teg"></div></div>
+        </div>
+        <div class="result-divider"></div>
+        <div class="result-detail" id="r1-detail"></div>
+        <div class="opt-buttons">
+          <button class="opt-btn opt-btn-green" onclick="simMorseff()">🌿 Optimiser Morseff (+10 % subvention)</button>
+          <button class="opt-btn opt-btn-gold" onclick="simMourabaha()">☪️ Basculer en Mourabaha</button>
+          <button class="opt-btn opt-btn-navy" onclick="simZAI()">🏭 Simuler implantation ZAI</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATEUR 2 : PRIMES CHARTE -->
+  <div class="simulator">
+    <div class="sim-header">
+      <h3>Simulateur — Primes Charte de l'Investissement</h3>
+      <span class="sim-badge">Loi-cadre 03-22</span>
+    </div>
+    <div class="sim-body">
+      <div class="sim-grid">
+        <div class="field-group">
+          <label class="field-label">Montant total du projet (MAD)</label>
+          <input type="number" id="s2-montant" value="10000000" step="500000">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Localisation du projet</label>
+          <select id="s2-zone">
+            <option value="0">Axe saturé (Casablanca / Rabat / Tanger) — 0 %</option>
+            <option value="10">Zone A — Province prioritaire — 10 %</option>
+            <option value="15" selected>Zone B — Province hors axe — 15 %</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Secteur prioritaire ?</label>
+          <select id="s2-secteur">
+            <option value="5" selected>Oui (Industrie / Tourisme / Digital / Logistique / ENR) — +5 %</option>
+            <option value="0">Non — 0 %</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Emplois stables créés (CDI)</label>
+          <div class="range-wrap">
+            <input type="range" id="s2-emplois" min="0" max="200" value="50" step="5" oninput="document.getElementById('s2-emp-val').textContent=this.value">
+            <span class="range-val" id="s2-emp-val">50</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Approche genre (mixité)</label>
+          <select id="s2-genre">
+            <option value="1" selected>Oui — +1 %</option>
+            <option value="0">Non — 0 %</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Efficacité énergétique / Vert</label>
+          <select id="s2-vert">
+            <option value="2" selected>Oui — +2 %</option>
+            <option value="0">Non — 0 %</option>
+          </select>
+        </div>
+      </div>
+      <button class="sim-btn gold" onclick="simCharte()">Calculer les primes éligibles</button>
+      <div class="result-panel" id="s2-result">
+        <div class="result-grid">
+          <div class="result-item"><div class="result-label">Taux de prime calculé</div><div class="result-value gold" id="r2-taux"></div></div>
+          <div class="result-item"><div class="result-label">Prime brute (avant plafond)</div><div class="result-value" id="r2-brut"></div></div>
+          <div class="result-item"><div class="result-label">Prime nette versée</div><div class="result-value green" id="r2-net"></div></div>
+          <div class="result-item"><div class="result-label">Besoin crédit résiduel</div><div class="result-value" id="r2-credit"></div></div>
+        </div>
+        <div class="result-divider"></div>
+        <div class="result-detail" id="r2-detail"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATEUR 3 : TAMWILCOM -->
+  <div class="simulator">
+    <div class="sim-header">
+      <h3>Simulateur — Coût de garantie Tamwilcom</h3>
+      <span class="sim-badge">Commission réelle</span>
+    </div>
+    <div class="sim-body">
+      <div class="sim-grid">
+        <div class="field-group">
+          <label class="field-label">Montant du crédit (MAD)</label>
+          <input type="number" id="s3-credit" value="5200000" step="100000">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Produit Tamwilcom</label>
+          <select id="s3-produit">
+            <option value="express">Damane Express — Commission unique 1,25 %</option>
+            <option value="istithmar" selected>Damane Istithmar — 0,60 %/an sur CRD</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Durée crédit (années)</label>
+          <select id="s3-duree">
+            <option value="5">5 ans</option>
+            <option value="7" selected>7 ans</option>
+            <option value="10">10 ans</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Taux d'intérêt banque (%)</label>
+          <div class="range-wrap">
+            <input type="range" id="s3-taux" min="2" max="8" value="5" step="0.1" oninput="document.getElementById('s3-taux-val').textContent=parseFloat(this.value).toFixed(1)+'%'">
+            <span class="range-val" id="s3-taux-val">5.0%</span>
+          </div>
+        </div>
+      </div>
+      <button class="sim-btn" onclick="simTamwil()">Calculer le coût réel</button>
+      <div class="result-panel" id="s3-result">
+        <div class="result-grid">
+          <div class="result-item"><div class="result-label">Coût garantie total</div><div class="result-value gold" id="r3-cout"></div></div>
+          <div class="result-item"><div class="result-label">Taux banque seul</div><div class="result-value" id="r3-taux"></div></div>
+          <div class="result-item"><div class="result-label">TEG réel (hors assur.)</div><div class="result-value red" id="r3-teg"></div></div>
+          <div class="result-item"><div class="result-label">Surcoût annuel moyen</div><div class="result-value" id="r3-surcout"></div></div>
+        </div>
+        <div class="result-divider"></div>
+        <div class="result-detail" id="r3-detail"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATEUR 4 : RISQUE DE CHANGE -->
+  <div class="simulator">
+    <div class="sim-header">
+      <h3>Simulateur — Risque de change (Couverture Forward)</h3>
+      <span class="sim-badge">IGOC 2026</span>
+    </div>
+    <div class="sim-body">
+      <div class="sim-grid">
+        <div class="field-group">
+          <label class="field-label">Valeur de la commande (MAD)</label>
+          <input type="number" id="s4-montant" value="3000000" step="100000">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Devise d'achat</label>
+          <select id="s4-devise">
+            <option value="EUR" selected>Euro (EUR)</option>
+            <option value="USD">Dollar US (USD)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Délai de paiement (mois)</label>
+          <div class="range-wrap">
+            <input type="range" id="s4-delai" min="1" max="18" value="6" step="1" oninput="document.getElementById('s4-delai-val').textContent=this.value+' mois'">
+            <span class="range-val" id="s4-delai-val">6 mois</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Scénario dépréciation MAD (%)</label>
+          <div class="range-wrap">
+            <input type="range" id="s4-deprec" min="0" max="15" value="5" step="0.5" oninput="document.getElementById('s4-dep-val').textContent=parseFloat(this.value).toFixed(1)+'%'">
+            <span class="range-val" id="s4-dep-val">5.0%</span>
+          </div>
+        </div>
+      </div>
+      <button class="sim-btn" onclick="simChange()">Évaluer le risque</button>
+      <div class="result-panel" id="s4-result">
+        <div class="result-grid">
+          <div class="result-item"><div class="result-label">Valeur initiale MAD</div><div class="result-value" id="r4-init"></div></div>
+          <div class="result-item"><div class="result-label">Perte potentielle</div><div class="result-value red" id="r4-perte"></div></div>
+          <div class="result-item"><div class="result-label">Coût forward estimé</div><div class="result-value gold" id="r4-forward"></div></div>
+          <div class="result-item"><div class="result-label">Économie réalisée</div><div class="result-value green" id="r4-eco"></div></div>
+        </div>
+        <div class="result-divider"></div>
+        <div class="result-detail" id="r4-detail"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TAB 8 : MODULES AVANCÉS ══════════ -->
+<section class="tab-panel" id="tab-avance">
+  <h2 class="section-title">Modules spécialisés</h2>
+  <div class="gold-bar"></div>
+  <p class="section-lead">Finance participative, subventions Maroc PME, financement vert et zones d'accélération industrielle.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:16px;">1 — Finance participative (Fenêtres Mourabaha)</h3>
+  <div class="two-col">
+    <div class="schema-box">
+      <h4>Mécanisme Mourabaha Investissement</h4>
+      <div class="flow-row" style="margin-bottom:8px;">
+        <div class="flow-node light">Entrepreneur</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Banque participative</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node green">Fournisseur</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node gold">Banque achète le matériel</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node light">Revente + marge à l'entrepreneur</div>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:12px;">La banque n'octroie pas un crédit d'argent (le prêt à intérêt est proscrit) — elle achète directement l'actif et le revend avec une marge convenue à l'avance, étalée en mensualités. Acteurs : Umnia Bank, Bank Assafa...</p>
+    </div>
+    <div class="schema-box">
+      <h4>Points d'attention — Mourabaha</h4>
+      <ul class="exclusion-list">
+        <li><span style="color:var(--gold);font-weight:700;">→</span> TVA intégrée dans le coût global de revente (mécanisme différent de la récupération classique)</li>
+        <li><span style="color:var(--gold);font-weight:700;">→</span> Garantie "Daama" Tamwilcom disponible — mêmes quotités 60-70 %</li>
+        <li><span style="color:var(--gold);font-weight:700;">→</span> Marge bénéficiaire fixée à l'avance — pas de révision de taux (avantage de prévisibilité)</li>
+        <li><span style="color:var(--gold);font-weight:700;">→</span> Éligible aux primes Charte de l'Investissement dans les mêmes conditions</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin:28px 0 16px;">2 — Subventions Maroc PME (Programmes Tatwir)</h3>
+  <div class="tamwilcom-grid">
+    <div class="tamwil-card green">
+      <h4>Tatwir Croissance</h4>
+      <div class="cover">20 %</div>
+      <div class="detail">PME investissant dans l'industrialisation. Subvention non remboursable.<br><strong>Plafond :</strong> 10 000 000 MAD</div>
+      <span class="tag tag-green" style="margin-top:8px;">Industrie · Modernisation</span>
+    </div>
+    <div class="tamwil-card gold">
+      <h4>Tatwir Startup</h4>
+      <div class="cover">30 %</div>
+      <div class="detail">Projets industriels innovants. Prise en charge directe de 30 % du programme d'investissement.<br><strong>Plafond :</strong> Variable</div>
+      <span class="tag tag-gold" style="margin-top:8px;">Innovation · Startups</span>
+    </div>
+    <div class="tamwil-card">
+      <h4>Programme Istitmar</h4>
+      <div class="cover">20 %</div>
+      <div class="detail">PME &lt; 5 ans — cofinancement modernisation via réseau bancaire.<br><strong>Plafond :</strong> 1 000 000 MAD</div>
+      <span class="tag tag-navy" style="margin-top:8px;">PME Jeunes · Co-financement</span>
+    </div>
+  </div>
+  <div class="alert alert-green">
+    <span class="alert-icon">🔔</span>
+    <div><strong>Conseil professionnel :</strong> Si le projet est industriel de modernisation/extension, déposer le dossier Maroc PME <strong>en parallèle</strong> de la demande bancaire. Une subvention Tatwir de 20 % réduit mécaniquement le besoin de crédit et améliore le scoring bancaire.</div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin:28px 0 16px;">3 — Finance verte (Morseff / GEEF)</h3>
+  <div class="two-col">
+    <div class="schema-box">
+      <h4>Green Economy Financing Facility</h4>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">Crédits bancaires dédiés à l'achat de matériel moins énergivore ou à l'installation de panneaux solaires photovoltaïques pour l'autoconsommation industrielle. Lignes internationales EDFI, BERD, AFD.</p>
+      <ul style="margin-top:12px;font-size:13px;color:var(--text-secondary);padding-left:16px;line-height:1.8;">
+        <li>Subvention directe de 10 % à 15 % du montant du crédit</li>
+        <li>Versée sous forme de don après vérification expert indépendant</li>
+        <li>Taux inférieur de 50 à 100 points de base au taux marché</li>
+      </ul>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <span class="tag tag-green">Don 10–15 %</span>
+        <span class="tag tag-green">Taux bonifié -50 à -100 bps</span>
+      </div>
+    </div>
+    <div class="schema-box">
+      <h4>Contexte CBAM — Taxe carbone UE</h4>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">Face au mécanisme d'ajustement carbone aux frontières européen (CBAM), les entreprises exportatrices marocaines vers l'UE ont un intérêt économique direct à décarboner leur production. Les lignes Morseff constituent un levier financier immédiatement mobilisable.</p>
+      <div class="alert alert-gold" style="margin-top:12px;">
+        <span>⚠️</span>
+        <div style="font-size:12px;color:var(--amber-warn);">Applicabilité CBAM progressive dès 2026. Anticiper la transition énergétique pour maintenir la compétitivité à l'export vers l'UE.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin:28px 0 16px;">4 — Zones d'Accélération Industrielle (ZAI)</h3>
+  <table style="width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:20px;">
+    <thead>
+      <tr style="background:var(--navy);color:white;">
+        <th style="padding:13px 18px;text-align:left;font-size:13px;font-weight:500;">Critère</th>
+        <th style="padding:13px 18px;text-align:center;font-size:13px;font-weight:500;">Régime standard</th>
+        <th style="padding:13px 18px;text-align:center;font-size:13px;font-weight:500;">Zone ZAI</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:12px 18px;border-bottom:1px solid var(--border);font-size:14px;">TVA</td><td style="text-align:center;border-bottom:1px solid var(--border);font-size:14px;color:var(--red-warn);">20 %</td><td style="text-align:center;border-bottom:1px solid var(--border);font-size:14px;color:var(--green-ok);font-weight:600;">0 % d'office</td></tr>
+      <tr><td style="padding:12px 18px;border-bottom:1px solid var(--border);font-size:14px;">IS — 5 premières années</td><td style="text-align:center;border-bottom:1px solid var(--border);font-size:14px;color:var(--red-warn);">Régime standard</td><td style="text-align:center;border-bottom:1px solid var(--border);font-size:14px;color:var(--green-ok);font-weight:600;">0 % pendant 5 ans</td></tr>
+      <tr><td style="padding:12px 18px;border-bottom:1px solid var(--border);font-size:14px;">Statut de change</td><td style="text-align:center;border-bottom:1px solid var(--border);font-size:14px;">Résident · Contrôle des changes</td><td style="text-align:center;border-bottom:1px solid var(--border);font-size:14px;color:var(--green-ok);font-weight:600;">Non-résident · Comptes devises libres</td></tr>
+      <tr><td style="padding:12px 18px;border-bottom:1px solid var(--border);font-size:14px;">Risque de change</td><td style="text-align:center;border-bottom:1px solid var(--border);font-size:14px;">À couvrir (Forward nécessaire)</td><td style="text-align:center;border-bottom:1px solid var(--border);font-size:14px;color:var(--green-ok);font-weight:600;">Nul (coûts et revenus en même devise)</td></tr>
+      <tr><td style="padding:12px 18px;font-size:14px;">Financement bancaire</td><td style="text-align:center;font-size:14px;">Crédit en MAD</td><td style="text-align:center;font-size:14px;color:var(--green-ok);font-weight:600;">Crédit EUR/USD via unités offshore</td></tr>
+    </tbody>
+  </table>
+  <div class="alert alert-gold">
+    <span class="alert-icon">🏭</span>
+    <div><strong>Exemples de ZAI actives :</strong> Tanger Automotive City · Kénitra Automotive City · Midparc Nouaceur · Atlantic Free Zone Kénitra. Les entreprises en ZAI y gèrent librement leurs comptes en devises et s'exonèrent nativement du risque de change sur leurs activités export.</div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <strong>Système Bancaire Marocain — Guide Professionnel 2026</strong> &nbsp;·&nbsp;
+  Sources : Bank Al-Maghrib · Tamwilcom · IGOC 2026 · Charte de l'Investissement (Loi-cadre 03-22) · ADII · Maroc PME · Office des Changes &nbsp;·&nbsp;
+  Les données sont fournies à titre informatif. Consultez votre conseiller bancaire pour tout montage financier.
+</footer>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function fmt(n) {
+  return Math.round(n).toLocaleString('fr-MA') + ' MAD';
+}
+
+function fmtPct(n) {
+  return n.toFixed(2) + ' %';
+}
+
+// SIMULATEUR 1 — CRÉDIT
+function simCredit() {
+  var montant = parseFloat(document.getElementById('s1-montant').value);
+  var apport = parseFloat(document.getElementById('s1-apport').value) / 100;
+  var duree = parseInt(document.getElementById('s1-duree').value);
+  var profil = document.getElementById('s1-profil').value;
+  var tamwil = document.getElementById('s1-tamwil').value;
+  var assur = parseFloat(document.getElementById('s1-assur').value) / 100;
+
+  var taux = { intelaka: 2.00, rural: 1.75, standard: 5.00, high: 5.50 }[profil] / 100;
+  var credit = montant * (1 - apport);
+  var r = taux / 12;
+  var n = duree * 12;
+  var mens = credit * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  var totalRembourse = mens * n;
+  var totalInteret = totalRembourse - credit;
+
+  var comTamwil = 0;
+  var tegExtra = 0;
+  var tamwilLabel = '';
+  if (tamwil === 'express') {
+    comTamwil = credit * 0.0125;
+    tegExtra = 0.0125 / duree;
+    tamwilLabel = 'Damane Express : commission unique de ' + fmt(comTamwil) + ' au déblocage.';
+  } else if (tamwil === 'istithmar') {
+    comTamwil = credit * 0.006 * duree * 0.6;
+    tegExtra = 0.006;
+    tamwilLabel = 'Damane Istithmar : commission annuelle 0,60 % sur CRD. Coût total estimé : ' + fmt(comTamwil) + '.';
+  }
+
+  var teg = (taux + tegExtra + assur) * 100;
+
+  document.getElementById('r1-credit').textContent = fmt(credit);
+  document.getElementById('r1-mens').textContent = fmt(mens) + '/mois';
+  document.getElementById('r1-interet').textContent = fmt(totalInteret);
+  document.getElementById('r1-teg').textContent = fmtPct(teg);
+  document.getElementById('r1-detail').innerHTML =
+    '<strong>Apport personnel :</strong> ' + fmt(montant * apport) + ' (' + Math.round(apport*100) + ' %)' +
+    ' &nbsp;|&nbsp; <strong>Crédit MLT :</strong> ' + fmt(credit) +
+    ' &nbsp;|&nbsp; <strong>Durée :</strong> ' + duree + ' ans<br>' +
+    '<strong>Taux nominal :</strong> ' + fmtPct(taux*100) +
+    ' &nbsp;|&nbsp; <strong>Assurance :</strong> ' + fmtPct(assur*100) + '/an' +
+    '<br>' + tamwilLabel +
+    '<br><em>TEG estimé = Taux nominal + Commission Tamwilcom + Assurance + Frais dossier (non inclus).</em>';
+
+  document.getElementById('s1-result').classList.add('visible');
+}
+
+function simMorseff() {
+  alert('✅ Optimisation Morseff/GEEF activée :\n\nSubvention directe de 10 à 15 % du montant du crédit après vérification expert.\nTaux bonifié : -50 à -100 points de base sur le taux de marché.\n\nCondition : Investissement dans équipement moins énergivore ou installation photovoltaïque industrielle.\nDon versé après validation par un auditeur indépendant.');
+}
+
+function simMourabaha() {
+  alert('☪️ Simulation Mourabaha :\n\nLa banque participative achète directement l\'actif au fournisseur, puis vous le revend avec une marge bénéficiaire convenue à l\'avance.\n\nAvantages :\n— Marge fixe, non révisable (prévisibilité totale)\n— Éligible à la garantie "Daama" Tamwilcom (60-70 %)\n— Éligible aux primes Charte de l\'Investissement\n\nPoint d\'attention TVA : mécanisme différent de la récupération classique. Consulter votre conseiller fiscal.');
+}
+
+function simZAI() {
+  alert('🏭 Implantation en Zone d\'Accélération Industrielle :\n\nAvantages financiers :\n— TVA = 0 % d\'office\n— IS = 0 % pendant 5 ans\n— Statut non-résident : gestion libre des comptes en devises\n— Financement en EUR/USD via unités bancaires offshore\n— Risque de change nul si revenus et coûts dans la même devise\n\nExemples : Tanger Automotive City · Kénitra · Midparc Nouaceur');
+}
+
+// SIMULATEUR 2 — PRIMES CHARTE
+function simCharte() {
+  var montant = parseFloat(document.getElementById('s2-montant').value);
+  var zone = parseFloat(document.getElementById('s2-zone').value);
+  var secteur = parseFloat(document.getElementById('s2-secteur').value);
+  var emplois = parseInt(document.getElementById('s2-emplois').value);
+  var genre = parseFloat(document.getElementById('s2-genre').value);
+  var vert = parseFloat(document.getElementById('s2-vert').value);
+
+  var primeEmploi = emplois >= 100 ? 3 : emplois >= 50 ? 2.5 : emplois >= 20 ? 2 : emplois >= 5 ? 1.5 : 0;
+  var totalBrut = zone + secteur + primeEmploi + genre + vert;
+  var totalNet = Math.min(totalBrut, 30);
+  var primeBrute = montant * totalBrut / 100;
+  var primeNette = montant * totalNet / 100;
+  var creditResiduel = montant * 0.75 - primeNette;
+
+  document.getElementById('r2-taux').textContent = totalNet.toFixed(1) + ' %';
+  document.getElementById('r2-brut').textContent = fmt(primeBrute);
+  document.getElementById('r2-net').textContent = fmt(primeNette);
+  document.getElementById('r2-credit').textContent = fmt(Math.max(0, creditResiduel));
+
+  var lines = '';
+  if (zone > 0) lines += '• Prime territoriale Zone ' + (zone === 15 ? 'B' : 'A') + ' : +' + zone + ' %<br>';
+  if (secteur > 0) lines += '• Prime sectorielle (prioritaire) : +' + secteur + ' %<br>';
+  if (primeEmploi > 0) lines += '• Prime emplois (' + emplois + ' CDI) : +' + primeEmploi.toFixed(1) + ' %<br>';
+  if (genre > 0) lines += '• Prime genre/mixité : +' + genre + ' %<br>';
+  if (vert > 0) lines += '• Prime efficacité énergétique : +' + vert + ' %<br>';
+  lines += '• <strong>Plafond légal : 30 %</strong> — Taux retenu : ' + totalNet.toFixed(1) + ' %<br>';
+  if (totalBrut > 30) lines += '<em>⚠️ Plafonnement appliqué : le cumul calculé (' + totalBrut.toFixed(1) + ' %) dépasse 30 %. La prime est plafonnée à ' + fmt(primeNette) + '.</em><br>';
+  lines += '<br><strong>Conseil :</strong> Demander un Crédit Relais Prime pour préfinancer cette prime à taux préférentiel et éviter tout impact sur la trésorerie de démarrage.';
+
+  document.getElementById('r2-detail').innerHTML = lines;
+  document.getElementById('s2-result').classList.add('visible');
+}
+
+// SIMULATEUR 3 — TAMWILCOM
+function simTamwil() {
+  var credit = parseFloat(document.getElementById('s3-credit').value);
+  var produit = document.getElementById('s3-produit').value;
+  var duree = parseInt(document.getElementById('s3-duree').value);
+  var taux = parseFloat(document.getElementById('s3-taux').value) / 100;
+
+  var coutGarantie, surcoutAnnuel, detail;
+  if (produit === 'express') {
+    coutGarantie = credit * 0.0125;
+    surcoutAnnuel = coutGarantie / duree;
+    detail = 'Damane Express : commission unique de 1,25 % prélevée au déblocage. Montant : ' + fmt(coutGarantie) + '. Répartie sur la durée = ' + fmt(surcoutAnnuel) + '/an.';
+  } else {
+    var crd = credit;
+    var totalCom = 0;
+    var ann = credit / duree;
+    for (var i = 0; i < duree; i++) {
+      totalCom += crd * 0.006;
+      crd = Math.max(0, crd - ann);
+    }
+    coutGarantie = totalCom;
+    surcoutAnnuel = totalCom / duree;
+    detail = 'Damane Istithmar : 0,60 %/an sur Capital Restant Dû (décroissant). Coût total sur ' + duree + ' ans : ' + fmt(coutGarantie) + '. Moyenne annuelle : ' + fmt(surcoutAnnuel) + '.';
+  }
+
+  var tegExtra = (coutGarantie / (credit * duree)) * 100;
+  var tegTotal = taux * 100 + tegExtra;
+
+  document.getElementById('r3-cout').textContent = fmt(coutGarantie);
+  document.getElementById('r3-taux').textContent = fmtPct(taux * 100);
+  document.getElementById('r3-teg').textContent = fmtPct(tegTotal);
+  document.getElementById('r3-surcout').textContent = fmt(surcoutAnnuel);
+  document.getElementById('r3-detail').innerHTML = detail + '<br><br><strong>TEG réel = ' + fmtPct(taux*100) + ' (banque) + ' + tegExtra.toFixed(2) + ' % (Tamwilcom) = ' + fmtPct(tegTotal) + '</strong> — hors assurance et frais de dossier.';
+  document.getElementById('s3-result').classList.add('visible');
+}
+
+// SIMULATEUR 4 — CHANGE
+function simChange() {
+  var montant = parseFloat(document.getElementById('s4-montant').value);
+  var devise = document.getElementById('s4-devise').value;
+  var delai = parseInt(document.getElementById('s4-delai').value);
+  var deprec = parseFloat(document.getElementById('s4-deprec').value) / 100;
+
+  var perte = montant * deprec;
+  var coutForward = montant * 0.0025 * (delai / 12);
+  var economie = perte - coutForward;
+
+  var txActuel = devise === 'EUR' ? 10.75 : 9.95;
+  var txFutur = (txActuel * (1 + deprec)).toFixed(4);
+
+  document.getElementById('r4-init').textContent = fmt(montant);
+  document.getElementById('r4-perte').textContent = fmt(perte);
+  document.getElementById('r4-forward').textContent = fmt(coutForward);
+  document.getElementById('r4-eco').textContent = fmt(Math.max(0, economie));
+
+  document.getElementById('r4-detail').innerHTML =
+    '<strong>Cours spot actuel ' + devise + '/MAD :</strong> ' + txActuel.toFixed(2) +
+    ' &nbsp;|&nbsp; <strong>Cours estimé dans ' + delai + ' mois (scénario -' + (deprec*100).toFixed(1) + ' %) :</strong> ' + txFutur +
+    '<br>En couvrant cette position par un <strong>achat à terme (Forward)</strong>, votre banque garantit aujourd\'hui le taux de change pour la date de paiement.' +
+    '<br>Coût de la couverture (points de terme estimés) : <strong>' + fmt(coutForward) + '</strong> sur ' + delai + ' mois.' +
+    '<br><em>La couverture Forward élimine le risque budgétaire et fige le coût de l\'investissement au centime près dans votre Business Plan.</em>';
+
+  document.getElementById('s4-result').classList.add('visible');
+}
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

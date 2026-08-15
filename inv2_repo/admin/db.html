@@ -1,0 +1,1031 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ma Base de Données — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --danger:#8B1A1A;--warn:#7A5510;
+  --border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(184,134,42,.2)}
+.header-left{display:flex;align-items:center;gap:16px}
+.back-btn{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.module-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,.12);border:1px solid rgba(184,134,42,.25);padding:4px 10px;border-radius:100px}
+.header-user{display:flex;align-items:center;gap:10px}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:rgba(184,134,42,.2);border:1px solid rgba(184,134,42,.4);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--gold-light);cursor:pointer}
+.plan-pill{font-family:var(--font-mono);font-size:10px;padding:3px 9px;border-radius:100px;background:rgba(184,134,42,.15);color:var(--gold-light);border:1px solid rgba(184,134,42,.3)}
+
+/* ── PAGE ── */
+.page{max-width:1200px;margin:0 auto;padding:28px 32px 80px}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;margin-bottom:28px;background:var(--bg2);border-radius:12px;padding:4px;width:fit-content;flex-wrap:wrap}
+.tab{padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--smoke);transition:all .2s;font-family:var(--font-body);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tab.active{background:var(--white);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tab-count{font-family:var(--font-mono);font-size:10px;background:rgba(184,134,42,.15);color:var(--gold);padding:1px 6px;border-radius:100px}
+
+.t-panel{display:none}
+.t-panel.active{display:block}
+
+/* ── KPI BAR ── */
+.kpi-row{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.kpi{flex:1;min-width:110px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.kpi-n{font-family:var(--font-title);font-size:24px;font-weight:800;line-height:1;margin-bottom:4px}
+.kpi-l{font-size:11px;color:var(--smoke);line-height:1.4}
+
+/* ── CARD ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
+.card-title{font-family:var(--font-title);font-size:17px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card-sub{font-size:13px;color:var(--smoke);margin-bottom:20px;line-height:1.5}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:700px){.form-grid,.form-grid-3{grid-template-columns:1fr}}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.field .hint{font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:3px}
+input[type=text],input[type=email],input[type=number],input[type=date],select,textarea{
+  width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:9px;
+  font-family:var(--font-body);font-size:13px;color:var(--ink);background:var(--bg);
+  outline:none;transition:border-color .2s;resize:vertical
+}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+
+/* ── BUTTONS ── */
+.btn{padding:10px 20px;border-radius:10px;font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;display:inline-flex;align-items:center;gap:6px}
+.btn-gold{background:var(--gold);color:var(--ink)}
+.btn-gold:hover{background:var(--gold-light)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--smoke)}
+.btn-outline:hover{border-color:var(--gold);color:var(--ink)}
+.btn-danger{background:rgba(139,26,26,.08);border:1.5px solid rgba(139,26,26,.2);color:var(--danger)}
+.btn-danger:hover{background:rgba(139,26,26,.15)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:7px}
+
+/* ── PROJECTS TABLE / CARDS ── */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:20px}
+.proj-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;cursor:pointer;transition:all .25s;position:relative}
+.proj-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(184,134,42,.1);transform:translateY(-1px)}
+.proj-card.selected{border-color:var(--gold);border-width:2px;background:var(--gold-pale)}
+.proj-name{font-family:var(--font-title);font-size:15px;font-weight:700;margin-bottom:4px}
+.proj-meta{font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-bottom:10px}
+.proj-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.proj-stat{background:var(--bg2);border-radius:7px;padding:7px 9px;text-align:center}
+.proj-stat-n{font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--ink)}
+.proj-stat-l{font-size:9px;color:var(--smoke);margin-top:1px}
+.proj-actions{display:flex;gap:7px}
+.status-badge{font-family:var(--font-mono);font-size:10px;padding:3px 9px;border-radius:100px;display:inline-block}
+.status-idee{background:rgba(122,85,16,.1);color:var(--warn);border:1px solid rgba(122,85,16,.2)}
+.status-etude{background:rgba(30,77,107,.1);color:var(--accent);border:1px solid rgba(30,77,107,.2)}
+.status-creation{background:rgba(184,134,42,.1);color:var(--gold);border:1px solid rgba(184,134,42,.2)}
+.status-actif{background:rgba(26,107,60,.1);color:var(--success);border:1px solid rgba(26,107,60,.2)}
+
+/* ── SIMULATIONS ── */
+.sim-table{width:100%;border-collapse:collapse;font-size:13px}
+.sim-table th{text-align:left;padding:8px 10px;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:var(--smoke);border-bottom:2px solid var(--border)}
+.sim-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.sim-table tr:last-child td{border-bottom:none}
+.sim-table tr:hover td{background:var(--bg)}
+.module-chip{font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:4px;display:inline-block}
+
+/* ── AI CONVERSATIONS ── */
+.conv-list{display:flex;flex-direction:column;gap:10px}
+.conv-item{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .2s}
+.conv-item:hover{border-color:rgba(184,134,42,.4)}
+.conv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.conv-title{font-size:13px;font-weight:600}
+.conv-date{font-family:var(--font-mono);font-size:10px;color:var(--smoke)}
+.conv-preview{font-size:12px;color:var(--smoke);line-height:1.5}
+.conv-tags{display:flex;gap:5px;margin-top:8px}
+.conv-tag{font-family:var(--font-mono);font-size:10px;background:var(--bg2);color:var(--smoke);border:1px solid var(--border);padding:2px 7px;border-radius:100px}
+.conv-quota{background:var(--ink);border-radius:12px;padding:14px 18px;color:var(--white);display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.quota-label{font-size:13px;color:rgba(255,255,255,.6)}
+.quota-bar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.1);margin:0 14px;overflow:hidden}
+.quota-fill{height:100%;border-radius:3px;background:var(--gold-light);transition:width .5s}
+
+/* ── DOCUMENTS ── */
+.doc-table{width:100%;border-collapse:collapse}
+.doc-table th{text-align:left;padding:8px 10px;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:var(--smoke);border-bottom:2px solid var(--border)}
+.doc-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:12.5px;vertical-align:middle}
+.doc-table tr:last-child td{border-bottom:none}
+.doc-status{font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:100px;display:inline-block}
+.doc-a-obtenir{background:rgba(139,26,26,.08);color:var(--danger);border:1px solid rgba(139,26,26,.15)}
+.doc-en-cours{background:rgba(184,134,42,.1);color:var(--gold);border:1px solid rgba(184,134,42,.2)}
+.doc-obtenu{background:rgba(26,107,60,.1);color:var(--success);border:1px solid rgba(26,107,60,.2)}
+.doc-expire{background:rgba(0,0,0,.05);color:var(--smoke);border:1px solid var(--border)}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:48px 20px}
+.empty-icon{font-size:40px;margin-bottom:16px;opacity:.3}
+.empty-title{font-family:var(--font-title);font-size:18px;font-weight:700;margin-bottom:8px;color:var(--ink-soft)}
+.empty-sub{font-size:13px;color:var(--smoke);margin-bottom:20px;line-height:1.6;max-width:360px;margin-left:auto;margin-right:auto}
+
+/* ── MODAL ── */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--white);border-radius:16px;padding:28px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:var(--font-title);font-size:20px;font-weight:700;margin-bottom:20px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+
+.source-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.source-badge{font-family:var(--font-mono);font-size:10px;background:rgba(184,134,42,.1);border:1px solid rgba(184,134,42,.2);color:var(--gold);padding:3px 9px;border-radius:4px}
+
+/* ── SUPABASE PHASE 2 BANNER ── */
+.phase2-banner{background:linear-gradient(135deg,rgba(30,77,107,.08),rgba(184,134,42,.06));border:1px solid rgba(30,77,107,.2);border-left:4px solid var(--accent);border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;gap:12px;align-items:center;font-size:12px;color:var(--ink-soft);line-height:1.6}
+</style>
+<script src="auth.js"></script>
+<script src="guard.js" data-plan="pro"></script>
+<script src="upgrade-modal.js"></script>
+
+</head>
+<body>
+<script>
+/* ══ GARDE-SESSION Smart-Invest.ia ══
+   OWNER : jamais redirigé — accès permanent en développement  */
+(function(){
+  var s = JSON.parse(localStorage.getItem('im_session') || 'null');
+  if(s && s.role === 'OWNER') return; /* owner bypass complet */
+  if(!s || s.expires_at < Date.now()){
+    window.location.href = '../Smart-Invest_login.html?redirect=admin%2Fdb.html&expired=1';
+  }
+})();
+</script>
+
+
+  <div id="owner-bar-db" style="display:none;background:#0E0E0C;border-bottom:2px solid #B8862A;
+    padding:6px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:#F0C460;display:flex;align-items:center;gap:12px">
+    <span>⚡ MODE OWNER</span>
+    <span style="color:rgba(240,196,96,.5);font-size:10px">Toutes restrictions levées · Session permanente</span>
+  </div>
+<header class="header">
+  <div class="header-left">
+    <a href="../index.html" class="back-btn">← Portail</a>
+    <div class="logo">Invest<span>Maroc</span>.ia</div>
+    <span class="module-badge">BASE DE DONNÉES · PHASE 1</span>
+  </div>
+  <div class="header-user">
+    <span class="plan-pill" id="planPill">PRO</span>
+    <div class="user-avatar" id="userAvatar" onclick="showProfile()">–</div>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="phase2-banner">
+    <span style="font-size:20px">💾</span>
+    <div><strong>Phase 1 — Stockage local (localStorage / IndexedDB)</strong> · Données persistées dans votre navigateur, privées et sécurisées. 
+    <strong>Phase 2</strong> (à venir) : synchronisation cloud Supabase — accès multi-appareils, partage équipe, sauvegardes automatiques.</div>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row" id="kpiRow">
+    <div class="kpi"><div class="kpi-n" id="kpiProjects" style="color:var(--gold)">0</div><div class="kpi-l">Projets actifs</div></div>
+    <div class="kpi"><div class="kpi-n" id="kpiSimulations" style="color:var(--accent)">0</div><div class="kpi-l">Simulations sauvegardées</div></div>
+    <div class="kpi"><div class="kpi-n" id="kpiAI" style="color:var(--success)">0</div><div class="kpi-l">Conversations IA</div></div>
+    <div class="kpi"><div class="kpi-n" id="kpiDocs" style="color:var(--smoke)">0</div><div class="kpi-l">Documents trackés</div></div>
+    <div class="kpi"><div class="kpi-n" id="kpiQuota" style="color:var(--gold-light)">0/100</div><div class="kpi-l">Crédits IA aujourd'hui</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('projects')">📁 Projets <span class="tab-count" id="tc-projects">0</span></button>
+    <button class="tab" onclick="showTab('simulations')">📊 Simulations <span class="tab-count" id="tc-sims">0</span></button>
+    <button class="tab" onclick="showTab('ai')">🤖 IA Conversations <span class="tab-count" id="tc-ai">0</span></button>
+    <button class="tab" onclick="showTab('documents')">📄 Documents <span class="tab-count" id="tc-docs">0</span></button>
+    <button class="tab" onclick="showTab('profile')">👤 Profil Abonné</button>
+    <button class="tab" onclick="showTab('data')">⚙️ Données</button>
+  </div>
+
+  <!-- ══════════ PANEL PROJETS ══════════ -->
+  <div class="t-panel active" id="panel-projects">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:16px;font-weight:600">Mes projets d'investissement</div>
+        <div style="font-size:12px;color:var(--smoke);margin-top:2px">Workspace complet · données persistées localement</div>
+      </div>
+      <button class="btn btn-gold" onclick="openNewProject()">+ Nouveau projet</button>
+    </div>
+    <div class="proj-grid" id="projGrid"></div>
+    <div id="projEmpty" class="empty" style="display:none">
+      <div class="empty-icon">📁</div>
+      <div class="empty-title">Aucun projet pour l'instant</div>
+      <div class="empty-sub">Créez votre premier projet d'investissement pour commencer à tracker votre parcours CRI, vos simulations fiscales et vos documents.</div>
+      <button class="btn btn-gold" onclick="openNewProject()">+ Créer mon premier projet</button>
+    </div>
+  </div>
+
+  <!-- ══════════ PANEL SIMULATIONS ══════════ -->
+  <div class="t-panel" id="panel-simulations">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:16px;font-weight:600">Historique des simulations</div>
+        <div style="font-size:12px;color:var(--smoke)">Résultats IS · IR · TVA · TNB · Charte · Coûts — par projet</div>
+      </div>
+      <a href="../Smart-Invest_simulateur_fiscal.html" class="btn btn-outline">→ Nouveau calcul</a>
+    </div>
+    <div class="card" id="simsContainer">
+      <table class="sim-table">
+        <thead>
+          <tr>
+            <th>Projet</th><th>Module</th><th>Label scénario</th><th>Résultat clé</th><th>Date</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="simsBody"></tbody>
+      </table>
+      <div id="simsEmpty" class="empty" style="display:none">
+        <div class="empty-icon">📊</div>
+        <div class="empty-title">Aucune simulation sauvegardée</div>
+        <div class="empty-sub">Utilisez les simulateurs (IS/IR/TVA/TNB) et sauvegardez vos résultats ici pour les retrouver par projet.</div>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn btn-sm btn-outline" onclick="addSampleSim()">+ Ajouter une simulation de test</button>
+    </div>
+  </div>
+
+  <!-- ══════════ PANEL AI CONVERSATIONS ══════════ -->
+  <div class="t-panel" id="panel-ai">
+    <div id="aiQuotaBar" class="conv-quota">
+      <div class="quota-label">Crédits IA aujourd'hui</div>
+      <div class="quota-bar"><div class="quota-fill" id="quotaFill" style="width:0%"></div></div>
+      <div style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--gold-light)" id="quotaText">0 / 100</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:16px;font-weight:600">Conversations IA sauvegardées</div>
+        <div style="font-size:12px;color:var(--smoke)">Contexte projet injecté automatiquement · Historique 90 jours (Pro)</div>
+      </div>
+      <a href="../Smart-Invest_assistant.html" class="btn btn-gold">+ Nouvelle conversation</a>
+    </div>
+    <div class="conv-list" id="convList"></div>
+    <div id="convEmpty" class="empty" style="display:none">
+      <div class="empty-icon">🤖</div>
+      <div class="empty-title">Aucune conversation sauvegardée</div>
+      <div class="empty-sub">Vos échanges avec l'assistant IA seront automatiquement liés à votre projet actif et sauvegardés ici.</div>
+      <a href="../Smart-Invest_assistant.html" class="btn btn-gold">Ouvrir l'assistant IA</a>
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn btn-sm btn-outline" onclick="addSampleConv()">+ Ajouter une conversation de test</button>
+    </div>
+  </div>
+
+  <!-- ══════════ PANEL DOCUMENTS ══════════ -->
+  <div class="t-panel" id="panel-documents">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:16px;font-weight:600">Checklist documents CRI & juridiques</div>
+        <div style="font-size:12px;color:var(--smoke)">Statut de chaque pièce par projet — À obtenir · En cours · Obtenu · Expiré</div>
+      </div>
+      <button class="btn btn-gold" onclick="openNewDoc()">+ Ajouter un document</button>
+    </div>
+    <div class="card">
+      <table class="doc-table">
+        <thead>
+          <tr>
+            <th>Document</th><th>Type</th><th>Projet</th><th>Statut</th><th>Expiration</th><th>Notes</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="docsBody"></tbody>
+      </table>
+      <div id="docsEmpty" class="empty" style="display:none">
+        <div class="empty-icon">📄</div>
+        <div class="empty-title">Aucun document tracké</div>
+        <div class="empty-sub">Ajoutez vos documents de création (RC, IF, CNSS, statuts…) et suivez leur statut en temps réel.</div>
+        <button class="btn btn-gold" onclick="openNewDoc()">+ Ajouter un document</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PANEL PROFIL ══════════ -->
+  <div class="t-panel" id="panel-profile">
+    <div class="card">
+      <div class="card-title">👤 Profil abonné Smart-Invest.ia</div>
+      <div class="card-sub">Ces informations sont stockées localement et injectées automatiquement dans chaque conversation IA pour des réponses personnalisées.</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Prénom</label>
+          <input type="text" id="pf-prenom" placeholder="Mohamed" oninput="saveProfile()">
+        </div>
+        <div class="field">
+          <label>Nom</label>
+          <input type="text" id="pf-nom" placeholder="Alami" oninput="saveProfile()">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="pf-email" placeholder="m.alami@entreprise.ma" oninput="saveProfile()">
+        </div>
+        <div class="field">
+          <label>Société</label>
+          <input type="text" id="pf-societe" placeholder="ATLAS INVEST SARL" oninput="saveProfile()">
+        </div>
+        <div class="field">
+          <label>Profil investisseur</label>
+          <select id="pf-profil" onchange="saveProfile()">
+            <option value="IDE">Investisseur Direct Étranger (IDE)</option>
+            <option value="MRE">Marocain Résidant à l'Étranger (MRE)</option>
+            <option value="TPE">Entrepreneur / TPE marocaine</option>
+            <option value="PME">PME marocaine en croissance</option>
+            <option value="Startup">Startup / tech</option>
+            <option value="Institutionnel">Investisseur institutionnel</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Secteur principal d'intérêt</label>
+          <select id="pf-secteur" onchange="saveProfile()">
+            <option value="">-- Sélectionnez --</option>
+            <option>Automobile</option><option>Aéronautique</option><option>TIC / Offshoring</option>
+            <option>Agroalimentaire</option><option>Textile</option><option>Pharmacie</option>
+            <option>Énergie / EnR</option><option>Logistique</option><option>Tourisme</option>
+            <option>Immobilier</option><option>Finance / Fintech</option><option>Industrie générale</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Région cible au Maroc</label>
+          <select id="pf-region" onchange="saveProfile()">
+            <option value="">-- Toutes régions --</option>
+            <option>Casablanca-Settat</option><option>Rabat-Salé-Kénitra</option>
+            <option>Tanger-Tétouan-Al Hoceïma</option><option>Marrakech-Safi</option>
+            <option>Fès-Meknès</option><option>Souss-Massa</option><option>Oriental</option>
+            <option>Béni Mellal-Khénifra</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Plan d'abonnement</label>
+          <select id="pf-plan" onchange="savePlan()">
+            <option value="FREE">Gratuit</option>
+            <option value="PRO" selected>Pro — 199 MAD/mois</option>
+            <option value="ENTERPRISE">Enterprise — 990 MAD/mois</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="background:var(--ink);border-radius:12px;padding:16px 20px;margin-top:4px;color:var(--white)">
+        <div style="font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Contexte IA injecté automatiquement</div>
+        <div id="aiContextPreview" style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.7;font-family:var(--font-mono)">Complétez votre profil ci-dessus...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PANEL DATA ══════════ -->
+  <div class="t-panel" id="panel-data">
+    <div class="card">
+      <div class="card-title">⚙️ Gestion des données</div>
+      <div class="card-sub">Exportez, importez ou réinitialisez vos données locales. Phase 2 : synchronisation cloud Supabase.</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px">
+        <div style="background:var(--bg2);border-radius:10px;padding:16px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px">💾 Export JSON complet</div>
+          <div style="font-size:12px;color:var(--smoke);margin-bottom:12px;line-height:1.5">Téléchargez l'intégralité de vos données (projets, simulations, conversations, documents) en JSON.</div>
+          <button class="btn btn-sm btn-gold" onclick="exportAll()">Exporter tout</button>
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:16px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px">📥 Import JSON</div>
+          <div style="font-size:12px;color:var(--smoke);margin-bottom:12px;line-height:1.5">Restaurez des données précédemment exportées depuis un autre appareil.</div>
+          <label class="btn btn-sm btn-outline" style="cursor:pointer">Importer
+            <input type="file" accept=".json" style="display:none" onchange="importAll(event)">
+          </label>
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:16px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px">🧹 Réinitialisation</div>
+          <div style="font-size:12px;color:var(--smoke);margin-bottom:12px;line-height:1.5">Supprimez toutes les données locales. Action irréversible.</div>
+          <button class="btn btn-sm btn-danger" onclick="clearAll()">Tout effacer</button>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(30,77,107,.08),rgba(184,134,42,.05));border:1px solid rgba(30,77,107,.2);border-radius:10px;padding:16px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--accent)">☁️ Phase 2 — Supabase</div>
+          <div style="font-size:12px;color:var(--smoke);margin-bottom:8px;line-height:1.5">Sync cloud, multi-appareils, partage équipe, backups automatiques.</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);padding:4px 10px;background:rgba(30,77,107,.1);border-radius:6px;display:inline-block">Bientôt disponible</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg2);border-radius:10px;padding:16px;font-family:var(--font-mono);font-size:11px;color:var(--smoke);line-height:1.8" id="storageStats">
+        Calcul du stockage...
+      </div>
+
+      <div class="source-badges" style="margin-top:16px">
+        <span class="source-badge">localStorage — max ~5MB par domaine</span>
+        <span class="source-badge">IndexedDB — pour fichiers et historique IA</span>
+        <span class="source-badge">Phase 2 : Supabase PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ══ MODAL NOUVEAU PROJET ══ -->
+<div class="modal-backdrop" id="modalProject" style="display:none">
+  <div class="modal">
+    <div class="modal-title" id="modalProjectTitle">Nouveau projet d'investissement</div>
+    <input type="hidden" id="proj-edit-id">
+    <div class="form-grid">
+      <div class="field" style="grid-column:1/-1">
+        <label>Nom du projet *</label>
+        <input type="text" id="proj-nom" placeholder="Usine de conditionnement — Kénitra AFZ">
+      </div>
+      <div class="field">
+        <label>Secteur d'activité</label>
+        <select id="proj-secteur">
+          <option value="">-- Sélectionnez --</option>
+          <option>Automobile</option><option>Aéronautique</option><option>TIC / Offshoring</option>
+          <option>Agroalimentaire</option><option>Textile</option><option>Pharmacie</option>
+          <option>Énergie / EnR</option><option>Logistique</option><option>Tourisme</option>
+          <option>Immobilier</option><option>Finance / Fintech</option><option>Industrie générale</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Forme juridique</label>
+        <select id="proj-forme">
+          <option>SARL</option><option>SA</option><option>SAS</option>
+          <option>Auto-entrepreneur</option><option>Succursale étrangère</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Montant investissement (MAD)</label>
+        <input type="number" id="proj-montant" placeholder="5000000" min="0" step="50000">
+      </div>
+      <div class="field">
+        <label>Budget prévisionnel (MAD)</label>
+        <input type="number" id="proj-budget" placeholder="6500000" min="0" step="50000">
+      </div>
+      <div class="field">
+        <label>Région cible</label>
+        <select id="proj-region">
+          <option>Casablanca-Settat</option><option>Rabat-Salé-Kénitra</option>
+          <option>Tanger-Tétouan-Al Hoceïma</option><option>Marrakech-Safi</option>
+          <option>Fès-Meknès</option><option>Souss-Massa</option><option>Oriental</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Statut du projet</label>
+        <select id="proj-status">
+          <option value="Idée">💡 Idée</option>
+          <option value="Étude">📋 Étude de faisabilité</option>
+          <option value="Création">⚙️ En cours de création</option>
+          <option value="Actif">✅ Actif / Opérationnel</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Date de démarrage</label>
+        <input type="date" id="proj-date">
+      </div>
+      <div class="field">
+        <label>ZAI cible (si applicable)</label>
+        <select id="proj-zai">
+          <option value="">Aucune ZAI</option>
+          <option>ZAI Tanger Meloussa</option>
+          <option>Kénitra Atlantic Free Zone</option>
+          <option>Zone Industrielle Berrechid</option>
+          <option>ZAI Oujda Technopôle</option>
+          <option>ZAI Agadir Haliopôle</option>
+          <option>ZAI Fès Parc Industriel</option>
+          <option>Casablanca Finance City</option>
+        </select>
+      </div>
+      <div class="field" style="grid-column:1/-1">
+        <label>Notes / Description</label>
+        <textarea id="proj-notes" rows="3" placeholder="Contexte, objectifs, partenaires..."></textarea>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modalProject')">Annuler</button>
+      <button class="btn btn-gold" onclick="saveProject()">Enregistrer le projet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL NOUVEAU DOCUMENT ══ -->
+<div class="modal-backdrop" id="modalDoc" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Ajouter un document</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Nom du document *</label>
+        <input type="text" id="doc-nom" placeholder="Statuts constitutifs SARL">
+      </div>
+      <div class="field">
+        <label>Type de document</label>
+        <select id="doc-type">
+          <option>Statuts</option><option>RC (Registre Commerce)</option>
+          <option>IF (Identifiant Fiscal)</option><option>CNSS</option>
+          <option>Bail / Contrat de location</option><option>Permis de construire</option>
+          <option>Agrément sectoriel</option><option>Publication BALO</option>
+          <option>Attestation capital</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Projet associé</label>
+        <select id="doc-projet"></select>
+      </div>
+      <div class="field">
+        <label>Statut</label>
+        <select id="doc-status">
+          <option value="À_obtenir">🔴 À obtenir</option>
+          <option value="En_cours">🟡 En cours d'obtention</option>
+          <option value="Obtenu">🟢 Obtenu</option>
+          <option value="Expiré">⚫ Expiré / À renouveler</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Date d'expiration (si applicable)</label>
+        <input type="date" id="doc-expiry">
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <input type="text" id="doc-notes" placeholder="Référence, organisme, observations...">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modalDoc')">Annuler</button>
+      <button class="btn btn-gold" onclick="saveDoc()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   Smart-Invest.IA — BASE DE DONNÉES PHASE 1
+   localStorage — 5 tables relationnelles
+   ══════════════════════════════════════ */
+
+const DB_KEYS = {
+  user:    'im_user',
+  projects:'im_projects',
+  sims:    'im_simulations',
+  ai:      'im_ai_conversations',
+  docs:    'im_documents',
+};
+
+/* ── Utils ── */
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function now() { return new Date().toISOString(); }
+function fmt(iso) { return iso ? new Date(iso).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}) : '—'; }
+function fmtMAD(n) { return n ? Math.round(n).toLocaleString('fr-FR') + ' MAD' : '—'; }
+
+/* ── LocalStorage helpers ── */
+function load(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return null; } }
+function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) { alert('Stockage plein — exportez vos données.'); } }
+
+/* ── User / Plan ── */
+function getUser() {
+  return load(DB_KEYS.user) || {
+    user_id: uid(), email:'', prenom:'', nom:'', societe:'',
+    profil:'PRO', plan:'PRO', plan_expires: null,
+    secteur:'', region:'', ai_calls_today:0,
+    ai_calls_date: new Date().toDateString(), esg_score:0, created_at:now()
+  };
+}
+function saveProfile() {
+  const u = getUser();
+  u.prenom  = document.getElementById('pf-prenom').value;
+  u.nom     = document.getElementById('pf-nom').value;
+  u.email   = document.getElementById('pf-email').value;
+  u.societe = document.getElementById('pf-societe').value;
+  u.profil  = document.getElementById('pf-profil').value;
+  u.secteur = document.getElementById('pf-secteur').value;
+  u.region  = document.getElementById('pf-region').value;
+  save(DB_KEYS.user, u);
+  updateAIContextPreview(u);
+  document.getElementById('userAvatar').textContent = (u.prenom||'?')[0].toUpperCase();
+}
+function savePlan() {
+  const u = getUser();
+  u.plan = document.getElementById('pf-plan').value;
+  save(DB_KEYS.user, u);
+  document.getElementById('planPill').textContent = u.plan;
+}
+function updateAIContextPreview(u) {
+  const ctx = `Profil: ${u.profil||'Non défini'} · Secteur: ${u.secteur||'Non défini'} · Région: ${u.region||'Non définie'}\nSociété: ${u.societe||'Non renseignée'} · Plan: ${u.plan}\n\nContexte injecté dans chaque requête IA pour des réponses personnalisées Maroc.`;
+  document.getElementById('aiContextPreview').textContent = ctx;
+}
+function loadUserForm() {
+  const u = getUser();
+  /* Show OWNER badge if applicable */
+  var s = JSON.parse(localStorage.getItem('im_session')||'null');
+  if(s && s.role==='OWNER' && !u.plan) u.plan = 'OWNER';
+  document.getElementById('pf-prenom').value  = u.prenom || '';
+  document.getElementById('pf-nom').value     = u.nom || '';
+  document.getElementById('pf-email').value   = u.email || '';
+  document.getElementById('pf-societe').value = u.societe || '';
+  document.getElementById('pf-profil').value  = u.profil || 'PRO';
+  document.getElementById('pf-secteur').value = u.secteur || '';
+  document.getElementById('pf-region').value  = u.region || '';
+  document.getElementById('pf-plan').value    = u.plan || 'PRO';
+  document.getElementById('userAvatar').textContent = (u.prenom||'?')[0].toUpperCase();
+  document.getElementById('planPill').textContent = u.plan || 'PRO';
+  updateAIContextPreview(u);
+}
+function showProfile() { showTab('profile'); }
+
+/* ── PROJECTS ── */
+function getProjects() { return load(DB_KEYS.projects) || []; }
+function saveProjects(arr) { save(DB_KEYS.projects, arr); }
+
+function openNewProject() {
+  document.getElementById('modalProjectTitle').textContent = 'Nouveau projet d\'investissement';
+  document.getElementById('proj-edit-id').value = '';
+  ['proj-nom','proj-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('proj-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('modalProject').style.display = 'flex';
+}
+
+function openEditProject(id) {
+  const p = getProjects().find(p=>p.project_id===id);
+  if(!p) return;
+  document.getElementById('modalProjectTitle').textContent = 'Modifier le projet';
+  document.getElementById('proj-edit-id').value = p.project_id;
+  document.getElementById('proj-nom').value     = p.nom_projet || '';
+  document.getElementById('proj-secteur').value = p.secteur || '';
+  document.getElementById('proj-forme').value   = p.forme_juridique || 'SARL';
+  document.getElementById('proj-montant').value = p.montant_invest || '';
+  document.getElementById('proj-budget').value  = p.budget_prevu || '';
+  document.getElementById('proj-region').value  = p.region || '';
+  document.getElementById('proj-status').value  = p.status || 'Idée';
+  document.getElementById('proj-date').value    = p.date_debut ? p.date_debut.slice(0,10) : '';
+  document.getElementById('proj-zai').value     = p.zai_cible || '';
+  document.getElementById('proj-notes').value   = p.notes || '';
+  document.getElementById('modalProject').style.display = 'flex';
+}
+
+function saveProject() {
+  const editId = document.getElementById('proj-edit-id').value;
+  const nom = document.getElementById('proj-nom').value.trim();
+  if(!nom) { alert('Le nom du projet est obligatoire.'); return; }
+  const projects = getProjects();
+  const proj = {
+    project_id:      editId || uid(),
+    nom_projet:      nom,
+    secteur:         document.getElementById('proj-secteur').value,
+    forme_juridique: document.getElementById('proj-forme').value,
+    montant_invest:  parseFloat(document.getElementById('proj-montant').value) || 0,
+    budget_prevu:    parseFloat(document.getElementById('proj-budget').value) || 0,
+    budget_realise:  0,
+    region:          document.getElementById('proj-region').value,
+    status:          document.getElementById('proj-status').value,
+    date_debut:      document.getElementById('proj-date').value,
+    zai_cible:       document.getElementById('proj-zai').value,
+    notes:           document.getElementById('proj-notes').value,
+    etape_cri:       0, esg_score:0,
+    created_at:      editId ? (projects.find(p=>p.project_id===editId)||{}).created_at || now() : now(),
+    updated_at:      now()
+  };
+  if(editId) {
+    const idx = projects.findIndex(p=>p.project_id===editId);
+    if(idx>=0) projects[idx] = proj; else projects.push(proj);
+  } else { projects.push(proj); }
+  saveProjects(projects);
+  closeModal('modalProject');
+  renderProjects();
+  renderKPIs();
+}
+
+function deleteProject(id) {
+  if(!confirm('Supprimer ce projet ? Les simulations et documents liés seront aussi supprimés.')) return;
+  const projects = getProjects().filter(p=>p.project_id!==id);
+  saveProjects(projects);
+  const sims = getSims().filter(s=>s.project_id!==id);
+  saveSims(sims);
+  const docs = getDocs().filter(d=>d.project_id!==id);
+  saveDocs(docs);
+  renderProjects(); renderSims(); renderDocs(); renderKPIs();
+}
+
+function renderProjects() {
+  const projects = getProjects();
+  const grid = document.getElementById('projGrid');
+  const empty = document.getElementById('projEmpty');
+  document.getElementById('tc-projects').textContent = projects.length;
+  if(!projects.length) { grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  const statusIcon = {Idée:'💡', Étude:'📋', Création:'⚙️', Actif:'✅'};
+  const statusClass = {Idée:'status-idee', Étude:'status-etude', Création:'status-creation', Actif:'status-actif'};
+  grid.innerHTML = projects.map(p => `
+    <div class="proj-card" onclick="openEditProject('${p.project_id}')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div class="proj-name">${p.nom_projet}</div>
+        <span class="status-badge ${statusClass[p.status]||'status-idee'}">${statusIcon[p.status]||'💡'} ${p.status||'Idée'}</span>
+      </div>
+      <div class="proj-meta">${p.secteur||'—'} · ${p.region||'—'} · ${p.forme_juridique||'SARL'}</div>
+      <div class="proj-stats">
+        <div class="proj-stat">
+          <div class="proj-stat-n">${p.montant_invest ? (p.montant_invest/1000000).toFixed(1)+'M' : '—'}</div>
+          <div class="proj-stat-l">Invest.</div>
+        </div>
+        <div class="proj-stat">
+          <div class="proj-stat-n">${p.etape_cri||0}/10</div>
+          <div class="proj-stat-l">Étapes CRI</div>
+        </div>
+        <div class="proj-stat">
+          <div class="proj-stat-n">${p.esg_score||0}</div>
+          <div class="proj-stat-l">Score ESG</div>
+        </div>
+      </div>
+      ${p.zai_cible ? `<div style="font-size:11px;color:var(--accent);font-family:var(--font-mono);margin-bottom:8px">📍 ${p.zai_cible}</div>` : ''}
+      ${p.notes ? `<div style="font-size:12px;color:var(--smoke);line-height:1.5;margin-bottom:10px">${p.notes.slice(0,90)}${p.notes.length>90?'…':''}</div>` : ''}
+      <div class="proj-actions" onclick="event.stopPropagation()">
+        <a href="../Smart-Invest_dashboard_projet.html" class="btn btn-sm btn-outline">📊 Dashboard</a>
+        <a href="../Smart-Invest_simulateur_fiscal.html" class="btn btn-sm btn-outline">🧮 Simuler</a>
+        <button class="btn btn-sm btn-danger" onclick="deleteProject('${p.project_id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ── SIMULATIONS ── */
+function getSims() { return load(DB_KEYS.sims) || []; }
+function saveSims(arr) { save(DB_KEYS.sims, arr); }
+const MODULE_COLORS = {IS:'#1A6B3C',IR:'#1E4D6B',TVA:'#B8862A',TNB:'#8B1A1A',Charte:'#7A5510',Coûts:'#4A4A40'};
+
+function addSampleSim() {
+  const projects = getProjects();
+  const pid = projects.length ? projects[0].project_id : uid();
+  const modules = ['IS','IR','TVA','TNB','Charte','Coûts'];
+  const mod = modules[Math.floor(Math.random()*modules.length)];
+  const sims = getSims();
+  sims.push({
+    sim_id: uid(), project_id: pid, module_source: mod,
+    label: 'Scénario ' + String.fromCharCode(65+sims.length%26),
+    inputs_json: {chiffreAffaires: Math.round(Math.random()*5000000+500000)},
+    results_json: {is_du: Math.round(Math.random()*200000+10000), taux_effectif: (15+Math.random()*15).toFixed(1)},
+    created_at: now()
+  });
+  saveSims(sims); renderSims(); renderKPIs();
+}
+
+function deleteSim(id) {
+  if(!confirm('Supprimer cette simulation ?')) return;
+  saveSims(getSims().filter(s=>s.sim_id!==id));
+  renderSims(); renderKPIs();
+}
+
+function renderSims() {
+  const sims = getSims();
+  const projects = getProjects();
+  const tbody = document.getElementById('simsBody');
+  const empty = document.getElementById('simsEmpty');
+  document.getElementById('tc-sims').textContent = sims.length;
+  if(!sims.length) { tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML = sims.map(s => {
+    const proj = projects.find(p=>p.project_id===s.project_id);
+    const res = s.results_json || {};
+    const keyResult = res.is_du ? fmtMAD(res.is_du) : res.tva_due ? fmtMAD(res.tva_due) : '—';
+    return `<tr>
+      <td>${proj ? proj.nom_projet : '<em style="color:var(--smoke)">Sans projet</em>'}</td>
+      <td><span class="module-chip" style="background:${MODULE_COLORS[s.module_source]||'#4A4A40'}22;color:${MODULE_COLORS[s.module_source]||'#4A4A40'};border:1px solid ${MODULE_COLORS[s.module_source]||'#4A4A40'}44">${s.module_source}</span></td>
+      <td>${s.label || '—'}</td>
+      <td style="font-family:var(--font-mono);font-size:12px;font-weight:600">${keyResult}</td>
+      <td style="color:var(--smoke);font-size:12px">${fmt(s.created_at)}</td>
+      <td><button class="btn btn-sm btn-danger" onclick="deleteSim('${s.sim_id}')">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── AI CONVERSATIONS ── */
+function getConvs() { return load(DB_KEYS.ai) || []; }
+function saveConvs(arr) { save(DB_KEYS.ai, arr); }
+
+function addSampleConv() {
+  const convs = getConvs();
+  const samples = [
+    {title:'Avantages ZAI Kénitra vs Tanger',preview:'Quels sont les avantages comparatifs entre la ZAI de Kénitra et Tanger pour une unité automobile…',tags:['ZAI','Automobile','Fiscal']},
+    {title:'Charte investissement — calcul primes',preview:'Comment calculer la prime d\'investissement de la Charte 03-22 pour un projet de 50 millions MAD…',tags:['Charte','Primes','IS']},
+    {title:'Procédures création SARL au CRI Rabat',preview:'Quelles sont les étapes et documents nécessaires pour créer une SARL au CRI de Rabat-Salé-Kénitra…',tags:['CRI','SARL','Création']},
+  ];
+  const s = samples[convs.length % samples.length];
+  const u = getUser();
+  convs.push({
+    conv_id: uid(), user_id: u.user_id, project_id: null,
+    title: s.title, preview: s.preview, tags: s.tags,
+    messages_json: [{role:'user',content:s.preview},{role:'assistant',content:'Voici une analyse détaillée basée sur votre profil...'}],
+    tokens_used: Math.floor(Math.random()*800+200), created_at: now()
+  });
+  saveConvs(convs); renderConvs(); renderKPIs();
+}
+
+function deleteConv(id) {
+  if(!confirm('Supprimer cette conversation ?')) return;
+  saveConvs(getConvs().filter(c=>c.conv_id!==id));
+  renderConvs(); renderKPIs();
+}
+
+function renderConvs() {
+  const convs = getConvs();
+  const list = document.getElementById('convList');
+  const empty = document.getElementById('convEmpty');
+  document.getElementById('tc-ai').textContent = convs.length;
+  const u = getUser();
+  const plan = u.plan || 'PRO';
+  const limit = plan==='FREE'?10: plan==='PRO'?100:9999;
+  const used = u.ai_calls_today || 0;
+  const pct = Math.min(100, Math.round(used/limit*100));
+  document.getElementById('quotaFill').style.width = pct+'%';
+  document.getElementById('quotaText').textContent = used+' / '+limit;
+  document.getElementById('kpiQuota').textContent = used+'/'+limit;
+  if(!convs.length) { list.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  list.innerHTML = [...convs].reverse().map(c => `
+    <div class="conv-item">
+      <div class="conv-header">
+        <div class="conv-title">${c.title||'Conversation sans titre'}</div>
+        <div class="conv-date">${fmt(c.created_at)} · ${c.tokens_used||0} tokens</div>
+      </div>
+      <div class="conv-preview">${c.preview||''}</div>
+      <div class="conv-tags">
+        ${(c.tags||[]).map(t=>`<span class="conv-tag">${t}</span>`).join('')}
+        <button class="btn btn-sm btn-danger" style="margin-left:auto;padding:3px 8px;font-size:10px" onclick="deleteConv('${c.conv_id}')">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ── DOCUMENTS ── */
+function getDocs() { return load(DB_KEYS.docs) || []; }
+function saveDocs(arr) { save(DB_KEYS.docs, arr); }
+
+function openNewDoc() {
+  const projects = getProjects();
+  const sel = document.getElementById('doc-projet');
+  sel.innerHTML = '<option value="">Sans projet</option>' + projects.map(p=>`<option value="${p.project_id}">${p.nom_projet}</option>`).join('');
+  document.getElementById('modalDoc').style.display = 'flex';
+}
+
+function saveDoc() {
+  const nom = document.getElementById('doc-nom').value.trim();
+  if(!nom) { alert('Le nom du document est obligatoire.'); return; }
+  const docs = getDocs();
+  docs.push({
+    doc_id: uid(),
+    nom_fichier:  nom,
+    type:         document.getElementById('doc-type').value,
+    project_id:   document.getElementById('doc-projet').value || null,
+    status_doc:   document.getElementById('doc-status').value,
+    date_expiration: document.getElementById('doc-expiry').value || null,
+    notes:        document.getElementById('doc-notes').value,
+    created_at:   now()
+  });
+  saveDocs(docs);
+  closeModal('modalDoc');
+  renderDocs(); renderKPIs();
+}
+
+function deleteDoc(id) {
+  if(!confirm('Supprimer ce document ?')) return;
+  saveDocs(getDocs().filter(d=>d.doc_id!==id));
+  renderDocs(); renderKPIs();
+}
+
+function renderDocs() {
+  const docs = getDocs();
+  const projects = getProjects();
+  const tbody = document.getElementById('docsBody');
+  const empty = document.getElementById('docsEmpty');
+  document.getElementById('tc-docs').textContent = docs.length;
+  if(!docs.length) { tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  const statusMap = {
+    'À_obtenir': ['doc-a-obtenir','🔴 À obtenir'],
+    'En_cours':  ['doc-en-cours', '🟡 En cours'],
+    'Obtenu':    ['doc-obtenu',   '🟢 Obtenu'],
+    'Expiré':    ['doc-expire',   '⚫ Expiré'],
+  };
+  tbody.innerHTML = docs.map(d => {
+    const proj = projects.find(p=>p.project_id===d.project_id);
+    const [cls, label] = statusMap[d.status_doc] || ['doc-a-obtenir','À obtenir'];
+    return `<tr>
+      <td style="font-weight:600">${d.nom_fichier}</td>
+      <td style="color:var(--smoke)">${d.type}</td>
+      <td>${proj ? proj.nom_projet : '<em style="color:var(--smoke)">—</em>'}</td>
+      <td><span class="doc-status ${cls}">${label}</span></td>
+      <td style="font-family:var(--font-mono);font-size:11px">${d.date_expiration ? fmt(d.date_expiration) : '—'}</td>
+      <td style="color:var(--smoke);font-size:12px">${d.notes||'—'}</td>
+      <td><button class="btn btn-sm btn-danger" onclick="deleteDoc('${d.doc_id}')">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── KPIs ── */
+function renderKPIs() {
+  document.getElementById('kpiProjects').textContent    = getProjects().length;
+  document.getElementById('kpiSimulations').textContent = getSims().length;
+  document.getElementById('kpiAI').textContent          = getConvs().length;
+  document.getElementById('kpiDocs').textContent        = getDocs().length;
+}
+
+/* ── STORAGE STATS ── */
+function renderStorageStats() {
+  const keys = [DB_KEYS.user, DB_KEYS.projects, DB_KEYS.sims, DB_KEYS.ai, DB_KEYS.docs];
+  const sizes = keys.map(k => {
+    const v = localStorage.getItem(k) || '';
+    return {key:k, size: new Blob([v]).size};
+  });
+  const total = sizes.reduce((s,x)=>s+x.size,0);
+  document.getElementById('storageStats').innerHTML =
+    sizes.map(s=>`${s.key.padEnd(25,' ')} : ${(s.size/1024).toFixed(2)} KB`).join('\n') +
+    `\n${'─'.repeat(45)}\n` +
+    `TOTAL                      : ${(total/1024).toFixed(2)} KB / ~5 120 KB max`;
+}
+
+/* ── EXPORT / IMPORT / CLEAR ── */
+function exportAll() {
+  const data = {
+    version:1, exported_at: now(),
+    user: load(DB_KEYS.user),
+    projects: load(DB_KEYS.projects),
+    simulations: load(DB_KEYS.sims),
+    ai_conversations: load(DB_KEYS.ai),
+    documents: load(DB_KEYS.docs)
+  };
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Smart-Invest_data_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+}
+
+function importAll(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if(data.user)     save(DB_KEYS.user, data.user);
+      if(data.projects) save(DB_KEYS.projects, data.projects);
+      if(data.simulations) save(DB_KEYS.sims, data.simulations);
+      if(data.ai_conversations) save(DB_KEYS.ai, data.ai_conversations);
+      if(data.documents) save(DB_KEYS.docs, data.documents);
+      initAll();
+      alert('✅ Import réussi — données restaurées.');
+    } catch { alert('Fichier invalide — vérifiez le format JSON.'); }
+  };
+  reader.readAsText(file);
+}
+
+function clearAll() {
+  if(!confirm('Supprimer TOUTES les données Smart-Invest.ia de ce navigateur ? Cette action est irréversible.')) return;
+  if(!confirm('Dernière confirmation — êtes-vous certain ?')) return;
+  Object.values(DB_KEYS).forEach(k => localStorage.removeItem(k));
+  initAll();
+  alert('Toutes les données ont été supprimées.');
+}
+
+/* ── MODALS ── */
+function closeModal(id) { document.getElementById(id).style.display='none'; }
+document.addEventListener('click', e => {
+  if(e.target.classList.contains('modal-backdrop')) {
+    document.querySelectorAll('.modal-backdrop').forEach(m=>m.style.display='none');
+  }
+});
+
+/* ── TABS ── */
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.t-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  const tabs = document.querySelectorAll('.tab');
+  const names = ['projects','simulations','ai','documents','profile','data'];
+  const idx = names.indexOf(name);
+  if(idx>=0) tabs[idx].classList.add('active');
+  if(name==='data') renderStorageStats();
+}
+
+/* ── INIT ── */
+function initAll() {
+  loadUserForm();
+  renderProjects();
+  renderSims();
+  renderConvs();
+  renderDocs();
+  renderKPIs();
+}
+initAll();
+</script>
+
+
+<script>
+(function(){
+  var s = JSON.parse(localStorage.getItem('im_session') || 'null');
+  var bar = document.getElementById('owner-bar-db');
+  if(bar && s && s.role === 'OWNER') bar.style.display = 'flex';
+})();
+</script>
+<script src="auth.js"></script>
+<script src="notifications.js"></script>
+<script src="analytics.js"></script>
+
+</body>
+</html>

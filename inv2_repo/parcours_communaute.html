@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parcours Investisseur — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C49A2A;--gold-l:#F2C14E;--gold-pale:#FDF6E3;--gold-dim:rgba(196,154,42,.15);
+  --ink:#0B0B09;--ink2:#1E1E1A;--ink3:#333328;--smoke:#6B6B60;--mist:#9A9A8E;
+  --bg:#F5F3EE;--bg2:#ECEAE3;--bg3:#E2E0D8;--white:#FEFEFE;
+  --blue:#1B4F8C;--blue-l:#2E6EB8;--blue-pale:#EAF1FB;
+  --green:#1A5C38;--green-pale:#E8F5EE;
+  --ruby:#8C2020;--ruby-pale:#FAEAEA;
+  --teal:#0E5C5A;--teal-pale:#E4F5F4;
+  --amber:#8C5A10;--amber-pale:#FDF0DC;
+  --violet:#4A2080;--violet-pale:#F0EAFB;
+  --coral:#8C3020;--coral-pale:#FAEEE8;
+  --olive:#4A5A10;--olive-pale:#F0F5E4;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);
+  --sh:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+  --sh-l:0 2px 8px rgba(0,0,0,.08),0 12px 40px rgba(0,0,0,.08);
+  --ff-t:'Instrument Serif',Georgia,serif;
+  --ff-b:'DM Sans',system-ui,sans-serif;
+  --ff-m:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff-b);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.hdr{position:sticky;top:0;z-index:100;height:54px;background:rgba(11,11,9,.96);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(196,154,42,.18)}
+.hdr-l{display:flex;align-items:center;gap:16px}
+.back{font-size:11px;color:rgba(255,255,255,.35);text-decoration:none;letter-spacing:.02em;transition:color .2s}
+.back:hover{color:var(--gold-l)}
+.logo{font-family:var(--ff-t);font-size:17px;color:var(--white);letter-spacing:-.01em}
+.logo em{color:var(--gold-l);font-style:normal}
+.vtag{font-family:var(--ff-m);font-size:9px;color:rgba(196,154,42,.7);background:rgba(196,154,42,.1);border:1px solid rgba(196,154,42,.2);padding:3px 9px;border-radius:100px;letter-spacing:.06em}
+
+/* ── PAGE ── */
+.page{max-width:1160px;margin:0 auto;padding:32px 28px 100px}
+
+/* ── TABS COLORÉS ── */
+.tabs-bar{display:flex;gap:6px;margin-bottom:36px;flex-wrap:wrap}
+.tab-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all .22s;font-family:var(--ff-b)}
+.tab-btn[data-tab="parcours"]{background:var(--amber-pale);color:var(--amber);border-color:rgba(140,90,16,.18)}
+.tab-btn[data-tab="parcours"].active{background:var(--amber);color:#fff;border-color:var(--amber);box-shadow:0 4px 16px rgba(140,90,16,.3)}
+.tab-btn[data-tab="parcours"]:not(.active):hover{background:rgba(140,90,16,.12);border-color:rgba(140,90,16,.28)}
+.tab-btn[data-tab="forum"]{background:var(--blue-pale);color:var(--blue);border-color:rgba(27,79,140,.18)}
+.tab-btn[data-tab="forum"].active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 4px 16px rgba(27,79,140,.3)}
+.tab-btn[data-tab="forum"]:not(.active):hover{background:rgba(27,79,140,.1);border-color:rgba(27,79,140,.28)}
+.tab-btn[data-tab="newsletter"]{background:var(--teal-pale);color:var(--teal);border-color:rgba(14,92,90,.18)}
+.tab-btn[data-tab="newsletter"].active{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:0 4px 16px rgba(14,92,90,.3)}
+.tab-btn[data-tab="newsletter"]:not(.active):hover{background:rgba(14,92,90,.1);border-color:rgba(14,92,90,.28)}
+
+/* ── HERO ── */
+.hero{background:var(--ink2);border-radius:20px;padding:48px 52px;margin-bottom:28px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;background:radial-gradient(circle,rgba(196,154,42,.12) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-family:var(--ff-m);font-size:10px;color:rgba(196,154,42,.6);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:var(--gold)}
+.hero-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
+.hero-title{font-family:var(--ff-t);font-size:38px;color:var(--white);line-height:1.12;letter-spacing:-.02em;margin-bottom:14px}
+.hero-title em{color:var(--gold-l);font-style:italic}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.45);line-height:1.75;max-width:520px}
+.hero-stats{display:flex;flex-direction:column;gap:12px;flex-shrink:0}
+.h-stat-val{font-family:var(--ff-t);font-size:26px;color:var(--gold-l);line-height:1;text-align:right}
+.h-stat-lbl{font-family:var(--ff-m);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.07em;margin-top:3px;text-align:right}
+
+/* ── PROFIL BAR ── */
+.profil-bar{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:24px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh)}
+.profil-label{font-family:var(--ff-m);font-size:10px;color:var(--mist);letter-spacing:.07em;white-space:nowrap}
+.profil-chips{display:flex;gap:6px;flex-wrap:wrap}
+.pchip{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg2);color:var(--smoke);transition:all .2s;font-family:var(--ff-b)}
+.pchip[data-p="mre"].active{background:var(--violet);border-color:var(--violet);color:#fff}
+.pchip[data-p="ide"].active{background:var(--blue);border-color:var(--blue);color:#fff}
+.pchip[data-p="pme"].active{background:var(--green);border-color:var(--green);color:#fff}
+.pchip[data-p="all"].active{background:var(--ink2);border-color:var(--ink2);color:#fff}
+.pchip:not(.active):hover{background:var(--bg3)}
+
+/* ── MACRO ── */
+.macro-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px}
+.mc{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden}
+.mc-val{font-family:var(--ff-t);font-size:21px;color:var(--ink);line-height:1;margin-bottom:5px}
+.mc-lbl{font-size:11px;color:var(--smoke);line-height:1.4}
+.mc-src{font-family:var(--ff-m);font-size:9px;color:var(--mist);margin-top:5px}
+.mc-trend{position:absolute;top:12px;right:12px;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px}
+.up{background:var(--green-pale);color:var(--green)}
+.dn{background:var(--ruby-pale);color:var(--ruby)}
+.nt{background:var(--bg2);color:var(--smoke)}
+
+/* ── SECTEUR GRID ── */
+.sect-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sect-hdr h2{font-family:var(--ff-t);font-size:20px;color:var(--ink)}
+.sect-cnt{font-family:var(--ff-m);font-size:10px;color:var(--mist)}
+.secteur-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+.sc{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:20px 16px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;opacity:0;transition:opacity .2s}
+.sc.active,.sc:hover{transform:translateY(-3px);box-shadow:var(--sh-l)}
+.sc.active{border-color:transparent}
+.sc.active::before,.sc:hover::before{opacity:1}
+.sc-icon{font-size:26px;margin-bottom:10px;display:block}
+.sc-name{font-family:var(--ff-t);font-size:14px;color:var(--ink);margin-bottom:3px}
+.sc-sub{font-size:11px;color:var(--smoke);line-height:1.4}
+.sc-badge{font-family:var(--ff-m);font-size:9px;padding:2px 7px;border-radius:100px;margin-top:8px;display:inline-block}
+.sc-kpi{font-family:var(--ff-m);font-size:9px;color:var(--mist);margin-top:5px}
+/* Couleurs par secteur */
+.sc[data-s="auto"]{--sc:#C49A2A;--scl:#FDF6E3}.sc[data-s="auto"]::before{background:#C49A2A}
+.sc[data-s="aero"]{--sc:#1B4F8C;--scl:#EAF1FB}.sc[data-s="aero"]::before{background:#1B4F8C}
+.sc[data-s="tic"]{--sc:#4A2080;--scl:#F0EAFB}.sc[data-s="tic"]::before{background:#4A2080}
+.sc[data-s="agro"]{--sc:#1A5C38;--scl:#E8F5EE}.sc[data-s="agro"]::before{background:#1A5C38}
+.sc[data-s="tourisme"]{--sc:#8C3020;--scl:#FAEEE8}.sc[data-s="tourisme"]::before{background:#8C3020}
+.sc[data-s="energie"]{--sc:#8C5A10;--scl:#FDF0DC}.sc[data-s="energie"]::before{background:#8C5A10}
+.sc[data-s="pharma"]{--sc:#0E5C5A;--scl:#E4F5F4}.sc[data-s="pharma"]::before{background:#0E5C5A}
+.sc[data-s="mre"]{--sc:#4A5A10;--scl:#F0F5E4}.sc[data-s="mre"]::before{background:#4A5A10}
+.sc.active{background:var(--scl);border-color:var(--sc)}
+.sc.active .sc-name{color:var(--sc)}
+.sc-badge{background:var(--scl);color:var(--sc)}
+
+/* ── PARCOURS CONTENT ── */
+#parcoursContent{animation:fadeUp .3s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pc-hdr{border-radius:18px;padding:28px 32px;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.pc-eyebrow{font-family:var(--ff-m);font-size:9px;letter-spacing:.1em;opacity:.55;margin-bottom:8px;text-transform:uppercase;color:#fff}
+.pc-title{font-family:var(--ff-t);font-size:26px;color:#fff;line-height:1.15;margin-bottom:6px}
+.pc-ctx{font-size:12px;color:rgba(255,255,255,.45);line-height:1.65;max-width:560px}
+.pc-meta{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap}
+.pc-meta-item{font-family:var(--ff-m);font-size:10px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:5px}
+.pc-pct-blk{text-align:right;flex-shrink:0}
+.pc-pct{font-family:var(--ff-t);font-size:44px;line-height:1;color:var(--gold-l)}
+.pc-pct-lbl{font-family:var(--ff-m);font-size:9px;color:rgba(255,255,255,.35);margin-top:4px;letter-spacing:.06em}
+.pc-bar{width:140px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:8px;overflow:hidden;margin-left:auto}
+.pc-bar-fill{height:100%;background:var(--gold-l);border-radius:2px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+/* ── PARCOURS LAYOUT ── */
+.parcours-layout{display:grid;grid-template-columns:1fr 280px;gap:24px}
+.tl-wrap{position:relative;padding-left:34px}
+.tl-wrap::before{content:'';position:absolute;left:11px;top:22px;bottom:22px;width:1.5px;background:var(--border2)}
+.pstep{position:relative;margin-bottom:14px}
+.pstep-dot{position:absolute;left:-34px;top:18px;width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--ff-m);font-size:9px;z-index:1;transition:all .25s}
+.pstep-dot.done{background:var(--green);border-color:var(--green);color:#fff}
+.pstep-dot.curr{border-width:2.5px;font-weight:700}
+.pstep-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;transition:all .22s}
+.pstep-card:hover{border-color:var(--border2);box-shadow:var(--sh)}
+.pstep-card.done{background:var(--bg);border-color:var(--border)}
+.pstep-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.pstep-phase{font-family:var(--ff-m);font-size:9px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.pstep-name{font-family:var(--ff-t);font-size:15px;line-height:1.25;color:var(--ink)}
+.pstep-dur{font-family:var(--ff-m);font-size:9px;color:var(--mist);background:var(--bg2);padding:3px 9px;border-radius:5px;flex-shrink:0;white-space:nowrap}
+.pstep-mods{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.mod-tag{font-size:10px;font-family:var(--ff-m);background:var(--blue-pale);color:var(--blue);padding:2px 9px;border-radius:4px;text-decoration:none;transition:background .2s;cursor:pointer}
+.mod-tag:hover{background:rgba(27,79,140,.15)}
+.pstep-body{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.pstep.open .pstep-body{display:block}
+.pstep-desc{font-size:13px;color:var(--ink3);line-height:1.72;margin-bottom:10px}
+.pstep-infobox{border-radius:10px;padding:12px 16px;font-size:12px;line-height:1.68}
+.pstep-src{font-family:var(--ff-m);font-size:9px;margin-top:6px;opacity:.6}
+.pstep-actions{display:flex;gap:8px;margin-top:12px}
+.pstep-btn{font-size:11px;font-family:var(--ff-m);padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--smoke);cursor:pointer;transition:all .2s}
+.pstep-btn:hover{background:var(--bg3)}
+
+/* ── PC SIDEBAR ── */
+.pc-sidebar{display:flex;flex-direction:column;gap:14px}
+.sw{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px}
+.sw-title{font-family:var(--ff-t);font-size:14px;color:var(--ink);margin-bottom:14px}
+.sw-kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sw-kpi{background:var(--bg2);border-radius:9px;padding:10px 12px}
+.sw-kpi-val{font-family:var(--ff-t);font-size:18px;color:var(--ink)}
+.sw-kpi-lbl{font-size:10px;color:var(--smoke);margin-top:2px}
+.aid-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--ink3)}
+.aid-item:last-child{border-bottom:none}
+.aid-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.aid-name{font-weight:500;color:var(--ink);margin-bottom:1px}
+.aid-val{font-family:var(--ff-m);font-size:10px;color:var(--mist)}
+.chk-item{display:flex;align-items:center;gap:9px;padding:6px 0;font-size:12px;border-bottom:1px solid var(--border);color:var(--ink3)}
+.chk-item:last-child{border-bottom:none}
+.chk-box{width:15px;height:15px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;transition:all .2s}
+.chk-box.checked{background:var(--green);border-color:var(--green);color:#fff}
+
+/* ══ FORUM ══ */
+.forum-layout{display:grid;grid-template-columns:1fr 280px;gap:24px}
+.forum-posts{display:flex;flex-direction:column;gap:12px}
+.post-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;transition:all .2s;cursor:pointer}
+.post-card:hover{border-color:var(--border2);box-shadow:var(--sh)}
+.post-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.post-avatar{width:36px;height:36px;border-radius:50%;background:var(--ink2);display:flex;align-items:center;justify-content:center;font-family:var(--ff-t);font-size:14px;color:var(--gold-l);flex-shrink:0}
+.post-author{font-size:13px;font-weight:500;color:var(--ink)}
+.post-time{font-size:11px;color:var(--mist)}
+.post-badge{font-family:var(--ff-m);font-size:9px;padding:2px 7px;border-radius:100px;background:var(--gold-dim);color:var(--gold)}
+.post-title{font-family:var(--ff-t);font-size:15px;margin-bottom:6px;color:var(--ink)}
+.post-excerpt{font-size:12.5px;color:var(--smoke);line-height:1.65}
+.post-footer{display:flex;gap:14px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--mist)}
+.post-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
+.post-tag{font-family:var(--ff-m);font-size:9px;background:var(--bg2);color:var(--smoke);padding:2px 8px;border-radius:100px}
+.post-pin{background:var(--gold-pale);border-color:rgba(196,154,42,.2)}
+.post-solved{border-left:3px solid var(--green)}
+.flbl{font-family:var(--ff-m);font-size:9px;letter-spacing:.06em;margin-bottom:7px}
+.forum-sidebar{display:flex;flex-direction:column;gap:14px}
+.sb-w{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px}
+.sb-title{font-family:var(--ff-t);font-size:14px;color:var(--ink);margin-bottom:12px}
+.mb-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--smoke);padding:5px 0;border-bottom:1px solid var(--border)}
+.mb-item:last-child{border-bottom:none}
+.mb-av{width:26px;height:26px;border-radius:50%;background:var(--ink2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gold-l);font-family:var(--ff-m);flex-shrink:0}
+.actu-flash{background:var(--ink2);border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;gap:12px}
+.actu-pulse{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.actu-lbl{font-family:var(--ff-m);font-size:9px;color:rgba(196,154,42,.7);letter-spacing:.09em;margin-bottom:4px}
+.actu-txt{font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.65}
+.res-item{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:11.5px;color:var(--smoke)}
+.res-item:last-child{border-bottom:none}
+.res-link{color:var(--blue);text-decoration:none;font-weight:500}
+.res-link:hover{text-decoration:underline}
+.write-btn{width:100%;padding:11px;border-radius:9px;background:var(--gold);border:none;cursor:pointer;font-family:var(--ff-t);font-size:14px;color:var(--ink);transition:all .2s;margin-bottom:14px}
+.write-btn:hover{background:var(--gold-l)}
+
+/* ══ NEWSLETTER ══ */
+.nl-hero{background:var(--ink2);border-radius:20px;padding:36px 40px;margin-bottom:28px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;position:relative;overflow:hidden}
+.nl-hero::before{content:'';position:absolute;right:-40px;bottom:-40px;width:240px;height:240px;background:radial-gradient(circle,rgba(196,154,42,.1) 0%,transparent 70%);pointer-events:none}
+.nl-title{font-family:var(--ff-t);font-size:26px;color:var(--white);margin-bottom:8px;line-height:1.15}
+.nl-sub{font-size:13px;color:rgba(255,255,255,.45);line-height:1.75}
+.nl-micro{margin-top:14px;display:flex;gap:18px;font-family:var(--ff-m);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.05em}
+.nl-form{display:flex;flex-direction:column;gap:10px}
+.nl-input{padding:11px 14px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.05);color:var(--white);font-family:var(--ff-b);font-size:13px;outline:none;transition:border-color .2s}
+.nl-input:focus{border-color:rgba(196,154,42,.4)}
+.nl-input::placeholder{color:rgba(255,255,255,.2)}
+.nl-segs{display:flex;gap:5px;flex-wrap:wrap}
+.nl-seg{padding:5px 12px;border-radius:100px;border:1px solid rgba(255,255,255,.12);background:none;color:rgba(255,255,255,.4);font-size:11px;cursor:pointer;font-family:var(--ff-b);transition:all .2s}
+.nl-seg.active{background:rgba(196,154,42,.18);border-color:rgba(196,154,42,.35);color:var(--gold-l)}
+.nl-btn{padding:12px;border-radius:10px;background:var(--gold);border:none;cursor:pointer;font-family:var(--ff-t);font-size:14px;color:var(--ink);transition:all .2s}
+.nl-btn:hover{background:var(--gold-l)}
+.nl-fine{font-size:10px;color:rgba(255,255,255,.2);text-align:center;font-family:var(--ff-m)}
+.editions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ed-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;transition:all .2s;cursor:pointer}
+.ed-card:hover{border-color:var(--border2);box-shadow:var(--sh)}
+.ed-tag{font-family:var(--ff-m);font-size:9px;padding:3px 9px;border-radius:100px;display:inline-block;margin-bottom:8px}
+.ed-num{font-family:var(--ff-m);font-size:9px;color:var(--mist);margin-bottom:5px}
+.ed-title{font-family:var(--ff-t);font-size:14px;color:var(--ink);line-height:1.35;margin-bottom:6px}
+.ed-excerpt{font-size:11.5px;color:var(--smoke);line-height:1.6}
+.ed-stats{display:flex;gap:12px;margin-top:10px;font-family:var(--ff-m);font-size:9px;color:var(--mist)}
+.agenda-sec{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:26px}
+.agenda-title{font-family:var(--ff-t);font-size:16px;color:var(--ink);margin-bottom:16px}
+.agenda-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ag-item{border-left:2.5px solid var(--gold);padding:10px 14px;background:var(--bg);border-radius:0 8px 8px 0}
+.ag-date{font-family:var(--ff-m);font-size:9px;color:var(--gold);margin-bottom:3px;letter-spacing:.05em}
+.ag-ev{font-size:13px;font-weight:500;color:var(--ink);line-height:1.3;margin-bottom:3px}
+.ag-org{font-size:11px;color:var(--smoke)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .secteur-grid{grid-template-columns:repeat(2,1fr)}
+  .parcours-layout,.forum-layout{grid-template-columns:1fr}
+  .pc-sidebar,.forum-sidebar{display:none}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-stats{display:none}
+  .macro-strip{grid-template-columns:repeat(3,1fr)}
+  .nl-hero{grid-template-columns:1fr}
+  .editions-grid{grid-template-columns:1fr}
+  .agenda-grid{grid-template-columns:1fr}
+  .page{padding:20px 16px 80px}
+}
+@media(max-width:600px){
+  .tabs-bar{flex-wrap:wrap}
+  .macro-strip{grid-template-columns:repeat(2,1fr)}
+  .secteur-grid{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:28px 24px}
+  .hero-title{font-size:26px}
+}
+</style>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="premium"></script>
+<script src='lib/upgrade-modal.js'></script>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <a href="landing.html" class="back">← Retour</a>
+    <div class="logo">Smart-<em>Invest</em>.ia</div>
+    <div class="vtag">V2 · 2025</div>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- TABS COLORÉS -->
+  <div class="tabs-bar">
+    <button class="tab-btn active" data-tab="parcours" onclick="switchTab('parcours',this)">🗺️ Parcours Guidés</button>
+    <button class="tab-btn" data-tab="forum" onclick="switchTab('forum',this)">💬 Forum Communauté</button>
+    <button class="tab-btn" data-tab="newsletter" onclick="switchTab('newsletter',this)">📧 Newsletter IA</button>
+  </div>
+
+  <!-- ═══════════ PARCOURS ═══════════ -->
+  <div id="tab-parcours">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-eyebrow">Votre guide d'investissement au Maroc</div>
+      <div class="hero-grid">
+        <div>
+          <div class="hero-title">De l'intention à<br><em>l'opérationnel</em></div>
+          <div class="hero-sub">Parcours structuré étape par étape — fiscalité, zones, aides, création juridique. Données 2025 vérifiées. Adapté à votre profil investisseur.</div>
+        </div>
+        <div class="hero-stats">
+          <div><div class="h-stat-val">+12%</div><div class="h-stat-lbl">IDE ENTRANTS 2024</div></div>
+          <div><div class="h-stat-val">118 Md</div><div class="h-stat-lbl">TRANSFERTS MRE MAD</div></div>
+          <div><div class="h-stat-val">8</div><div class="h-stat-lbl">PARCOURS SECTORIELS</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFIL -->
+    <div class="profil-bar">
+      <div class="profil-label">MON PROFIL</div>
+      <div class="profil-chips">
+        <button class="pchip active" data-p="all" onclick="selectProfil(this)">🌐 Tous profils</button>
+        <button class="pchip" data-p="mre" onclick="selectProfil(this)">🌍 MRE — Diaspora</button>
+        <button class="pchip" data-p="ide" onclick="selectProfil(this)">✈️ IDE Étranger</button>
+        <button class="pchip" data-p="pme" onclick="selectProfil(this)">🏢 PME Marocaine</button>
+      </div>
+    </div>
+
+    <!-- MACRO -->
+    <div class="macro-strip">
+      <div class="mc"><div class="mc-val">3,5%</div><div class="mc-lbl">Croissance PIB 2024</div><div class="mc-src">HCP 2024</div><span class="mc-trend up">↑</span></div>
+      <div class="mc"><div class="mc-val">IS 20%</div><div class="mc-lbl">Taux droit commun LF2023</div><div class="mc-src">Réforme en cours</div><span class="mc-trend nt">→</span></div>
+      <div class="mc"><div class="mc-val">IS 0%</div><div class="mc-lbl">ZAI — 5 premières années</div><div class="mc-src">Puis 15% (ans 6–10)</div><span class="mc-trend up">↑</span></div>
+      <div class="mc"><div class="mc-val">500M</div><div class="mc-lbl">Enveloppe MDM Invest MAD</div><div class="mc-src">CCG fév. 2025</div><span class="mc-trend up">↑</span></div>
+      <div class="mc"><div class="mc-val">4,97%</div><div class="mc-lbl">Taux directeur BAM</div><div class="mc-src">Déc. 2024</div><span class="mc-trend dn">↓</span></div>
+    </div>
+
+    <!-- SECTEURS -->
+    <div class="sect-hdr">
+      <h2>Choisissez votre secteur</h2>
+      <div class="sect-cnt">8 PARCOURS DISPONIBLES</div>
+    </div>
+    <div class="secteur-grid" id="sectGrid">
+      <div class="sc active" data-s="auto" onclick="loadParcours('auto',this)">
+        <span class="sc-icon">🚗</span>
+        <div class="sc-name">Automobile</div>
+        <div class="sc-sub">ZAI · OEM · FDII</div>
+        <div class="sc-badge">Export 115 Md MAD</div>
+        <div class="sc-kpi">700 000 véh./an · 250+ équip.</div>
+      </div>
+      <div class="sc" data-s="aero" onclick="loadParcours('aero',this)">
+        <span class="sc-icon">✈️</span>
+        <div class="sc-name">Aéronautique</div>
+        <div class="sc-sub">GIMAS · MRO · EASA</div>
+        <div class="sc-badge">Export 20 Md MAD</div>
+        <div class="sc-kpi">142 entreprises · 20 000 emplois</div>
+      </div>
+      <div class="sc" data-s="tic" onclick="loadParcours('tic',this)">
+        <span class="sc-icon">💻</span>
+        <div class="sc-name">Offshoring & TIC</div>
+        <div class="sc-sub">CFC · P2I · IS 15%</div>
+        <div class="sc-badge">Export 18 Md MAD</div>
+        <div class="sc-kpi">120 000 emplois · 1 000+ centres</div>
+      </div>
+      <div class="sc" data-s="agro" onclick="loadParcours('agro',this)">
+        <span class="sc-icon">🌾</span>
+        <div class="sc-name">Agroalimentaire</div>
+        <div class="sc-sub">Haliopôle · Agropôle · EU</div>
+        <div class="sc-badge">Export 45 Md MAD</div>
+        <div class="sc-kpi">1er tomates monde hors-saison</div>
+      </div>
+      <div class="sc" data-s="tourisme" onclick="loadParcours('tourisme',this)">
+        <span class="sc-icon">🏨</span>
+        <div class="sc-name">Tourisme & Hôtellerie</div>
+        <div class="sc-sub">Licence · SMIT · Fonds</div>
+        <div class="sc-badge">105 Md MAD recettes</div>
+        <div class="sc-kpi">14,5M touristes 2024 (record)</div>
+      </div>
+      <div class="sc" data-s="energie" onclick="loadParcours('energie',this)">
+        <span class="sc-icon">⚡</span>
+        <div class="sc-name">Énergies Renouvelables</div>
+        <div class="sc-sub">MASEN · ANRE · H₂ vert</div>
+        <div class="sc-badge">42% mix électrique</div>
+        <div class="sc-kpi">Leader EnR Afrique · IS 0% Dakhla</div>
+      </div>
+      <div class="sc" data-s="pharma" onclick="loadParcours('pharma',this)">
+        <span class="sc-icon">💊</span>
+        <div class="sc-name">Pharmacie & Santé</div>
+        <div class="sc-sub">AMM · GMP · DPPM</div>
+        <div class="sc-badge">Marché 24 Md MAD</div>
+        <div class="sc-kpi">Hub africain santé · 50 labo.</div>
+      </div>
+      <div class="sc" data-s="mre" onclick="loadParcours('mre',this)">
+        <span class="sc-icon">🌍</span>
+        <div class="sc-name">Parcours MRE</div>
+        <div class="sc-sub">MDM · Changes · CCG</div>
+        <div class="sc-badge">Prime 10% non rembours.</div>
+        <div class="sc-kpi">5,5M MRE · 56 conventions CDI</div>
+      </div>
+    </div>
+
+    <div id="parcoursContent"></div>
+  </div>
+
+  <!-- ═══════════ FORUM ═══════════ -->
+  <div id="tab-forum" style="display:none">
+    <div style="font-family:var(--ff-t);font-size:26px;color:var(--ink);margin-bottom:6px">Forum Investisseurs</div>
+    <div style="font-size:13px;color:var(--smoke);margin-bottom:18px">Communauté vérifiée · Investisseurs, experts-comptables, juristes, MRE · Modéré par IA</div>
+    <div class="actu-flash">
+      <div class="actu-pulse"></div>
+      <div>
+        <div class="actu-lbl">🔴 ACTUALITÉ RÉGLEMENTAIRE — MAI 2025</div>
+        <div class="actu-txt"><strong style="color:var(--gold-l)">Charte Invest. Loi 03-22 :</strong> primes actives, projets ≥ 50M MAD : prime 10–30%. &nbsp;·&nbsp; <strong style="color:var(--gold-l)">IS LF2023 :</strong> passage 20% unique d'ici 2026, ZAI 0% maintenu 5 ans. &nbsp;·&nbsp; <strong style="color:var(--gold-l)">MDM Invest 2025 :</strong> 500M MAD, IA/Fintech éligibles.</div>
+      </div>
+    </div>
+    <button class="write-btn" onclick="alert('Disponible avec abonnement Pro')">✏ Poser une question à la communauté</button>
+    <div class="forum-layout">
+      <div class="forum-posts" id="forumPosts"></div>
+      <div class="forum-sidebar">
+        <div class="sb-w"><div class="sb-title">👥 Membres actifs</div><div id="forumMembers"></div></div>
+        <div class="sb-w"><div class="sb-title">🏷️ Sujets populaires</div><div style="display:flex;flex-wrap:wrap;gap:5px" id="forumTags"></div></div>
+        <div class="sb-w">
+          <div class="sb-title">📊 Stats communauté</div>
+          <div style="display:flex;flex-direction:column;gap:7px;font-size:12.5px;color:var(--smoke)">
+            <div>👤 <strong style="color:var(--ink)">1 243</strong> membres vérifiés</div>
+            <div>💬 <strong style="color:var(--ink)">3 891</strong> discussions</div>
+            <div>✅ <strong style="color:var(--ink)">2 714</strong> questions résolues</div>
+            <div>🌍 <strong style="color:var(--ink)">48 pays</strong> représentés</div>
+          </div>
+        </div>
+        <div class="sb-w">
+          <div class="sb-title">📎 Ressources officielles</div>
+          <div class="res-item">📄 Loi 03-22 — <a class="res-link" href="https://invest.gov.ma" target="_blank">invest.gov.ma</a></div>
+          <div class="res-item">🏛 CRI — <a class="res-link" href="https://cri.ma" target="_blank">cri.ma</a></div>
+          <div class="res-item">💶 CCG — <a class="res-link" href="https://ccg.ma" target="_blank">ccg.ma</a></div>
+          <div class="res-item">🗺 AMDIE — <a class="res-link" href="https://amdie.gov.ma" target="_blank">amdie.gov.ma</a></div>
+          <div class="res-item">💱 Office des Changes — <a class="res-link" href="https://oc.gov.ma" target="_blank">oc.gov.ma</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ NEWSLETTER ═══════════ -->
+  <div id="tab-newsletter" style="display:none">
+    <div class="nl-hero">
+      <div>
+        <div class="nl-title">La newsletter<br><em style="font-style:italic;color:var(--gold-l)">investissement Maroc</em></div>
+        <div class="nl-sub">Chaque semaine : veille réglementaire IA, opportunités sectorielles, nouveaux programmes d'aides. Segmentée selon votre profil investisseur.</div>
+        <div class="nl-micro"><span>📬 7 400+ ABONNÉS</span><span>📊 41% OUVERTURES</span><span>🌍 56 PAYS</span></div>
+      </div>
+      <div class="nl-form">
+        <input type="email" class="nl-input" placeholder="votre@email.com">
+        <div class="nl-segs">
+          <button class="nl-seg active" onclick="toggleSeg(this)">IDE Étranger</button>
+          <button class="nl-seg" onclick="toggleSeg(this)">MRE</button>
+          <button class="nl-seg active" onclick="toggleSeg(this)">PME Marocaine</button>
+          <button class="nl-seg" onclick="toggleSeg(this)">Fiscal CGI</button>
+          <button class="nl-seg" onclick="toggleSeg(this)">Zones ZAI</button>
+          <button class="nl-seg" onclick="toggleSeg(this)">Aides CCG</button>
+          <button class="nl-seg" onclick="toggleSeg(this)">Charte Invest.</button>
+        </div>
+        <button class="nl-btn" onclick="subscribe()">S'abonner gratuitement →</button>
+        <div class="nl-fine">Désabonnement 1 clic · Aucun spam · RGPD compliant</div>
+      </div>
+    </div>
+    <div class="agenda-sec">
+      <div class="agenda-title">📅 Agenda investissement Maroc — 2025</div>
+      <div class="agenda-grid">
+        <div class="ag-item"><div class="ag-date">SEPT. 2025</div><div class="ag-ev">Forum AMDIE — Invest in Morocco</div><div class="ag-org">Casablanca · AMDIE / MAEC</div></div>
+        <div class="ag-item"><div class="ag-date">OCT. 2025</div><div class="ag-ev">Africa Investment Forum 2025</div><div class="ag-org">Marrakech · BAD / AMDIE</div></div>
+        <div class="ag-item"><div class="ag-date">NOV. 2025</div><div class="ag-ev">International Agribusiness Forum</div><div class="ag-org">Meknès · MAPMDREF</div></div>
+        <div class="ag-item"><div class="ag-date">NOV. 2025</div><div class="ag-ev">Conférence ZAI & Fiscalité 2025</div><div class="ag-org">Casablanca · CRI + APEBI</div></div>
+        <div class="ag-item"><div class="ag-date">DÉC. 2025</div><div class="ag-ev">CCG PME Financing Forum</div><div class="ag-org">Rabat · CCG / CGEM</div></div>
+        <div class="ag-item"><div class="ag-date">JANV. 2026</div><div class="ag-ev">Rencontres MRE-Invest</div><div class="ag-org">Paris / Casa · Fondation Hassan II</div></div>
+      </div>
+    </div>
+    <div style="font-family:var(--ff-t);font-size:18px;color:var(--ink);margin-bottom:14px">Éditions récentes</div>
+    <div class="editions-grid" id="editionsGrid"></div>
+  </div>
+
+</div>
+
+<script>
+const P={
+  auto:{nom:'Automobile & Équipementiers',icon:'🚗',color:'#C49A2A',colorPale:'#FDF6E3',
+    kpis:[{v:'700k',l:'Véhicules/an'},{v:'250+',l:'Équipementiers'},{v:'115 Md',l:'Export MAD'},{v:'IS 0%',l:'ZAI 5 ans'}],
+    aides:[{n:'FDII',v:'Prime si invest. > 50M MAD',c:'#C49A2A'},{n:'Charte 2022',v:'Prime 10–30% invest. mat.',c:'#1A5C38'},{n:'CCG',v:'Garantie 50–70% du crédit',c:'#1B4F8C'}],
+    chk:['Étude marché + positionnement OEM','Simulation IS : ZAI vs droit commun','Sélection zone (AFZ/TFZ/MidParc)','Dossier prime Charte 2022','Constitution dossier juridique CRI'],
+    ctx:'1er constructeur automobile d\'Afrique — Renault (Tanger), Stellantis (Kénitra). Objectif 1M véh./an en 2030. Export 2024 : 115 Md MAD.',
+    etapes:[
+      {ph:'Stratégie',n:'Analyse marché et positionnement OEM/Tier',d:'1–2 sem.',mods:['Rapport Automobile'],done:true,
+        desc:'Cartographie Tier 1/2 autour de Renault (Tanger), Stellantis (Kénitra). Besoins sourcing local (câblage, sièges, plastiques). Objectif 2030 : 60% intégration locale.',
+        info:'Export 2024 : 25% des exportations industrielles. Programme AMICA "Automotive Morocco 2030".',src:'Source : AMICA, AMDIE 2024',bg:'#FDF6E3',bc:'rgba(196,154,42,.2)',tc:'#8C5A10'},
+      {ph:'Fiscal',n:'Régime fiscal optimal : IS droit commun vs ZAI',d:'1 sem.',mods:['Simulateur IS','Zones ZAI'],done:false,curr:true,
+        desc:'IS droit commun : 20% (LF 2023, taux unique 2026). ZAI : IS 0% sur 5 ans, puis 15%. Simulation économie fiscale sur 10 ans.',
+        info:'ZAI actives : TFZ Tanger, Atlantic Free Zone Kénitra, MidParc Bouskoura, Oujda, Agadir. Franchise TVA sur intrants.',src:'Source : CGI 2024, Loi 03-22 Art. 17–24',bg:'#EAF1FB',bc:'rgba(27,79,140,.15)',tc:'#1B4F8C'},
+      {ph:'Juridique',n:'Forme juridique et structure capitalistique',d:'3–5 j.',mods:['Forme Juridique'],done:false,
+        desc:'SARL : capital minimum 1 MAD. SA : obligatoire pour appel public. Pour IDE : filiale à 100% capital étranger autorisé.',
+        info:'Création CRI en ligne : 24h (SARL UM). Coût moyen : 1 500–3 000 MAD.',src:'Source : CRI.ma, OMPIC 2024',bg:'#E8F5EE',bc:'rgba(26,92,56,.15)',tc:'#1A5C38'},
+      {ph:'Zone',n:'Choix de la zone d\'implantation',d:'2 sem.',mods:['Carte Zones'],done:false,
+        desc:'AFZ Kénitra : 4 000 ha, accès PSA. TFZ Tanger : 1er port Afrique, Renault 400k véh/an. MidParc Bouskoura : aéro + auto.',
+        info:'Loyer terrain viabilisé ZAI : 35–55 MAD/m²/mois. Eau, énergie, sécurité inclus.',src:'Source : MEDZ/CDG 2024',bg:'#F0EAFB',bc:'rgba(74,32,128,.15)',tc:'#4A2080'},
+      {ph:'Aides',n:'Dossier aides et financements Charte 2022',d:'3–6 sem.',mods:['Aides & Primes','Charte 2022'],done:false,
+        desc:'Loi 03-22 : prime commune + prime territoriale + prime sectorielle. Fonds Hassan II. CCG : garanties 50–70%.',
+        info:'Prime commune = 10% invest. mat. (plafond 30M MAD). Prime territoriale : +5% zones B2/B3. Délai instruction : 30–60 jours.',src:'Source : Décret 2.23.335, BO n° 7221',bg:'#FDF0DC',bc:'rgba(140,90,16,.15)',tc:'#8C5A10'},
+      {ph:'Création',n:'Constitution de l\'entité juridique',d:'2–4 sem.',mods:['Dashboard'],done:false,
+        desc:'Flux : OMPIC → CRI guichet unique (statuts + IF + CNSS + RC + BO). Création en ligne registre.ma en 24h depuis 2022.',
+        info:'Docs : statuts certifiés, pièce identité gérant, attestation siège, certificat négatif OMPIC (60 MAD en ligne).',src:'Source : CRI.ma, OMPIC 2024',bg:'#E4F5F4',bc:'rgba(14,92,90,.15)',tc:'#0E5C5A'},
+      {ph:'Certifications',n:'Certifications secteur automobile',d:'3–6 mois',mods:['Assistant IA'],done:false,
+        desc:'IATF 16949:2016 (Renault/PSA Tier 1), ISO 14001:2015, ISO 45001. AMDEC obligatoire. Audit COFRAC.',
+        info:'Coût IATF : 40 000–80 000 MAD. Durée : 6–18 mois. Bureau Veritas, SGS, TÜV SÜD (Casablanca).',src:'Source : AMICA, IATF.ma 2024',bg:'#FAEEE8',bc:'rgba(140,48,32,.15)',tc:'#8C3020'},
+      {ph:'Opérationnel',n:'Démarrage production et RH',d:'Continu',mods:['Coûts & RH'],done:false,
+        desc:'SMIG 2024 : 3 111,39 MAD/mois. CNSS : 20,48% patronal + 6,29% salarié. OFPPT automobile : cofinancement État 70%.',
+        info:'RH 2024 : opérateur qualifié auto 4 500–6 000 MAD, technicien process 7 000–10 000 MAD, ingénieur qualité 12 000–18 000 MAD.',src:'Source : ANAPEC, OFPPT, décret SMIG 2023',bg:'#F0F5E4',bc:'rgba(74,90,16,.15)',tc:'#4A5A10'},
+    ]},
+  mre:{nom:'Parcours MRE — Diaspora Investisseur',icon:'🌍',color:'#4A5A10',colorPale:'#F0F5E4',
+    kpis:[{v:'118 Md',l:'Transferts MAD 2024'},{v:'500M',l:'Enveloppe MDM MAD'},{v:'10%',l:'Prime non rembours.'},{v:'56 CDI',l:'Conventions fiscales'}],
+    aides:[{n:'MDM Invest',v:'10% coût projet, plafond 5M MAD',c:'#4A5A10'},{n:'CCG',v:'Garantie 65% du crédit',c:'#1A5C38'},{n:'CRI MRE',v:'Cellule dédiée, 48h prioritaire',c:'#1B4F8C'}],
+    chk:['Vérifier éligibilité MDM 2025','Ouvrir compte CDC devises','Apport 25% en devises (SWIFT)','Dossier CCG + banque partenaire','Création à distance via procuration'],
+    ctx:'5,5M MRE dans 95 pays. Transferts record 2024 : 118 Md MAD. MDM Invest 2025 : enveloppe 500M MAD, IA/Fintech/Data désormais éligibles.',
+    etapes:[
+      {ph:'Éligibilité',n:'Vérification éligibilité MDM Invest 2025',d:'1 sem.',mods:['MDM Invest 2025','CCG'],done:true,
+        desc:'Conditions : titre de séjour étranger, secteur éligible (industrie, éducation, hôtellerie, santé, TIC, IA, Fintech — mis à jour 2025), montant minimum 1M MAD.',
+        info:'MDM 2025 : enveloppe 500M MAD, prime non remboursable 10% (plafond 5M MAD). Nouveaux secteurs : IA/Data, Fintech, data centers.',src:'Source : CCG.ma, AMDIE fév. 2025',bg:'#F0F5E4',bc:'rgba(74,90,16,.15)',tc:'#4A5A10'},
+      {ph:'Changes',n:'Régime des changes applicable aux MRE',d:'3–5 j.',mods:['Assistant IA'],done:false,curr:true,
+        desc:'Circulaire OC 1/2013 consolidée 2023 : compte en dirhams convertibles (CDC). Transferts entrants libres. Rapatriement dividendes : libre si investissement déclaré via IS-05.',
+        info:'CDC = convertible, rapatrié librement. CEDEX = épargne devises. Transferts WU : max 1M MAD/op. sans justificatif.',src:'Source : Office des Changes — IGOC 2023',bg:'#EAF1FB',bc:'rgba(27,79,140,.15)',tc:'#1B4F8C'},
+      {ph:'Fiscal',n:'Optimisation fiscale MRE investisseur',d:'1 sem.',mods:['Simulateur IS'],done:false,
+        desc:'IS droit commun 20% ou ZAI 0%→15%. 56 conventions de non double imposition (France, Espagne, Belgique, Canada, EAU...).',
+        info:'CDI France (avenant 2010) : dividendes 7,5% vs 15% standard. Belgique, UK, Canada, UAE, Arabie Saoudite couverts.',src:'Source : DGI.gov.ma — Liste CDI 2024',bg:'#FDF6E3',bc:'rgba(196,154,42,.18)',tc:'#8C5A10'},
+      {ph:'Juridique',n:'Forme juridique recommandée MRE',d:'3–5 j.',mods:['Forme Juridique'],done:false,
+        desc:'SARL ou SA : capital étranger 100% autorisé. SARLU si seul associé. Holding marocaine pour plusieurs projets.',
+        info:'Domiciliation fiscale possible à distance via procuration notariée. Compte MAD convertible obligatoire pour rapatriement.',src:'Source : OMPIC, CRI.ma 2024',bg:'#E8F5EE',bc:'rgba(26,92,56,.15)',tc:'#1A5C38'},
+      {ph:'Financement',n:'Constitution du dossier MDM Invest',d:'4–8 sem.',mods:['MDM Invest 2025','CCG Garanties'],done:false,
+        desc:'Apport minimum : 25% en devises transférées. CCG garantit 65% du crédit. Banques partenaires : CIH, Attijariwafa, BMCE, BCP.',
+        info:'Docs : plan d\'affaires 3 ans, étude marché, devis équipements, preuve apport devises (SWIFT), titre séjour, casier judiciaire apostillé.',src:'Source : CCG.ma — Guide MDM Invest 2025',bg:'#FDF0DC',bc:'rgba(140,90,16,.15)',tc:'#8C5A10'},
+      {ph:'Création',n:'Création entreprise au CRI (à distance)',d:'2–4 sem.',mods:['Dashboard'],done:false,
+        desc:'Possible à distance par procuration notariée légalisée. CRI traite sous 5 jours. Suivi via registre.ma. Compte CDC ouvert simultanément.',
+        info:'CRI MRE dédiés depuis 2022 : Casablanca, Tanger, Marrakech, Agadir. Délai prioritaire 48h. Assistance FR/AR/ES.',src:'Source : CRI.ma — Guide MRE 2024',bg:'#E4F5F4',bc:'rgba(14,92,90,.15)',tc:'#0E5C5A'},
+      {ph:'Rapatriement',n:'Planification rapatriement dividendes',d:'Récurrent',mods:['Assistant IA'],done:false,
+        desc:'Rapatriement libre si investissement déclaré via IS-05. OP-09 pour transfert > 1M MAD. Retenue à source : 15% (ou 7,5% CDI France).',
+        info:'Processus : PV AG → Calcul retenue → Formulaire OP-09 → Virement SWIFT 3–5 jours. Aucun plafond annuel si investissement déclaré.',src:'Source : Office des Changes 2023',bg:'#F0EAFB',bc:'rgba(74,32,128,.15)',tc:'#4A2080'},
+    ]},
+  aero:{nom:'Aéronautique & MRO',icon:'✈️',color:'#1B4F8C',colorPale:'#EAF1FB',
+    kpis:[{v:'142',l:'Entreprises GIMAS'},{v:'20 000',l:'Emplois'},{v:'+8%',l:'Export 2024'},{v:'EASA',l:'Certif. obligatoire'}],
+    aides:[{n:'INMAA AMDIE',v:'Formation 50%, plafond 2M MAD',c:'#1B4F8C'},{n:'Fonds Hassan II',v:'Co-financement grands projets',c:'#8C5A10'},{n:'ZAI MidParc',v:'IS 0% · Terrain viabilisé',c:'#1A5C38'}],
+    chk:['Adhésion GIMAS','Audit EASA Part 21/145','Choix MidParc vs TFZ','Certification AS9100 Rev D','Partenariat OEM Airbus/Safran'],
+    ctx:'2ème écosystème industriel. 142 entreprises, 20 000 emplois. Hub MRO Afrique. Sous-traitance Airbus, Safran, Bombardier. Export 2024 : 20 Md MAD.',
+    etapes:[
+      {ph:'Marché',n:'Cartographie écosystème aéronautique',d:'1–2 sem.',mods:['Rapport Sectoriel'],done:true,
+        desc:'GIMAS (140 membres). OEM : Airbus, Boeing, Safran, Bombardier, Thales. MRO : Royal Air Maroc Technics. Pôles MidParc et TFZ.',
+        info:'Export aéro +8% vs 2023. 35 000 emplois visés 2030 (Plan GIMAS). Programme INMAA formation 50%.',src:'Source : GIMAS.ma, AMDIE 2024',bg:'#EAF1FB',bc:'rgba(27,79,140,.15)',tc:'#1B4F8C'},
+      {ph:'Certifications',n:'Certifications EASA / NADCAP obligatoires',d:'6–18 mois',mods:['Assistant IA'],done:false,curr:true,
+        desc:'EASA Part 21 (production), Part 145 (maintenance), AS9100 Rev D (qualité), NADCAP (procédés spéciaux). Obligatoires pour accès OEM.',
+        info:'AS9100 : 50–100k MAD. EASA Part 145 : 150–300k MAD. NADCAP : 100–200k MAD. Délai : 12–24 mois.',src:'Source : GIMAS, Bureau Veritas Casablanca',bg:'#FAEEE8',bc:'rgba(140,48,32,.15)',tc:'#8C3020'},
+      {ph:'Zone',n:'MidParc vs TFZ — Choix zone aéro',d:'1 sem.',mods:['Carte Zones'],done:false,
+        desc:'MidParc Bouskoura : 345 ha, 2 km aéroport CMN, halles prêtes. TFZ Tanger : 6 000 ha, accès port TM. Deux zones ZAI IS 0%.',
+        info:'MidParc loyer : 35–55 MAD/m²/mois. TFZ : 600+ entreprises, accès Renault.',src:'Source : MEDZ/CDG 2024',bg:'#E4F5F4',bc:'rgba(14,92,90,.15)',tc:'#0E5C5A'},
+      {ph:'RH',n:'Recrutement et formation ingénieurs aéro',d:'Continu',mods:['Coûts & RH'],done:false,
+        desc:'ISMALA Casablanca, OFPPT techniciens MRO. Turnover faible. Salaires : technicien composite 8–12k MAD, ingénieur process 15–25k MAD.',
+        info:'INMAA AMDIE : aide formation 50%, plafond 2M MAD. Visa compétences étrangers : 30 jours via CRI.',src:'Source : GIMAS, OFPPT 2024',bg:'#E8F5EE',bc:'rgba(26,92,56,.15)',tc:'#1A5C38'},
+    ]},
+  tic:{nom:'Offshoring & TIC / CFC',icon:'💻',color:'#4A2080',colorPale:'#F0EAFB',
+    kpis:[{v:'120k',l:'Emplois TIC'},{v:'IS 15%',l:'Statut CFC'},{v:'IS 0%',l:'Casanearshore ZAI'},{v:'18 Md',l:'Export MAD'}],
+    aides:[{n:'CFC Status',v:'IS 15%, exo. dividendes',c:'#4A2080'},{n:'P2I Casanearshore',v:'Loyer subventionné ZAI',c:'#1B4F8C'},{n:'INMAA IT',v:'Formation talents 50%',c:'#1A5C38'}],
+    chk:['CFC ou droit commun ?','Choix plateforme (Casanearshore...)','Visa talents étrangers','Plan recrutement IT','ISO 27001 si Fintech'],
+    ctx:'1ère destination offshoring francophone africaine. 1 000+ centres, 120 000 emplois. CFC pour sièges régionaux Afrique. Export TIC 2024 : 18 Md MAD.',
+    etapes:[
+      {ph:'Statut',n:'Statut CFC vs Droit commun — Analyse',d:'1 sem.',mods:['Forme Juridique'],done:true,
+        desc:'CFC Status : IS 15%, exonération dividendes, rapatriement libre, guichet unique CFCA. Idéal pour sièges régionaux Afrique, fonds, services financiers.',
+        info:'CFC : secteurs finance, conseil, services IT, medtech, ed-tech. 5 emplois min., bureau physique, CA > 2M MAD. Délai : 30–60 jours.',src:'Source : CasablancaFinanceCity.com 2024',bg:'#F0EAFB',bc:'rgba(74,32,128,.15)',tc:'#4A2080'},
+      {ph:'Zone',n:'P2I Technopôles & Plateformes TIC',d:'1 sem.',mods:['Carte Zones'],done:false,curr:true,
+        desc:'Technopôle Rabat-Sala (BPO, IT), Fès, Agadir, Tétouan Shore. Casanearshore : 53 000 m², 230 entreprises, IS 0% ZAI 5 ans.',
+        info:'Casanearshore : loyer 45–70 MAD/m²/mois subventionné. Fibre 10 Gb/s. 45 000 employés TIC sur site.',src:'Source : MEDZ, APEBI 2024',bg:'#EAF1FB',bc:'rgba(27,79,140,.15)',tc:'#1B4F8C'},
+      {ph:'RH IT',n:'Recrutement talents IT & visas experts',d:'Continu',mods:['Coûts'],done:false,
+        desc:'Vivier : EMI, ENSIAS, INPT, UIR, EMSI. Dev senior : 12–18k MAD. DevOps/Cloud : 18–25k MAD.',
+        info:'"Compétences Étrangères" CRI : 15–30 jours. Quota annuel non plafonné depuis 2022.',src:'Source : APEBI, DGI circ. 2023',bg:'#E8F5EE',bc:'rgba(26,92,56,.15)',tc:'#1A5C38'},
+    ]},
+  agro:{nom:'Agroalimentaire & Halieutique',icon:'🌾',color:'#1A5C38',colorPale:'#E8F5EE',
+    kpis:[{v:'45 Md',l:'Export MAD 2024'},{v:'19%',l:'Part du PIB'},{v:'780k t',l:'Tomates export'},{v:'IS 0%',l:'Agropôle ZAI'}],
+    aides:[{n:'Génération Green',v:'Fonds agri structurants',c:'#1A5C38'},{n:'CCG Agri',v:'Garantie 70% crédit',c:'#8C5A10'},{n:'EACCE',v:'Appui export UE',c:'#1B4F8C'}],
+    chk:['Choix filière + marché UE','Agropôle ou Haliopôle ?','GlobalGAP / IFS Food','Quotas accord MA-UE','Label halal IMANOR'],
+    ctx:'19% du PIB, 36% des emplois. 1er exportateur mondial de tomates fraîches hors saison. Export 2024 : 45 Md MAD. Plan Génération Green 2020-2030.',
+    etapes:[
+      {ph:'Filière',n:'Choix filière et analyse marché export',d:'2 sem.',mods:['Rapport Sectoriel'],done:true,
+        desc:'Tomates (1er mondial hors saison), agrumes, huile d\'olive, produits transformés halal, halieutiques. UE = 65% débouchés.',
+        info:'Export : tomates 780k t, agrumes 890k t, sardines 600k t. Huile d\'argan labellisée UNESCO.',src:'Source : MAPMDREF, OMPIC, OEC 2024',bg:'#E8F5EE',bc:'rgba(26,92,56,.15)',tc:'#1A5C38'},
+      {ph:'Zone',n:'Haliopôle Agadir & Agropôles territoriaux',d:'1 sem.',mods:['Carte Zones'],done:false,curr:true,
+        desc:'Haliopôle Agadir : 1er pôle halieutique Afrique, 120 entreprises, froid -20°C. Agropôles : Meknès, Berkane, Agadir, Tadla.',
+        info:'Haliopôle : ZAI IS 0% 5 ans. 4 000 emplois, 18 Md MAD export poisson/an.',src:'Source : ANP, MAPM 2024',bg:'#FDF0DC',bc:'rgba(140,90,16,.15)',tc:'#8C5A10'},
+      {ph:'Certifications',n:'Certifications export UE & halal',d:'2–6 mois',mods:['Assistant IA'],done:false,
+        desc:'FSSC 22000 / IFS Food pour GMS européens. GlobalGAP pour produits frais. IMANOR pour halal. BRC post-Brexit. HACCP obligatoire.',
+        info:'Accord MA-UE : quotas produits agricoles. GlobalGAP : 8–15k MAD/site. IFS Food : 20–30k MAD.',src:'Source : EACCE, IMANOR, UE TRACES 2024',bg:'#EAF1FB',bc:'rgba(27,79,140,.15)',tc:'#1B4F8C'},
+    ]},
+  tourisme:{nom:'Tourisme & Hôtellerie',icon:'🏨',color:'#8C3020',colorPale:'#FAEEE8',
+    kpis:[{v:'14,5M',l:'Touristes 2024'},{v:'105 Md',l:'Recettes MAD'},{v:'65 Md',l:'Invest. Vision 2030'},{v:'+1 an',l:'Visa digital nomad'}],
+    aides:[{n:'Fonds Hassan II',v:'Co-financement hôtels > 100 lits',c:'#8C5A10'},{n:'Charte 2022',v:'Prime territoriale B2/B3',c:'#1A5C38'},{n:'SMIT',v:'Porteur de projets public',c:'#1B4F8C'}],
+    chk:['Licence hôtelière + classement','Dossier SMIT Vision 2030','ECOLABEL tourisme durable','Intégration OTA (Booking/Airbnb)','CMI + Payzone paiements'],
+    ctx:'Record absolu 2024 : 14,5M touristes, recettes 105 Md MAD. Vision 2030 : 26M touristes, 65 Md MAD investissements.',
+    etapes:[
+      {ph:'Licence',n:'Licence hôtelière et classement officiel',d:'2–4 sem.',mods:['Forme Juridique'],done:true,
+        desc:'Licence obligatoire Ministère Tourisme. Classement 1→5 étoiles par commission inter-ministérielle. Déclaration préalable pour riad/dar (< 10 chambres).',
+        info:'Procédure : ONMT + inspection + arrêté. Délai : 2–4 mois. Coût : 5 000–15 000 MAD. Renouvellement 5 ans.',src:'Source : Ministère Tourisme, BO 2023',bg:'#FAEEE8',bc:'rgba(140,48,32,.15)',tc:'#8C3020'},
+      {ph:'Aides',n:'Fonds de développement touristique 2025',d:'3–6 sem.',mods:['Fonds Hassan II','SMIT'],done:false,curr:true,
+        desc:'Fonds Hassan II (hôtels > 100 lits). Charte 2022 prime B2/B3. Vision 2030 : zones prioritaires Guelmim, Drâa-Tafilalet.',
+        info:'SMIT porteur projets publics. Visa digital nomad (1 an renouvelable) depuis 2023. Tourisme médical en forte croissance.',src:'Source : SMIT.ma, Min. Tourisme 2024',bg:'#FDF0DC',bc:'rgba(140,90,16,.15)',tc:'#8C5A10'},
+      {ph:'Digital',n:'Distribution digitale & OTA',d:'Continu',mods:['Assistant IA'],done:false,
+        desc:'Booking.com, Airbnb, Expedia : commissions 15–25%. Channel manager obligatoire à partir de 30 chambres. CMI + Payzone pour paiements internationaux.',
+        info:'Tendances 2025 : ECOLABEL tourisme durable. Tourisme médical (cliniques Casa/Rabat) en forte croissance.',src:'Source : ONMT, Booking.com Insights 2024',bg:'#E4F5F4',bc:'rgba(14,92,90,.15)',tc:'#0E5C5A'},
+    ]},
+  energie:{nom:'Énergies Renouvelables',icon:'⚡',color:'#8C5A10',colorPale:'#FDF0DC',
+    kpis:[{v:'42%',l:'Mix électrique EnR'},{v:'IS 0%',l:'Dakhla pérenne'},{v:'52%',l:'Objectif 2030'},{v:'H₂ Vert',l:'Accord UE 2025'}],
+    aides:[{n:'BEI',v:'Lignes EnR taux bonifié',c:'#1B4F8C'},{n:'AFD Climat',v:'Financement projets verts',c:'#1A5C38'},{n:'GCF',v:'Fonds Vert Climat subventions',c:'#0E5C5A'}],
+    chk:['Cadre légal Loi 13-09 + ANRE','Choix zone solaire ou éolienne','PPA avec ONEE ou industriel','Dossier BEI/AFD financement','Accréditation Gold Standard carbon'],
+    ctx:'Leader EnR Afrique. 42% mix électrique renouvelable en 2024. Accord H₂ vert Maroc-UE signé mars 2025. IS 0% pérenne à Dakhla.',
+    etapes:[
+      {ph:'Réglementaire',n:'Cadre légal : Loi 13-09 et ANRE',d:'1–2 sem.',mods:['Rapport Sectoriel'],done:true,
+        desc:'Loi 13-09 (accès réseau tiers). ANRE opérationnelle 2024. Guichet unique EnR < 20 MW. Appels d\'offres MASEN grandes capacités.',
+        info:'ANRE : délai instruction 90 jours. Raccordement réseau ONEE : convention ANRE. Tarif rachat : appel d\'offres.',src:'Source : ANRE.ma, MASEN.ma 2024',bg:'#FDF0DC',bc:'rgba(140,90,16,.15)',tc:'#8C5A10'},
+      {ph:'Zone',n:'Zones solaires & éoliennes prioritaires',d:'1 sem.',mods:['Carte Zones'],done:false,curr:true,
+        desc:'Solaire : Guelmim, Ouarzazate (Noor), Midelt (Noor Midelt). Éolien : Tarfaya 300 MW, Tanger, Taza. Dakhla : vent 330 j/an, IS 0% pérenne.',
+        info:'Dakhla / Provinces Sud : IS 0% permanent, IRE 0%, terrain symbolique. Accords H₂ vert : UE, Allemagne, Pays-Bas 2023-2024.',src:'Source : MASEN, IRESEN 2024',bg:'#E4F5F4',bc:'rgba(14,92,90,.15)',tc:'#0E5C5A'},
+      {ph:'Financement',n:'Financement projets EnR (dette + fonds)',d:'2–4 mois',mods:['BEI / AFD / BAD','Fonds Vert GCF'],done:false,
+        desc:'BEI : lignes de crédit taux bonifié. AFD : financement climat. BAD : projets > 10 MW. CDG Invest : co-investisseur.',
+        info:'GCF : subventions Fonds Vert Climat. Carbon credits Gold Standard. PPA avec ONEE ou clients industriels. Garanties MIGA.',src:'Source : BEI, AFD Maroc, IRESEN 2024',bg:'#EAF1FB',bc:'rgba(27,79,140,.15)',tc:'#1B4F8C'},
+    ]},
+  pharma:{nom:'Pharmacie & Dispositifs Médicaux',icon:'💊',color:'#0E5C5A',colorPale:'#E4F5F4',
+    kpis:[{v:'24 Md',l:'Marché MAD 2024'},{v:'+7%',l:'Croissance annuelle'},{v:'50 labo.',l:'Locaux certifiés'},{v:'AMM',l:'Obligatoire DPPM'}],
+    aides:[{n:'CDG Invest',v:'Co-invest. projets > 50M MAD',c:'#0E5C5A'},{n:'BID',v:'Lignes santé islamiques',c:'#8C5A10'},{n:'Charte 2022',v:'Prime sectorielle santé +5%',c:'#1A5C38'}],
+    chk:['Dossier CTD pour AMM','Audit GMP IAMPA','EU-GMP si export Europe','Plan souveraineté API','Convention prix Ministère Santé'],
+    ctx:'Marché 2024 : 24 Md MAD (+7%). Hub africain santé ambitionné. Stratégie souveraineté pharmaceutique 2021-2025 (API, vaccins, dispositifs).',
+    etapes:[
+      {ph:'AMM',n:'Autorisation de Mise sur le Marché — DPPM',d:'6–24 mois',mods:['Rapport Sectoriel'],done:true,
+        desc:'DPPM : dossier CTD, bioéquivalence si générique, inspection GMP. Procédure accélérée pour médicaments orphelins et génériques essentiels.',
+        info:'Dépôt en ligne DPPM depuis 2023. Redevance AMM : 15 000–50 000 MAD. Délai accéléré : 6–12 mois.',src:'Source : DPPM.sante.gov.ma 2024',bg:'#E4F5F4',bc:'rgba(14,92,90,.15)',tc:'#0E5C5A'},
+      {ph:'GMP',n:'Certification BPF / GMP IAMPA',d:'6–12 mois',mods:['Assistant IA'],done:false,curr:true,
+        desc:'IAMPA : audit GMP obligatoire. OMS-GMP requis pour export. EU-GMP pour marché européen (certificat EMA). Inspection annuelle.',
+        info:'Mise en conformité usine : 5–20M MAD. Inspection IAMPA : 50 000–100 000 MAD. EMA inspection EU-GMP : 150 000–300 000 MAD.',src:'Source : IAMPA, DPPM 2024',bg:'#EAF1FB',bc:'rgba(27,79,140,.15)',tc:'#1B4F8C'},
+      {ph:'Aides',n:'Programme souveraineté pharmaceutique',d:'2–4 sem.',mods:['CDG Invest','BID Santé'],done:false,
+        desc:'Plan souveraineté 2021-2025 : subventions API, vaccins, dispositifs. Fonds Hassan II co-investisseur. Charte 2022 prime sectorielle santé +5%.',
+        info:'BID : lignes santé. CDG Invest : co-invest. > 50M MAD. Prix plafonnés : convention Ministère Santé.',src:'Source : Ministère Santé, CDG Invest 2024',bg:'#E8F5EE',bc:'rgba(26,92,56,.15)',tc:'#1A5C38'},
+    ]}
+};
+
+/* ── TABS ── */
+function switchTab(tab,btn){
+  ['parcours','forum','newsletter'].forEach(t=>document.getElementById('tab-'+t).style.display=t===tab?'block':'none');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab==='forum')renderForum();
+  if(tab==='newsletter')renderNewsletter();
+}
+function selectProfil(btn){document.querySelectorAll('.pchip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');}
+
+/* ── LOAD PARCOURS ── */
+function loadParcours(id,el){
+  curSectId=id;
+  document.querySelectorAll('.sc').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const p=P[id]||P.auto;
+  const done=p.etapes.filter(e=>e.done).length;
+  const pct=Math.round(done/p.etapes.length*100);
+  const kH=p.kpis.map(k=>`<div class="sw-kpi"><div class="sw-kpi-val">${k.v}</div><div class="sw-kpi-lbl">${k.l}</div></div>`).join('');
+  const aH=p.aides.map(a=>`<div class="aid-item"><div class="aid-dot" style="background:${a.c}"></div><div><div class="aid-name">${a.n}</div><div class="aid-val">${a.v}</div></div></div>`).join('');
+  const cH=p.chk.map((c,i)=>`<div class="chk-item"><div class="chk-box" onclick="this.classList.toggle('checked')">✓</div><span>${c}</span></div>`).join('');
+  const sH=p.etapes.map((e,i)=>`
+    <div class="pstep ${e.curr?'open':''}" onclick="this.classList.toggle('open')">
+      <div class="pstep-dot ${e.done?'done':e.curr?'curr':''}" style="${e.curr?'border-color:'+p.color:''}">${e.done?'✓':e.curr?'▶':i+1}</div>
+      <div class="pstep-card ${e.done?'done':''}" style="${e.curr?'border:2px solid '+p.color+';background:'+p.colorPale:''}">
+        <div class="pstep-head">
+          <div><div class="pstep-phase" style="color:${p.color}">${e.ph}</div><div class="pstep-name" style="${e.done?'opacity:.55':''}">${e.n}</div></div>
+          <div class="pstep-dur">${e.d}</div>
+        </div>
+        <div class="pstep-mods">${e.mods.map(m=>`<a class="mod-tag" href="#">${m}</a>`).join('')}</div>
+        <div class="pstep-body">
+          <div class="pstep-desc">${e.desc}</div>
+          ${e.info?`<div class="pstep-infobox" style="background:${e.bg};border:1px solid ${e.bc}"><div style="font-size:12px;color:${e.tc};line-height:1.68">${e.info}</div><div class="pstep-src" style="color:${e.tc}">${e.src}</div></div>`:''}
+          <div class="pstep-actions"><button class="pstep-btn" onclick="event.stopPropagation();openDocs(curSectId,${i})">📄 Documents requis</button><button class="pstep-btn" onclick="event.stopPropagation();openCouts(curSectId,${i})">🧮 Coûts estimés</button></div>
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('parcoursContent').innerHTML=`
+    <div class="pc-hdr" style="background:${p.color}">
+      <div>
+        <div class="pc-eyebrow">PARCOURS GUIDÉ · SMART-INVEST.IA</div>
+        <div class="pc-title">${p.icon} ${p.nom}</div>
+        <div class="pc-ctx">${p.ctx}</div>
+        <div class="pc-meta">
+          <div class="pc-meta-item">📋 ${p.etapes.length} étapes</div>
+          <div class="pc-meta-item">⏱ ~${p.etapes.length*2}–${p.etapes.length*4} semaines</div>
+          <div class="pc-meta-item">✅ ${done} étape${done>1?'s':''} réalisée${done>1?'s':''}</div>
+        </div>
+      </div>
+      <div class="pc-pct-blk">
+        <div class="pc-pct">${pct}%</div>
+        <div class="pc-pct-lbl">AVANCEMENT</div>
+        <div class="pc-bar"><div class="pc-bar-fill" style="width:${pct}%"></div></div>
+      </div>
+    </div>
+    <div class="parcours-layout">
+      <div class="tl-wrap">${sH}</div>
+      <div class="pc-sidebar">
+        <div class="sw"><div class="sw-title">📊 Indicateurs secteur</div><div class="sw-kpi-grid">${kH}</div></div>
+        <div class="sw"><div class="sw-title">💰 Aides disponibles</div>${aH}</div>
+        <div class="sw"><div class="sw-title">☑ Checklist rapide</div>${cH}</div>
+      </div>
+    </div>`;
+}
+
+/* ── FORUM ── */
+const POSTS=[
+  {author:'Khalid B.',flag:'🇫🇷',badge:'MRE Vérifié',time:'Il y a 1h',title:'MDM Invest 2025 : nouveaux secteurs éligibles — retours ?',excerpt:'Dossier soumis via CIH Bank il y a 4 semaines (secteur Fintech). Quelqu\'un a fait la demande depuis la mise à jour fév. 2025 ? Délai de validation CCG ?',replies:18,likes:34,views:241,tags:['MDM Invest','MRE','CCG','Fintech'],pin:true,solved:false},
+  {author:'Yasmine H.',flag:'🇲🇦',badge:'Expert-comptable',time:'Il y a 3h',title:'[GUIDE] Charte 2022 — 5 erreurs à éviter dans le dossier prime',excerpt:'Après 12 dossiers déposés depuis les décrets (fin 2023), voici les 5 points bloquants que l\'on retrouve systématiquement : pièces manquantes, CAPEX mal calculé, délais...',replies:42,likes:97,views:843,tags:['Charte Invest','Prime','FDII','LF2023'],pin:true,solved:true},
+  {author:'Marco V.',flag:'🇮🇹',badge:'IDE Certifié',time:'Il y a 6h',title:'ZAI Kénitra vs ZAI Tanger — Câblage automobile 2025',excerpt:'Nous hésitons entre Atlantic Free Zone (accès Stellantis) et TFZ Tanger (Renault). Terrain, coûts RH, accès port — retours récents bienvenus.',replies:27,likes:51,views:398,tags:['ZAI','Automobile','Tanger','Kénitra'],pin:false,solved:false},
+  {author:'Amina R.',flag:'🇲🇦',badge:'Juriste d\'affaires',time:'Il y a 1j',title:'IS unique 20% LF2023 — Impact ZAI sortant d\'exonération',excerpt:'La réforme IS pose une vraie question pour les ZAI dont l\'exonération 5 ans se termine. IS 15% maintenu ou passage à 20% ? La loi n\'est pas claire...',replies:31,likes:68,views:512,tags:['IS','ZAI','LF2023','Fiscal'],pin:false,solved:true},
+  {author:'Saad M.',flag:'🇲🇦',badge:'PME Validée',time:'Il y a 2j',title:'Certification GlobalGAP tomates — Quel organisme au Maroc ?',excerpt:'Région Souss-Massa, voulons accéder aux GMS européens. Quel organisme GlobalGAP le plus rapide et abordable en 2025 ?',replies:14,likes:29,views:187,tags:['Agro','Export','GlobalGAP','Souss'],pin:false,solved:false},
+  {author:'Chen L.',flag:'🇨🇳',badge:'IDE Asie',time:'Il y a 3j',title:'Implantation électronique au Maroc — Procédure AMDIE simplifiée ?',excerpt:'Unité PCB et composants. La procédure via AMDIE est-elle vraiment simplifiée post-Charte 2022 ? Délai réel guichet unique ?',replies:19,likes:38,views:276,tags:['IDE','Électronique','AMDIE','CRI'],pin:false,solved:false},
+];
+const MEMBERS=[
+  {init:'Y',name:'Yasmine H.',role:'Expert-comptable · Casa',flag:'🇲🇦'},
+  {init:'K',name:'Khalid B.',role:'MRE · Fintech · France',flag:'🇫🇷'},
+  {init:'A',name:'Amina R.',role:'Juriste droit des affaires',flag:'🇲🇦'},
+  {init:'M',name:'Marco V.',role:'IDE · Automobile · Italie',flag:'🇮🇹'},
+  {init:'S',name:'Saad M.',role:'PME Agro · Agadir',flag:'🇲🇦'},
+  {init:'C',name:'Chen L.',role:'IDE · Électronique · Chine',flag:'🇨🇳'},
+];
+const FTAGS=['Charte 2022','ZAI','MDM Invest','CCG','IS LF2023','Automobile','Aéronautique','Agro','TIC/CFC','Énergie','Tanger','Casablanca','Fiscalité','IDE','MRE','Export EU','FDII'];
+function renderForum(){
+  document.getElementById('forumPosts').innerHTML=POSTS.map(p=>`
+    <div class="post-card ${p.pin?'post-pin':''} ${p.solved?'post-solved':''}">
+      ${p.pin?'<div class="flbl" style="color:var(--gold)">📌 ÉPINGLÉ</div>':''}
+      ${p.solved?'<div class="flbl" style="color:var(--green)">✅ RÉSOLU</div>':''}
+      <div class="post-header">
+        <div class="post-avatar">${p.author[0]}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px"><span class="post-author">${p.flag} ${p.author}</span><span class="post-badge">${p.badge}</span></div>
+          <div class="post-time">${p.time}</div>
+        </div>
+      </div>
+      <div class="post-title">${p.title}</div>
+      <div class="post-excerpt">${p.excerpt}</div>
+      <div class="post-tags">${p.tags.map(t=>`<span class="post-tag">${t}</span>`).join('')}</div>
+      <div class="post-footer"><span>💬 ${p.replies}</span><span>❤ ${p.likes}</span><span>👁 ${p.views}</span></div>
+    </div>`).join('');
+  document.getElementById('forumMembers').innerHTML=MEMBERS.map(m=>`
+    <div class="mb-item">
+      <div class="mb-av">${m.init}</div>
+      <div><div style="font-weight:500;color:var(--ink)">${m.flag} ${m.name}</div><div style="font-size:10px">${m.role}</div></div>
+    </div>`).join('');
+  document.getElementById('forumTags').innerHTML=FTAGS.map(t=>`<span style="font-family:var(--ff-m);font-size:9px;background:var(--bg2);color:var(--smoke);padding:3px 9px;border-radius:100px;cursor:pointer">${t}</span>`).join('');
+}
+
+/* ── NEWSLETTER ── */
+const EDITIONS=[
+  {num:'#048',date:'Mai 2025',tag:'FISCAL',tc:'#8C5A10',tbg:'#FDF0DC',title:'IS Unique 20% LF2023 : calendrier et impact sur vos ZAI',excerpt:'Passage progressif taux IS unique : qui est concerné 2025–2026 ? ZAI : le taux 15% reste-t-il garanti ? 3 scénarios simulés.',opens:3912,clicks:1487},
+  {num:'#047',date:'Avr. 2025',tag:'AIDE',tc:'#1A5C38',tbg:'#E8F5EE',title:'Charte Invest. 2022 : premières primes versées — Retours terrain',excerpt:'18 mois de dépôts, premiers versements effectifs. Analyse des 3 types de primes, seuils MAD, délais réels. Impact planning Q3 2025.',opens:4201,clicks:1731},
+  {num:'#046',date:'Avr. 2025',tag:'MRE',tc:'#4A5A10',tbg:'#F0F5E4',title:'MDM Invest 2025 : Fintech et IA désormais éligibles',excerpt:'CCG fév. 2025 : enveloppe 500M MAD, 4 nouveaux secteurs. Procédure simplifiée pour MRE résidant en UE. Guide complet dossier.',opens:5104,clicks:2241},
+  {num:'#045',date:'Mars 2025',tag:'ÉNERGIE',tc:'#8C5A10',tbg:'#FDF0DC',title:'H₂ Vert Maroc — Accord UE signé : ce que ça change',excerpt:'Protocole Maroc-UE mars 2025. Zones Dakhla-Guelmim : opportunités éoliens/solaires. Mécanismes financement BEI.',opens:2876,clicks:1102},
+  {num:'#044',date:'Fév. 2025',tag:'AUTO',tc:'#8C5A10',tbg:'#FDF6E3',title:'Automobile Maroc 2030 : besoins en équipementiers Tier 2/3',excerpt:'47 familles de composants en déficit local (AMICA). Quels créneaux pour PME < 20M€ ? AFZ vs TFZ comparées.',opens:3341,clicks:1298},
+  {num:'#043',date:'Janv. 2025',tag:'ZONE',tc:'#1B4F8C',tbg:'#EAF1FB',title:'ZAI Dakhla — IS 0% pérenne, vent 330 j/an : le guide complet',excerpt:'Provinces Sud : IS 0% permanent, procédures installation, port, foncier. Pourquoi les EnR s\'y ruent.',opens:2654,clicks:987},
+];
+function renderNewsletter(){
+  document.getElementById('editionsGrid').innerHTML=EDITIONS.map(e=>`
+    <div class="ed-card">
+      <div class="ed-tag" style="background:${e.tbg};color:${e.tc}">${e.tag}</div>
+      <div class="ed-num">Édition ${e.num} · ${e.date}</div>
+      <div class="ed-title">${e.title}</div>
+      <div class="ed-excerpt">${e.excerpt}</div>
+      <div class="ed-stats"><span>📧 ${e.opens.toLocaleString('fr-FR')}</span><span>🔗 ${e.clicks.toLocaleString('fr-FR')}</span></div>
+    </div>`).join('');
+}
+function toggleSeg(btn){btn.classList.toggle('active');}
+function subscribe(){alert('✅ Inscription confirmée !\n\n(Envoi réel via Brevo / SendGrid en production)');}
+
+/* ── MODAL CONTEXTUELLE ── */
+let curSectId='auto';
+
+const DOCS={
+  auto:[
+    ['Étude de marché sectorielle','Lettre d\'intention (LOI)','NDA si contact OEM'],
+    ['Simulation IS comparée ZAI vs Droit commun','Dernier CGI consolidé','Décret ZAI applicable'],
+    ['Certificat négatif OMPIC (60 MAD en ligne)','Projet de statuts notariés','Pièce identité gérant + attestation siège'],
+    ['Plan de masse zone choisie','Grille tarifaire MEDZ/CDG','Formulaire de candidature ZAI'],
+    ['Business plan 3 ans (CAPEX/OPEX)','Formulaire prime Charte 2022 (Décret 2.23.335)','Devis équipements certifiés'],
+    ['Certificat négatif OMPIC','Statuts définitifs signés','Formulaire IF + RC + CNSS (CRI guichet unique)'],
+    ['Plan qualité IATF 16949','AMDEC produit/process','Rapport audit interne pré-certification'],
+    ['Contrats de travail CDI type','Déclaration CNSS mensuelle','Plan de formation OFPPT cofinancé'],
+  ],
+  mre:[
+    ['Titre de séjour étranger (ou passeport)','Description projet (1 page)','Justificatif secteur éligible MDM'],
+    ['Formulaire IS-05 (déclaration investissement)','RIB compte CDC devises','Formulaire OP-09 si > 1M MAD'],
+    ['Texte CDI applicable (France, Belgique…)','Liasse fiscale DGI pays de résidence','Certificat de résidence fiscale'],
+    ['Procuration notariée légalisée + apostille','Projet de statuts SARL/SA','Pièce identité valide + justificatif adresse'],
+    ['Plan d\'affaires 3 ans','Preuve virement devises (SWIFT)','Copie titre séjour + casier judiciaire apostillé'],
+    ['Procuration notariée apostillée','Formulaire CRI à distance','Justificatif ouverture compte CDC'],
+    ['Formulaire OP-09 (transfert > 1M MAD)','PV AG affectation dividendes','Calcul retenue à source (IS + IR)'],
+  ],
+  aero:[
+    ['Liste membres GIMAS','Plan de développement fournisseur','NDA OEM standard aéro'],
+    ['Plan qualité AS9100 Rev D','Dossier EASA Part 21/145','Rapport NADCAP pré-audit'],
+    ['Grille tarifaire MidParc MEDZ','Plan masse TFZ Tanger','Comparatif coûts logistiques AFZ vs TFZ'],
+    ['Contrats ISMALA/OFPPT','Plan de formation INMAA','Dossier visa compétences étrangères CRI'],
+  ],
+  tic:[
+    ['Formulaire labellisation CFC','Business plan services financiers/IT','Justificatif 5 emplois minimum'],
+    ['Contrat de location Casanearshore/Rabatshore','Grille tarifaire P2I subventionné','Plan d\'occupation plateforme'],
+    ['Offres d\'emploi conformes ANAPEC','Formulaire visa "Compétences Étrangères"','Grille salariale secteur TIC 2024'],
+  ],
+  agro:[
+    ['Étude filière export UE (quota, SPS)','Fiche produit technique','Plan de production annuel'],
+    ['Formulaire candidature Agropôle/Haliopôle','Grille tarifaire ZAI Agadir','Plan de masse zone logistique'],
+    ['Cahier des charges GlobalGAP','Dossier IFS Food ou FSSC 22000','Dossier certification halal IMANOR'],
+  ],
+  tourisme:[
+    ['Formulaire licence hôtelière ONMT','Plans architecturaux classement','Rapport d\'inspection préliminaire'],
+    ['Dossier Fonds Hassan II (hôtels > 100 lits)','Formulaire prime Charte B2/B3','Business plan SMIT Vision 2030'],
+    ['Contrats OTA (Booking.com, Airbnb)','Convention CMI paiement en ligne','Plan de communication digitale'],
+  ],
+  energie:[
+    ['Dossier ANRE guichet unique (< 20 MW)','Étude de faisabilité EnR','Rapport irradiation / vent (site)'],
+    ['Carte zones MASEN prioritaires','Étude impact environnemental','Formulaire candidature Dakhla ZAI'],
+    ['Dossier BEI/AFD (fiche projet)','Convention PPA avec ONEE','Dossier Gold Standard carbon credits'],
+  ],
+  pharma:[
+    ['Dossier CTD complet (Common Technical Document)','Rapport bioéquivalence (si générique)','Formulaire AMM portail DPPM'],
+    ['Plan d\'inspection GMP IAMPA','Rapport audit interne BPF','Dossier EU-GMP pour EMA (si export UE)'],
+    ['Dossier CDG Invest (co-investissement)','Formulaire BID ligne santé islamique','Convention prix plafond Ministère Santé'],
+  ],
+};
+
+const COUTS={
+  auto:[
+    {items:['Étude marché (cabinet) : 50–150k MAD','Mission conseil OEM : 100–300k MAD']},
+    {items:['Conseil fiscal spécialisé : 30–80k MAD','Simulation IS ZAI (logiciel) : gratuit']},
+    {items:['Notaire + enregistrement : 1 500–3 000 MAD','Certificat OMPIC en ligne : 60 MAD']},
+    {items:['Terrain viabilisé ZAI : 35–55 MAD/m²/mois','Bâtiment industriel clé en main : 2 500–4 000 MAD/m²']},
+    {items:['Conseil dossier prime : 20–50k MAD','Prime reçue : 10% CAPEX (plafond 30M MAD)']},
+    {items:['Honoraires notaire : 0,5–1% capital','Frais CRI guichet unique : 500–1 500 MAD']},
+    {items:['Certification IATF 16949 : 40–80k MAD','ISO 14001 + 45001 : 30–60k MAD','Organisme (Bureau Veritas, TÜV) : sur devis']},
+    {items:['SMIG opérateur : 3 111 MAD/mois','Charges patronales CNSS : ~20,5%','Formation OFPPT (cofinancée) : 30–50% du coût']},
+  ],
+  mre:[
+    {items:['Conseil éligibilité MDM : 10–20k MAD','Frais dépôt dossier CCG : 0 MAD (gratuit)']},
+    {items:['Frais ouverture compte CDC : 0–500 MAD','Frais transfert SWIFT : 0,1–0,3% du montant']},
+    {items:['Conseil fiscal CDI (avocat) : 20–50k MAD','Retenue dividendes : 7,5% (CDI France) ou 15%']},
+    {items:['Honoraires notaire procuration : 3–8k MAD (pays résidence)','Apostille : 50–200 EUR selon pays']},
+    {items:['Apport MRE requis : min. 25% du projet','Prime MDM non remboursable : 10% (plafond 5M MAD)','Garantie CCG : 65% du crédit, commission ~1%/an']},
+    {items:['Frais création CRI à distance : 1 000–2 500 MAD','Honoraires avocat local : 5–15k MAD']},
+    {items:['Retenue à source IS/IR : 7,5–15% dividendes','Frais virement OP-09 : 200–500 MAD/opération']},
+  ],
+  aero:[
+    {items:['Mission conseil GIMAS : 50–100k MAD','NDA + négociation OEM : 20–50k MAD']},
+    {items:['AS9100 Rev D : 50–100k MAD','EASA Part 145 : 150–300k MAD','NADCAP (soudage/NDT) : 100–200k MAD']},
+    {items:['MidParc loyer : 35–55 MAD/m²/mois','TFZ terrain constructible : 200–350 MAD/m²']},
+    {items:['Recrutement ingénieur process : 15–25k MAD/mois','Formation INMAA cofinancée : 50% du coût']},
+  ],
+  tic:[
+    {items:['Labellisation CFC : gratuit (dossier)','Conseil juridique CFC : 30–60k MAD']},
+    {items:['Casanearshore loyer : 45–70 MAD/m²/mois (subventionné)','Fibre dédiée 1 Gb/s : 3–8k MAD/mois']},
+    {items:['Dev senior : 12–18k MAD/mois','DevOps/Cloud : 18–25k MAD/mois','Visa compétence étrangère : 500–1 000 MAD']},
+  ],
+  agro:[
+    {items:['Étude filière UE (cabinet) : 40–80k MAD','Mission prospection export : 20–40k MAD']},
+    {items:['Terrain Agropôle viabilisé : 150–250 MAD/m²','Entrepôt froid industriel : 3 000–5 000 MAD/m²']},
+    {items:['Certification GlobalGAP : 8–15k MAD/site','IFS Food : 20–30k MAD','Halal IMANOR : 5–12k MAD/produit']},
+  ],
+  tourisme:[
+    {items:['Dossier classement hôtelier : 5–15k MAD','Honoraires architecte conformité : 50–200k MAD']},
+    {items:['Dossier Fonds Hassan II : gratuit (instruction)','Conseil montage SMIT Vision 2030 : 30–80k MAD']},
+    {items:['Commission Booking.com : 15–25%','Channel manager : 500–2 000 MAD/mois','CMI Payzone : 1,5–3% transaction']},
+  ],
+  energie:[
+    {items:['Étude faisabilité EnR : 100–300k MAD','Rapport irradiation/vent : 50–150k MAD','Frais ANRE instruction : 0–5k MAD']},
+    {items:['Terrain Dakhla (symbolique) : 1–5 MAD/m²','Étude impact environnemental : 200–500k MAD']},
+    {items:['Frais montage dossier BEI : 0,5–1% du prêt','PPA négociation conseil : 100–300k MAD','Gold Standard accréditation : 50–150k MAD']},
+  ],
+  pharma:[
+    {items:['Conseil réglementaire AMM : 100–300k MAD','Redevance DPPM : 15–50k MAD','Étude bioéquivalence : 500k–2M MAD']},
+    {items:['Mise en conformité usine GMP : 5–20M MAD','Inspection IAMPA : 50–100k MAD','EMA inspection EU-GMP : 150–300k MAD']},
+    {items:['Conseil CDG Invest : 30–80k MAD','Commission BID : 1,5–3%/an','Dossier convention prix Santé : gratuit']},
+  ],
+};
+
+function showModal(title, rows, color){
+  let existing=document.getElementById('siModal');
+  if(existing) existing.remove();
+  const m=document.createElement('div');
+  m.id='siModal';
+  m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px';
+  m.innerHTML=`
+    <div style="background:var(--white);border-radius:18px;max-width:520px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.22);overflow:hidden">
+      <div style="background:${color};padding:20px 24px;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-family:var(--ff-t);font-size:17px;color:#fff">${title}</div>
+        <button onclick="document.getElementById('siModal').remove()" style="background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">×</button>
+      </div>
+      <div style="padding:20px 24px 24px;display:flex;flex-direction:column;gap:8px">
+        ${rows.map(r=>`<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:var(--bg2);border-radius:8px;font-size:13px;color:var(--ink3)"><span style="color:${color};flex-shrink:0;margin-top:1px">▸</span><span>${r}</span></div>`).join('')}
+      </div>
+      <div style="padding:0 24px 20px;text-align:right">
+        <button onclick="document.getElementById('siModal').remove()" style="font-family:var(--ff-m);font-size:11px;padding:7px 18px;border-radius:7px;border:1px solid var(--border2);background:var(--bg2);color:var(--smoke);cursor:pointer">Fermer</button>
+      </div>
+    </div>`;
+  m.addEventListener('click',function(ev){if(ev.target===m)m.remove();});
+  document.body.appendChild(m);
+}
+
+function openDocs(sectId, stepIdx){
+  const p=P[sectId];
+  if(!p) return;
+  const e=p.etapes[stepIdx];
+  if(!e) return;
+  const rows=(DOCS[sectId]&&DOCS[sectId][stepIdx])||['Documents à préciser selon votre situation'];
+  showModal('📄 Documents requis — '+e.ph+' · '+e.n.substring(0,40)+'…',rows,p.color);
+}
+
+function openCouts(sectId, stepIdx){
+  const p=P[sectId];
+  if(!p) return;
+  const e=p.etapes[stepIdx];
+  if(!e) return;
+  const data=(COUTS[sectId]&&COUTS[sectId][stepIdx]);
+  const rows=data?data.items:['Coûts à estimer selon votre projet'];
+  showModal('🧮 Coûts estimés — '+e.ph+' · '+e.n.substring(0,40)+'…',rows,p.color);
+}
+
+loadParcours('auto',document.querySelector('.sc[data-s="auto"]'));
+</script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

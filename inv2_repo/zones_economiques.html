@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zones Économiques : Benchmark Afrique &amp; Monde</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.1);
+  --ink:#1A1A18;--mid:#5A5A54;--muted:#8A8A82;
+  --bg:#F9F8F4;--bg2:#F2F0EA;--surface:#FFFFFF;
+  --border:#E4E2DA;--border-mid:#D0CEC4;
+  --green:#1E7A4A;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --red:#9A2A22;--red-bg:#FEF0EE;--red-bd:#F0B0A8;
+  --amber:#8A5A10;--amber-bg:#FEF5E4;--amber-bd:#F0D080;
+  --blue:#1A3A9A;--blue-bg:#EEF4FE;--blue-bd:#B0C8F8;
+  --purple:#5A2AA0;--purple-bg:#F3EEFE;--purple-bd:#C8A8F8;
+  --sh:0 1px 4px rgba(26,26,24,.06);--sh-md:0 4px 20px rgba(26,26,24,.1);
+  --r:8px;--r-lg:12px;--r-xl:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hdr{background:rgba(249,248,244,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
+#section-carte.active{top:88px!important}
+.hdr-inner{max-width:1300px;margin:0 auto;display:flex;align-items:stretch;gap:0;height:auto;min-height:56px;flex-wrap:wrap}
+.logo-area{display:flex;align-items:center;gap:12px;padding:0 20px 0 0;border-right:1px solid var(--border);margin-right:14px;flex-shrink:0}
+.logo-mark{width:30px;height:30px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{fill:#fff}
+.logo-txt{font-family:"DM Serif Display",serif;font-size:15px;color:var(--ink);line-height:1.1}
+.logo-txt span{display:block;font-size:9px;font-family:"JetBrains Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.hdr-nav{display:flex;align-items:stretch;flex:1;flex-wrap:wrap;min-height:56px}
+.hdr-nav-row{display:flex;align-items:stretch;flex-basis:100%}
+.hdr-nav-row2{display:flex;align-items:stretch;flex-basis:100%;border-top:1px solid var(--border);background:var(--bg2)}
+.nav-btn{padding:0 12px;height:44px;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;display:flex;align-items:center;font-family:"DM Sans",sans-serif;font-size:11px;font-weight:700;letter-spacing:.03em;border-radius:0}
+.nav-btn:hover{filter:brightness(.82);color:#fff!important}
+.nav-btn.active{filter:brightness(.78);color:#fff!important;border-bottom:2px solid rgba(255,255,255,.55)}
+.nb-ref{background:#2C5F8A;color:#cde2f5}
+.nb-carte{background:#1A6B4A;color:#c2edda}
+.nb-sim{background:#6A3A8A;color:#e5d5f8}
+.nb-incit{background:#8A5A10;color:#f8e8c8}
+.nb-check{background:#1A4A7A;color:#c8dcf5}
+.nb-bench{background:#6A2A20;color:#f5cec8}
+.nb-lex{background:#2A6A5A;color:#c5eae0}
+.nb-poles{background:#4A3A7A;color:#ddd2f5}
+.nb-tanger{background:#2A4A6A;color:#ccddf5}
+.nb-proc{background:#5A4A10;color:#f2e8c5}
+.hdr-badges{display:flex;align-items:center;gap:6px;margin-left:auto;padding-left:14px;flex-shrink:0}
+.hb{font-family:"JetBrains Mono",monospace;font-size:9px;padding:3px 10px;letter-spacing:.07em;text-transform:uppercase;border-radius:100px;border:1px solid}
+.hb-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.hb-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+.wrap{max-width:1300px;margin:0 auto;padding:0 2rem 5rem}
+.section{display:none}.section.active{display:block}
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--border);margin-bottom:26px}
+.hero h1{font-family:"DM Serif Display",serif;font-size:clamp(22px,3.5vw,40px);color:var(--ink);line-height:1.05}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p{color:var(--mid);font-size:13px;margin-top:8px;max-width:640px;line-height:1.75}
+.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.htag{font-family:"JetBrains Mono",monospace;font-size:9.5px;padding:3px 10px;border-radius:100px;border:1px solid}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 22px;box-shadow:var(--sh);margin-bottom:14px}
+.card-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+.flow{display:flex;flex-direction:column;gap:0}
+.flow-step{display:flex;gap:14px;position:relative;padding-bottom:0}
+.flow-step:not(:last-child){padding-bottom:20px}
+.flow-step:not(:last-child)::before{content:"";position:absolute;left:17px;top:34px;bottom:0;width:1px;background:var(--border-mid)}
+.flow-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;flex-shrink:0;position:relative;z-index:1;border:2px solid}
+.flow-body{flex:1;padding-top:4px}
+.flow-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.flow-desc{font-size:12.5px;color:var(--mid);line-height:1.6}
+.flow-meta{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);margin-top:4px}
+.flow-docs{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.flow-doc-tag{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid var(--border);background:var(--bg2);color:var(--mid)}
+.info-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.info-table th{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);background:var(--bg2)}
+.info-table td{padding:8px 10px;border-bottom:1px solid var(--bg2);vertical-align:middle;color:var(--mid)}
+.info-table td:first-child{font-weight:600;color:var(--ink)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table tr:hover td{background:var(--gold-pale)}
+.td-badge{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 8px;border-radius:100px;border:1px solid;display:inline-block}
+.alert{border-radius:var(--r);padding:10px 14px;font-size:12.5px;display:flex;gap:8px;align-items:flex-start;margin-bottom:10px}
+.alert svg{flex-shrink:0;margin-top:1px}
+.a-info{background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue)}
+.a-warn{background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)}
+.a-ok{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)}
+.a-red{background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:700px){.kpi-row{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;text-align:center;box-shadow:var(--sh)}
+.kpi-val{font-family:"DM Sans",sans-serif;font-size:22px;font-weight:700;color:var(--gold);line-height:1}
+.kpi-lbl{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.law-ref{font-family:"JetBrains Mono",monospace;font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;color:var(--mid);line-height:1.6}
+.law-ref strong{color:var(--ink)}
+.pill{font-family:"JetBrains Mono",monospace;font-size:10px;padding:4px 12px;border-radius:100px;border:1px solid;display:inline-flex;align-items:center;gap:5px}
+.pill-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+.pill-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.pill-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.pill-amber{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
+.pill-purple{background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)}
+.info-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+/* CHECKLIST */
+.chk-list{display:flex;flex-direction:column;gap:5px}
+.chk-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);font-size:12.5px;cursor:pointer;transition:all .15s}
+.chk-item:hover{border-color:var(--gold-bd);background:var(--gold-pale)}
+.chk-item.done{background:var(--green-bg);border-color:var(--green-bd)}
+.chk-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border-mid);background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s}
+.chk-item.done .chk-box{background:var(--green);border-color:var(--green);color:#fff}
+.chk-lbl{flex:1;color:var(--ink)}
+.chk-who{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted)}
+/* ZONE CARDS */
+.zone-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--sh);cursor:default;transition:all .18s;border-top:3px solid transparent;margin-bottom:10px}
+.zone-card:hover{box-shadow:var(--sh-md)}
+.zc-type{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.zc-name{font-family:"DM Serif Display",serif;font-size:17px;color:var(--ink);margin-bottom:3px;line-height:1.2}
+.zc-reg{font-size:11px;color:var(--muted);margin-bottom:10px}
+.zc-is{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;display:inline-block;margin-bottom:8px}
+.zc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.zc-stat{font-size:11px;color:var(--muted)}.zc-stat strong{display:block;font-size:13px;font-weight:700;color:var(--ink)}
+.filt-btn{padding:7px 14px;border-radius:var(--r);font-family:"DM Sans",sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.filt-btn.filt-active{border:1px solid var(--gold-bd);background:var(--gold-dim);color:var(--gold)}
+.filt-btn.filt-off{border:1px solid var(--border);background:var(--surface);color:var(--mid)}
+/* POLES */
+.port-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--sh);cursor:pointer;transition:all .18s;border-top:3px solid transparent}
+.port-card:hover{box-shadow:var(--sh-md);border-top-color:var(--gold)}
+.port-card.active{border-top-color:var(--gold);background:var(--gold-pale);border-color:var(--gold-bd)}
+.ports-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:20px}
+.port-name{font-family:"DM Serif Display",serif;font-size:16px;color:var(--ink);margin-bottom:4px}
+.port-code{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--gold);letter-spacing:.1em;margin-bottom:8px}
+.port-stats{display:flex;gap:12px;flex-wrap:wrap}
+.port-stat{font-size:11px;color:var(--muted)}
+.port-stat strong{color:var(--ink);font-size:13px;font-weight:700;display:block}
+.port-detail{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;box-shadow:var(--sh-md);margin-bottom:16px}
+.port-detail-hdr{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.port-flag{width:56px;height:56px;border-radius:var(--r-lg);background:var(--blue-bg);border:1px solid var(--blue-bd);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.port-detail-name{font-family:"DM Serif Display",serif;font-size:24px;color:var(--ink);margin-bottom:4px}
+.b-tag{font-family:"DM Sans",sans-serif;font-size:12px;font-weight:500;padding:5px 12px;border-radius:100px;border:1px solid;cursor:default}
+.b-tag-blue{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)}
+.b-tag-green{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.b-tag-gold{background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)}
+.b-tag-purple{background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)}
+.b-tag-amber{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)}
+
+/* ── SIMULATEUR ── */
+.sim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 24px;margin-bottom:14px;box-shadow:var(--sh)}
+.sim-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.sim-field label{display:block;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px}
+.sim-field input,.sim-field select{width:100%;padding:9px 12px;border-radius:var(--r);border:1.5px solid var(--border);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--ink);background:var(--bg);transition:border-color .2s;outline:none}
+.sim-field input:focus,.sim-field select:focus{border-color:var(--gold)}
+.sim-btn{background:var(--gold);color:var(--ink);border:none;padding:11px 28px;border-radius:var(--r-lg);font-size:14px;font-weight:700;font-family:"DM Sans",sans-serif;cursor:pointer;transition:all .18s}
+.sim-btn:hover{background:var(--gold-h);transform:translateY(-1px)}
+.trans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:12px}
+.trans-chk{display:flex;align-items:flex-start;gap:8px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);padding:9px 11px;cursor:pointer;transition:all .18s}
+.trans-chk:hover{border-color:var(--gold)}
+.trans-chk.checked{background:var(--gold-pale);border-color:var(--gold-bd)}
+.trans-chk input{margin-top:3px;accent-color:var(--gold);cursor:pointer}
+.trans-lbl strong{display:block;font-size:12px;color:var(--ink)}
+.trans-lbl span{font-size:11px;color:var(--mid)}
+.hub-alert-sim{display:none;background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue);border-radius:var(--r);padding:9px 13px;font-size:12px;font-family:"JetBrains Mono",monospace;margin-top:10px}
+.hub-alert-sim.visible{display:block}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.res-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 16px}
+.res-card.hl{background:linear-gradient(135deg,rgba(184,146,42,.12),rgba(184,146,42,.05));border-color:var(--gold-bd)}
+.res-val{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:700;color:var(--gold)}
+.res-lbl{font-size:11.5px;color:var(--mid);margin-top:3px}
+.rank-item{display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:var(--r);margin-bottom:7px;border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:all .18s}
+.rank-item:hover{border-color:var(--gold);background:var(--gold-pale)}
+.rank-num{font-family:"JetBrains Mono",monospace;font-size:16px;font-weight:800;color:var(--muted);width:26px}
+.rank-num.gold{color:var(--gold)}
+.rank-name{flex:1;font-weight:600;font-size:13px}
+.rank-score{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--green);font-weight:700}
+.score-bar-wrap{height:5px;background:var(--border);border-radius:3px;margin-top:5px}
+.score-bar{height:5px;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--gold-h));transition:width .6s ease}
+.chart-box{position:relative;height:260px;margin-top:14px}
+/* ── BENCHMARK ── */
+.bm-table-wrap{overflow-x:auto;border-radius:var(--r-lg);border:1px solid var(--border);margin-bottom:20px}
+table.bm-table{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface)}
+table.bm-table th{background:var(--ink);color:var(--gold-pale);font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;padding:10px 14px;text-align:left;white-space:nowrap}
+table.bm-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--mid);vertical-align:top}
+table.bm-table tr.maroc td{background:var(--gold-pale);font-weight:600;color:var(--ink)}
+table.bm-table tr:hover td{background:var(--bg2)}
+.stars{color:var(--gold);letter-spacing:-2px;font-size:12px}
+.badge-1st{background:var(--gold);color:var(--ink);font-size:8.5px;font-family:"JetBrains Mono",monospace;padding:2px 6px;border-radius:3px;font-weight:700;vertical-align:middle;margin-left:4px}
+.bm-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.bm-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:15px 18px}
+.bm-card.maroc{border-color:var(--gold-bd);background:var(--gold-pale)}
+.bm-card-title{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.bm-card.maroc .bm-card-title{color:var(--gold)}
+.bm-stat{font-size:12px;color:var(--mid);padding:3.5px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.bm-stat:last-child{border-bottom:none}
+.bm-stat strong{font-family:"JetBrains Mono",monospace;color:var(--ink);font-size:12px}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mat-card{border-radius:var(--r-lg);padding:13px 15px;border:1.5px solid var(--border)}
+.mat-card.green{background:rgba(30,122,74,.05);border-color:rgba(30,122,74,.25)}
+.mat-card.blue{background:rgba(26,58,154,.05);border-color:rgba(26,58,154,.25)}
+.mat-card.gold{background:var(--gold-pale);border-color:var(--gold-bd)}
+.mat-card.purple{background:rgba(90,42,160,.05);border-color:rgba(90,42,160,.25)}
+.mat-card h4{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:9px}
+.mat-item{font-size:12px;color:var(--mid);padding:2.5px 0;display:flex;gap:5px}
+.mat-item::before{content:'→';opacity:.5;flex-shrink:0}
+/* ── LEXIQUE ── */
+.lex-search-wrap{position:relative;margin-bottom:14px}
+.lex-search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none}
+.lex-search{width:100%;padding:9px 12px 9px 36px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--ink);outline:none;box-shadow:var(--sh)}
+.lex-search:focus{border-color:var(--gold)}
+.lex-cat-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.lex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px;margin-bottom:20px}
+.lex-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 18px;transition:box-shadow .15s}
+.lex-card:hover{box-shadow:var(--sh-md)}
+.lex-cat-tag{font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:5px}
+.lex-term{font-family:"DM Serif Display",serif;font-size:15px;color:var(--ink);margin-bottom:4px;line-height:1.2}
+.lex-def{font-size:12px;color:var(--mid);line-height:1.6;margin-bottom:9px}
+.lex-langs{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:11.5px}
+.lex-lc{font-family:"JetBrains Mono",monospace;font-size:9px;background:var(--bg2);padding:1px 6px;border-radius:3px;color:var(--muted);align-self:center}
+.lex-lv{color:var(--mid);align-self:center}
+.lex-lv.ar{direction:rtl;text-align:right;font-size:12.5px}
+.lex-card.hidden{display:none}
+
+/* ── LEXIQUE ANTI-SCRAPING — TUILES ACCORDÉON ── */
+.lex-tiles-wrap{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh)}
+.lex-tile{border-bottom:1px solid var(--border);background:var(--surface);transition:background .15s}
+.lex-tile:last-child{border-bottom:none}
+.lex-tile-header{display:flex;align-items:center;gap:10px;padding:11px 18px;cursor:pointer;user-select:none;transition:background .15s}
+.lex-tile-header:hover{background:var(--gold-pale)}
+.lex-tile.open .lex-tile-header{background:var(--gold-pale);border-bottom:1px solid var(--gold-bd)}
+.lex-tile-num{font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;color:var(--muted);min-width:28px}
+.lex-tile-term{flex:1;font-family:"DM Serif Display",serif;font-size:14px;color:var(--ink);line-height:1.2}
+.lex-tile-cat{font-family:"JetBrains Mono",monospace;font-size:8.5px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid;flex-shrink:0}
+.lex-tile-en{font-size:11px;color:var(--muted);flex-shrink:0;max-width:220px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+.lex-tile-chevron{font-size:11px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.lex-tile.open .lex-tile-chevron{transform:rotate(180deg)}
+.lex-tile-body{display:none;padding:14px 18px 16px 56px;background:var(--bg);border-top:none}
+.lex-tile.open .lex-tile-body{display:block}
+.lex-tile-def{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px}
+.lex-tile-langs{display:inline-flex;gap:14px;flex-wrap:wrap}
+.lex-tile-lrow{display:flex;align-items:center;gap:6px}
+.lex-tile-lc{font-family:"JetBrains Mono",monospace;font-size:9px;background:var(--bg2);border:1px solid var(--border);padding:1px 7px;border-radius:3px;color:var(--muted);flex-shrink:0}
+.lex-tile-lv{font-size:12px;color:var(--mid)}
+.lex-tile-lv.ar{direction:rtl;font-size:13px}
+
+.lex-matrix{overflow-x:auto;border-radius:var(--r-lg);border:1px solid var(--border);margin-top:14px}
+table.lex-table{width:100%;border-collapse:collapse;font-size:12px;background:var(--surface)}
+table.lex-table th{background:var(--ink);color:var(--gold-pale);font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;padding:9px 13px;text-align:left}
+table.lex-table td{padding:8px 13px;border-bottom:1px solid var(--border);color:var(--mid)}
+table.lex-table td:last-child{direction:rtl;text-align:right;font-size:12.5px}
+table.lex-table tr:hover td{background:var(--bg2)}
+
+footer{border-top:1px solid var(--border);padding:16px 2rem;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);letter-spacing:.07em;background:var(--surface);margin-top:2rem}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="logo-area">
+      <div class="logo-mark"><svg width="15" height="15" viewBox="0 0 12 12"><path d="M6 0L11 3V9L6 12L1 9V3Z"/></svg></div>
+      <div class="logo-txt">Smart-Invest.IA <span>Intelligence Fiscale & Zones Eco.</span></div>
+    </div>
+    <nav class="hdr-nav">
+      <div class="hdr-nav-row">
+        <button class="nav-btn nb-ref active" onclick="showSection('bureaux',this)">&#127758; Zones &amp; Référentiel</button>
+        <button class="nav-btn nb-carte" onclick="showSection('carte',this)">&#128506; Carte</button>
+        <button class="nav-btn nb-sim" onclick="showSection('simulateur',this)">&#128200; Simulateur</button>
+        <button class="nav-btn nb-incit" onclick="showSection('portnet',this)">&#9733; Incitations &amp; Charte</button>
+        <button class="nav-btn nb-check" onclick="showSection('checklist',this)">&#10003; Checklist</button>
+        <button class="nav-btn nb-bench" onclick="showSection('benchmark',this)">&#9654; Benchmark</button>
+      </div>
+      <div class="hdr-nav-row2">
+        <button class="nav-btn nb-lex" onclick="showSection('lexique',this)">&#128214; Lexique</button>
+        <button class="nav-btn nb-poles" onclick="showSection('ports',this)">Pôles Régionaux</button>
+        <button class="nav-btn nb-tanger" onclick="showSection('tanger',this)">&#9875; Tanger Med &amp; TFZ</button>
+        <button class="nav-btn nb-proc" onclick="showSection('procedures',this)">&#128203; Procédures</button>
+      </div>
+    </nav>
+    <div class="hdr-badges">
+      <span class="hb hb-gold">Charte 03-22 · CGI 2024</span>
+      <span class="hb hb-blue">AMDIE · 12 ZAI · 2 ZF · CFC</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════════════ BUREAUX = RÉFÉRENTIEL ZONES ══════════════════ -->
+<div id="section-bureaux" class="section active">
+  <div class="hero">
+    <h1>Zones Économiques — <em>Référentiel 2025</em></h1>
+    <p>Cartographie complète des zones d'investissement au Maroc : ZAI, Zones Franches, CFC et Pôles régionaux. Régimes fiscaux, primes Charte 03-22, foncier et connectivité logistique.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Art. 6 CGI 2024</span>
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">Charte Invest. Loi 03-22</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">LF 2024 — Non-cumulativité</span>
+      <span class="htag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">AMDIE · SOURCES OFFICIELLES</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">12</div><div class="kpi-lbl">ZAI opérationnelles</div></div>
+    <div class="kpi"><div class="kpi-val">2</div><div class="kpi-lbl">Zones Franches (ZF)</div></div>
+    <div class="kpi"><div class="kpi-val">30%</div><div class="kpi-lbl">Prime max Charte CAPEX</div></div>
+    <div class="kpi"><div class="kpi-val">IS 0%</div><div class="kpi-lbl">5 ex. bénéf. (ZAI/CFC)</div></div>
+  </div>
+
+  <div class="alert a-warn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+    <span><strong>LF 2024 — Non-cumulativité :</strong> Les avantages ZAI sont exclusifs de tout autre avantage fiscal (Art. 6-III CGI 2024). RAS 5% sur rémunérations PM en ZAI. Consulter un fiscaliste avant toute implantation.</span>
+  </div>
+
+  <div style="margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <div style="flex:1;position:relative;min-width:220px">
+      <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="zone-search" type="text" placeholder="Rechercher une zone..." oninput="filterZoneTable()"
+        style="width:100%;padding:9px 12px 9px 36px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);font-family:DM Sans,sans-serif;font-size:13px;color:var(--ink);outline:none;box-shadow:var(--sh)">
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button onclick="filterZoneType('tous',this)" class="filt-btn filt-active" id="fzt-tous">Toutes</button>
+      <button onclick="filterZoneType('ZAI',this)" class="filt-btn filt-off" id="fzt-ZAI">ZAI</button>
+      <button onclick="filterZoneType('ZF',this)" class="filt-btn filt-off" id="fzt-ZF">ZF</button>
+      <button onclick="filterZoneType('CFC',this)" class="filt-btn filt-off" id="fzt-CFC">CFC</button>
+      <button onclick="filterZoneType('POLE',this)" class="filt-btn filt-off" id="fzt-POLE">Pôles</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      Tableau de bord — Zones d'investissement
+    </div>
+    <table class="info-table" id="zones-ref-table">
+      <thead>
+        <tr>
+          <th>Zone</th><th>Type</th><th>IS</th><th>Prime terr.</th><th>Emplois</th><th>Foncier MAD/m²</th><th>Port principal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Tanger — Meloussa</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--amber)">0% (Hub)</td><td>~50 000</td><td>400–600</td><td>Tanger Med 5 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Tanger Tech</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--amber)">0% (Hub)</td><td>Obj. 100 000</td><td>300–450</td><td>Tanger Med 10 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Kénitra — AFZ</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--amber)">0% (Hub)</td><td>~12 000</td><td>350–500</td><td>Port Kénitra 15 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Bouknadel (RSK)</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--green)">+10%</td><td>Obj. 5 000</td><td>280–380</td><td>Port Kénitra 25 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Fès — Aïn Chkef</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--green)">+15% (Cat.B)</td><td>~8 000</td><td>200–320</td><td>Tanger Med 220 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Oujda — Selouane</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--green)">+15% (Cat.B)</td><td>~3 000</td><td>150–250</td><td>Nador W.Med 150 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Casablanca — Bouskoura</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--amber)">+5%</td><td>~15 000</td><td>500–750</td><td>Casa Port 30 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Nouaceur / Midparc</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--amber)">0% (Hub)</td><td>~18 000</td><td>480–680</td><td>Casa Port 35 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Settat</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--green)">+10%</td><td>~5 000</td><td>300–420</td><td>Casa Port 80 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Agadir — Aït Melloul</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--green)">+15% (Cat.B)</td><td>~9 000</td><td>280–400</td><td>Port Agadir 5 km</td></tr>
+        <tr class="zone-row" data-type="ZAI"><td>ZAI Souss-Massa Étendue</td><td><span class="td-badge" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">ZAI</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">0% → 15%</td><td style="color:var(--green)">+15% (Cat.B)</td><td>Obj. 3 000</td><td>250–360</td><td>Port Agadir 8 km</td></tr>
+        <tr class="zone-row" data-type="ZF"><td>TFZ — Tanger Free Zone</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">ZF</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--blue)">15% PERMANENT</td><td style="color:var(--muted)">N/A (ZF)</td><td>~30 000</td><td>380–550</td><td>Tanger Med 0 km</td></tr>
+        <tr class="zone-row" data-type="ZF"><td>ZFAC — Aéroport Casablanca</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">ZF</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--blue)">15% PERMANENT</td><td style="color:var(--muted)">N/A (ZF)</td><td>~2 500</td><td>600–900</td><td>Casa Port 35 km</td></tr>
+        <tr class="zone-row" data-type="CFC"><td>Casablanca Finance City</td><td><span class="td-badge" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">CFC</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--gold)">0% → 20% (5 ex.)</td><td style="color:var(--muted)">N/A</td><td>~8 000</td><td>Loyer 150–280/m²/mois</td><td>Non pertinent</td></tr>
+        <tr class="zone-row" data-type="POLE"><td>Tanger Med — Pôle Portuaire</td><td><span class="td-badge" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)">PÔLE</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--mid)">Selon implantation</td><td style="color:var(--green)">30% (adj.)</td><td>80 000 directs</td><td>Tarif TMPA</td><td>0 km — 11,1M EVP</td></tr>
+        <tr class="zone-row" data-type="POLE"><td>Agadir — Pôle Agro-Maritime</td><td><span class="td-badge" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)">PÔLE</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--mid)">DC / ZAI si éligible</td><td style="color:var(--green)">+15%</td><td>~25 000</td><td>250–380</td><td>0 km — 1er pêche Afr.</td></tr>
+        <tr class="zone-row" data-type="POLE"><td>Zone Atlantic Dakhla</td><td><span class="td-badge" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)">PÔLE</span></td><td style="font-family:JetBrains Mono,monospace;color:var(--green)">IS 0% PERMANENT</td><td style="color:var(--green)">+15%</td><td>~5 000 terme</td><td>100–200</td><td>Dakhla Atl. 2027</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="law-ref">
+    <strong>Base légale :</strong> Art. 6 CGI 2024 (ZAI · 0%→15%) · Loi n°19-94 (ZF · IS 15%) · Art. 6 CGI CFC (0%→20%) · Art. 247 CGI (Provinces du Sud · IS 0% permanent) · Loi-cadre 03-22 Charte Investissement · LF 2024 (non-cumulativité · RAS 5%)
+  </div>
+</div>
+
+<!-- ══════════════════ PROCÉDURES ══════════════════ -->
+<div id="section-procedures" class="section">
+  <div class="hero">
+    <h1>Procédures <em>d'Implantation</em></h1>
+    <p>Guide opérationnel pour s'implanter dans une zone économique marocaine : de la sélection de la zone à la production effective. Délais cibles Charte 03-22 et CRUI Loi 22-24.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">CRUI — 30 jours cible</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">CRI Guichet unique</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Création 24–72h</span>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Parcours investisseur — Implantation ZAI
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">1</div>
+          <div class="flow-body">
+            <div class="flow-title">Sélection de la zone & due diligence fiscale</div>
+            <div class="flow-desc">Comparer les régimes fiscaux (ZAI 0%→15%, ZF 15%, CFC 0%→20%, Dakhla 0% permanent). Vérifier la non-cumulativité LF 2024 avant tout engagement. Consulter le simulateur de primes Charte 03-22.</div>
+            <div class="flow-meta">Durée estimée : 1–4 semaines</div>
+            <div class="flow-docs"><span class="flow-doc-tag">Business plan</span><span class="flow-doc-tag">Étude faisabilité</span><span class="flow-doc-tag">Simulation IS/primes</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">2</div>
+          <div class="flow-body">
+            <div class="flow-title">Contact CRI & pré-instruction dossier</div>
+            <div class="flow-desc">Contacter le CRI de la région cible. Le guichet unique CRI instrumente la demande de terrain (ZAI) et initie la procédure CRUI (Loi 22-24). Délai cible : 30 jours d'instruction totale.</div>
+            <div class="flow-meta">Délai cible CRUI : 30 jours | CRI : 24h-72h création</div>
+            <div class="flow-docs"><span class="flow-doc-tag">Lettre d'intention</span><span class="flow-doc-tag">ID dirigeants</span><span class="flow-doc-tag">Plan financement</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">3</div>
+          <div class="flow-body">
+            <div class="flow-title">Création de la société (CRI — Guichet Unique)</div>
+            <div class="flow-desc">SARL, SA ou SAS. Le CRI émet l'attestation d'inscription en 24–72h. Dépôt capital social, inscription fiscale (patente, TVA), immatriculation OMPIC/RC simultanés au guichet unique.</div>
+            <div class="flow-meta">24 à 72h (dossier complet)</div>
+            <div class="flow-docs"><span class="flow-doc-tag">Statuts notariés</span><span class="flow-doc-tag">Attestation dépôt capital</span><span class="flow-doc-tag">Registre Commerce</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">4</div>
+          <div class="flow-body">
+            <div class="flow-title">Convention d'installation ZAI / Contrat foncier</div>
+            <div class="flow-desc">Signature de la convention avec l'organisme gestionnaire de la ZAI (ex. TMSA, MFCIT, CFCIM). Acquisition ou location du terrain. Le contrat précise les engagements en matière d'emploi et d'investissement.</div>
+            <div class="flow-meta">Délai livraison terrain : 2–12 mois selon ZAI</div>
+            <div class="flow-docs"><span class="flow-doc-tag">Convention ZAI</span><span class="flow-doc-tag">Titre foncier / Bail</span><span class="flow-doc-tag">Permis construire</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">5</div>
+          <div class="flow-body">
+            <div class="flow-title">Dossier Charte Investissement (si éligible)</div>
+            <div class="flow-desc">Pour projets ≥50M MAD et ≥50 emplois CDI. Dépôt dossier complet au CRI pour instruction par la CRUI. Prime de base 10–15%, prime territoriale 0–15%, sectorielles +5%. Plafond 30% du CAPEX.</div>
+            <div class="flow-meta">Instruction : 30 jours cible CRUI | Non-cumulable avec autres avantages ZAI</div>
+            <div class="flow-docs"><span class="flow-doc-tag">CAPEX détaillé</span><span class="flow-doc-tag">Plan recrutement CDI</span><span class="flow-doc-tag">Attestation CRI</span></div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">6</div>
+          <div class="flow-body">
+            <div class="flow-title">Mise en production & suivi fiscal ZAI</div>
+            <div class="flow-desc">Début d'exploitation. IS 0% pendant les 5 premiers exercices bénéficiaires, puis 15% (CGI 2024, corrigé — non 20%). Déclaration annuelle DGI en régime ZAI. Suivi ADII pour l'exonération TVA sur matériels importés.</div>
+            <div class="flow-meta">IS 0% → 15% | TP exonérée 15 ans | TVA imports exonérée</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Délais réglementaires synthèse</div>
+        <table class="info-table">
+          <thead><tr><th>Étape</th><th>Délai cible</th><th>Organisme</th></tr></thead>
+          <tbody>
+            <tr><td>Création société</td><td>24–72h</td><td>CRI Guichet unique</td></tr>
+            <tr><td>Instruction CRUI (Charte)</td><td>30 jours</td><td>CRUI / Loi 22-24</td></tr>
+            <tr><td>Convention ZAI — signature</td><td>2–8 semaines</td><td>Gestionnaire ZAI</td></tr>
+            <tr><td>Livraison terrain viabilisé</td><td>2–12 mois</td><td>ZAI / Organisme</td></tr>
+            <tr><td>Permis construire</td><td>30–60 jours</td><td>Commune / Agence urbaine</td></tr>
+            <tr><td>Raccordement utilités</td><td>1–3 mois</td><td>ONEE / Regie / Régie ZAI</td></tr>
+            <tr><td>1ère production déclarée</td><td>6–18 mois</td><td>Entreprise / DGI</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Documents requis — dossier ZAI complet</div>
+        <table class="info-table">
+          <thead><tr><th>Document</th><th>Format</th><th>Obligatoire</th></tr></thead>
+          <tbody>
+            <tr><td>Statuts de la société</td><td>Acte notarié</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Oui</span></td></tr>
+            <tr><td>Business plan (5 ans)</td><td>Document signé</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Oui</span></td></tr>
+            <tr><td>Plan de financement</td><td>Tableau + lettre banque</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Oui</span></td></tr>
+            <tr><td>CIN/Passeport dirigeants</td><td>Copie légalisée</td><td><span class="td-badge" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Oui</span></td></tr>
+            <tr><td>Étude d'impact (si requis)</td><td>Rapport technique</td><td><span class="td-badge" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">Conditionnel</span></td></tr>
+            <tr><td>Plan architecte / site</td><td>Plans visés</td><td><span class="td-badge" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">Phase 2</span></td></tr>
+            <tr><td>Convention partenariat (si JV)</td><td>Acte notarié</td><td><span class="td-badge" style="background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber)">Si JV</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Régime de change — IGOC 2024</div>
+        <table class="info-table">
+          <thead><tr><th>Opération</th><th>Régime</th></tr></thead>
+          <tbody>
+            <tr><td>Rapatriement bénéfices ZAI</td><td>Libre — après acquittement IS</td></tr>
+            <tr><td>Transferts ZF (TFZ)</td><td>Convertibles — libre (IGOC 2024)</td></tr>
+            <tr><td>CFC — transactions</td><td>Aucune restriction changes</td></tr>
+            <tr><td>Investissement étranger direct</td><td>Déclaration Office des Changes</td></tr>
+            <tr><td>Compte devises entreprise</td><td>Autorisé — banques agréées BAM</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert a-info" style="margin-top:4px">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span><strong>Dispositif PME Charte (déc. 2025) :</strong> Projets de 1M à 50M MAD éligibles via mécanisme simplifié CRI. Les PME n'atteignant pas le seuil structurant (50M MAD / 50 emplois) peuvent bénéficier d'un régime dérogatoire en cours de déploiement.</span>
+  </div>
+
+  <div class="law-ref" style="margin-top:14px">
+    <strong>Textes de référence :</strong> Loi-cadre 03-22 (Charte Investissement) · Loi 22-24 (CRUI) · Art. 6 CGI 2024 (ZAI) · Loi 19-94 (ZF) · IGOC 2024 (Office des Changes) · Décret CRUI 2024 · Note circulaire DGI 2024 non-cumulativité
+  </div>
+</div>
+
+<!-- ══════════════════ CHECKLIST ══════════════════ -->
+<div id="section-checklist" class="section">
+  <div class="hero">
+    <h1>Checklist <em>Investisseur</em></h1>
+    <p>Liste de contrôle structurée pour un projet d'implantation en zone économique marocaine. De la due diligence fiscale à la mise en production effective.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Phase 1 — Due diligence &amp; sélection zone
+      </div>
+      <div class="chk-list" id="chk-diligence"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Phase 2 — Constitution société &amp; CRI
+      </div>
+      <div class="chk-list" id="chk-societe"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        Phase 3 — Dossier ZAI &amp; foncier
+      </div>
+      <div class="chk-list" id="chk-zai"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Phase 4 — Charte &amp; mise en production
+      </div>
+      <div class="chk-list" id="chk-charte"></div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 20px;box-shadow:var(--sh);margin-top:4px">
+    <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Progression globale</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div id="global-progress-bar" style="height:100%;background:var(--gold);border-radius:4px;transition:width .3s;width:0%"></div></div>
+      <div id="global-progress-txt" style="font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;color:var(--gold);min-width:60px;text-align:right">0 / 0</div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button onclick="checkAll()" style="padding:6px 16px;background:var(--gold);color:#fff;border:none;border-radius:var(--r);font-family:DM Sans,sans-serif;font-size:12px;cursor:pointer">Tout cocher</button>
+      <button onclick="uncheckAll()" style="padding:6px 16px;background:none;border:1px solid var(--border);border-radius:var(--r);color:var(--mid);font-family:DM Sans,sans-serif;font-size:12px;cursor:pointer">Réinitialiser</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ PORTS = PÔLES RÉGIONAUX ══════════════════ -->
+<div id="section-ports" class="section">
+  <div class="hero">
+    <h1>Pôles Régionaux — <em>Investissement</em></h1>
+    <p>Les trois pôles stratégiques marocains : Tanger Med (logistique & industrie), Agadir (agro-maritime) et Dakhla (énergies & pêche). Chacun bénéficie d'un régime fiscal spécifique et d'avantages différenciés.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)">3 Pôles stratégiques</span>
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">110 000+ emplois directs</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">IS 0% permanent — Dakhla</span>
+    </div>
+  </div>
+
+  <div class="ports-grid">
+    <div class="port-card active" onclick="showPole('tanger',this)">
+      <div class="port-name">🚢 Tanger Med — Pôle Portuaire</div>
+      <div class="port-code">PÔLE RÉGIONAL · TANGER-TÉTOUAN-AL HOCEÏMA</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>11,1M</strong>EVP / an</div>
+        <div class="port-stat"><strong>80 000</strong>emplois directs</div>
+        <div class="port-stat"><strong>1er</strong>port Afrique</div>
+      </div>
+    </div>
+    <div class="port-card" onclick="showPole('agadir',this)">
+      <div class="port-name">🐟 Agadir — Pôle Agro-Maritime</div>
+      <div class="port-code">PÔLE RÉGIONAL · SOUSS-MASSA</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>1,2M t</strong>Pêche / an</div>
+        <div class="port-stat"><strong>25 000</strong>emplois directs</div>
+        <div class="port-stat"><strong>+15%</strong>Prime territoriale</div>
+      </div>
+    </div>
+    <div class="port-card" onclick="showPole('dakhla',this)">
+      <div class="port-name">🌬️ Dakhla — Zone Atlantic Sud</div>
+      <div class="port-code">PÔLE STRATÉGIQUE · DAKHLA-OUED EDDAHAB</div>
+      <div class="port-stats">
+        <div class="port-stat"><strong>IS 0%</strong>PERMANENT</div>
+        <div class="port-stat"><strong>330j/an</strong>Vent 8 m/s</div>
+        <div class="port-stat"><strong>ZLECAf</strong>Gateway</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="pole-detail-zone"></div>
+</div>
+
+<!-- ══════════════════ TANGER = TFZ + TANGER MED ══════════════════ -->
+<div id="section-tanger" class="section">
+  <div class="hero">
+    <h1><em>Tanger Med</em> &amp; TFZ — Hub Industriel</h1>
+    <p>Le complexe Tanger-Med est l'écosystème économique le plus dense du Maroc : 1er port africain (11,1M EVP), Zone Franche Tanger (345 ha, 600+ entreprises) et ZAI Tanger (2 300 ha, 50 000 emplois).</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">11,1M EVP — 2025</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">72 lignes · 180 armateurs</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">TFZ — IS 15% permanent</span>
+      <span class="htag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">ZAI — IS 0%→15%</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">11,1M</div><div class="kpi-lbl">EVP / an 2025</div></div>
+    <div class="kpi"><div class="kpi-val">80K+</div><div class="kpi-lbl">Emplois directs</div></div>
+    <div class="kpi"><div class="kpi-val">700+</div><div class="kpi-lbl">Entreprises ZAI</div></div>
+    <div class="kpi"><div class="kpi-val">2h10</div><div class="kpi-lbl">LGV Tanger-Casa</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">TFZ — Tanger Free Zone (Loi 19-94)</div>
+      <div class="info-pills">
+        <span class="pill pill-green">IS 15% permanent</span>
+        <span class="pill pill-green">TP réduite 50%</span>
+        <span class="pill pill-green">TVA imports exonérée</span>
+        <span class="pill pill-gold">Change libre IGOC 2024</span>
+      </div>
+      <table class="info-table">
+        <tbody>
+          <tr><td>Superficie</td><td>345 ha opérationnels</td></tr>
+          <tr><td>Emplois</td><td>~30 000</td></tr>
+          <tr><td>Entreprises</td><td>>600 (65 nationalités)</td></tr>
+          <tr><td>Taux occupation</td><td>92%</td></tr>
+          <tr><td>Distance Tanger Med</td><td>0 km (adjacent)</td></tr>
+          <tr><td>Foncier</td><td>380–550 MAD/m²</td></tr>
+          <tr><td>IS</td><td>15% permanent (vs 20% droit commun)</td></tr>
+          <tr><td>Charte Investissement</td><td>N/A — régime ZF exclusif</td></tr>
+        </tbody>
+      </table>
+      <div class="law-ref" style="margin-top:10px">
+        <strong>Entreprises phares :</strong> Renault, Delphi, Yazaki, Lear, TESCA, Faurecia, Leoni, SEWS<br>
+        <strong>Secteurs :</strong> Automobile · Aéronautique · Textile · Commerce international
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ZAI Tanger — Meloussa (Art. 6 CGI 2024)</div>
+      <div class="info-pills">
+        <span class="pill pill-blue">IS 0%→15%</span>
+        <span class="pill pill-green">TP exonérée 15 ans</span>
+        <span class="pill pill-green">TVA matériels exonérée</span>
+        <span class="pill pill-gold">Prime 25% CAPEX</span>
+      </div>
+      <table class="info-table">
+        <tbody>
+          <tr><td>Superficie</td><td>2 300 ha (+ Tanger Tech 5 000 ha)</td></tr>
+          <tr><td>Emplois</td><td>~50 000 (+100 000 obj. TechCity)</td></tr>
+          <tr><td>Entreprises</td><td>>700</td></tr>
+          <tr><td>Taux occupation</td><td>88%</td></tr>
+          <tr><td>Distance Tanger Med</td><td>5 km / 8 min</td></tr>
+          <tr><td>Foncier</td><td>400–600 MAD/m²</td></tr>
+          <tr><td>IS</td><td>0% (5 ex. bénéf.) puis 15% (CGI 2024)</td></tr>
+          <tr><td>Prime hub (0% territorial)</td><td>Max 25% CAPEX emplois+sectorielle</td></tr>
+        </tbody>
+      </table>
+      <div class="alert a-warn" style="margin-top:10px">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+        <span><strong>Hub majeur :</strong> Prime territoriale = 0% (ZAT est un hub — art. Charte). LF 2024 non-cumulativité applicable. RAS 5% PM.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Corridors logistiques — Tanger Med</div>
+    <table class="info-table">
+      <thead><tr><th>Destination</th><th>Distance</th><th>Mode</th><th>Délai estimé</th><th>Infrastructure</th></tr></thead>
+      <tbody>
+        <tr><td>Casablanca</td><td>340 km</td><td>Autoroute / LGV</td><td>3–4h route · 2h10 train</td><td>A1 + LGV Tanger-Casa</td></tr>
+        <tr><td>Rabat</td><td>250 km</td><td>Autoroute</td><td>2h30</td><td>A1</td></tr>
+        <tr><td>Fès</td><td>340 km</td><td>Autoroute</td><td>3h</td><td>A2</td></tr>
+        <tr><td>Kénitra (ZAI AFZ)</td><td>270 km</td><td>Autoroute / Rail</td><td>2h45</td><td>A1 + rail Casa-Kénitra</td></tr>
+        <tr><td>Algésiras (Espagne)</td><td>14 km + ferry</td><td>Ferry Ro-Ro</td><td>35 min ferry</td><td>Tanger Med → Algésiras</td></tr>
+        <tr><td>Rotterdam (Europe)</td><td>Maritime</td><td>Conteneur</td><td>4–5 jours</td><td>Lignes régulières TM</td></tr>
+        <tr><td>Barcelone</td><td>Maritime</td><td>Conteneur</td><td>2–3 jours</td><td>Feeder Méditerranée</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert a-info">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span>Tanger Med est devenu en 2025 le <strong>2ème port mondial de transbordement après Singapour</strong>, avec 11,1 millions d'EVP et 161 millions de tonnes de trafic global (+13,3% vs 2024). Tanger Tech City vise 100 000 emplois à horizon 2030 dans les secteurs batteries EV, digital et industries vertes.</span>
+  </div>
+</div>
+
+<!-- ══════════════════ PORTNET = CRI & CHARTE ══════════════════ -->
+<div id="section-portnet" class="section">
+  <div class="hero">
+    <h1>Incitations &amp; <em>Charte Investissement</em></h1>
+    <p>Les Centres Régionaux d'Investissement (CRI) sont les guichets uniques régionaux pour tout projet d'investissement. La Charte 03-22 offre des primes d'investissement pouvant atteindre 30% du CAPEX pour les projets structurants.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">Loi-cadre 03-22</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">12 CRI régionaux</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">CRUI Loi 22-24 — 30j</span>
+      <span class="htag" style="background:var(--bg2);border-color:var(--border-mid);color:var(--muted)">Guichet unique 24–72h</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">12</div><div class="kpi-lbl">CRI régionaux</div></div>
+    <div class="kpi"><div class="kpi-val">30%</div><div class="kpi-lbl">Prime max CAPEX</div></div>
+    <div class="kpi"><div class="kpi-val">30j</div><div class="kpi-lbl">Délai CRUI cible</div></div>
+    <div class="kpi"><div class="kpi-val">50M MAD</div><div class="kpi-lbl">Seuil structurant</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Primes Charte Investissement — Grille</div>
+      <table class="info-table">
+        <thead><tr><th>Prime</th><th>Taux</th><th>Conditions</th></tr></thead>
+        <tbody>
+          <tr><td>Prime de base (emplois)</td><td style="color:var(--green);font-weight:700">5–15%</td><td>Ratio emplois/investissement ≥2</td></tr>
+          <tr><td>Prime territoriale Cat. B</td><td style="color:var(--green);font-weight:700">+15%</td><td>Régions défavorisées (Fès, Oujda, Agadir...)</td></tr>
+          <tr><td>Prime territoriale Cat. A</td><td style="color:var(--amber);font-weight:700">+10%</td><td>Régions intermédiaires (Settat, Bouknadel...)</td></tr>
+          <tr><td>Hub majeur — territorial</td><td style="color:var(--red);font-weight:700">0%</td><td>Tanger ZAT, Kénitra AFZ, Nouaceur Midparc</td></tr>
+          <tr><td>Prime sectorielle</td><td style="color:var(--green);font-weight:700">+5%</td><td>Aéro, auto, digital, santé, énergie, défense</td></tr>
+          <tr><td>Prime emploi féminin</td><td style="color:var(--blue);font-weight:700">+3%</td><td>≥30% femmes dans les emplois créés</td></tr>
+          <tr><td>Prime transition verte</td><td style="color:var(--blue);font-weight:700">+3%</td><td>Certification ISO 14001 ou équivalent</td></tr>
+          <tr><td>Prime R&D</td><td style="color:var(--blue);font-weight:700">+3%</td><td>Budget R&D ≥2% CA prévisionnel</td></tr>
+          <tr><td><strong>PLAFOND TOTAL</strong></td><td style="color:var(--gold);font-weight:700;font-family:JetBrains Mono,monospace">30%</td><td>du CAPEX (toutes primes cumulées)</td></tr>
+        </tbody>
+      </table>
+      <div class="alert a-warn" style="margin-top:10px">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+        <span><strong>Non-cumulativité LF 2024 :</strong> Les primes Charte ne sont PAS cumulables avec les exonérations ZAI (IS 0%→15%). L'entreprise doit choisir son régime. Seul le régime ZAI de droit commun (avant exonération) est compatible avec la Charte.</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Réseau CRI — Coordonnées principales</div>
+        <table class="info-table">
+          <thead><tr><th>CRI</th><th>Région</th><th>Site</th></tr></thead>
+          <tbody>
+            <tr><td>CRI Casablanca-Settat</td><td>Casa-Settat</td><td>casainvest.ma</td></tr>
+            <tr><td>CRI Rabat-Salé-Kénitra</td><td>Rabat-Salé-Kénitra</td><td>rabatinvest.ma</td></tr>
+            <tr><td>CRI Tanger-Tétouan-Al Hoceïma</td><td>Tanger-TTH</td><td>investangier.com</td></tr>
+            <tr><td>CRI Fès-Meknès</td><td>Fès-Meknès</td><td>fesmeknesinvest.ma</td></tr>
+            <tr><td>CRI Oriental</td><td>Oriental</td><td>orientalinvest.ma</td></tr>
+            <tr><td>CRI Souss-Massa</td><td>Agadir</td><td>agadirinvest.com</td></tr>
+            <tr><td>CRI Dakhla-Oued Eddahab</td><td>Dakhla</td><td>dakhlaconnect.com</td></tr>
+            <tr><td>CRI Marrakech-Safi</td><td>Marrakech</td><td>invest-marrakech.ma</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Convergence IS — Régimes comparés (10 ans)</div>
+        <table class="info-table">
+          <thead><tr><th>Régime</th><th>An 1–5</th><th>An 6–10</th><th>Permanent</th></tr></thead>
+          <tbody>
+            <tr><td>Droit commun</td><td style="color:var(--red)">20%</td><td style="color:var(--red)">20%</td><td style="color:var(--red)">20%</td></tr>
+            <tr><td>ZAI (Art.6 CGI 2024)</td><td style="color:var(--green);font-weight:700">0%</td><td style="color:var(--amber);font-weight:700">15%</td><td style="color:var(--amber)">15%</td></tr>
+            <tr><td>Zone Franche (ZF)</td><td style="color:var(--blue);font-weight:700">15%</td><td style="color:var(--blue);font-weight:700">15%</td><td style="color:var(--blue)">15%</td></tr>
+            <tr><td>CFC</td><td style="color:var(--green);font-weight:700">0%</td><td style="color:var(--amber);font-weight:700">20%</td><td style="color:var(--amber)">20%</td></tr>
+            <tr><td>Provinces du Sud</td><td style="color:var(--green);font-weight:700">0%</td><td style="color:var(--green);font-weight:700">0%</td><td style="color:var(--green);font-weight:700">0% PERM.</td></tr>
+          </tbody>
+        </table>
+        <div style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--muted);margin-top:8px">NB : IS ZAI = 15% (non 20%) à partir du 6ème exercice bénéficiaire — correction CGI 2024. CFC = 20% (non 15%) distinctement.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Glossaire trilingue — Zones économiques</div>
+        <table class="info-table">
+          <thead><tr><th>Français</th><th>English</th><th>العربية</th></tr></thead>
+          <tbody>
+            <tr><td>Zone d'Accélération Industrielle</td><td>Industrial Acceleration Zone</td><td>منطقة التسريع الصناعي</td></tr>
+            <tr><td>Charte de l'Investissement</td><td>Investment Charter</td><td>ميثاق الاستثمار</td></tr>
+            <tr><td>Prime à l'investissement</td><td>Investment Grant</td><td>منحة الاستثمار</td></tr>
+            <tr><td>Exonération fiscale</td><td>Tax Exemption</td><td>إعفاء ضريبي</td></tr>
+            <tr><td>Guichet Unique (CRI)</td><td>One-Stop Shop</td><td>الشباك الوحيد</td></tr>
+            <tr><td>Prime territoriale</td><td>Territorial Incentive</td><td>تحفيزات ترابية</td></tr>
+            <tr><td>Non-cumulativité</td><td>Non-Stacking Rule</td><td>عدم التراكم</td></tr>
+            <tr><td>Zone Franche</td><td>Free Trade Zone</td><td>المنطقة الحرة</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="law-ref">
+    <strong>Sources :</strong> Loi-cadre 03-22 (Charte Investissement) · Loi 22-24 (CRUI) · Art. 6 CGI 2024 · Art. 247 CGI (Prov. Sud) · Loi 19-94 (ZF) · AMDIE 2024 · DGI Circulaire non-cumulativité LF 2024
+  </div>
+</div>
+
+
+<!-- ══════════════════ SIMULATEUR FISCAL ══════════════════ -->
+<div id="section-simulateur" class="section">
+  <div class="hero">
+    <h1>Simulateur <em>Fiscal & Primes</em></h1>
+    <p>Estimez vos économies IS sur 10 ans selon le régime choisi, calculez vos primes Charte 03-22 et obtenez un classement des zones les plus adaptées à votre projet.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">CGI 2024 — IS 0%→15%</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">Charte 03-22 — max 30%</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">Non-cumulativité LF 2024</span>
+    </div>
+  </div>
+
+  <div class="alert a-warn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+    <span><strong>Avertissement :</strong> Les résultats sont des estimations à titre indicatif. IS ZAI corrigé à 15% (non 20%) après 5 exercices bénéficiaires — CGI 2024. Consulter un expert fiscal avant décision.</span>
+  </div>
+
+  <div class="sim-card">
+    <div class="card-title"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Paramètres du projet</div>
+    <div class="sim-grid">
+      <div class="sim-field"><label>CAPEX total (MAD)</label><input type="number" id="s-invest" value="50000000" min="0" step="1000000"></div>
+      <div class="sim-field"><label>Résultat net annuel moyen (MAD)</label><input type="number" id="s-result" value="5000000" min="0" step="100000"></div>
+      <div class="sim-field"><label>Emplois directs CDI créés</label><input type="number" id="s-emplois" value="50" min="0"></div>
+      <div class="sim-field"><label>Secteur d'activité</label>
+        <select id="s-secteur">
+          <option value="auto">Automobile</option>
+          <option value="aero">Aéronautique</option>
+          <option value="agro">Agroalimentaire</option>
+          <option value="textile">Textile / Cuir</option>
+          <option value="industrie">Industrie générale</option>
+          <option value="digital">Digital / TIC</option>
+          <option value="energie">Énergies renouvelables</option>
+          <option value="finance">Finance / Services</option>
+          <option value="tourisme">Tourisme</option>
+          <option value="sante">Santé / Pharmacie</option>
+          <option value="defense">Défense / Souveraineté</option>
+        </select>
+      </div>
+      <div class="sim-field"><label>Orientation export</label>
+        <select id="s-export">
+          <option value="high">Majoritairement export (&gt;70%)</option>
+          <option value="mid">Export partiel (30–70%)</option>
+          <option value="low">Marché local principal</option>
+        </select>
+      </div>
+      <div class="sim-field"><label>Zone cible (optionnel)</label>
+        <select id="s-zone" onchange="checkHubSim()">
+          <option value="">-- Non déterminée --</option>
+          <option value="zai-tanger">ZAI Tanger — Meloussa</option>
+          <option value="zai-tanger-tech">ZAI Tanger Tech City</option>
+          <option value="zai-kenitra">ZAI Kénitra — AFZ</option>
+          <option value="zai-bouknadel">ZAI Bouknadel</option>
+          <option value="zai-fes">ZAI Fès — Aïn Chkef</option>
+          <option value="zai-oujda">ZAI Oujda — Selouane</option>
+          <option value="zai-casa">ZAI Casablanca — Bouskoura</option>
+          <option value="zai-nouaceur">ZAI Nouaceur / Midparc</option>
+          <option value="zai-settat">ZAI Settat</option>
+          <option value="zai-agadir">ZAI Agadir — Aït Melloul</option>
+          <option value="zf-tanger">TFZ — Tanger Free Zone</option>
+          <option value="zf-casa">ZFAC — Aéroport Casa</option>
+          <option value="cfc">Casablanca Finance City</option>
+          <option value="pole-dakhla">Zone Atlantic Dakhla</option>
+        </select>
+      </div>
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin:16px 0 9px">Primes transverses Charte 03-22 — cocher si applicable</div>
+    <div class="trans-grid">
+      <label class="trans-chk" onclick="this.classList.toggle('checked')"><input type="checkbox" id="sc-genre"><div class="trans-lbl"><strong>Emploi féminin &gt;30% → +3%</strong><span>Taux féminin &gt; 30% des effectifs</span></div></label>
+      <label class="trans-chk" onclick="this.classList.toggle('checked')"><input type="checkbox" id="sc-green"><div class="trans-lbl"><strong>Décarbonation / Vert → +3%</strong><span>Énergies renouvelables utilisées</span></div></label>
+      <label class="trans-chk" onclick="this.classList.toggle('checked')"><input type="checkbox" id="sc-rd"><div class="trans-lbl"><strong>R&amp;D / Innovation → +3%</strong><span>Activité R&amp;D ou métiers d'avenir</span></div></label>
+      <label class="trans-chk" onclick="this.classList.toggle('checked')"><input type="checkbox" id="sc-avenir"><div class="trans-lbl"><strong>Emplois qualifiés → +3%</strong><span>≥100 emplois Bac+2 et plus</span></div></label>
+      <label class="trans-chk" onclick="this.classList.toggle('checked')"><input type="checkbox" id="sc-local"><div class="trans-lbl"><strong>Intégration locale → +3%</strong><span>Sourcing marocain ≥ 40%</span></div></label>
+    </div>
+    <div class="hub-alert-sim" id="hub-alert-sim">🔵 Zone hub sélectionnée — <strong>Prime territoriale = 0%</strong> (TFZ/AFZ Kénitra/Midparc). Primes emploi et transverses restent cumulables.</div>
+    <div style="margin-top:16px;display:flex;align-items:center;gap:14px">
+      <button class="sim-btn" onclick="runSimulation()">→ Calculer l'avantage fiscal</button>
+      <span id="sim-status" style="font-size:12px;color:var(--muted)"></span>
+    </div>
+  </div>
+
+  <div id="sim-results" style="display:none">
+    <div class="sim-card">
+      <div class="card-title">Économies IS estimées — 10 ans</div>
+      <div class="res-grid" id="s-res-grid"></div>
+    </div>
+    <div class="grid2">
+      <div class="sim-card">
+        <div class="card-title">Classement zones — adéquation projet</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">Basé sur secteur, CAPEX, export et éligibilité primes</div>
+        <div id="s-ranking"></div>
+      </div>
+      <div class="sim-card" style="background:linear-gradient(135deg,rgba(184,146,42,.07),rgba(184,146,42,.02));border-color:var(--gold-bd)">
+        <div class="card-title" style="color:var(--gold)">Charte 03-22 — Primes directes estimées</div>
+        <div id="s-charte-results"></div>
+      </div>
+    </div>
+    <div class="sim-card">
+      <div class="card-title">Convergence IS — ZAI vs Droit Commun (10 ans)</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:4px">IS ZAI corrigé CGI 2024 : 0% pendant 5 exercices bénéficiaires, puis <strong>15%</strong> (non 20%). Économie permanente de 5 pts vs droit commun 20%.</p>
+      <div class="chart-box"><canvas id="is-chart"></canvas></div>
+      <div class="grid2" style="margin-top:14px;gap:10px">
+        <div style="border-left:3px solid var(--blue);padding-left:10px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--blue);text-transform:uppercase;margin-bottom:3px">Droit commun (cible)</div><div style="font-size:12px;color:var(--mid)">Convergence vers 20% pour entreprises industrielles (LF 2023–2026). Écart résiduel de 5 pts avec le régime ZAI.</div></div>
+        <div style="border-left:3px solid var(--green);padding-left:10px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--green);text-transform:uppercase;margin-bottom:3px">Provinces du Sud (Dakhla)</div><div style="font-size:12px;color:var(--mid)">IS 0% permanent (Art. 247 CGI). Régime le plus favorable du Maroc — applicable à toute activité implantée à Dakhla ou Laâyoune.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ BENCHMARK AFRIQUE ══════════════════ -->
+<div id="section-benchmark" class="section">
+  <div class="hero">
+    <h1>Benchmark <em>Afrique &amp; Monde</em></h1>
+    <p>Positionnement compétitif du Maroc face aux principales destinations d'investissement africaines — CNUCED WIR 2025, GFCI sept. 2025, CFCA Indice Attractivité 2024, AMDIE.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">1er Afrique — CFCA 2024</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">IDE +56% en 2024</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">CFC 2ème Afrique — GFCI 2025</span>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">1,64 Mrd$</div><div class="kpi-lbl">IDE Maroc 2024 (+56%)</div></div>
+    <div class="kpi"><div class="kpi-val">A4</div><div class="kpi-lbl">Risque Coface — meilleur Afrique</div></div>
+    <div class="kpi"><div class="kpi-val">5 ALE</div><div class="kpi-lbl">UE · USA · Turquie · GAFTA · ZLECAf</div></div>
+    <div class="kpi"><div class="kpi-val">30j</div><div class="kpi-lbl">Délai CRUI cible (Loi 22-24)</div></div>
+  </div>
+
+  <div class="bm-table-wrap">
+    <table class="bm-table">
+      <thead>
+        <tr><th>Pays / Pôle</th><th>IDE 2024 (Mrd$)</th><th>IS zone spéciale</th><th>Durée exo.</th><th>Connectivité</th><th>Délai création</th><th>Risque Coface</th><th>Atout différentiel</th></tr>
+      </thead>
+      <tbody>
+        <tr class="maroc"><td><strong>&#127474;&#127462; Maroc</strong><span class="badge-1st">1er Afrique CFCA</span></td><td><strong>1,64</strong> <span style="color:var(--green);font-size:11px">+56%</span></td><td><strong>0% → 15%</strong></td><td><strong>5 ans</strong></td><td><span class="stars">★★★★★</span></td><td><strong>~30 jours</strong></td><td style="color:var(--green);font-weight:700">A4</td><td>Tanger Med 1er port Afrique, ALE UE+USA+Turquie, Charte 30%, ZLECAf</td></tr>
+        <tr><td>&#127466;&#127468; Égypte — ZES Suez</td><td>46,6</td><td>0–10% variable</td><td>7–25 ans</td><td><span class="stars">★★★★</span></td><td>~7 jours</td><td style="color:var(--amber)">B</td><td>ZES Canal de Suez, marché 110M hab., hub aérien Caire</td></tr>
+        <tr><td>&#127466;&#127481; Éthiopie — Parcs industriels</td><td>3,98</td><td>0%</td><td>10 ans</td><td><span class="stars">★★</span></td><td>~3 jours</td><td style="color:var(--red)">D</td><td>Coût MO très bas, Hawassa Park 60k emplois, textile</td></tr>
+        <tr><td>&#127479;&#127484; Rwanda — SEZ Kigali</td><td>~1,1</td><td>0%</td><td>7 ans</td><td><span class="stars">★★</span></td><td><strong style="color:var(--green)">6 heures</strong></td><td style="color:var(--amber)">B</td><td>Meilleur Doing Business Afrique, hub digital, sécurité</td></tr>
+        <tr><td>&#127480;&#127475; Sénégal — ZES</td><td>~1,7</td><td>15%</td><td>25 ans</td><td><span class="stars">★★★</span></td><td>~2 jours</td><td style="color:var(--amber)">B</td><td>Pétrole offshore Sangomar, croissance 8%/an prévue</td></tr>
+        <tr><td>&#127481;&#127475; Tunisie — zones offshore</td><td>~0,8</td><td>10%</td><td>10 ans</td><td><span class="stars">★★★</span></td><td>~7 jours</td><td style="color:var(--red)">C</td><td>Main-d'œuvre qualifiée, proximité UE, secteur services</td></tr>
+        <tr><td>&#127462;&#127476; Côte d'Ivoire — VITIB</td><td>~1,4</td><td>15%</td><td>8 ans</td><td><span class="stars">★★★</span></td><td>~5 jours</td><td style="color:var(--amber)">B</td><td>Croissance rapide CEDEAO, hub régional Abidjan</td></tr>
+        <tr><td>&#127472;&#127466; Kenya — SEZ</td><td>~0,9</td><td>10%</td><td>10 ans</td><td><span class="stars">★★★</span></td><td>~7 jours</td><td style="color:var(--amber)">B</td><td>Hub fintech, port Mombasa, COMESA accès</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="bm-cards">
+    <div class="bm-card maroc">
+      <div class="bm-card-title">&#127474;&#127462; Maroc — chiffres clés 2025</div>
+      <div class="bm-stat"><span>IDE 2024</span><strong>1,64 Mrd$ (+56%)</strong></div>
+      <div class="bm-stat"><span>Tanger Med EVP</span><strong>11,1M (2025)</strong></div>
+      <div class="bm-stat"><span>Trafic total TM</span><strong>161 Mt (+13,3%)</strong></div>
+      <div class="bm-stat"><span>CFC membres</span><strong>~240 entreprises</strong></div>
+      <div class="bm-stat"><span>CFC classement</span><strong>2ème Afrique (GFCI)</strong></div>
+      <div class="bm-stat"><span>Attractivité</span><strong>1er Afrique (CFCA 2024)</strong></div>
+    </div>
+    <div class="bm-card">
+      <div class="bm-card-title">Intégration industrielle</div>
+      <div class="bm-stat"><span>Taux intégration auto</span><strong>&gt;65%</strong></div>
+      <div class="bm-stat"><span>Emplois Tanger Med</span><strong>80 000 directs</strong></div>
+      <div class="bm-stat"><span>Emplois AFZ Kénitra</span><strong>~12 000</strong></div>
+      <div class="bm-stat"><span>Midparc aéro</span><strong>~18 000 emplois</strong></div>
+      <div class="bm-stat"><span>IFMIA formés/an</span><strong>&gt;6 000 techniciens</strong></div>
+    </div>
+    <div class="bm-card">
+      <div class="bm-card-title">Accords de libre-échange actifs</div>
+      <div class="bm-stat"><span>UE (Accord d'Assoc.)</span><strong>0% ch.87 auto</strong></div>
+      <div class="bm-stat"><span>USA (ALECA 2006)</span><strong>95% produits 0%</strong></div>
+      <div class="bm-stat"><span>Turquie</span><strong>Taux préférentiels</strong></div>
+      <div class="bm-stat"><span>GAFTA</span><strong>0%</strong></div>
+      <div class="bm-stat"><span>ZLECAf (ratifié)</span><strong>54 pays africains</strong></div>
+    </div>
+    <div class="bm-card" style="background:var(--blue-bg);border-color:var(--blue-bd)">
+      <div class="bm-card-title" style="color:var(--blue)">Charte 03-22 — unicité Maroc</div>
+      <div class="bm-stat"><span>Prime max cumulée</span><strong style="color:var(--blue)">30% du CAPEX</strong></div>
+      <div class="bm-stat"><span>Prime hub (0%)</span><strong style="color:var(--red)">TFZ/AFZ/Midparc</strong></div>
+      <div class="bm-stat"><span>Prime cat. B (15%)</span><strong style="color:var(--green)">Agadir/Oujda/Dakhla</strong></div>
+      <div class="bm-stat"><span>IS Dakhla</span><strong style="color:var(--green)">0% PERMANENT</strong></div>
+      <div class="bm-stat"><span>PME (déc. 2025)</span><strong>1–50M MAD éligibles</strong></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-title">Matrice de décision — ZAI vs alternatives</div>
+    <div class="mat-grid">
+      <div class="mat-card green">
+        <h4 style="color:var(--green)">✓ ZAI recommandée si…</h4>
+        <div class="mat-item">CAPEX ≥ 50M MAD + ≥ 50 emplois CDI</div>
+        <div class="mat-item">Activité majoritairement exportatrice (&gt;70%)</div>
+        <div class="mat-item">Flux just-in-time port / aéroport</div>
+        <div class="mat-item">Secteur auto, aéro, textile, digital, agro</div>
+        <div class="mat-item">Besoin de liberté de change totale</div>
+      </div>
+      <div class="mat-card blue">
+        <h4 style="color:var(--blue)">→ Droit commun / Parc industriel si…</h4>
+        <div class="mat-item">CAPEX &lt; 50M MAD ou emplois &lt; 50</div>
+        <div class="mat-item">Activité principalement marché local</div>
+        <div class="mat-item">PME / TPME (dispositif CRI déc. 2025)</div>
+        <div class="mat-item">Secteurs non éligibles statut ZAI</div>
+      </div>
+      <div class="mat-card gold">
+        <h4 style="color:var(--gold)">★ Zones cat. B — primes max</h4>
+        <div class="mat-item">Agadir, Oujda, Fès : +15% territorial</div>
+        <div class="mat-item">Dakhla : IS 0% permanent + +15%</div>
+        <div class="mat-item">Primes genre/vert/R&D cumulables (+9%)</div>
+        <div class="mat-item">Cumul possible jusqu'à 30% CAPEX</div>
+      </div>
+      <div class="mat-card purple">
+        <h4 style="color:var(--purple)">⚡ Mégaprojets &gt; 2 Mrd MAD</h4>
+        <div class="mat-item">Convention État négociée (AMDIE)</div>
+        <div class="mat-item">Co-financement d'infrastructures</div>
+        <div class="mat-item">ZAI + Charte + soutien souveraineté</div>
+        <div class="mat-item">Instruction CNI : 6–12 mois</div>
+      </div>
+    </div>
+  </div>
+  <div class="law-ref"><strong>Sources :</strong> CNUCED WIR 2025 · Tanger Med Port Authority Jan. 2025 · GFCI Sept. 2025 · CFCA Indice Attractivité 2024 · Coface Country Risk 2025 · Loi-cadre 03-22 · AMDIE</div>
+</div>
+
+<!-- ══════════════════ LEXIQUE TRILINGUE ══════════════════ -->
+<div id="section-lexique" class="section">
+  <div class="hero">
+    <h1>Lexique <em>Trilingue — 100 Termes</em></h1>
+    <p>Terminologie stratégique de l'investissement au Maroc en français, anglais et arabe — pour vos échanges avec l'AMDIE, les CRI, des partenaires institutionnels et des investisseurs internationaux.</p>
+    <div class="hero-meta">
+      <span class="htag" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)">100 termes &amp; expressions</span>
+      <span class="htag" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)">6 catégories thématiques</span>
+      <span class="htag" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)">FR · EN · AR</span>
+    </div>
+  </div>
+
+  <div class="lex-search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="lex-search" id="lex-search" type="text" placeholder="Rechercher un terme en français, anglais ou arabe…" oninput="filterLex()">
+  </div>
+  <div class="lex-cat-btns" id="lex-cat-btns">
+    <button onclick="filterLexCat('all',this)" class="filt-btn filt-active">Tous (100)</button>
+    <button onclick="filterLexCat('fiscal',this)" class="filt-btn filt-off" style="border-color:#1A3A9A;color:#1A3A9A">Fiscal &amp; Régimes</button>
+    <button onclick="filterLexCat('investissement',this)" class="filt-btn filt-off" style="border-color:#B8922A;color:#B8922A">Investissement &amp; Charte</button>
+    <button onclick="filterLexCat('douane',this)" class="filt-btn filt-off" style="border-color:#1E7A4A;color:#1E7A4A">Douane &amp; Commerce</button>
+    <button onclick="filterLexCat('logistique',this)" class="filt-btn filt-off" style="border-color:#5A2AA0;color:#5A2AA0">Logistique &amp; Infra</button>
+    <button onclick="filterLexCat('juridique',this)" class="filt-btn filt-off" style="border-color:#8A5A10;color:#8A5A10">Juridique &amp; Instit.</button>
+    <button onclick="filterLexCat('finance',this)" class="filt-btn filt-off" style="border-color:#9A2A22;color:#9A2A22">Finance &amp; Change</button>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:12px">
+    <button onclick="expandAll()" class="filt-btn filt-off">Tout ouvrir</button>
+    <button onclick="collapseAll()" class="filt-btn filt-off">Tout fermer</button>
+  </div>
+
+  <div id="lex-tiles-container" class="lex-tiles-wrap"></div>
+  <div style="margin-top:10px;font-size:10.5px;color:var(--muted);font-family:'JetBrains Mono',monospace">Sources : OMD/WCO · AMDIE · Loi-cadre 03-22 · CGI 2024 · OCDE Guide des ZES · Banque Mondiale · CNUCED · Office des Changes</div>
+</div>
+
+</div><!-- /wrap -->
+
+<!-- ══════════════════ CARTE ZONES ÉCONOMIQUES ══════════════════ -->
+<div id="section-carte" class="section">
+  <style>
+    #section-carte.active{display:flex!important;flex-direction:column;position:fixed;top:88px;left:0;right:0;bottom:0;z-index:100;background:var(--bg)}
+    .carte-layout{display:flex;flex:1;min-height:0;overflow:hidden}
+    .carte-sidebar{width:270px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+    .carte-sb-head{padding:12px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+    .carte-sb-head h2{font-family:"DM Serif Display",serif;font-size:14px;color:var(--ink);margin-bottom:6px}
+    .carte-search{width:100%;padding:7px 10px 7px 30px;border:1px solid var(--border);border-radius:var(--r);background:var(--bg);font-family:"DM Sans",sans-serif;font-size:12px;color:var(--ink);outline:none}
+    .carte-search-wrap{position:relative;margin-bottom:8px}
+    .carte-search-wrap svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);pointer-events:none}
+    .carte-layer-btns{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+    .carte-lyr{font-family:"JetBrains Mono",monospace;font-size:9px;padding:3px 7px;border-radius:100px;border:1.5px solid;cursor:pointer;transition:opacity .15s;font-weight:700;letter-spacing:.04em}
+    .carte-lyr.off{opacity:.32}
+    .carte-sb-list{flex:1;overflow-y:auto;padding:6px 0}
+    .carte-grp-hdr{padding:5px 14px 4px;font-family:"JetBrains Mono",monospace;font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+    .carte-item{padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:background .12s;border-bottom:1px solid #F5F4F0}
+    .carte-item:hover{background:var(--gold-pale)}
+    .carte-item.hl{background:var(--gold-pale);border-left:3px solid var(--gold)}
+    .carte-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;border:2px solid}
+    .carte-nm{font-size:12px;color:var(--ink);font-weight:500;flex:1}
+    .carte-lbl{font-family:"JetBrains Mono",monospace;font-size:8px;padding:1px 5px;border-radius:100px;border:1px solid;flex-shrink:0}
+    #carte-map-el{flex:1;min-height:0;height:100%}
+    .carte-legend{position:absolute;bottom:20px;right:14px;z-index:400;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 14px;box-shadow:var(--sh-md);font-size:11px}
+    .carte-legend h4{font-family:"DM Serif Display",serif;font-size:12px;color:var(--ink);margin-bottom:7px}
+    .lg-row{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+    .lg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;border:2px solid}
+    .lg-txt{font-size:10.5px;color:var(--mid)}
+    .leaflet-popup-content-wrapper{border-radius:var(--r-lg);box-shadow:var(--sh-md);border:1px solid var(--border)}
+    .leaflet-popup-content{margin:12px 14px;min-width:200px;font-family:"DM Sans",sans-serif}
+    .lf-pname{font-family:"DM Serif Display",serif;font-size:14px;color:var(--ink);margin-bottom:3px}
+    .lf-pbadge{font-family:"JetBrains Mono",monospace;font-size:9px;padding:2px 7px;border-radius:100px;border:1px solid;display:inline-block;margin-bottom:7px;font-weight:700}
+    .lf-pitems{font-size:11.5px;color:var(--mid);line-height:1.7}
+    .lf-pitems li{list-style:none;padding:2px 0;border-bottom:1px solid #F0EEE8}
+  </style>
+  <div class="carte-layout">
+    <aside class="carte-sidebar">
+      <div class="carte-sb-head">
+        <h2>Zones économiques</h2>
+        <div class="carte-search-wrap">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="carte-search" id="carte-search" type="text" placeholder="Rechercher..." oninput="carteSearch(this.value)">
+        </div>
+        <div class="carte-layer-btns">
+          <button class="carte-lyr" id="clyr-ZAI" style="background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue)" onclick="carteToggle('ZAI',this)">ZAI</button>
+          <button class="carte-lyr" id="clyr-ZF" style="background:var(--green-bg);border-color:var(--green-bd);color:var(--green)" onclick="carteToggle('ZF',this)">ZF</button>
+          <button class="carte-lyr" id="clyr-CFC" style="background:var(--gold-dim);border-color:var(--gold-bd);color:var(--gold)" onclick="carteToggle('CFC',this)">CFC</button>
+          <button class="carte-lyr" id="clyr-POLE" style="background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple)" onclick="carteToggle('POLE',this)">Pôle</button>
+          <button class="carte-lyr" id="clyr-CRI" style="background:var(--bg2);border-color:var(--border-mid);color:var(--mid);border-style:dashed" onclick="carteToggle('CRI',this)">CRI</button>
+        </div>
+      </div>
+      <div class="carte-sb-list" id="carte-sb-list"></div>
+    </aside>
+    <div style="position:relative;flex:1">
+      <div id="carte-map-el"></div>
+      <div class="carte-legend">
+        <h4>Légende</h4>
+        <div class="lg-row"><div class="lg-dot" style="background:rgba(30,77,107,.2);border-color:#1E4D6B"></div><span class="lg-txt">ZAI — IS 0%→15%</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:rgba(26,107,60,.2);border-color:#1A6B3C"></div><span class="lg-txt">Zone Franche — IS 15% perm.</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:rgba(184,146,42,.25);border-color:#B8922A"></div><span class="lg-txt">CFC — IS 0%→20%</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:rgba(90,42,160,.15);border-color:#5A2AA0"></div><span class="lg-txt">Pôle régional prioritaire</span></div>
+        <div class="lg-row"><div class="lg-dot" style="background:var(--bg2);border-color:var(--border-mid);border-style:dashed"></div><span class="lg-txt">CRI — Guichet unique</span></div>
+        <div style="margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted)">Charte 03-22 · CGI 2024 · AMDIE</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Smart-Invest.IA — Zones Économiques Maroc · Charte 03-22 · CGI 2024 · AMDIE · Edition 2025</footer>
+
+<script>
+// NAVIGATION
+let carteMapInited = false;
+function showSection(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (name === 'ports') initPoleDetail();
+  if (name === 'checklist') initChecklist();
+  if (name === 'carte') setTimeout(initCarte, 80);
+  if (name !== 'carte') window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// FILTRE TABLE ZONES
+let currentZoneType = 'tous';
+function filterZoneType(type, btn) {
+  currentZoneType = type;
+  document.querySelectorAll('.filt-btn').forEach(b => { b.className = 'filt-btn filt-off'; });
+  btn.className = 'filt-btn filt-active';
+  filterZoneTable();
+}
+function filterZoneTable() {
+  const q = (document.getElementById('zone-search') || { value:'' }).value.toLowerCase();
+  document.querySelectorAll('.zone-row').forEach(row => {
+    const typeOk = currentZoneType === 'tous' || row.dataset.type === currentZoneType;
+    const txtOk = !q || row.textContent.toLowerCase().includes(q);
+    row.style.display = (typeOk && txtOk) ? '' : 'none';
+  });
+}
+
+// PÔLES RÉGIONAUX
+const POLES = {
+  tanger: {
+    flag:'🚢', name:'Tanger Med — Pôle Portuaire & Industriel', code:'PÔLE TANGER-TTH',
+    desc:'1er port de conteneurs d\'Afrique et 2ème mondial de transbordement. Plateforme industrielle intégrée : ZAI Tanger (2 300 ha), TFZ (345 ha), Tanger Tech City (5 000 ha prévus).',
+    stats:[['Trafic conteneurs','11,1M EVP / an (2025)'],['Trafic total','161M tonnes (+13,3%)'],['Emplois directs','80 000+'],['Superficie ZAI','2 300 ha (+ 5 000 Tanger Tech)'],['Entreprises','700+ ZAI · 600+ TFZ'],['Distance Madrid','Ferry Algésiras 35 min']],
+    pills:['Automobile','Aéronautique','TFZ Zone Franche','Logistique','Textile'],
+    note:'2ème port mondial transbordement (2025) après Singapour. LGV Tanger-Casa 2h10. ZAT hub automobile : PSA, Renault, Lear, Leoni.',
+    regime:'ZAI : IS 0%→15% | ZF TFZ : IS 15% perm. | Charte : 25% CAPEX (0% territorial hub)'
+  },
+  agadir: {
+    flag:'🐟', name:'Agadir — Pôle Agro-Maritime', code:'PÔLE SOUSS-MASSA',
+    desc:'1er port de pêche d\'Afrique (1,2M tonnes/an). Hub d\'exportation agrumes, primeurs et cosmétiques arganiers. Haliopôle intégré et ZAI Aït Melloul (200 ha).',
+    stats:[['Pêche','1,2M tonnes/an — 1er Afrique'],['Agrumes export','Hub EU direct — Al Massira'],['Emplois','~25 000 directs'],['Superficie ZAI','200 ha + extension SM'],['Foncier','250–380 MAD/m²'],['Distance aéroport','8 km — liaisons EU directes']],
+    pills:['Pêche & Conserverie','Agrumes & Primeurs','Arganier','Tourisme'],
+    note:'Prime territoriale Cat. B +15%. Exonérations sectorielles agro. Aéroport Al Massira à 8 km avec vols directs EU. Haliopôle : transformation, conditionnement, export froid.',
+    regime:'ZAI : IS 0%→15% | Charte : 30% CAPEX (+15% territorial Cat.B) | Seuil ≥50M MAD + ≥50 emplois'
+  },
+  dakhla: {
+    flag:'🌬️', name:'Zone Atlantic Dakhla — Provinces du Sud', code:'ZONE STRATÉGIQUE · DAKHLA-OUED EDDAHAB',
+    desc:'Régime fiscal le plus généreux du Maroc : IS 0% PERMANENT (Provinces du Sud). Vent 330 jours/an à 8 m/s, côtes 500 km, gateway ZLECAf vers l\'Afrique de l\'Ouest.',
+    stats:[['IS','0% PERMANENT — Provinces du Sud'],['Vent','330j/an à 8 m/s — éolien exceptionnel'],['Port','Dakhla Atlantique (construction 2027)'],['Foncier','100–200 MAD/m² — très compétitif'],['Aéroport','Dakhla International — 5 km'],['Potentiel','ZLECAf — Afrique de l\'Ouest gateway']],
+    pills:['Énergies renouvelables','Pêche hauturière','Aquaculture','Tourisme premium'],
+    note:'IS 0% permanent : le régime le plus avantageux du Maroc, cumulable avec la Charte 03-22 selon interprétation DGI. Port Dakhla Atlantique en construction, livraison horizon 2027.',
+    regime:'IS 0% PERMANENT (Art. 247 CGI) | TP exonérée | TVA exonérée | Charte : +15% territorial'
+  }
+};
+
+function showPole(key, btn) {
+  document.querySelectorAll('.port-card').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const p = POLES[key]; if (!p) return;
+  document.getElementById('pole-detail-zone').innerHTML = `
+    <div class="port-detail">
+      <div class="port-detail-hdr">
+        <div class="port-flag">${p.flag}</div>
+        <div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">${p.code}</div>
+          <div class="port-detail-name">${p.name}</div>
+          <div style="font-size:13px;color:var(--mid);margin-top:4px;max-width:560px;line-height:1.65">${p.desc}</div>
+        </div>
+      </div>
+      <div class="info-pills">${p.pills.map(pill => '<span class="pill pill-gold">'+pill+'</span>').join('')}</div>
+      <div class="grid2">
+        <div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Caractéristiques</div>
+          <table class="info-table" style="margin-bottom:12px">
+            <tbody>${p.stats.map(([k,v]) => '<tr><td>'+k+'</td><td>'+v+'</td></tr>').join('')}</tbody>
+          </table>
+        </div>
+        <div>
+          <div style="font-family:JetBrains Mono,monospace;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Régimes fiscaux</div>
+          <div style="background:var(--gold-pale);border:1px solid var(--gold-bd);border-radius:var(--r);padding:10px 14px;font-family:JetBrains Mono,monospace;font-size:11px;color:var(--gold);margin-bottom:12px">${p.regime}</div>
+          <div class="alert a-info"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/></svg><span>${p.note}</span></div>
+        </div>
+      </div>
+    </div>`;
+}
+function initPoleDetail() { showPole('tanger', document.querySelector('.port-card')); }
+
+// CHECKLIST
+const CHECKS = {
+  diligence:[
+    {lbl:'Sélection zone cible : ZAI / ZF / CFC / Dakhla', who:'Investisseur'},
+    {lbl:'Simulation IS comparé (ZAI 0%→15% vs ZF 15% vs Dakhla 0%)', who:'Fiscaliste'},
+    {lbl:'Vérification non-cumulativité LF 2024 (Art. 6-III CGI)', who:'Fiscaliste'},
+    {lbl:'Estimation prime Charte 03-22 (base + territoriale + sectorielle)', who:'Investisseur'},
+    {lbl:'Business plan & plan de financement 5 ans', who:'Investisseur'},
+    {lbl:'Vérification seuil Charte : ≥50M MAD + ≥50 emplois CDI', who:'Investisseur'},
+  ],
+  societe:[
+    {lbl:'Choix forme juridique (SARL, SA, SAS) et actionnariat', who:'Juriste'},
+    {lbl:'Rédaction et signature des statuts (notaire)', who:'Notaire'},
+    {lbl:'Dépôt capital social (compte bloqué banque agréée)', who:'Investisseur'},
+    {lbl:'Dépôt dossier CRI — guichet unique (inscription OMPIC / RC)', who:'CRI'},
+    {lbl:'Obtention patente (DGI) et n° TVA', who:'CRI / DGI'},
+    {lbl:'Inscription CNSS (cotisations sociales)', who:'CNSS'},
+  ],
+  zai:[
+    {lbl:'Identification terrain ZAI et contact gestionnaire', who:'Investisseur'},
+    {lbl:'Dépôt demande de terrain (CRI + organisme ZAI)', who:'CRI'},
+    {lbl:'Signature convention d\'installation ZAI', who:'Gestionnaire ZAI'},
+    {lbl:'Obtention titre foncier ou bail emphytéotique', who:'Agence foncière'},
+    {lbl:'Dépôt demande permis de construire', who:'Commune / Agence urbaine'},
+    {lbl:'Raccordement utilities (ONEE, eau, fibre)', who:'Prestataires ZAI'},
+    {lbl:'Demande exonération TVA imports matériels (ADII)', who:'Transitaire / ADII'},
+  ],
+  charte:[
+    {lbl:'Vérification éligibilité Charte (≥50M MAD + ≥50 CDI)', who:'CRI / CRUI'},
+    {lbl:'Dépôt dossier Charte au CRI (CRUI — instruction 30j)', who:'CRUI'},
+    {lbl:'Approbation prime et notification DGI', who:'DGI'},
+    {lbl:'Début construction et recrutement CDI (engagement)', who:'Investisseur'},
+    {lbl:'Première déclaration IS ZAI (exercice bénéficiaire)', who:'DGI'},
+    {lbl:'Suivi et audit annuel engagements emploi / investissement', who:'CRI / DGI'},
+  ]
+};
+let checkState = {};
+function initChecklist() {
+  checkState = {};
+  Object.entries(CHECKS).forEach(([zone, items]) => {
+    const el = document.getElementById('chk-' + zone); if (!el) return;
+    el.innerHTML = items.map((item, i) => {
+      const id = zone + '_' + i; checkState[id] = false;
+      return '<div class="chk-item" id="chkitem-'+id+'" onclick="toggleChk(\''+id+'\')"><div class="chk-box" id="chkbox-'+id+'"></div><div class="chk-lbl">'+item.lbl+'</div><div class="chk-who">'+item.who+'</div></div>';
+    }).join('');
+  });
+  updateProgress();
+}
+function toggleChk(id) {
+  checkState[id] = !checkState[id];
+  document.getElementById('chkitem-'+id)?.classList.toggle('done', checkState[id]);
+  const box = document.getElementById('chkbox-'+id); if(box) box.textContent = checkState[id] ? '✓' : '';
+  updateProgress();
+}
+function updateProgress() {
+  const total = Object.keys(checkState).length, done = Object.values(checkState).filter(Boolean).length;
+  const pct = total > 0 ? Math.round(done/total*100) : 0;
+  const bar = document.getElementById('global-progress-bar'); if(bar) bar.style.width = pct + '%';
+  const txt = document.getElementById('global-progress-txt'); if(txt) txt.textContent = done + ' / ' + total;
+}
+function checkAll() { Object.keys(checkState).forEach(id => { checkState[id]=true; document.getElementById('chkitem-'+id)?.classList.add('done'); const b=document.getElementById('chkbox-'+id);if(b)b.textContent='✓'; }); updateProgress(); }
+function uncheckAll() { Object.keys(checkState).forEach(id => { checkState[id]=false; document.getElementById('chkitem-'+id)?.classList.remove('done'); const b=document.getElementById('chkbox-'+id);if(b)b.textContent=''; }); updateProgress(); }
+
+// ── CARTE — ZONES ÉCONOMIQUES ────────────────────────────────────
+const CARTE_LOCS = [
+  // ZAI
+  {id:'zai-tanger',      name:'ZAI Tanger — Meloussa',          lat:35.72, lng:-5.88, type:'ZAI', items:['IS 0%→15% · 2 300 ha · Hub','~50 000 emplois · 700+ entreprises','Tanger Med 5 km · Auto/Aéro']},
+  {id:'zai-tanger-tech', name:'ZAI Tanger Tech City',           lat:35.67, lng:-5.80, type:'ZAI', items:['IS 0%→15% · 5 000 ha prévus','Obj. 100 000 emplois (2030)','Batteries EV · Digital · Green']},
+  {id:'zai-kenitra',     name:'ZAI Kénitra — Atlantic Free Zone',lat:34.26, lng:-6.62, type:'ZAI', items:['IS 0%→15% · 345 ha · Hub','~12 000 emplois · PSA Stellantis','Port Kénitra 15 km · Automobile']},
+  {id:'zai-bouknadel',   name:'ZAI Bouknadel (Ext. RSK)',        lat:34.12, lng:-6.72, type:'ZAI', items:['IS 0%→15% · +200 ha','Charte +10% territorial','Extension AFZ · sous-traitance auto']},
+  {id:'zai-fes',         name:'ZAI Fès — Aïn Chkef',            lat:33.86, lng:-4.98, type:'ZAI', items:['IS 0%→15% · 350 ha','Charte +15% territorial Cat.B','Cuir · Textile · Agroalimentaire']},
+  {id:'zai-oujda',       name:'ZAI Oujda — Selouane',           lat:34.67, lng:-1.89, type:'ZAI', items:['IS 0%→15% · 115 ha','Charte +15% territorial Cat.B','Frontière Algérie 20 km · Mines']},
+  {id:'zai-casa',        name:'ZAI Casablanca — Bouskoura',     lat:33.37, lng:-7.66, type:'ZAI', items:['IS 0%→15% · 280 ha','~15 000 emplois · Charte +5%','Casa Port 30 km · Industrie/Logist.']},
+  {id:'zai-nouaceur',    name:'ZAI Nouaceur / Midparc',         lat:33.36, lng:-7.58, type:'ZAI', items:['IS 0%→15% · 180 ha · Hub Aéro','~18 000 emplois · Boeing, Safran','Mohammed V 2 km · Aéronautique']},
+  {id:'zai-settat',      name:'ZAI Settat',                     lat:33.00, lng:-7.62, type:'ZAI', items:['IS 0%→15% · 200 ha','Charte +10% · Rail raccordé','A7 directe · Agroalimentaire']},
+  {id:'zai-agadir',      name:'ZAI Agadir — Aït Melloul',       lat:30.40, lng:-9.56, type:'ZAI', items:['IS 0%→15% · 200 ha','Charte +15% territorial Cat.B','Port Agadir 5 km · Pêche/Agro']},
+  {id:'zai-souss-ext',   name:'ZAI Souss-Massa Étendue',        lat:30.33, lng:-9.50, type:'ZAI', items:['IS 0%→15% · Extension + port sec','Charte +15% Cat.B','Agro export · Logistique frigorifique']},
+  // ZF
+  {id:'zf-tanger',       name:'TFZ — Tanger Free Zone',         lat:35.88, lng:-5.50, type:'ZF',  items:['IS 15% PERMANENT · 345 ha','~30 000 emplois · 600 entreprises','Tanger Med 0 km · Change libre']},
+  {id:'zf-casa',         name:'ZFAC — Zone Franche Aéroport',  lat:33.37, lng:-7.57, type:'ZF',  items:['IS 15% PERMANENT · 20 ha','~2 500 emplois · DHL, FedEx','Mohammed V 0 km · Négoce intl']},
+  // CFC
+  {id:'cfc',             name:'Casablanca Finance City (CFC)',  lat:33.58, lng:-7.64, type:'CFC', items:['IS 0%→20% (5 ex. bénéf.)','~8 000 emplois · 240 entreprises','2ème centre financier africain 2025']},
+  // POLE
+  {id:'pole-tanger',     name:'Tanger Med — Pôle Portuaire',   lat:35.90, lng:-5.49, type:'POLE', items:['11,1M EVP/an · 1er port Afrique','80 000 emplois directs','2ème mondial transbordement 2025']},
+  {id:'pole-agadir',     name:'Agadir — Pôle Agro-Maritime',   lat:30.43, lng:-9.64, type:'POLE', items:['1er port pêche Afrique · 1,2M t/an','~25 000 emplois directs','Charte +15% territorial']},
+  {id:'pole-dakhla',     name:'Zone Atlantic Dakhla',           lat:23.69, lng:-15.94,type:'POLE', items:['IS 0% PERMANENT — Provinces Sud','Vent 330j/an à 8 m/s','ZLECAf · Port Dakhla 2027']},
+  // CRI
+  {id:'cri-rabat',       name:'CRI Rabat-Salé-Kénitra',        lat:34.01, lng:-6.83, type:'CRI',  items:['Guichet unique 24–72h','CRUI Loi 22-24 — 30j cible','Couvre ZAI Kénitra, Bouknadel']},
+  {id:'cri-casa',        name:'CRI Casablanca-Settat',          lat:33.60, lng:-7.62, type:'CRI',  items:['1er CRI Maroc par volume','Services FR/EN/AR','Liaisons CFC · ZAI Bouskoura']},
+];
+
+const CARTE_STYLES = {
+  ZAI:  {fill:'rgba(30,77,107,.2)',   stroke:'#1E4D6B', r:10, dash:null},
+  ZF:   {fill:'rgba(26,107,60,.2)',   stroke:'#1A6B3C', r:10, dash:null},
+  CFC:  {fill:'rgba(184,146,42,.25)', stroke:'#B8922A', r:13, dash:null},
+  POLE: {fill:'rgba(90,42,160,.15)',  stroke:'#5A2AA0', r:12, dash:null},
+  CRI:  {fill:'rgba(90,90,84,.1)',    stroke:'#5A5A54', r:7,  dash:'3 2'},
+};
+const CARTE_BADGE = {
+  ZAI:  {bg:'rgba(30,77,107,.1)',  bd:'rgba(30,77,107,.4)',  col:'#1E4D6B', txt:'ZAI'},
+  ZF:   {bg:'rgba(26,107,60,.1)',  bd:'rgba(26,107,60,.4)',  col:'#1A6B3C', txt:'Zone Franche'},
+  CFC:  {bg:'rgba(184,146,42,.1)',bd:'rgba(184,146,42,.4)', col:'#B8922A', txt:'CFC'},
+  POLE: {bg:'rgba(90,42,160,.1)', bd:'rgba(90,42,160,.4)',  col:'#5A2AA0', txt:'Pôle Régional'},
+  CRI:  {bg:'rgba(90,90,84,.08)', bd:'rgba(90,90,84,.3)',   col:'#5A5A54', txt:'CRI'},
+};
+const CARTE_SB_GROUPS = [
+  {key:'ZAI',  label:"Zones d'Accélération Industrielle", dot:'#1E4D6B', bg:'rgba(30,77,107,.07)'},
+  {key:'ZF',   label:'Zones Franches',                    dot:'#1A6B3C', bg:'rgba(26,107,60,.07)'},
+  {key:'CFC',  label:'Casablanca Finance City',           dot:'#B8922A', bg:'rgba(184,146,42,.07)'},
+  {key:'POLE', label:'Pôles Régionaux Prioritaires',      dot:'#5A2AA0', bg:'rgba(90,42,160,.07)'},
+  {key:'CRI',  label:"Centres Régionaux d'Investissement",dot:'#5A5A54', bg:'rgba(90,90,84,.05)'},
+];
+
+let carteMap = null;
+const carteLayers = {};
+const carteLayerGroups = {};
+const carteVisible = {ZAI:true,ZF:true,CFC:true,POLE:true,CRI:true};
+const carteMarkers = {};
+
+function initCarte() {
+  if (carteMapInited) { if (carteMap) setTimeout(() => carteMap.invalidateSize(), 100); return; }
+  carteMapInited = true;
+  carteMap = L.map('carte-map-el', { center:[30.0,-7.0], zoom:6, zoomControl:true });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution:'&copy; OpenStreetMap &copy; CARTO', subdomains:'abcd', maxZoom:19
+  }).addTo(carteMap);
+
+  Object.keys(CARTE_STYLES).forEach(k => carteLayers[k] = []);
+  CARTE_LOCS.forEach(loc => {
+    const s = CARTE_STYLES[loc.type];
+    const b = CARTE_BADGE[loc.type];
+    const m = L.circleMarker([loc.lat, loc.lng], {
+      radius:s.r, fillColor:s.fill, color:s.stroke,
+      weight:s.r > 10 ? 3 : 2, opacity:1, fillOpacity:.92, dashArray:s.dash
+    });
+    m.bindPopup('<div class="lf-pname">'+loc.name+'</div><span class="lf-pbadge" style="background:'+b.bg+';border-color:'+b.bd+';color:'+b.col+'">'+b.txt+'</span><ul class="lf-pitems">'+loc.items.map(i=>'<li>→ '+i+'</li>').join('')+'</ul>', {maxWidth:300});
+    m.on('click', () => carteHl(loc.id));
+    carteLayers[loc.type].push(m);
+    carteMarkers[loc.id] = m;
+  });
+  Object.keys(carteLayers).forEach(k => { carteLayerGroups[k] = L.layerGroup(carteLayers[k]).addTo(carteMap); });
+  carteBuildSb('');
+  setTimeout(() => carteMap && carteMap.invalidateSize(), 200);
+}
+
+function carteBuildSb(q) {
+  const container = document.getElementById('carte-sb-list'); if (!container) return;
+  container.innerHTML = '';
+  const term = q.toLowerCase();
+  CARTE_SB_GROUPS.forEach(g => {
+    const items = CARTE_LOCS.filter(l => l.type===g.key && (!term || l.name.toLowerCase().includes(term)));
+    if (!items.length) return;
+    const grp = document.createElement('div');
+    grp.innerHTML = '<div class="carte-grp-hdr" style="background:'+g.bg+';color:'+g.dot+'">'+g.label+' <span style="font-size:8px;opacity:.6;margin-left:3px">'+items.length+'</span></div>';
+    items.forEach(loc => {
+      const s = CARTE_STYLES[loc.type];
+      const row = document.createElement('div');
+      row.className = 'carte-item'; row.id = 'ci-' + loc.id;
+      const dash = loc.type === 'CRI' ? ';border-style:dashed' : '';
+      row.innerHTML = '<div class="carte-dot" style="background:'+s.fill+';border-color:'+s.stroke+dash+'"></div><div class="carte-nm">'+loc.name+'</div><span class="carte-lbl" style="background:'+s.fill+';border-color:'+s.stroke+';color:'+s.stroke+'">'+loc.type+'</span>';
+      row.onclick = () => carteFlyTo(loc.id);
+      grp.appendChild(row);
+    });
+    container.appendChild(grp);
+  });
+}
+function carteSearch(v) { carteBuildSb(v); }
+function carteFlyTo(id) {
+  const loc = CARTE_LOCS.find(l => l.id===id); if (!loc || !carteMap) return;
+  carteMap.flyTo([loc.lat, loc.lng], 11, {duration:1});
+  setTimeout(() => { const m = carteMarkers[id]; if(m) m.openPopup(); }, 1100);
+  carteHl(id);
+}
+function carteHl(id) {
+  document.querySelectorAll('.carte-item').forEach(el => el.classList.remove('hl'));
+  const el = document.getElementById('ci-'+id);
+  if (el) { el.classList.add('hl'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+}
+function carteToggle(key, btn) {
+  carteVisible[key] = !carteVisible[key];
+  btn.classList.toggle('off', !carteVisible[key]);
+  if (!carteMap) return;
+  if (carteVisible[key]) carteMap.addLayer(carteLayerGroups[key]);
+  else carteMap.removeLayer(carteLayerGroups[key]);
+}
+
+
+// ── ZONES SIMULATEUR ──────────────────────────────────────────────
+const ZONES_SIM = {
+  'zai-tanger':     {nom:'ZAI Tanger — Meloussa',    type:'ZAI', secteurs:['auto','aero','textile','logistique'], charte:{eligible:true,primeTerritoriale:0,primeMax:'25%'},  fiscal:{is:'0%→15%'},isHub:true,  portDist:5},
+  'zai-tanger-tech':{nom:'ZAI Tanger Tech City',      type:'ZAI', secteurs:['auto','aero','digital','energie'],   charte:{eligible:true,primeTerritoriale:0,primeMax:'25%'},  fiscal:{is:'0%→15%'},isHub:true,  portDist:10},
+  'zai-kenitra':    {nom:'ZAI Kénitra — AFZ',          type:'ZAI', secteurs:['auto','digital'],                   charte:{eligible:true,primeTerritoriale:0,primeMax:'20%'},  fiscal:{is:'0%→15%'},isHub:true,  portDist:15},
+  'zai-bouknadel':  {nom:'ZAI Bouknadel',              type:'ZAI', secteurs:['auto','industrie'],                 charte:{eligible:true,primeTerritoriale:10,primeMax:'30%'}, fiscal:{is:'0%→15%'},isHub:false, portDist:25},
+  'zai-fes':        {nom:'ZAI Fès — Aïn Chkef',        type:'ZAI', secteurs:['textile','agro','industrie'],       charte:{eligible:true,primeTerritoriale:15,primeMax:'30%'}, fiscal:{is:'0%→15%'},isHub:false, portDist:220},
+  'zai-oujda':      {nom:'ZAI Oujda — Selouane',       type:'ZAI', secteurs:['agro','industrie'],                 charte:{eligible:true,primeTerritoriale:15,primeMax:'30%'}, fiscal:{is:'0%→15%'},isHub:false, portDist:150},
+  'zai-casa':       {nom:'ZAI Casablanca — Bouskoura', type:'ZAI', secteurs:['industrie','logistique','digital'], charte:{eligible:true,primeTerritoriale:5,primeMax:'25%'},  fiscal:{is:'0%→15%'},isHub:false, portDist:30},
+  'zai-nouaceur':   {nom:'ZAI Nouaceur / Midparc',     type:'ZAI', secteurs:['aero','logistique','industrie'],    charte:{eligible:true,primeTerritoriale:0,primeMax:'20%'},  fiscal:{is:'0%→15%'},isHub:true,  portDist:35},
+  'zai-settat':     {nom:'ZAI Settat',                 type:'ZAI', secteurs:['agro','industrie'],                 charte:{eligible:true,primeTerritoriale:10,primeMax:'25%'}, fiscal:{is:'0%→15%'},isHub:false, portDist:80},
+  'zai-agadir':     {nom:'ZAI Agadir — Aït Melloul',   type:'ZAI', secteurs:['agro','tourisme'],                  charte:{eligible:true,primeTerritoriale:15,primeMax:'30%'}, fiscal:{is:'0%→15%'},isHub:false, portDist:5},
+  'zf-tanger':      {nom:'TFZ — Tanger Free Zone',     type:'ZF',  secteurs:['auto','aero','textile','logistique'],charte:{eligible:false,primeTerritoriale:0,primeMax:'N/A'},fiscal:{is:'15%'},    isHub:true,  portDist:0},
+  'zf-casa':        {nom:'ZFAC — Aéroport Casa',       type:'ZF',  secteurs:['logistique','digital'],             charte:{eligible:false,primeTerritoriale:0,primeMax:'N/A'},fiscal:{is:'15%'},    isHub:false, portDist:35},
+  'cfc':            {nom:'Casablanca Finance City',     type:'CFC', secteurs:['finance','digital'],                charte:{eligible:false,primeTerritoriale:0,primeMax:'N/A'},fiscal:{is:'0%→20%'}, isHub:false, portDist:30},
+  'pole-dakhla':    {nom:'Zone Atlantic Dakhla',        type:'POLE',secteurs:['energie','tourisme','agro'],        charte:{eligible:true,primeTerritoriale:15,primeMax:'30%'}, fiscal:{is:'0%'},    isHub:false, portDist:5},
+};
+
+let simChartInst = null;
+function checkHubSim(){
+  const id = document.getElementById('s-zone').value;
+  const al = document.getElementById('hub-alert-sim');
+  if(!id){al.classList.remove('visible');return;}
+  const z = ZONES_SIM[id];
+  if(z && z.isHub) al.classList.add('visible');
+  else al.classList.remove('visible');
+}
+
+function runSimulation(){
+  const invest = parseFloat(document.getElementById('s-invest').value)||0;
+  const result = parseFloat(document.getElementById('s-result').value)||0;
+  const emplois = parseInt(document.getElementById('s-emplois').value)||0;
+  const secteur = document.getElementById('s-secteur').value;
+  const exportOri = document.getElementById('s-export').value;
+  const zoneId = document.getElementById('s-zone').value;
+  const genre = document.getElementById('sc-genre').checked;
+  const green = document.getElementById('sc-green').checked;
+  const rd = document.getElementById('sc-rd').checked;
+  const avenir = document.getElementById('sc-avenir').checked;
+  const local = document.getElementById('sc-local').checked;
+
+  document.getElementById('sim-status').textContent = 'Calcul en cours…';
+  const isDC = result * 0.20 * 10;
+  const isZAI = result * 0.15 * 5;
+  const isZF = result * 0.15 * 10;
+  const econZAI = isDC - isZAI;
+  const econZF = isDC - isZF;
+  const econDakhla = isDC;
+
+  const charteEligible = invest >= 50000000 && emplois >= 50;
+  let primeBase = 0;
+  if(charteEligible){
+    const ratio = emplois / (invest / 1000000);
+    if(ratio>=5) primeBase+=10; else if(ratio>=2) primeBase+=7; else primeBase+=5;
+    if(['aero','auto','digital','energie','sante','defense'].includes(secteur)) primeBase+=5;
+    if(genre) primeBase+=3; if(green) primeBase+=3; if(rd) primeBase+=3; if(avenir) primeBase+=3; if(local) primeBase+=3;
+    let primeTerr = 10;
+    if(zoneId && ZONES_SIM[zoneId]) primeTerr = ZONES_SIM[zoneId].charte.primeTerritoriale;
+    primeBase = Math.min(primeBase + primeTerr, 30);
+  }
+
+  document.getElementById('s-res-grid').innerHTML =
+    '<div class="res-card hl"><div class="res-val">'+Math.round(econZAI).toLocaleString('fr-FR')+' MAD</div><div class="res-lbl">Économie IS 10 ans — Régime ZAI (0%→15%) ✓</div></div>' +
+    '<div class="res-card"><div class="res-val">'+Math.round(econZF).toLocaleString('fr-FR')+' MAD</div><div class="res-lbl">Économie IS 10 ans — Régime ZF (15% permanent)</div></div>' +
+    '<div class="res-card hl"><div class="res-val">'+Math.round(econDakhla).toLocaleString('fr-FR')+' MAD</div><div class="res-lbl">Économie IS 10 ans — Dakhla (0% permanent)</div></div>' +
+    '<div class="res-card"><div class="res-val">'+Math.round(isDC).toLocaleString('fr-FR')+' MAD</div><div class="res-lbl">IS droit commun (base comparaison 20%)</div></div>';
+
+  const scoring = Object.entries(ZONES_SIM).map(([id,z])=>{
+    let s = 0;
+    if(z.secteurs.includes(secteur)) s+=35;
+    if(z.fiscal.is.includes('0%')) s+=20;
+    if(exportOri==='high' && z.portDist<=15) s+=15;
+    if(exportOri==='high' && z.type==='ZF') s+=10;
+    if(z.charte.eligible && charteEligible) s+=10;
+    if(z.charte.primeTerritoriale>=10 && charteEligible) s+=10;
+    return {id, nom:z.nom, type:z.type, score:Math.min(s,100)};
+  }).sort((a,b)=>b.score-a.score);
+
+  document.getElementById('s-ranking').innerHTML = scoring.slice(0,6).map((z,i)=>
+    '<div class="rank-item" onclick="document.getElementById(\'section-carte\').previousElementSibling">' +
+    '<span class="rank-num'+(i===0?' gold':'')+'">'+('#'+(i+1))+'</span>' +
+    '<div style="flex:1"><div class="rank-name">'+z.nom+'</div><div class="score-bar-wrap"><div class="score-bar" style="width:'+z.score+'%"></div></div></div>' +
+    '<span class="rank-score">'+z.score+'/100</span></div>'
+  ).join('');
+
+  document.getElementById('s-charte-results').innerHTML = charteEligible ?
+    '<div class="res-grid"><div class="res-card hl"><div class="res-val">'+primeBase+'%</div><div class="res-lbl">Prime totale estimée</div></div>' +
+    '<div class="res-card"><div class="res-val">'+Math.round(invest*primeBase/100).toLocaleString('fr-FR')+' MAD</div><div class="res-lbl">Montant prime estimé</div></div></div>' +
+    '<p style="font-size:12px;color:var(--mid);margin-top:10px;line-height:1.7">Projet <strong style="color:var(--green)">éligible Charte 03-22</strong>. Prime estimée : <strong>'+primeBase+'%</strong> du CAPEX' +
+    (zoneId && ZONES_SIM[zoneId] && ZONES_SIM[zoneId].isHub ? ' · <strong style="color:var(--red)">⚠ Zone hub : prime territoriale = 0%</strong>' : '') + '</p>' :
+    '<div class="alert a-warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><span>Seuil Charte non atteint — nécessite ≥50M MAD et ≥50 emplois CDI. Dispositif PME (déc. 2025) : projets 1–50M MAD via CRI.</span></div>';
+
+  document.getElementById('sim-results').style.display = 'block';
+  document.getElementById('sim-status').textContent = '✓ Calcul terminé';
+
+  // Chart.js IS convergence
+  if(simChartInst) simChartInst.destroy();
+  const ctx = document.getElementById('is-chart');
+  if(ctx && typeof Chart !== 'undefined'){
+    simChartInst = new Chart(ctx.getContext('2d'), {
+      type:'line',
+      data:{
+        labels:['An 1','An 2','An 3','An 4','An 5','An 6','An 7','An 8','An 9','An 10'],
+        datasets:[
+          {label:'Droit Commun (20%)',data:[20,20,20,20,20,20,20,20,20,20],borderColor:'#1A3A9A',backgroundColor:'transparent',borderDash:[6,3],borderWidth:2,tension:.1,pointRadius:3},
+          {label:'ZAI (0%→15%) — CGI 2024',data:[0,0,0,0,0,15,15,15,15,15],borderColor:'#1E7A4A',backgroundColor:'rgba(30,122,74,.1)',fill:true,stepped:true,borderWidth:2.5,tension:0,pointRadius:4,pointBackgroundColor:'#1E7A4A'},
+          {label:'Provinces du Sud — Dakhla (0% perm.)',data:[0,0,0,0,0,0,0,0,0,0],borderColor:'#B8922A',backgroundColor:'rgba(184,146,42,.07)',fill:true,borderDash:[3,2],borderWidth:2,tension:0,pointRadius:2}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,max:25,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{color:'rgba(0,0,0,.04)'}}},plugins:{legend:{position:'top',labels:{font:{family:'DM Sans',size:11},padding:14,usePointStyle:true}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}}}}
+    });
+  }
+}
+
+// ── LEXIQUE 100 TERMES ────────────────────────────────────────────
+const LEX_DATA = [
+  // FISCAL (25)
+  {cat:'fiscal',fr:'Zone d\'Accélération Industrielle (ZAI)',en:'Industrial Acceleration Zone (IAZ)',ar:'منطقة التسريع الصناعي',def:'Espace économique à statut extraterritorial douanier. IS 0% pendant 5 exercices bénéficiaires, puis 15% (CGI 2024). TVA et droits exonérés sur imports matériels.'},
+  {cat:'fiscal',fr:'Impôt sur les Sociétés (IS)',en:'Corporate Income Tax (CIT)',ar:'الضريبة على الشركات',def:'Impôt annuel sur les bénéfices des sociétés. Taux standard : 20% (droit commun). ZAI : 0%→15%. ZF : 15%. Dakhla : 0% permanent.'},
+  {cat:'fiscal',fr:'IS 0% Provinces du Sud',en:'Zero CIT — Southern Provinces',ar:'ضريبة الشركات صفر بالمائة للأقاليم الجنوبية',def:'Exonération permanente d\'IS pour toute activité implantée dans les provinces du Sud (Dakhla, Laâyoune, Boujdour). Art. 247 CGI. Aucune durée limite.'},
+  {cat:'fiscal',fr:'Exercice bénéficiaire',en:'Profitable Fiscal Year',ar:'السنة المالية المربحة',def:'Exercice comptable au cours duquel la société dégage un résultat positif. Le compteur des 5 ans IS 0% ZAI ne démarre que sur les exercices bénéficiaires réels.'},
+  {cat:'fiscal',fr:'Non-cumulativité (LF 2024)',en:'Non-Stacking Rule — Finance Act 2024',ar:'عدم التراكم الضريبي',def:'Art. 6-III CGI 2024 : les avantages ZAI sont exclusifs de tout autre avantage fiscal. La Charte 03-22 et les régimes ZAI ne peuvent pas se cumuler avec d\'autres exonérations.'},
+  {cat:'fiscal',fr:'Taxe Professionnelle (TP)',en:'Professional Tax / Business License Tax',ar:'الضريبة المهنية',def:'Taxe locale annuelle sur la valeur locative professionnelle. En ZAI : exonérée 15 ans. Hors zone : taux variable selon commune (10–12% VL).'},
+  {cat:'fiscal',fr:'TVA suspendue (ZAI)',en:'Suspended VAT (ZAI)',ar:'توقيف الضريبة على القيمة المضافة',def:'En ZAI, la TVA sur les imports de matériels et équipements est totalement exonérée. Pour les opérations locales, le mécanisme de suspension s\'applique selon les secteurs.'},
+  {cat:'fiscal',fr:'Retenue à la source (RAS)',en:'Withholding Tax (WHT)',ar:'الاقتطاع في المنبع',def:'Prélèvement à la source sur certains paiements. LF 2024 : RAS 5% sur les rémunérations versées aux personnes morales en ZAI (nouveauté — à surveiller).'},
+  {cat:'fiscal',fr:'Droits d\'enregistrement (DE)',en:'Registration Duties',ar:'رسوم التسجيل',def:'Droits perçus sur les actes notariés, cessions de parts, baux commerciaux. En ZAI : exonérés sur actes de constitution et premières acquisitions foncières.'},
+  {cat:'fiscal',fr:'Régime ZF — IS 15% permanent',en:'Free Zone Regime — 15% CIT',ar:'نظام المنطقة الحرة — 15%',def:'Zones Franches (TFZ, ZFAC) : IS 15% permanent, distinct du régime ZAI 0%→15%. TP réduite 50%. Régime loi n°19-94, non soumis à LF 2024 non-cumulativité.'},
+  {cat:'fiscal',fr:'Régime CFC — IS 0%→20%',en:'CFC Regime — 0% to 20% CIT',ar:'نظام مركز الدار البيضاء للمال — 0% ثم 20%',def:'Casablanca Finance City : IS 0% les 5 premières années bénéficiaires, puis 20% (non 15%). Distinct du régime ZAI. Statut CFC exclusif — vocation africaine obligatoire.'},
+  {cat:'fiscal',fr:'Convergence IS 20% (droit commun)',en:'CIT convergence to 20%',ar:'تقارب الضريبة نحو 20%',def:'Depuis LF 2023, l\'IS droit commun converge vers 20% pour les entreprises industrielles (LF 2023–2026). Préalablement à taux multiples (17.5%, 20%, 35%).'},
+  {cat:'fiscal',fr:'Base imposable IS',en:'CIT Tax Base',ar:'الوعاء الضريبي للضريبة على الشركات',def:'Résultat net comptable, corrigé par les réintégrations fiscales et déductions autorisées. Amortissements dégressifs autorisés pour équipements industriels.'},
+  {cat:'fiscal',fr:'Report déficitaire',en:'Tax Loss Carryforward',ar:'ترحيل العجز الضريبي',def:'Les déficits fiscaux sont reportables sur les exercices suivants (4 ans en droit commun). En ZAI pendant la période 0% : les pertes s\'imputent sur exercices IS 15%.'},
+  {cat:'fiscal',fr:'Acomptes provisionnels IS',en:'Advance CIT Installments',ar:'الأقساط الاحتياطية لضريبة الشركات',def:'4 versements trimestriels (31 mars, 30 juin, 30 sept., 31 déc.) chacun égal à 25% de l\'IS de l\'exercice précédent. Exonérés durant la période IS 0% ZAI.'},
+  {cat:'fiscal',fr:'Liasse fiscale',en:'Corporate Tax Return',ar:'التصريح الجبائي للشركات',def:'Ensemble des documents fiscaux annuels déposés à la DGI : bilan, CPC, état des soldes de gestion. Délai : 3 mois après clôture de l\'exercice.'},
+  {cat:'fiscal',fr:'Cotisation Minimale (CM)',en:'Minimum Tax Contribution',ar:'الحد الأدنى من الضريبة',def:'Impôt minimum annuel dû même en absence de bénéfices. Taux : 0.5% du CA (min 3 000 MAD). Non applicable en ZAI pendant la période d\'exonération IS 0%.'},
+  {cat:'fiscal',fr:'Taxe de services communaux',en:'Municipal Services Tax',ar:'رسم الخدمات الجماعية',def:'10,5% de la valeur locative pour les immeubles situés dans les zones urbaines. Réduction ou exonération possible selon convention ZAI.'},
+  {cat:'fiscal',fr:'Crédit d\'impôt',en:'Tax Credit',ar:'الائتمان الضريبي',def:'Mécanisme de déduction de l\'IS dû. Applicable pour investissements R&D, formation professionnelle, emploi jeunes diplômés. Différent des exonérations ZAI.'},
+  {cat:'fiscal',fr:'Convention fiscale internationale',en:'Double Tax Treaty (DTT)',ar:'اتفاقية الازدواج الضريبي',def:'Le Maroc a signé plus de 50 conventions pour éviter la double imposition. Réduisent les RAS sur dividendes, intérêts, redevances pour les résidents des pays signataires.'},
+  {cat:'fiscal',fr:'Impôt sur le Revenu (IR)',en:'Personal Income Tax (PIT)',ar:'الضريبة على الدخل',def:'IS des personnes physiques. Taux progressif 0%–37% (CGI 2024 — corrigé de 38%). Expatriés CFC : plafonné à 20%. Seuil exonération : 40 000 MAD/an.'},
+  {cat:'fiscal',fr:'Taxe sur la Valeur Ajoutée (TVA)',en:'Value Added Tax (VAT)',ar:'الضريبة على القيمة المضافة',def:'Taux standard 20%, taux réduits 7% et 14%. ZAI : TVA suspendue sur imports équipements. ZF : exonération totale. Déclaration mensuelle ou trimestrielle.'},
+  {cat:'fiscal',fr:'Droits de douane (DD)',en:'Customs Duties',ar:'الرسوم الجمركية',def:'Taxes à l\'importation selon les tarifs du TDC (Tarif des Droits de Douane). ZAI : DD exonérés. ZF : exonération totale. ALE : taux réduits ou nuls selon l\'origine.'},
+  {cat:'fiscal',fr:'Taxe Intérieure de Consommation (TIC)',en:'Domestic Consumption Tax',ar:'الرسم الداخلي على الاستهلاك',def:'Taxe spécifique sur produits pétroliers, tabac, alcool, voitures. Applicable même en zone franche pour consommation locale. Bureaux douane compétence I incluent TIC.'},
+  {cat:'fiscal',fr:'Précompte sur dividendes',en:'Dividend Withholding Tax',ar:'الاقتطاع على توزيعات الأرباح',def:'RAS sur dividendes distribués : 15% droit commun. ZAI/ZF : exonérés pendant période IS 0%. CFC : exonéré sur dividendes selon statut CFC.'},
+  // INVESTISSEMENT & CHARTE (20)
+  {cat:'investissement',fr:'Charte de l\'Investissement (Loi 03-22)',en:'Investment Charter (Law 03-22)',ar:'ميثاق الاستثمار',def:'Loi-cadre promulguée en 2022, en vigueur depuis 2023. Remplace les anciens codes sectoriels. Prime directe au CAPEX, seuil ≥50M MAD + ≥50 emplois CDI. Plafond 30%.'},
+  {cat:'investissement',fr:'Prime à l\'investissement directe',en:'Direct Investment Grant',ar:'منحة الاستثمار المباشرة',def:'Subvention directe versée par l\'État via AMDIE ou CRI. Cumul de primes : base (5–15%) + territoriale (0–15%) + sectorielle (+5%) + transverses (+9% max). Cap 30% CAPEX.'},
+  {cat:'investissement',fr:'Prime territoriale',en:'Territorial Investment Incentive',ar:'تحفيز ترابي',def:'Prime additionnelle 10–15% pour zones défavorisées. Cat. A : +10%. Cat. B : +15% (Fès, Oujda, Agadir, Dakhla). Hubs (TFZ, AFZ, Midparc) : 0% explicitement.'},
+  {cat:'investissement',fr:'Prime sectorielle (+5%)',en:'Sectoral Premium (+5%)',ar:'تحفيز قطاعي (+5%)',def:'Supplément de 5% pour secteurs stratégiques : automobile, aéronautique, digital, santé, pharma, énergies renouvelables, défense/souveraineté.'},
+  {cat:'investissement',fr:'Prime emploi féminin (+3%)',en:'Female Employment Premium (+3%)',ar:'تحفيز التشغيل النسوي (+3%)',def:'Bonus Charte si le projet atteint ≥30% d\'emplois féminins dans les effectifs créés. Cumulable avec autres primes transverses.'},
+  {cat:'investissement',fr:'Prime décarbonation (+3%)',en:'Decarbonization Premium (+3%)',ar:'تحفيز إزالة الكربون (+3%)',def:'Bonus pour projets utilisant des énergies renouvelables ou respectant des critères de réduction des émissions CO2. Certification ISO 14001 ou équivalent.'},
+  {cat:'investissement',fr:'CRUI (Commission Régionale Unifiée)',en:'Unified Regional Investment Commission',ar:'اللجنة الجهوية الموحدة للاستثمار',def:'Loi 22-24 : nouvelle commission qui instrumente les demandes d\'investissement en 30 jours maximum. Réunit CRI, administrations sectorielles et collectivités locales.'},
+  {cat:'investissement',fr:'AMDIE',en:'AMDIE — Moroccan Investment Agency',ar:'الوكالة المغربية لتنمية الاستثمارات',def:'Agence Marocaine de Développement des Investissements et des Exportations. Guichet unique national pour les grands projets d\'investissement et les mégaprojets.'},
+  {cat:'investissement',fr:'CAPEX (investissement direct)',en:'Capital Expenditure (CAPEX)',ar:'النفقات الرأسمالية',def:'Dépenses d\'investissement en biens durables : foncier, construction, machines, équipements. Base de calcul des primes Charte 03-22 et des exonérations IS.'},
+  {cat:'investissement',fr:'Seuil structurant (50M MAD)',en:'Structural Investment Threshold',ar:'عتبة الاستثمار الهيكلي',def:'Minimum requis pour accéder aux primes Charte 03-22 : CAPEX ≥ 50 millions MAD ET ≥ 50 emplois CDI. En dessous : dispositif PME (déc. 2025) via CRI.'},
+  {cat:'investissement',fr:'Convention d\'investissement',en:'Investment Agreement',ar:'اتفاقية الاستثمار',def:'Contrat signé entre l\'État (MEF/AMDIE) et l\'investisseur, définissant les engagements réciproques : primes, emplois, calendrier CAPEX, exigences de reporting.'},
+  {cat:'investissement',fr:'Investissement Direct Étranger (IDE)',en:'Foreign Direct Investment (FDI)',ar:'الاستثمار الأجنبي المباشر',def:'Flux de capitaux étrangers vers des actifs productifs marocains. Maroc IDE 2024 : 1,64 Mrd$ (+56%). Soumis à déclaration Office des Changes (résidents étrangers).'},
+  {cat:'investissement',fr:'Taux d\'intégration locale',en:'Local Content Rate',ar:'نسبة الاندماج المحلي',def:'Part des composants et services d\'origine marocaine. Automobile : >65% (objectif 80%). Critère pour prime intégration (+3% Charte). Objectif Plan Émergence 80% auto.'},
+  {cat:'investissement',fr:'Métiers Mondiaux du Maroc (MMM)',en:'Morocco\'s Global Trades (MGT)',ar:'المهن العالمية للمغرب',def:'6 filières exportatrices stratégiques : automobile, aéronautique, électronique, textile/cuir, offshoring, agroalimentaire. Primes sectorielles, IFMIA dédiés.'},
+  {cat:'investissement',fr:'IFMIA (Institut Formation Métiers)',en:'IFMIA — Professional Training Institute',ar:'معهد التكوين في المهن',def:'Instituts de formation sectorielle (auto, aéro) intégrés aux ZAI. Tanger Med : 6 000 techniciens/an. AFZ Kénitra : 4 000/an. Formation sur mesure pour donneurs d\'ordres.'},
+  {cat:'investissement',fr:'Scoring zones (adéquation)',en:'Zone Matching Score',ar:'تقييم ملاءمة المنطقة',def:'Algorithme d\'adéquation projet-zone basé sur : secteur (35pts), IS 0% (20pts), export+port (15pts), ZF export (10pts), Charte (10pts), prime territoriale (10pts). Max 100.'},
+  {cat:'investissement',fr:'Mégaprojet (CNI)',en:'Mega-project (CNI)',ar:'مشروع كبير',def:'Projet d\'investissement >2 Mrd MAD, nécessitant une convention spéciale instruite par la Commission Nationale des Investissements (CNI) avec délai 6–12 mois.'},
+  {cat:'investissement',fr:'Bail emphytéotique ZAI',en:'Long-term Lease (ZAI)',ar:'حق الانتفاع طويل الأمد',def:'Forme de mise à disposition foncière en ZAI : durée 18–99 ans, redevance annuelle modique. Alternative à l\'acquisition pleine propriété. Courant dans les ZAI d\'État.'},
+  {cat:'investissement',fr:'Business Plan 5 ans',en:'5-Year Business Plan',ar:'خطة العمل لخمس سنوات',def:'Document obligatoire pour tout dossier CRI/Charte. Comprend : présentation projet, CA prévisionnel, CAPEX, plan financement, emplois CDI, impact territorial.'},
+  {cat:'investissement',fr:'Plan d\'investissement vert',en:'Green Investment Plan',ar:'خطة الاستثمار الأخضر',def:'Ensemble d\'engagements environnementaux ouvrant droit à la prime décarbonation (+3%). Peut inclure PPA énergie renouvelable, certification ISO 14001, bilan carbone.'},
+  // DOUANE & COMMERCE (20)
+  {cat:'douane',fr:'Extraterritorialité douanière',en:'Customs Extraterritoriality',ar:'الخارجية الجمركية',def:'Les ZAI sont considérées hors territoire douanier national. Marchandises importées en franchise totale. Procédures BADR simplifiées. Régime MEAD disponible.'},
+  {cat:'douane',fr:'BADR (Bourse Automatisée des Dédouanements)',en:'BADR — Electronic Customs System',ar:'بدر — نظام الجمارك الإلكتروني',def:'Plateforme informatique ADII pour le dépôt et le traitement des Déclarations Uniques de Marchandises (DUM). 3 circuits : vert (mainlevée), jaune (doc.), rouge (visite).'},
+  {cat:'douane',fr:'Déclaration Unique de Marchandises (DUM)',en:'Single Goods Declaration',ar:'التصريح الجمركي الموحد',def:'Document électronique soumis dans BADR par le transitaire agréé. Contient : position tarifaire NC10, valeur, origine, régime douanier. Obligatoire pour tout dédouanement.'},
+  {cat:'douane',fr:'Position tarifaire (NC10)',en:'Harmonized Tariff Code (HS10)',ar:'التعريفة الجمركية NC10',def:'Code à 10 chiffres du Système Harmonisé, utilisé dans BADR pour déterminer les droits applicables. Les 6 premiers chiffres sont communs internationalement (HS6).'},
+  {cat:'douane',fr:'Accord de Libre-Échange (ALE)',en:'Free Trade Agreement (FTA)',ar:'اتفاقية التبادل الحر',def:'Maroc : ALE UE (2000), USA (2006), Turquie (2004), GAFTA (2004), ZLECAf (ratifié 2020). Réduisent à 0% les droits pour les produits d\'origine qualifiante.'},
+  {cat:'douane',fr:'Règles d\'origine',en:'Rules of Origin',ar:'قواعد المنشأ',def:'Critères déterminant si un produit bénéficie d\'un taux préférentiel ALE. Transformation substantielle, valeur ajoutée locale requise. Certificat EUR.1 (UE) ou Form A.'},
+  {cat:'douane',fr:'Certificat d\'Origine EUR.1',en:'EUR.1 Movement Certificate',ar:'شهادة المنشأ EUR.1',def:'Document douanier attestant l\'origine préférentielle UE-Maroc. Émis par l\'ADII ou la CGEM. Permet l\'application du taux 0% à l\'importation en UE.'},
+  {cat:'douane',fr:'Régime de transit (031)',en:'Transit Regime',ar:'نظام العبور',def:'Régime douanier permettant le mouvement de marchandises sous garantie sans acquittement des droits. Tanger Med hub mondial de transbordement utilise intensivement ce régime.'},
+  {cat:'douane',fr:'Admission temporaire (AT)',en:'Temporary Admission (TA)',ar:'القبول المؤقت',def:'Importation provisoire de marchandises avec suspension des droits, à condition de réexporter après transformation. Base du modèle de sous-traitance textile/auto marocain.'},
+  {cat:'douane',fr:'Régime de perfectionnement actif (RPA)',en:'Inward Processing Relief (IPR)',ar:'نظام المعالجة النشطة',def:'Importation de matières premières avec suspension DD/TVA pour transformation et réexportation du produit fini. Variante de l\'AT, utilisé en industrie lourde.'},
+  {cat:'douane',fr:'Déclaration sommaire (DS)',en:'Summary Declaration',ar:'التصريح الموجز',def:'Document déclarant les marchandises avant leur déchargement dans un port marocain. Dépôt dans PortNet avant arrivée navire. Crée la fiche suiveuse transitaire.'},
+  {cat:'douane',fr:'Zone Franche Industrielle (ZFI)',en:'Industrial Free Zone (IFZ)',ar:'المنطقة الحرة الصناعية',def:'Espace douanier extraterritorial orienté industrie et export. Distinct des ZAI (régime loi 19-94). Exemple : ZFI Nador (en construction). Droits : 0%.'},
+  {cat:'douane',fr:'Valeur en douane',en:'Customs Value',ar:'القيمة الجمركية',def:'Base de calcul des droits de douane. Méthode principale : valeur transactionnelle (facture + fret + assurance = CIF). 6 méthodes subsidiaires ADII/OMD.'},
+  {cat:'douane',fr:'Incoterms',en:'International Commercial Terms (Incoterms)',ar:'شروط التجارة الدولية',def:'Règles ICC définissant les obligations acheteur/vendeur. DDP (livraison droits acquittés) : vendeur supporte tout. EXW : acheteur prend charge à l\'usine.'},
+  {cat:'douane',fr:'Statut d\'Opérateur Économique Agréé (OEA)',en:'Authorized Economic Operator (AEO)',ar:'المشغل الاقتصادي المعتمد',def:'Certification ADII accordant des facilitations douanières : passage prioritaire, contrôles réduits, dédouanement simplifié. Exige audit de conformité et garanties.'},
+  {cat:'douane',fr:'Circuit vert / jaune / rouge',en:'Green / Yellow / Red Channel',ar:'المسار الأخضر / الأصفر / الأحمر',def:'BADR : vert = mainlevée directe (<2h). Jaune = contrôle documentaire (2–6h). Rouge = visite physique (1–3 jours). Tanger Med circuit vert : >75% des opérations.'},
+  {cat:'douane',fr:'Bon à Enlever (BAE)',en:'Release Order',ar:'إذن الإفراج',def:'Autorisation BADR de retrait physique des marchandises après paiement des droits et taxes. Transmis au terminal PortNet pour déblocage de la sortie conteneur.'},
+  {cat:'douane',fr:'Magasin et Entrepôt sous douane (MEAD)',en:'Bonded Warehouse',ar:'مخزن جمارك',def:'Lieu de stockage des marchandises sous contrôle douanier avant dédouanement. Délai : 7 jours franchise, puis surestaries ANP. Disponible à Casa Port et Tanger Med.'},
+  {cat:'douane',fr:'Manifeste navire',en:'Ship\'s Manifest',ar:'بيان الشحن البحري',def:'Liste complète des marchandises à bord d\'un navire. Dépôt obligatoire dans PortNet avant arrivée. Utilisé par l\'ADII pour contrôle préalable et gestion des risques.'},
+  {cat:'douane',fr:'Contrôle du commerce extérieur (CCE)',en:'Foreign Trade Control',ar:'مراقبة التجارة الخارجية',def:'Régulation des importations et exportations via engagements d\'importation (Office des Changes), licences sectorielles (MCINET) et certifications (ONSSA, IMANOR).'},
+  // LOGISTIQUE & INFRA (15)
+  {cat:'logistique',fr:'Tanger Med — Hub mondial',en:'Tanger Med — World Hub',ar:'ميناء طنجة المتوسط — مركز عالمي',def:'1er port d\'Afrique (11,1M EVP 2025), 2ème mondial de transbordement. 72 lignes maritimes, 180 armateurs. Complexe intégré : TM I, II, III, Ro-Ro, Ferry, Zone franche.'},
+  {cat:'logistique',fr:'Transbordement',en:'Transshipment',ar:'إعادة الشحن',def:'Opération de transfert de conteneurs d\'un navire à un autre sans passage en douane nationale. Tanger Med : 65% du trafic EVP est du transbordement Europe-Asie-Afrique.'},
+  {cat:'logistique',fr:'EVP (Équivalent Vingt Pieds)',en:'TEU (Twenty-foot Equivalent Unit)',ar:'وحدة مكافئة لعشرين قدماً',def:'Unité de mesure des conteneurs. Un conteneur 40\' = 2 EVP. Tanger Med : 11,1M EVP/an (2025). Capacité totale prévue avec TM3 : 12M+ EVP.'},
+  {cat:'logistique',fr:'LGV Tanger-Casablanca',en:'High-Speed Rail Tanger-Casablanca',ar:'القطار الفائق السرعة طنجة-الدار البيضاء',def:'Ligne à Grande Vitesse inaugurée en 2018. Trajet Tanger-Casablanca : 2h10 (vs 5h30 train classique). Connexion Kénitra, Rabat, Casa. Renforce l\'attractivité ZAI du nord.'},
+  {cat:'logistique',fr:'PortNet',en:'PortNet — Moroccan Port Platform',ar:'بورت نيت — المنصة الجمركية البحرية',def:'Plateforme numérique nationale interconnectant douane (ADII), ANP, transitaires, armateurs, ONSSA. Obligatoire depuis 2014. Dématérialise 100% des opérations portuaires.'},
+  {cat:'logistique',fr:'Zone Logistique (ZL)',en:'Logistics Zone',ar:'منطقة لوجستية',def:'Plateforme logistique dédiée au stockage, conditionnement et redistribution. Souvent adjacente aux ZAI. Bénéficie d\'avantages douaniers et fiscaux similaires.'},
+  {cat:'logistique',fr:'Ro-Ro (Roll on – Roll off)',en:'Ro-Ro — Roll on Roll off',ar:'روروs — التدحرج الداخل والخارج',def:'Technique de transport maritime de véhicules ou semi-remorques roulants. Tanger Med dispose de terminaux Ro-Ro dédiés pour export automobile (PSA, Renault).'},
+  {cat:'logistique',fr:'Fret aérien',en:'Air Freight',ar:'الشحن الجوي',def:'Transport de marchandises par avion cargo. Aéroports fret : Mohammed V (hub principal), Tanger Ibn Battouta, Al Massira Agadir. Idéal pour haute valeur ajoutée ou urgences.'},
+  {cat:'logistique',fr:'Autoroute A1 Casablanca-Tanger',en:'A1 Motorway Casablanca-Tanger',ar:'الطريق السيار A1 الدار البيضاء-طنجة',def:'Axe autoroutier principal du Maroc (360 km). Dessert les ZAI de Kénitra, AFZ, Rabat et Tanger. Temps de parcours moyen : 3h40 (normale) à 3h (nuit).'},
+  {cat:'logistique',fr:'Port sec (dry port)',en:'Dry Port / Inland Container Depot',ar:'الميناء الجاف',def:'Terminal intérieur connecté ferroviairement à un port maritime pour pré-dédouanement. Projet port sec ZAI Souss-Massa : dédouanement sur site, réduction coûts agroalimentaires.'},
+  {cat:'logistique',fr:'ONCF (Réseau ferroviaire)',en:'ONCF — National Railway Network',ar:'المكتب الوطني للسكك الحديدية',def:'Réseau ferroviaire 2 100 km. Raccordement ZAI Settat (atout différentiel). ZAT Tanger : terminal dédié. AFZ Kénitra : desserte nationale. TGV Casa-Tanger 2h10.'},
+  {cat:'logistique',fr:'Corridor logistique multimodal',en:'Multimodal Logistics Corridor',ar:'الممر اللوجستي متعدد الوسائط',def:'Axe combinant rail, route, port et zones de stockage. Le corridor Tanger-Casablanca via A1/LGV est le plus développé d\'Afrique du Nord.'},
+  {cat:'logistique',fr:'Surestaries',en:'Demurrage',ar:'رسوم الوقوف الزائدة',def:'Frais journaliers facturés par les terminaux portuaires après expiration de la franchise de séjour (7 jours). ANP : de 15 à 40 USD/j selon tranche. Risque abandon dès J+60.'},
+  {cat:'logistique',fr:'Dakhla Atlantique (Port 2027)',en:'Dakhla Atlantic Port (2027)',ar:'ميناء الداخلة الأطلسي 2027',def:'Grand projet portuaire en construction. Livraison prévue 2027. Vocation : hub pêche hauturière, export énergies renouvelables, gateway ZLECAf Afrique subsaharienne.'},
+  {cat:'logistique',fr:'ZLECAf (Zone de Libre-Échange Continentale)',en:'AfCFTA — African Continental FTA',ar:'منطقة التجارة الحرة القارية الإفريقية',def:'Maroc signataire. Accès préférentiel à 54 marchés africains (1,3 Mrd personnes, 3 400 Mrd$ PIB). Dakhla positionné comme gateway vers Afrique de l\'Ouest.'},
+  // JURIDIQUE & INSTITUTIONNEL (15)
+  {cat:'juridique',fr:'Centre Régional d\'Investissement (CRI)',en:'Regional Investment Center (RIC)',ar:'المركز الجهوي للاستثمار',def:'12 CRI régionaux. Guichet unique : création société 24–72h, instruction CRUI 30 jours, interface avec DGI/CNSS/RC. Couverture nationale (12 régions du Maroc).'},
+  {cat:'juridique',fr:'Registre de Commerce (RC)',en:'Trade Register',ar:'السجل التجاري',def:'Inscription obligatoire pour toute activité commerciale. Via CRI ou registre.ma. SARL : capital min 1 000 MAD. SA : 300 000 MAD. Publication BO + journal d\'annonces légales.'},
+  {cat:'juridique',fr:'SARL (Société à Responsabilité Limitée)',en:'LLC — Limited Liability Company',ar:'شركة ذات مسؤولية محدودة',def:'Forme juridique la plus répandue au Maroc. Capital min 1 000 MAD. 1–50 associés. Gérance par gérant nommé. Idéale pour PME et JV avec partenaires étrangers.'},
+  {cat:'juridique',fr:'SA (Société Anonyme)',en:'Joint Stock Company',ar:'شركة مساهمة',def:'Forme pour grandes entreprises. Capital min 300 000 MAD (3M si appel public à l\'épargne). Conseil d\'administration obligatoire. Obligatoire pour sociétés cotées.'},
+  {cat:'juridique',fr:'Code des Investissements',en:'Investment Code',ar:'قانون الاستثمار',def:'Textes régissant les droits et obligations des investisseurs. La Charte 03-22 est la principale loi-cadre actuelle, remplaçant progressivement les codes sectoriels antérieurs.'},
+  {cat:'juridique',fr:'DGI (Direction Générale des Impôts)',en:'DGI — General Tax Directorate',ar:'المديرية العامة للضرائب',def:'Administration fiscale marocaine. Gestion IS, IR, TVA. Publie les circulaires d\'application du CGI. Interface principale pour les entreprises en ZAI sur questions d\'exonération.'},
+  {cat:'juridique',fr:'ADII (Administration des Douanes)',en:'ADII — Customs Administration',ar:'إدارة الجمارك والضرائب غير المباشرة',def:'Administration douanière marocaine. Gère BADR, PortNet, OEA, les bureaux et postes de douane (Arrêté 459-24 — 27 bureaux, 72 postes).'},
+  {cat:'juridique',fr:'Office des Changes (OC)',en:'Foreign Exchange Office',ar:'مكتب الصرف',def:'Contrôle les flux de devises entrant/sortant du Maroc. IGOC 2024 : liberté totale pour ZAI et ZF. Résidents marocains : autorisation requise au-delà des seuils.'},
+  {cat:'juridique',fr:'IGOC (Instruction Générale des Opérations de Change)',en:'Foreign Exchange General Instruction',ar:'التعليمات العامة لعمليات الصرف',def:'Document de référence Office des Changes 2024. Libéralise les flux pour ZAI, ZF, CFC. Autorise comptes devises pour entreprises industrielles exportatrices.'},
+  {cat:'juridique',fr:'CNSS (Cotisations sociales)',en:'CNSS — Social Security',ar:'الصندوق الوطني للضمان الاجتماعي',def:'Cotisations employeur (21.09%) + salarié (4.48%) basées sur salaire brut. Inscription obligatoire dès premier salarié. Prestations : maladie, maternité, retraite.'},
+  {cat:'juridique',fr:'Arbitrage (CCJA / CIRDI)',en:'International Arbitration',ar:'التحكيم الدولي',def:'Mécanisme de règlement des litiges commerciaux internationaux. Le Maroc reconnaît les sentences CIRDI (ICSID). Les conventions d\'investissement incluent généralement clauses arbitrales.'},
+  {cat:'juridique',fr:'OMPIC (Office PI)',en:'OMPIC — Intellectual Property',ar:'المكتب المغربي للملكية الصناعية',def:'Office Marocain de la Propriété Industrielle et Commerciale. Enregistrement marques, brevets, modèles. Accessible en ligne. Lié au CRI pour constitution de sociétés.'},
+  {cat:'juridique',fr:'Charte sociale (Moudawwana)',en:'Labor Code',ar:'مدونة الشغل',def:'Code du travail marocain (Loi n°65-99). Régule : contrats CDI/CDD, SMIG (3 111 MAD/mois 2025), congés, licenciement. Amendements en cours (réforme 2024–2025).'},
+  {cat:'juridique',fr:'Loi 22-24 (CRI réformés)',en:'Law 22-24 — Reformed CRI',ar:'قانون 22-24 — المراكز الجهوية المُصلحة',def:'Réforme complète des CRI adoptée en 2024. Introduit la CRUI (Commission Régionale Unifiée), délai cible 30 jours, et renforce le guichet unique avec pouvoirs renforcés.'},
+  {cat:'juridique',fr:'ICE (Identifiant Commun de l\'Entreprise)',en:'ICE — Common Business Identifier',ar:'المعرف المشترك للمقاولة',def:'Numéro unique à 15 chiffres identifiant chaque entreprise marocaine. Obligatoire sur toutes les factures depuis 2021. Généré lors de l\'inscription au CRI.'},
+  // FINANCE & CHANGE (10)
+  {cat:'finance',fr:'Financement de projet (Project Finance)',en:'Project Finance',ar:'تمويل المشاريع',def:'Structure de financement basée sur les flux de trésorerie du projet (sans recours ou avec recours limité aux actionnaires). Utilisé pour grands projets énergétiques et ZAI.'},
+  {cat:'finance',fr:'Garantie souveraine',en:'Sovereign Guarantee',ar:'الضمان السيادي',def:'Garantie accordée par l\'État marocain pour sécuriser les prêts internationaux ou les obligations émises pour financer des projets d\'infrastructure publique.'},
+  {cat:'finance',fr:'Compte en devises (ZAI)',en:'Foreign Currency Account (ZAI)',ar:'حساب بالعملة الأجنبية',def:'Autorisé pour entreprises ZAI et ZF selon IGOC 2024. Permet de recevoir, conserver et transférer des devises convertibles sans passer par le MAD.'},
+  {cat:'finance',fr:'Rapatriement des bénéfices',en:'Profit Repatriation',ar:'تحويل الأرباح',def:'ZAI/ZF/CFC : libre transfert des bénéfices après acquittement des obligations fiscales. Droit commun : déclaration Office des Changes requise, mais libre en pratique.'},
+  {cat:'finance',fr:'Banque Al-Maghrib (BAM)',en:'Bank Al-Maghrib (Central Bank)',ar:'بنك المغرب',def:'Banque centrale du Royaume. Régulateur bancaire, politique monétaire. Taux directeur : actualisé trimestriellement. Autorise les banques agréées à opérer en devises.'},
+  {cat:'finance',fr:'Dirham marocain (MAD)',en:'Moroccan Dirham (MAD)',ar:'الدرهم المغربي',def:'Monnaie nationale, non librement convertible pour résidents. Convertible pour non-résidents et opérations commerciales. Ancré à un panier EUR/USD (60%/40%).'},
+  {cat:'finance',fr:'Dette mezzanine',en:'Mezzanine Debt',ar:'الدين المتوسط',def:'Financement hybride entre dette senior et fonds propres. Utilisé pour combler le gap entre CAPEX et financement bancaire. Rendement plus élevé, rang inférieur.'},
+  {cat:'finance',fr:'Obligation verte (Green Bond)',en:'Green Bond',ar:'السند الأخضر',def:'Obligation dédiée au financement de projets environnementaux. Maroc : émissions souveraines et corporate. Eligibles aux projets énergie renouvelable Dakhla/Ouarzazate.'},
+  {cat:'finance',fr:'Caisse Centrale de Garantie (CCG)',en:'CCG — Central Guarantee Fund',ar:'صندوق الضمان المركزي',def:'Organisme marocain qui garantit une partie du crédit bancaire pour PME/TPE. Produits Imtiyaz, Tatwir, DAMANE INVEST pour projets d\'investissement industriel.'},
+  {cat:'finance',fr:'Taux de rendement interne (TRI)',en:'Internal Rate of Return (IRR)',ar:'معدل العائد الداخلي',def:'Taux d\'actualisation annulant la VAN du projet. Seuil bancaire Maroc : 12%. Seuil Charte/AMDIE : 15%+. L\'exonération IS 0% ZAI améliore le TRI de 2 à 5 points.'},
+];
+
+let lexCatActive = 'all';
+const CAT_COLORS = {fiscal:'#1A3A9A',investissement:'#B8922A',douane:'#1E7A4A',logistique:'#5A2AA0',juridique:'#8A5A10',finance:'#9A2A22'};
+const CAT_BG    = {fiscal:'var(--blue-bg)',investissement:'var(--gold-dim)',douane:'var(--green-bg)',logistique:'var(--purple-bg)',juridique:'var(--amber-bg)',finance:'var(--red-bg)'};
+const CAT_LABEL = {fiscal:'Fiscal',investissement:'Investissement',douane:'Douane',logistique:'Logistique',juridique:'Juridique',finance:'Finance'};
+
+function toggleTile(id){
+  const tile = document.getElementById('lt-'+id);
+  if(!tile) return;
+  tile.classList.toggle('open');
+}
+function expandAll(){
+  document.querySelectorAll('.lex-tile').forEach(t=>t.classList.add('open'));
+}
+function collapseAll(){
+  document.querySelectorAll('.lex-tile').forEach(t=>t.classList.remove('open'));
+}
+
+function renderLex(){
+  const q = (document.getElementById('lex-search')?.value||'').toLowerCase().trim();
+  const container = document.getElementById('lex-tiles-container'); if(!container) return;
+  let html = '';
+  let n = 0;
+  LEX_DATA.forEach((t,idx)=>{
+    const catOk = lexCatActive==='all' || t.cat===lexCatActive;
+    const txtOk = !q || t.fr.toLowerCase().includes(q) || t.en.toLowerCase().includes(q) || t.ar.includes(q) || t.def.toLowerCase().includes(q);
+    if(!catOk||!txtOk) return;
+    n++;
+    const col = CAT_COLORS[t.cat]||'var(--muted)';
+    const bg  = CAT_BG[t.cat]||'var(--bg2)';
+    const lbl = CAT_LABEL[t.cat]||t.cat;
+    const autoOpen = q ? 'open' : '';
+    html +=
+      '<div class="lex-tile '+autoOpen+'" id="lt-'+idx+'" onclick="toggleTile('+idx+')">' +
+        '<div class="lex-tile-header">' +
+          '<span class="lex-tile-num">'+n+'</span>' +
+          '<span class="lex-tile-term">'+t.fr+'</span>' +
+          '<span class="lex-tile-cat" style="background:'+bg+';border-color:'+col+';color:'+col+'">'+lbl+'</span>' +
+          '<span class="lex-tile-en">'+t.en+'</span>' +
+          '<span class="lex-tile-chevron">▼</span>' +
+        '</div>' +
+        '<div class="lex-tile-body">' +
+          '<div class="lex-tile-def">'+t.def+'</div>' +
+          '<div class="lex-tile-langs">' +
+            '<div class="lex-tile-lrow"><span class="lex-tile-lc">EN</span><span class="lex-tile-lv">'+t.en+'</span></div>' +
+            '<div class="lex-tile-lrow"><span class="lex-tile-lc">AR</span><span class="lex-tile-lv ar">'+t.ar+'</span></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  });
+  container.innerHTML = html || '<div style="padding:24px;color:var(--muted);font-size:13px">Aucun terme trouvé.</div>';
+}
+function filterLex(){ renderLex(); }
+function filterLexCat(cat, btn){
+  lexCatActive = cat;
+  document.querySelectorAll('#lex-cat-btns .filt-btn').forEach(b=>{ b.className='filt-btn filt-off'; b.style.removeProperty('border-color'); b.style.removeProperty('color'); });
+  btn.className = 'filt-btn filt-active';
+  renderLex();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initCarte, 80);
+  initPoleDetail();
+  initChecklist();
+  renderLex();
+});
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

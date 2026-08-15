@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESG / RSE — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --esg-e:#1A6B3C;--esg-s:#1E4D6B;--esg-g:#7A5510;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.header{
+  position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,0.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  border-bottom:1px solid rgba(184,134,42,0.2);
+}
+.header-left{display:flex;align-items:center;gap:16px}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.module-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,0.12);border:1px solid rgba(184,134,42,0.25);padding:4px 10px;border-radius:100px}
+
+/* PAGE */
+.page{max-width:1100px;margin:0 auto;padding:36px 32px 80px}
+.page-hero{margin-bottom:40px}
+.page-label{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.page-title{font-family:var(--font-title);font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.page-sub{font-size:15px;color:var(--smoke);max-width:580px;line-height:1.7}
+
+/* STEPPER */
+.steps-bar{display:flex;gap:0;margin-bottom:36px;background:var(--bg2);border-radius:12px;padding:4px;width:fit-content}
+.step-btn{
+  padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;
+  border:none;background:none;color:var(--smoke);transition:all .2s;font-family:var(--font-body);
+  display:flex;align-items:center;gap:8px;
+}
+.step-btn.active{background:var(--white);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.step-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all .2s}
+.step-btn.active .step-dot{background:var(--gold);color:var(--ink)}
+.step-btn .step-dot{background:rgba(0,0,0,.08);color:var(--smoke)}
+.step-btn.done .step-dot{background:var(--success);color:#fff}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px}
+.card-title{font-family:var(--font-title);font-size:18px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.card-sub{font-size:13px;color:var(--smoke);margin-bottom:24px;line-height:1.6}
+
+/* ESG PILIER BADGE */
+.pilier-badge{
+  display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;
+  padding:3px 10px;border-radius:100px;letter-spacing:.06em;
+}
+.pilier-e{background:rgba(26,107,60,.12);color:var(--esg-e);border:1px solid rgba(26,107,60,.25)}
+.pilier-s{background:rgba(30,77,107,.12);color:var(--esg-s);border:1px solid rgba(30,77,107,.25)}
+.pilier-g{background:rgba(122,85,16,.12);color:var(--esg-g);border:1px solid rgba(122,85,16,.25)}
+
+/* QUESTION BLOCK */
+.q-block{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.q-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.q-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.q-num{font-family:var(--font-mono);font-size:10px;color:var(--smoke);min-width:24px;padding-top:2px}
+.q-text{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;flex:1}
+.q-help{font-size:12px;color:var(--smoke);margin-top:3px;line-height:1.5}
+.q-options{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.q-opt{
+  padding:8px 14px;border-radius:8px;font-size:13px;border:1.5px solid var(--border);
+  background:var(--bg);cursor:pointer;transition:all .2s;color:var(--ink-soft);font-family:var(--font-body);
+}
+.q-opt:hover{border-color:var(--gold);background:var(--gold-pale);color:var(--ink)}
+.q-opt.sel{border-color:var(--gold);background:var(--gold-pale);color:var(--ink);font-weight:600}
+.q-opt.sel-2{border-color:var(--esg-s);background:rgba(30,77,107,.06);color:var(--esg-s);font-weight:600}
+.q-opt.sel-3{border-color:var(--esg-e);background:rgba(26,107,60,.06);color:var(--esg-e);font-weight:600}
+
+/* SCORE PANEL */
+.score-panel{background:var(--ink);border-radius:16px;padding:28px;color:var(--white);position:sticky;top:72px}
+.score-title{font-family:var(--font-title);font-size:16px;font-weight:700;color:var(--gold-light);margin-bottom:20px}
+
+.score-global{text-align:center;margin-bottom:24px}
+.score-ring{position:relative;width:120px;height:120px;margin:0 auto 12px}
+.score-ring svg{transform:rotate(-90deg)}
+.score-num{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--font-title);font-size:30px;font-weight:800;color:var(--white);
+}
+.score-grade{font-family:var(--font-mono);font-size:11px;color:var(--gold-light);letter-spacing:.1em}
+
+.score-pilier{margin-bottom:12px}
+.score-pilier-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.score-pilier-name{font-size:12px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
+.score-pilier-val{font-family:var(--font-mono);font-size:12px;font-weight:500}
+.bar-track{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .6s ease}
+.bar-e{background:linear-gradient(90deg,#1A6B3C,#2ECC71)}
+.bar-s{background:linear-gradient(90deg,#1E4D6B,#3B9EDB)}
+.bar-g{background:linear-gradient(90deg,#7A5510,#F0C460)}
+
+.score-reco{margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08)}
+.reco-label{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;margin-bottom:12px;text-transform:uppercase}
+.reco-item{
+  display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;
+  font-size:12px;color:rgba(255,255,255,.55);line-height:1.5
+}
+.reco-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0}
+
+.btn-gen{
+  width:100%;padding:12px;border-radius:10px;background:var(--gold);border:none;
+  font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--ink);
+  cursor:pointer;margin-top:20px;transition:all .2s;
+}
+.btn-gen:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-gen:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* PANEL DISPLAY */
+.esg-panel{display:none}
+.esg-panel.active{display:block}
+
+/* RESULT PAGE */
+.result-hero{text-align:center;padding:40px;background:var(--ink);border-radius:20px;color:var(--white);margin-bottom:24px}
+.result-grade{font-family:var(--font-title);font-size:72px;font-weight:800;margin-bottom:8px}
+.result-label-score{font-family:var(--font-mono);font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.1em}
+
+.criteria-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+@media(max-width:700px){.criteria-grid{grid-template-columns:1fr}}
+.crit-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px}
+.crit-pilier{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.crit-score{font-family:var(--font-title);font-size:28px;font-weight:800;margin-bottom:4px}
+.crit-name{font-size:13px;color:var(--smoke);margin-bottom:12px}
+.crit-bar{height:6px;border-radius:3px;background:var(--bg2)}
+.crit-bar-fill{height:100%;border-radius:3px}
+
+.recos-section{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:24px}
+.recos-section h3{font-family:var(--font-title);font-size:20px;font-weight:700;margin-bottom:20px}
+.reco-row{
+  display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start
+}
+.reco-row:last-child{border-bottom:none;padding-bottom:0}
+.reco-icon{font-size:20px;width:36px;text-align:center;flex-shrink:0}
+.reco-content .reco-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.reco-content .reco-text{font-size:13px;color:var(--smoke);line-height:1.55}
+.reco-prio{font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:4px;display:inline-block;margin-top:6px}
+.prio-high{background:rgba(180,20,20,.1);color:#B41414}
+.prio-med{background:rgba(184,134,42,.12);color:var(--gold)}
+.prio-low{background:rgba(26,107,60,.1);color:var(--success)}
+
+.source-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.source-badge{font-family:var(--font-mono);font-size:10px;background:rgba(184,134,42,.1);border:1px solid rgba(184,134,42,.2);color:var(--gold-light);padding:3px 9px;border-radius:4px;display:inline-block;color:var(--gold)}
+
+.btn-restart{padding:11px 24px;border-radius:10px;background:var(--bg2);border:1px solid var(--border);font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;transition:all .2s}
+.btn-restart:hover{background:var(--bg);border-color:var(--gold)}
+</style>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="pro"></script>
+<script src='lib/upgrade-modal.js'></script>
+
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="landing.html" class="back-btn">← Portail</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="module-badge">MODULE 19 · ESG / RSE</span>
+  </div>
+  <span style="font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.25)">Taxonomie UE · TNFD · GRI Standards</span>
+</header>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="page-label">Durabilité & Gouvernance</div>
+    <h1 class="page-title">Scoring ESG / RSE<br>pour investisseurs au Maroc</h1>
+    <p class="page-sub">Évaluez votre projet sur 21 critères ESG (Environnement · Social · Gouvernance). Obtenez un score, un grade et des recommandations alignées sur les exigences des fonds institutionnels européens et des accords Maroc–UE.</p>
+  </div>
+
+  <!-- STEPS NAV -->
+  <div class="steps-bar" id="stepsBar">
+    <button class="step-btn active" id="sBtn0" onclick="goStep(0)">
+      <span class="step-dot">E</span> Environnement
+    </button>
+    <button class="step-btn" id="sBtn1" onclick="goStep(1)">
+      <span class="step-dot">S</span> Social
+    </button>
+    <button class="step-btn" id="sBtn2" onclick="goStep(2)">
+      <span class="step-dot">G</span> Gouvernance
+    </button>
+    <button class="step-btn" id="sBtn3" onclick="goStep(3)">
+      <span class="step-dot">R</span> Résultats
+    </button>
+  </div>
+
+  <div class="layout" id="mainLayout">
+
+    <!-- LEFT: QUESTIONS -->
+    <div>
+
+      <!-- ═══ PANEL E ═══ -->
+      <div class="esg-panel active" id="panelE">
+        <div class="card">
+          <div class="card-title">
+            <span class="pilier-badge pilier-e">🌿 ENVIRONNEMENT</span>
+          </div>
+          <div class="card-sub">7 critères · Alignement Accord Vert Maroc–UE (2022) · Programme Offensif Vert Maroc</div>
+
+          <!-- Q1 -->
+          <div class="q-block">
+            <div class="q-header">
+              <span class="q-num">E1</span>
+              <div>
+                <div class="q-text">Quelle est la politique de gestion des émissions CO₂ de votre projet ?</div>
+                <div class="q-help">Impact sur l'accès aux financements verts BAM et au Fonds Vert Maroc</div>
+              </div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('e1',0,this)">Aucune mesure</button>
+              <button class="q-opt" onclick="setQ('e1',30,this)">Sensibilisation interne</button>
+              <button class="q-opt" onclick="setQ('e1',65,this)">Objectifs de réduction définis</button>
+              <button class="q-opt" onclick="setQ('e1',100,this)">Bilan carbone certifié + Plan net-zéro</button>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="q-block">
+            <div class="q-header">
+              <span class="q-num">E2</span>
+              <div>
+                <div class="q-text">Quel est le recours aux énergies renouvelables dans votre projet ?</div>
+                <div class="q-help">Objectif national Maroc : 52% d'EnR d'ici 2030 (MASEN)</div>
+              </div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('e2',0,this)">100% fossile</button>
+              <button class="q-opt" onclick="setQ('e2',25,this)">Moins de 25% EnR</button>
+              <button class="q-opt" onclick="setQ('e2',60,this)">25–75% EnR</button>
+              <button class="q-opt" onclick="setQ('e2',100,this)">+75% EnR ou site ZAI EnR</button>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="q-block">
+            <div class="q-header">
+              <span class="q-num">E3</span>
+              <div>
+                <div class="q-text">Gestion des déchets et de l'eau sur le site de production ?</div>
+                <div class="q-help">Réglementation Loi 28-00 (déchets) + Code de l'eau (Loi 36-15)</div>
+              </div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('e3',0,this)">Non conforme</button>
+              <button class="q-opt" onclick="setQ('e3',35,this)">Conforme légal minimum</button>
+              <button class="q-opt" onclick="setQ('e3',70,this)">Système de recyclage actif</button>
+              <button class="q-opt" onclick="setQ('e3',100,this)">Économie circulaire certifiée ISO 14001</button>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="q-block">
+            <div class="q-header">
+              <span class="q-num">E4</span>
+              <div>
+                <div class="q-text">Impact sur la biodiversité et les écosystèmes locaux ?</div>
+                <div class="q-help">Évaluation d'impact environnemental (EIE) obligatoire pour projets > 5M MAD</div>
+              </div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('e4',0,this)">Impact négatif non évalué</button>
+              <button class="q-opt" onclick="setQ('e4',40,this)">EIE réalisée</button>
+              <button class="q-opt" onclick="setQ('e4',75,this)">EIE + mesures compensatoires</button>
+              <button class="q-opt" onclick="setQ('e4',100,this)">Impact positif net certifié TNFD</button>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="q-block">
+            <div class="q-header">
+              <span class="q-num">E5</span>
+              <div>
+                <div class="q-text">Politique d'achats responsables et chaîne d'approvisionnement ?</div>
+              </div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('e5',0,this)">Non formalisée</button>
+              <button class="q-opt" onclick="setQ('e5',40,this)">Charte fournisseurs signée</button>
+              <button class="q-opt" onclick="setQ('e5',80,this)">Audit fournisseurs ESG</button>
+              <button class="q-opt" onclick="setQ('e5',100,this)">Label RSE fournisseurs + traçabilité</button>
+            </div>
+          </div>
+
+          <!-- Q6 -->
+          <div class="q-block">
+            <div class="q-header">
+              <span class="q-num">E6</span>
+              <div>
+                <div class="q-text">Reporting environnemental annuel publié ?</div>
+              </div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('e6',0,this)">Aucun rapport</button>
+              <button class="q-opt" onclick="setQ('e6',35,this)">Rapport interne non publié</button>
+              <button class="q-opt" onclick="setQ('e6',70,this)">Rapport public annuel</button>
+              <button class="q-opt" onclick="setQ('e6',100,this)">Rapport certifié GRI Standards</button>
+            </div>
+          </div>
+
+          <!-- Q7 -->
+          <div class="q-block">
+            <div class="q-header">
+              <span class="q-num">E7</span>
+              <div>
+                <div class="q-text">Stratégie d'adaptation aux risques climatiques au Maroc ?</div>
+                <div class="q-help">Stress hydrique, sécheresse, températures extrêmes identifiés comme risques majeurs BAM</div>
+              </div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('e7',0,this)">Non pris en compte</button>
+              <button class="q-opt" onclick="setQ('e7',30,this)">Risques identifiés seulement</button>
+              <button class="q-opt" onclick="setQ('e7',70,this)">Plan d'adaptation formalisé</button>
+              <button class="q-opt" onclick="setQ('e7',100,this)">Plan + assurance climatique + TCFD</button>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;display:flex;justify-content:flex-end">
+            <button onclick="goStep(1)" style="padding:11px 28px;border-radius:10px;background:var(--gold);border:none;font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">
+              Social → <span style="font-size:12px">7 critères</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL S ═══ -->
+      <div class="esg-panel" id="panelS">
+        <div class="card">
+          <div class="card-title">
+            <span class="pilier-badge pilier-s">👥 SOCIAL</span>
+          </div>
+          <div class="card-sub">7 critères · Code du Travail marocain · Loi 65-99 · ODD 8 & 10</div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">S1</span>
+              <div><div class="q-text">Politique de rémunération équitable et conformité SMIG ?</div>
+              <div class="q-help">SMIG 2024 : 3 266,38 MAD/mois (industrie) · 76,70 MAD/jour (agriculture)</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('s1',0,this)">En dessous du SMIG</button>
+              <button class="q-opt" onclick="setQ('s1',35,this)">SMIG respecté</button>
+              <button class="q-opt" onclick="setQ('s1',70,this)">Salaires > SMIG + primes</button>
+              <button class="q-opt" onclick="setQ('s1',100,this)">Grille salariale transparente + participation</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">S2</span>
+              <div><div class="q-text">Égalité professionnelle femmes / hommes ?</div>
+              <div class="q-help">Prime emploi féminin Charte 03-22 : jusqu'à 15% supplémentaire sur MIP</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('s2',0,this)">Aucune politique</button>
+              <button class="q-opt" onclick="setQ('s2',30,this)">Égalité de recrutement</button>
+              <button class="q-opt" onclick="setQ('s2',65,this)">Objectifs parité formalisés</button>
+              <button class="q-opt" onclick="setQ('s2',100,this)">Parité ≥ 40% + audit annuel</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">S3</span>
+              <div><div class="q-text">Formation professionnelle et développement des compétences ?</div>
+              <div class="q-help">Taxe de formation professionnelle (1,6% masse salariale) — récupérable si plan de formation</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('s3',0,this)">Pas de formation</button>
+              <button class="q-opt" onclick="setQ('s3',35,this)">Formations ponctuelles</button>
+              <button class="q-opt" onclick="setQ('s3',70,this)">Plan de formation annuel</button>
+              <button class="q-opt" onclick="setQ('s3',100,this)">Plan + certifications + budget dédié</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">S4</span>
+              <div><div class="q-text">Santé & sécurité au travail (QHSE) ?</div>
+              <div class="q-help">Délégués QHSE obligatoires dès 50 salariés · Code du Travail Art. 285-306</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('s4',0,this)">Non conforme</button>
+              <button class="q-opt" onclick="setQ('s4',35,this)">Conforme légal</button>
+              <button class="q-opt" onclick="setQ('s4',70,this)">Système de management QHSE</button>
+              <button class="q-opt" onclick="setQ('s4',100,this)">ISO 45001 certifié + bilan accidents</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">S5</span>
+              <div><div class="q-text">Engagement dans la communauté locale et impact territorial ?</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('s5',0,this)">Aucun engagement</button>
+              <button class="q-opt" onclick="setQ('s5',30,this)">Sponsoring ponctuel</button>
+              <button class="q-opt" onclick="setQ('s5',65,this)">Programme RSE communautaire</button>
+              <button class="q-opt" onclick="setQ('s5',100,this)">Fondation / mécénat structuré + reporting</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">S6</span>
+              <div><div class="q-text">Politique de sous-traitance et emploi local au Maroc ?</div>
+              <div class="q-help">Prime emploi Charte 03-22 : 90 000 MAD par emploi créé (projets &gt; 50M MAD)</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('s6',0,this)">Aucun critère local</button>
+              <button class="q-opt" onclick="setQ('s6',30,this)">&lt; 30% sous-traitance locale</button>
+              <button class="q-opt" onclick="setQ('s6',65,this)">30–70% local</button>
+              <button class="q-opt" onclick="setQ('s6',100,this)">&gt; 70% local + plan emploi signé ANAPEC</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">S7</span>
+              <div><div class="q-text">Dialogue social et relations avec les partenaires sociaux ?</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('s7',0,this)">Aucun syndicat / dialogue absent</button>
+              <button class="q-opt" onclick="setQ('s7',35,this)">Délégués du personnel élus</button>
+              <button class="q-opt" onclick="setQ('s7',70,this)">Convention collective d'entreprise</button>
+              <button class="q-opt" onclick="setQ('s7',100,this)">CCE + comité RSE mixte direction/salariés</button>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;display:flex;justify-content:space-between">
+            <button onclick="goStep(0)" style="padding:11px 24px;border-radius:10px;background:var(--bg2);border:1px solid var(--border);font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink);cursor:pointer">← Environnement</button>
+            <button onclick="goStep(2)" style="padding:11px 28px;border-radius:10px;background:var(--gold);border:none;font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">Gouvernance → 7 critères</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL G ═══ -->
+      <div class="esg-panel" id="panelG">
+        <div class="card">
+          <div class="card-title">
+            <span class="pilier-badge pilier-g">🏛️ GOUVERNANCE</span>
+          </div>
+          <div class="card-sub">7 critères · Loi 17-95 SA · ICGN Guidelines · Loi 31-08 protection consommateur</div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">G1</span>
+              <div><div class="q-text">Structure de gouvernance et composition du conseil d'administration ?</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('g1',0,this)">Pas de CA formel</button>
+              <button class="q-opt" onclick="setQ('g1',30,this)">CA existant, non indépendant</button>
+              <button class="q-opt" onclick="setQ('g1',65,this)">CA avec administrateurs indépendants</button>
+              <button class="q-opt" onclick="setQ('g1',100,this)">CA + comités spécialisés (audit, rémunération)</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">G2</span>
+              <div><div class="q-text">Politique anti-corruption et conformité (AML/CTF) ?</div>
+              <div class="q-help">Loi 43-05 Blanchiment + ANRF · Maroc membre GAFI depuis 2007</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('g2',0,this)">Aucune politique</button>
+              <button class="q-opt" onclick="setQ('g2',35,this)">Code éthique interne</button>
+              <button class="q-opt" onclick="setQ('g2',70,this)">Programme conformité + formation</button>
+              <button class="q-opt" onclick="setQ('g2',100,this)">Certification ISO 37001 anti-corruption</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">G3</span>
+              <div><div class="q-text">Transparence fiscale et reporting pays par pays ?</div>
+              <div class="q-help">OCDE BEPS applicable aux groupes &gt; 750M€ CA · CbCR obligatoire pour multinationales au Maroc</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('g3',0,this)">Opacité fiscale</button>
+              <button class="q-opt" onclick="setQ('g3',35,this)">Déclarations légales seules</button>
+              <button class="q-opt" onclick="setQ('g3',70,this)">Rapport fiscal public</button>
+              <button class="q-opt" onclick="setQ('g3',100,this)">CbCR + politique prix de transfert documentée</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">G4</span>
+              <div><div class="q-text">Protection des données personnelles (CNDP) ?</div>
+              <div class="q-help">Loi 09-08 protection données personnelles · Commission Nationale CNDP</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('g4',0,this)">Non conforme CNDP</button>
+              <button class="q-opt" onclick="setQ('g4',35,this)">Déclaration CNDP effectuée</button>
+              <button class="q-opt" onclick="setQ('g4',70,this)">DPO désigné + politique RGPD</button>
+              <button class="q-opt" onclick="setQ('g4',100,this)">Certification ISO 27001 + audit CNDP annuel</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">G5</span>
+              <div><div class="q-text">Mécanismes d'alerte et de signalement (whistleblowing) ?</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('g5',0,this)">Aucun canal</button>
+              <button class="q-opt" onclick="setQ('g5',40,this)">Canal interne informel</button>
+              <button class="q-opt" onclick="setQ('g5',75,this)">Système dédié + protection lanceurs</button>
+              <button class="q-opt" onclick="setQ('g5',100,this)">Canal externe anonyme certifié + rapport annuel</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">G6</span>
+              <div><div class="q-text">Audit externe indépendant des comptes ?</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('g6',0,this)">Aucun audit</button>
+              <button class="q-opt" onclick="setQ('g6',35,this)">Audit légal basique</button>
+              <button class="q-opt" onclick="setQ('g6',70,this)">Audit Big4 ou cabinet reconnu</button>
+              <button class="q-opt" onclick="setQ('g6',100,this)">Audit + rapport intégré IIRC</button>
+            </div>
+          </div>
+
+          <div class="q-block">
+            <div class="q-header"><span class="q-num">G7</span>
+              <div><div class="q-text">Publication d'un rapport RSE / développement durable intégré ?</div></div>
+            </div>
+            <div class="q-options">
+              <button class="q-opt" onclick="setQ('g7',0,this)">Aucune communication ESG</button>
+              <button class="q-opt" onclick="setQ('g7',30,this)">Section RSE dans le rapport annuel</button>
+              <button class="q-opt" onclick="setQ('g7',70,this)">Rapport RSE dédié public</button>
+              <button class="q-opt" onclick="setQ('g7',100,this)">Rapport intégré GRI + TCFD + TNFD certifié</button>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;display:flex;justify-content:space-between">
+            <button onclick="goStep(1)" style="padding:11px 24px;border-radius:10px;background:var(--bg2);border:1px solid var(--border);font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--ink);cursor:pointer">← Social</button>
+            <button onclick="calcAndShow()" style="padding:11px 28px;border-radius:10px;background:var(--gold);border:none;font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--gold-light)'" onmouseout="this.style.background='var(--gold)'">🔍 Générer mon score ESG</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL R (Résultats) ═══ -->
+      <div class="esg-panel" id="panelR">
+        <div class="result-hero" id="resultHero">
+          <div style="font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.1em;margin-bottom:16px">SCORE GLOBAL ESG</div>
+          <div class="result-grade" id="resultGrade">—</div>
+          <div style="font-family:var(--font-title);font-size:20px;font-weight:700;margin-bottom:8px" id="resultLabel">Calcul en cours...</div>
+          <div style="font-family:var(--font-mono);font-size:12px;color:rgba(255,255,255,.4)" id="resultScore">— / 100</div>
+        </div>
+
+        <div class="criteria-grid">
+          <div class="crit-card">
+            <div class="crit-pilier" style="color:var(--esg-e)">🌿 ENVIRONNEMENT</div>
+            <div class="crit-score" id="scoreE" style="color:var(--esg-e)">—</div>
+            <div class="crit-name">Score / 100</div>
+            <div class="crit-bar"><div class="crit-bar-fill" id="barE" style="height:100%;border-radius:3px;background:var(--esg-e);transition:width .6s;width:0%"></div></div>
+          </div>
+          <div class="crit-card">
+            <div class="crit-pilier" style="color:var(--esg-s)">👥 SOCIAL</div>
+            <div class="crit-score" id="scoreS" style="color:var(--esg-s)">—</div>
+            <div class="crit-name">Score / 100</div>
+            <div class="crit-bar"><div class="crit-bar-fill" id="barS" style="height:100%;border-radius:3px;background:var(--esg-s);transition:width .6s;width:0%"></div></div>
+          </div>
+          <div class="crit-card">
+            <div class="crit-pilier" style="color:var(--esg-g)">🏛️ GOUVERNANCE</div>
+            <div class="crit-score" id="scoreG" style="color:var(--esg-g)">—</div>
+            <div class="crit-name">Score / 100</div>
+            <div class="crit-bar"><div class="crit-bar-fill" id="barG" style="height:100%;border-radius:3px;background:var(--esg-g);transition:width .6s;width:0%"></div></div>
+          </div>
+        </div>
+
+        <div class="recos-section" id="recosSection"></div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn-restart" onclick="restart()">↺ Refaire l'évaluation</button>
+          <button onclick="window.print()" style="padding:11px 24px;border-radius:10px;background:var(--ink);border:none;font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--white);cursor:pointer">🖨️ Exporter PDF</button>
+          <a href="smart_invest_simulateur_fiscal.html" style="padding:11px 24px;border-radius:10px;background:var(--gold-pale);border:1px solid rgba(184,134,42,.3);font-family:var(--font-body);font-size:14px;font-weight:500;color:var(--gold);cursor:pointer;text-decoration:none;display:flex;align-items:center">→ Simulateur Fiscal</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SCORE LIVE -->
+    <div id="scorePanel">
+      <div class="score-panel">
+        <div class="score-title">Score en temps réel</div>
+
+        <div class="score-global">
+          <div class="score-ring">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="8"/>
+              <circle id="ringCircle" cx="60" cy="60" r="50" fill="none" stroke="var(--gold-light)" stroke-width="8" stroke-linecap="round"
+                stroke-dasharray="314" stroke-dashoffset="314" style="transition:stroke-dashoffset .6s ease"/>
+            </svg>
+            <div class="score-num" id="scoreGlobal">0</div>
+          </div>
+          <div class="score-grade" id="scoreGrade">ÉVALUATION EN COURS</div>
+        </div>
+
+        <div class="score-pilier">
+          <div class="score-pilier-header">
+            <span class="score-pilier-name">🌿 Environnement</span>
+            <span class="score-pilier-val" id="livE" style="color:#2ECC71">0/100</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill bar-e" id="lBarE" style="width:0%"></div></div>
+        </div>
+        <div class="score-pilier">
+          <div class="score-pilier-header">
+            <span class="score-pilier-name">👥 Social</span>
+            <span class="score-pilier-val" id="livS" style="color:#3B9EDB">0/100</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill bar-s" id="lBarS" style="width:0%"></div></div>
+        </div>
+        <div class="score-pilier">
+          <div class="score-pilier-header">
+            <span class="score-pilier-name">🏛️ Gouvernance</span>
+            <span class="score-pilier-val" id="livG" style="color:var(--gold-light)">0/100</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill bar-g" id="lBarG" style="width:0%"></div></div>
+        </div>
+
+        <div class="score-reco">
+          <div class="reco-label">Progression</div>
+          <div id="progressText" style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px">
+            0 / 21 critères complétés
+          </div>
+          <div id="progressBar" style="height:4px;border-radius:2px;background:rgba(255,255,255,.08)">
+            <div id="progressFill" style="height:100%;border-radius:2px;background:var(--gold);transition:width .4s;width:0%"></div>
+          </div>
+        </div>
+
+        <div class="score-reco">
+          <div class="reco-label">Éligibilité fonds verts</div>
+          <div class="reco-item"><span class="reco-dot" style="background:#2ECC71"></span><span>Fonds Vert Maroc — seuil : 50+</span></div>
+          <div class="reco-item"><span class="reco-dot" style="background:#3B9EDB"></span><span>Financement BEI/AFD — seuil : 60+</span></div>
+          <div class="reco-item"><span class="reco-dot" style="background:var(--gold-light)"></span><span>EBRD Green Economy — seuil : 70+</span></div>
+          <div class="reco-item"><span class="reco-dot" style="background:#C084FC"></span><span>Taxonomie UE verte — seuil : 80+</span></div>
+        </div>
+
+        <button class="btn-gen" id="btnGen" onclick="calcAndShow()" disabled>
+          Générer le rapport ESG complet
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ── DATA STORE ── */
+const answers = {};
+const QUESTIONS = {
+  e:['e1','e2','e3','e4','e5','e6','e7'],
+  s:['s1','s2','s3','s4','s5','s6','s7'],
+  g:['g1','g2','g3','g4','g5','g6','g7']
+};
+
+function setQ(key, val, btn) {
+  answers[key] = val;
+  const parent = btn.closest('.q-options');
+  parent.querySelectorAll('.q-opt').forEach(b => {
+    b.classList.remove('sel','sel-2','sel-3');
+  });
+  btn.classList.add('sel');
+  updateLive();
+}
+
+function pilierScore(keys) {
+  const filled = keys.filter(k => answers[k] !== undefined);
+  if (!filled.length) return 0;
+  return Math.round(filled.reduce((s,k) => s + answers[k], 0) / keys.length);
+}
+
+function updateLive() {
+  const sE = pilierScore(QUESTIONS.e);
+  const sS = pilierScore(QUESTIONS.s);
+  const sG = pilierScore(QUESTIONS.g);
+  const global = Math.round((sE + sS + sG) / 3);
+  const filled = Object.keys(answers).length;
+
+  // Ring
+  const offset = 314 - (314 * global / 100);
+  document.getElementById('ringCircle').setAttribute('stroke-dashoffset', offset);
+  document.getElementById('scoreGlobal').textContent = global;
+
+  const grade = getGrade(global);
+  document.getElementById('scoreGrade').textContent = grade.label;
+  document.getElementById('ringCircle').setAttribute('stroke', grade.color);
+
+  // Piliers
+  document.getElementById('livE').textContent = sE+'/100';
+  document.getElementById('lBarE').style.width = sE+'%';
+  document.getElementById('livS').textContent = sS+'/100';
+  document.getElementById('lBarS').style.width = sS+'%';
+  document.getElementById('livG').textContent = sG+'/100';
+  document.getElementById('lBarG').style.width = sG+'%';
+
+  // Progress
+  document.getElementById('progressText').textContent = filled + ' / 21 critères complétés';
+  document.getElementById('progressFill').style.width = (filled/21*100)+'%';
+
+  document.getElementById('btnGen').disabled = filled < 10;
+}
+
+function getGrade(score) {
+  if (score >= 80) return { label:'EXCELLENCE ESG · A+', color:'#2ECC71', grade:'A+', name:'Excellence ESG' };
+  if (score >= 65) return { label:'AVANCÉ · A', color:'#3B9EDB', grade:'A', name:'Niveau Avancé' };
+  if (score >= 50) return { label:'INTERMÉDIAIRE · B+', color:'var(--gold-light)', grade:'B+', name:'Niveau Intermédiaire' };
+  if (score >= 35) return { label:'EN TRANSITION · B', color:'#F0A030', grade:'B', name:'En Transition ESG' };
+  return { label:'DÉBUTANT · C', color:'#E24B4A', grade:'C', name:'Débutant ESG' };
+}
+
+function goStep(n) {
+  ['panelE','panelS','panelG','panelR'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('active', i===n);
+  });
+  ['sBtn0','sBtn1','sBtn2','sBtn3'].forEach((id,i) => {
+    const btn = document.getElementById(id);
+    btn.classList.toggle('active', i===n);
+    if (i < n) btn.classList.add('done'); else btn.classList.remove('done');
+  });
+  document.getElementById('scorePanel').style.display = n===3 ? 'none' : 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function calcAndShow() {
+  const sE = pilierScore(QUESTIONS.e);
+  const sS = pilierScore(QUESTIONS.s);
+  const sG = pilierScore(QUESTIONS.g);
+  const global = Math.round((sE + sS + sG) / 3);
+  const grade = getGrade(global);
+
+  document.getElementById('resultGrade').textContent = grade.grade;
+  document.getElementById('resultLabel').textContent = grade.name;
+  document.getElementById('resultScore').textContent = global + ' / 100';
+
+  document.getElementById('scoreE').textContent = sE;
+  document.getElementById('scoreS').textContent = sS;
+  document.getElementById('scoreG').textContent = sG;
+  document.getElementById('barE').style.width = sE+'%';
+  document.getElementById('barS').style.width = sS+'%';
+  document.getElementById('barG').style.width = sG+'%';
+
+  // Hero color
+  const hero = document.getElementById('resultHero');
+  hero.style.background = 'linear-gradient(135deg, var(--ink) 0%, '+grade.color+'22 100%)';
+
+  buildRecos(sE, sS, sG, global);
+  goStep(3);
+}
+
+function buildRecos(sE, sS, sG, global) {
+  const recos = [];
+
+  if (sE < 50) recos.push({icon:'🌿', title:'Bilan Carbone & Plan Net-Zéro', text:'Score E faible. Engagez un consultant certifié GHG Protocol pour réaliser votre bilan carbone Scope 1/2/3. Cela ouvre l\'accès au Fonds Vert Maroc et aux financements BEI.', prio:'high', ref:'GHG Protocol · Fonds Vert Maroc'});
+  if (sE < 70 && answers.e2 < 60) recos.push({icon:'⚡', title:'Transition aux Énergies Renouvelables', text:'Envisagez un contrat PPA (Power Purchase Agreement) avec MASEN ou un producteur EnR privé. Les ZAI offrent des tarifs préférentiels pour l\'énergie solaire/éolienne.', prio:'high', ref:'MASEN · ONEE · Loi 13-09 EnR'});
+  if (sS < 50) recos.push({icon:'👥', title:'Politique RH et égalité professionnelle', text:'Formalisez une grille salariale transparente et un plan d\'égalité F/H. Cela déclenche la prime emploi féminin de la Charte d\'Investissement 03-22 (+15% sur MIP).', prio:'high', ref:'Charte 03-22 · Code du Travail'});
+  if (sS < 65 && answers.s3 < 50) recos.push({icon:'📚', title:'Plan de Formation Professionnelle', text:'Déposez un plan de formation auprès de l\'OFPPT pour récupérer votre taxe de formation (1,6% masse salariale). Améliore le score social et réduit la charge fiscale.', prio:'med', ref:'OFPPT · DRH Ministère'});
+  if (sG < 50) recos.push({icon:'🏛️', title:'Mise en conformité AML/CTF GAFI', text:'Le Maroc est membre du GAFI. Désignez un compliance officer et mettez en place un programme KYC/AML documenté. Indispensable pour les relations avec les banques européennes.', prio:'high', ref:'Loi 43-05 · ANRF · GAFI'});
+  if (sG < 65 && answers.g4 < 50) recos.push({icon:'🔒', title:'Conformité CNDP et Protection des Données', text:'Déposez votre déclaration auprès de la CNDP et désignez un DPO. Le RGPD européen s\'applique si vous traitez des données de ressortissants UE — essentiel pour les partenariats export.', prio:'med', ref:'Loi 09-08 · CNDP · RGPD'});
+  if (global >= 65 && global < 80) recos.push({icon:'📊', title:'Rapport Intégré GRI / TCFD', text:'À votre niveau, un rapport RSE certifié GRI Standards vous ouvre les portes des fonds institutionnels européens (BEI, BERD) et de la taxonomie verte UE.', prio:'med', ref:'GRI Standards · TCFD · TNFD'});
+  if (global >= 80) recos.push({icon:'🌟', title:'Candidature au Label RSE Maroc', text:'Score excellent ! Vous êtes éligible au Label RSE CGEM (Confédération Générale des Entreprises du Maroc). Ce label est reconnu par les acheteurs européens et les fonds ISR.', prio:'low', ref:'CGEM Label RSE · ISO 26000'});
+  if (recos.length === 0) recos.push({icon:'✅', title:'Profil ESG équilibré', text:'Votre évaluation montre un profil ESG équilibré. Continuez à améliorer vos certifications et votre reporting pour accéder aux financements verts premium.', prio:'low', ref:''});
+
+  const html = `<h3>Recommandations prioritaires (${recos.length})</h3>` + recos.map(r => `
+    <div class="reco-row">
+      <div class="reco-icon">${r.icon}</div>
+      <div class="reco-content">
+        <div class="reco-title">${r.title}</div>
+        <div class="reco-text">${r.text}</div>
+        ${r.ref ? `<span class="reco-prio prio-${r.prio}">${r.prio==='high'?'PRIORITAIRE':r.prio==='med'?'RECOMMANDÉ':'BONUS'}</span>` : ''}
+        ${r.ref ? `<div class="source-row"><span class="source-badge">${r.ref}</span></div>` : ''}
+      </div>
+    </div>`).join('');
+  document.getElementById('recosSection').innerHTML = html;
+}
+
+function restart() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.q-opt').forEach(b => b.classList.remove('sel','sel-2','sel-3'));
+  updateLive();
+  goStep(0);
+}
+</script>
+<script src='lib/auth.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

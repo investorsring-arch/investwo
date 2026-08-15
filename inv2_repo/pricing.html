@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarifs & Plans — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--er:#B91C1C;--wn:#C05820;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* -- HEADER -- */
+.hd{position:sticky;top:0;z-index:100;height:60px;background:rgba(14,14,12,.98);
+  backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;border-bottom:1px solid rgba(184,134,42,.2)}
+.logo{font-family:var(--ft);font-size:17px;font-weight:800;color:#fff;text-decoration:none}
+.logo span{color:var(--gl)}
+.nav{display:flex;align-items:center;gap:8px}
+.nav a{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.45);text-decoration:none;
+  padding:6px 14px;border:1px solid rgba(255,255,255,.1);border-radius:6px;transition:all .2s}
+.nav a:hover{color:var(--gl);border-color:rgba(184,134,42,.4)}
+.nav a.cta{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700}
+.nav a.cta:hover{background:var(--gl)}
+
+/* -- HERO PRICING -- */
+.hero{background:var(--ink);padding:72px 32px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 100%,rgba(184,134,42,.12) 0%,transparent 70%);
+  pointer-events:none}
+.hero-tag{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;
+  text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:10px}
+.hero-tag::before,.hero-tag::after{content:'';width:40px;height:1px;background:rgba(255,255,255,.1)}
+.hero h1{font-family:var(--ft);font-size:clamp(32px,5vw,52px);font-weight:800;color:#fff;
+  margin-bottom:14px;line-height:1.1;letter-spacing:-.03em}
+.hero h1 span{color:var(--gl)}
+.hero p{font-size:16px;color:rgba(255,255,255,.45);max-width:560px;margin:0 auto 32px;line-height:1.7}
+
+/* -- BILLING TOGGLE -- */
+.billing-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:4px}
+.billing-toggle{display:inline-flex;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:4px;gap:4px}
+.bt{padding:9px 24px;border-radius:100px;border:none;background:none;
+  color:rgba(255,255,255,.4);font-family:var(--fb);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .25s}
+.bt.active{background:var(--gold);color:var(--ink);font-weight:700}
+.save-pill{background:rgba(26,107,60,.2);color:#4ADE80;border:1px solid rgba(74,222,128,.25);
+  font-family:var(--fm);font-size:10px;padding:4px 12px;border-radius:100px}
+
+/* -- TRUST BAR -- */
+.trust{display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;
+  padding:20px 32px;border-bottom:1px solid var(--bd);background:var(--wh)}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--sm)}
+.trust-item strong{color:var(--ink);font-weight:600}
+.trust-dot{width:4px;height:4px;border-radius:50%;background:var(--bd)}
+
+/* -- PRICING GRID -- */
+.pricing-section{max-width:1060px;margin:0 auto;padding:56px 24px 40px}
+.section-intro{text-align:center;margin-bottom:40px}
+.section-intro h2{font-family:var(--ft);font-size:28px;font-weight:800;margin-bottom:8px}
+.section-intro p{font-size:14px;color:var(--sm);max-width:480px;margin:0 auto}
+
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:20px}
+.plan{background:var(--wh);border:2px solid var(--bd);border-radius:20px;
+  padding:28px 24px;position:relative;overflow:hidden;transition:all .3s}
+.plan:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.1)}
+.plan.featured{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,134,42,.1)}
+.plan.current{border-color:var(--ok)}
+.pop-ribbon{position:absolute;top:0;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--ink);font-family:var(--fm);font-size:9px;font-weight:700;
+  padding:5px 20px;border-radius:0 0 10px 10px;letter-spacing:.06em}
+.plan-header{margin-bottom:22px}
+.plan-icon{font-size:30px;margin-bottom:10px}
+.plan-name{font-family:var(--ft);font-size:18px;font-weight:800;margin-bottom:4px}
+.plan-tagline{font-size:12.5px;color:var(--sm);line-height:1.5}
+.plan-price{margin-bottom:6px}
+.plan-amount{font-family:var(--ft);font-size:42px;font-weight:800;color:var(--gold);line-height:1}
+.plan-amount small{font-size:16px;font-weight:400;color:var(--sm)}
+.plan-period{font-family:var(--fm);font-size:11px;color:var(--sm);margin-bottom:4px}
+.plan-annual-note{font-family:var(--fm);font-size:10px;color:var(--ok);margin-bottom:18px;min-height:16px}
+.plan-divider{height:1px;background:var(--bd);margin:18px 0}
+
+/* Features list */
+.feat-list{list-style:none;margin-bottom:22px}
+.feat-list li{font-size:13px;color:var(--is);padding:7px 0;display:flex;
+  align-items:flex-start;gap:9px;border-bottom:1px solid rgba(0,0,0,.04);line-height:1.5}
+.feat-list li:last-child{border:none}
+.fi{flex-shrink:0;margin-top:1px;font-size:14px}
+.fi-ok{color:var(--ok)}
+.fi-no{color:rgba(0,0,0,.15)}
+.fi-lim{color:var(--wn);font-size:11px;margin-top:3px}
+
+/* CTAs */
+.plan-cta{display:block;width:100%;padding:14px;border:none;border-radius:12px;
+  font-family:var(--fb);font-size:14px;font-weight:700;cursor:pointer;
+  text-align:center;text-decoration:none;transition:all .2s}
+.cta-gold{background:var(--gold);color:var(--ink)}.cta-gold:hover{background:var(--gl);transform:translateY(-1px)}
+.cta-blue{background:rgba(30,77,107,.1);color:var(--ac);border:1.5px solid rgba(30,77,107,.2)}
+.cta-blue:hover{background:rgba(30,77,107,.15)}
+.cta-green{background:rgba(26,107,60,.1);color:var(--ok);border:1.5px solid rgba(26,107,60,.2);cursor:default}
+.trial-note{text-align:center;font-family:var(--fm);font-size:10px;color:var(--sm);margin-top:10px}
+
+/* -- FAQ -- */
+.faq-section{background:var(--wh);padding:64px 24px;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.faq-inner{max-width:720px;margin:0 auto}
+.faq-title{font-family:var(--ft);font-size:26px;font-weight:800;text-align:center;margin-bottom:36px}
+.faq-item{border-bottom:1px solid var(--bd);padding:18px 0;cursor:pointer}
+.faq-item:last-child{border:none}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  font-size:14px;font-weight:600;color:var(--im)}
+.faq-q .arr{font-size:16px;color:var(--gold);transition:transform .25s;flex-shrink:0}
+.faq-item.open .arr{transform:rotate(45deg)}
+.faq-a{font-size:13.5px;color:var(--sm);line-height:1.75;max-height:0;overflow:hidden;
+  transition:max-height .35s ease,padding .25s}
+.faq-item.open .faq-a{max-height:300px;padding-top:12px}
+
+/* -- COMPARE TABLE -- */
+.compare-section{max-width:1060px;margin:0 auto;padding:48px 24px 64px}
+.compare-title{font-family:var(--ft);font-size:24px;font-weight:800;text-align:center;margin-bottom:28px}
+.cmp-table{width:100%;border-collapse:collapse;font-size:13px}
+.cmp-table th{padding:12px 16px;font-family:var(--fm);font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--sm);background:var(--b2);border-bottom:1px solid var(--bd)}
+.cmp-table th:first-child{text-align:left}
+.cmp-table td{padding:11px 16px;border-bottom:1px solid var(--bd);text-align:center}
+.cmp-table td:first-child{text-align:left;font-weight:500;color:var(--is)}
+.cmp-table tr:hover td{background:rgba(184,134,42,.025)}
+.cmp-cat-row td{background:rgba(184,134,42,.06);font-family:var(--fm);font-size:10px;
+  font-weight:700;color:var(--gold);letter-spacing:.06em;text-align:left !important;
+  border-top:2px solid rgba(184,134,42,.15);padding:8px 16px}
+.cyes{color:var(--ok);font-size:16px}
+.cno{color:rgba(0,0,0,.12);font-size:16px}
+.clim{font-family:var(--fm);font-size:10px;color:var(--wn);
+  background:rgba(192,88,32,.07);padding:2px 8px;border-radius:6px;display:inline-block}
+
+/* -- SOCIAL PROOF -- */
+.proof-section{background:var(--ink);padding:64px 32px;text-align:center}
+.proof-title{font-family:var(--ft);font-size:24px;font-weight:800;color:#fff;margin-bottom:8px}
+.proof-sub{font-size:14px;color:rgba(255,255,255,.4);margin-bottom:40px}
+.stats-row{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-bottom:44px}
+.stat{text-align:center}
+.stat-n{font-family:var(--ft);font-size:40px;font-weight:800;color:var(--gl);line-height:1}
+.stat-l{font-size:12px;color:rgba(255,255,255,.4);margin-top:6px;font-family:var(--fm)}
+.testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:960px;margin:0 auto}
+.testi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:20px;text-align:left}
+.testi-text{font-size:13.5px;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:14px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:32px;height:32px;border-radius:50%;background:rgba(184,134,42,.2);
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gl)}
+.testi-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.8)}
+.testi-role{font-size:11px;color:rgba(255,255,255,.35);font-family:var(--fm)}
+
+/* -- CTA BOTTOM -- */
+.cta-bottom{padding:80px 32px;text-align:center;
+  background:linear-gradient(180deg,var(--bg) 0%,rgba(184,134,42,.07) 100%)}
+.cta-bottom h2{font-family:var(--ft);font-size:32px;font-weight:800;margin-bottom:12px}
+.cta-bottom h2 span{color:var(--gold)}
+.cta-bottom p{font-size:15px;color:var(--sm);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn-main{padding:15px 32px;background:var(--gold);color:var(--ink);border:none;
+  border-radius:12px;font-family:var(--fb);font-size:15px;font-weight:700;
+  cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s}
+.btn-main:hover{background:var(--gl);transform:translateY(-2px);box-shadow:0 8px 28px rgba(184,134,42,.25)}
+.btn-sec{padding:15px 28px;background:transparent;color:var(--ac);border:1.5px solid rgba(30,77,107,.25);
+  border-radius:12px;font-family:var(--fb);font-size:14px;font-weight:600;
+  cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s}
+.btn-sec:hover{background:rgba(30,77,107,.07)}
+
+/* -- FOOTER -- */
+footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:12px;
+  border-top:1px solid rgba(184,134,42,.15)}
+.foot-logo{font-family:var(--ft);font-size:14px;font-weight:800;color:#fff}
+.foot-logo span{color:var(--gl)}
+.foot-links{display:flex;gap:20px}
+.foot-links a{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.3);text-decoration:none}
+.foot-links a:hover{color:var(--gl)}
+.foot-copy{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.2)}
+
+@media(max-width:768px){
+  .plans-grid{grid-template-columns:1fr}
+  .testimonials{grid-template-columns:1fr}
+  .stats-row{gap:28px}
+  .trust{gap:16px}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- -- HEADER -- -->
+<header class="hd">
+  <a href="landing.html" class="logo">Smart-<span>Invest</span>.ia</a>
+  <nav class="nav">
+    <a href="smart_invest_portail.html">Modules</a>
+    <a href="#compare">Comparer</a>
+    <a href="smart_invest_login.html">Connexion</a>
+    <a href="smart_invest_register_v2.html" class="cta">Essai gratuit 7j ?</a>
+  </nav>
+</header>
+
+<!-- -- HERO -- -->
+<div class="hero">
+  <div class="hero-tag">Tarifs & Plans</div>
+  <h1>Des tarifs <span>transparents</span>,<br>des résultats mesurables</h1>
+  <p>Démarrez gratuitement avec 9 modules. Montez en puissance quand votre projet avance. Résiliez à tout moment.</p>
+  <div class="billing-wrap">
+    <div class="billing-toggle">
+      <button class="bt active" id="btn-monthly" onclick="setBilling('monthly')">Mensuel</button>
+      <button class="bt" id="btn-annual"  onclick="setBilling('annual')">Annuel</button>
+    </div>
+    <div class="save-pill" id="savePill" style="display:none">?? Économisez 20% avec l'abonnement annuel</div>
+  </div>
+</div>
+
+<!-- -- TRUST BAR -- -->
+<div class="trust">
+  <div class="trust-item"><strong>Aucune carte</strong> requise pour l'essai</div>
+  <div class="trust-dot"></div>
+  <div class="trust-item"><strong>Résiliation</strong> en 1 clic</div>
+  <div class="trust-dot"></div>
+  <div class="trust-item"><strong>Données</strong> exportables</div>
+  <div class="trust-dot"></div>
+  <div class="trust-item"><strong>26 modules</strong> spécialisés Maroc</div>
+  <div class="trust-dot"></div>
+  <div class="trust-item"><strong>IA Claude</strong> Sonnet 4 intégré</div>
+</div>
+
+<!-- -- PLANS -- -->
+<section class="pricing-section">
+  <div class="section-intro">
+    <h2>Choisissez votre niveau d'accès</h2>
+    <p>Tous les plans incluent les mises à jour réglementaires automatiques (CGI 2024, Charte 03-22)</p>
+  </div>
+
+  <div class="plans-grid">
+
+    <!-- GRATUIT -->
+    <div class="plan">
+      <div class="plan-header">
+        <div class="plan-icon">??</div>
+        <div class="plan-name">Gratuit</div>
+        <div class="plan-tagline">Pour découvrir et simuler</div>
+      </div>
+      <div class="plan-price">
+        <div class="plan-amount">0<small> MAD</small></div>
+      </div>
+      <div class="plan-period">Toujours gratuit · Aucune limite dans le temps</div>
+      <div class="plan-annual-note"></div>
+      <div class="plan-divider"></div>
+      <ul class="feat-list">
+        <li><span class="fi fi-ok">?</span> Simulateur fiscal IS / IR / TVA</li>
+        <li><span class="fi fi-ok">?</span> Matching Aides & Subventions</li>
+        <li><span class="fi fi-ok">?</span> Zones Économiques Spéciales</li>
+        <li><span class="fi fi-ok">?</span> Choix forme juridique</li>
+        <li><span class="fi fi-ok">?</span> Tracker dossier CRI</li>
+        <li><span class="fi fi-ok">?</span> Coûts d'installation (12 régions)</li>
+        <li><span class="fi fi-lim">?</span> Assistant IA — 10 messages/jour</li>
+        <li><span class="fi fi-lim">?</span> Rapports IA — 3/mois</li>
+        <li><span class="fi fi-no">?</span> Cockpit EVM/Gantt/PERT</li>
+        <li><span class="fi fi-no">?</span> GIS Foncier interactif</li>
+      </ul>
+      <a href="smart_invest_register_v2.html?plan=gratuit" class="plan-cta cta-green">Commencer gratuitement</a>
+      <div class="trial-note">Accès permanent · Pas de carte</div>
+    </div>
+
+    <!-- PRO -->
+    <div class="plan featured">
+      <div class="pop-ribbon">? RECOMMANDÉ</div>
+      <div class="plan-header" style="margin-top:12px">
+        <div class="plan-icon">?</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-tagline">Pour les professionnels & PME</div>
+      </div>
+      <div class="plan-price">
+        <div class="plan-amount" id="pro-price">490<small> MAD</small></div>
+      </div>
+      <div class="plan-period" id="pro-period">par mois HT</div>
+      <div class="plan-annual-note" id="pro-annual-note"></div>
+      <div class="plan-divider"></div>
+      <ul class="feat-list">
+        <li><span class="fi fi-ok">?</span> Tout le plan Gratuit</li>
+        <li><span class="fi fi-ok">?</span> Cockpit Management (EVM/Gantt/PERT)</li>
+        <li><span class="fi fi-ok">?</span> Charte Investissement & Primes MIP</li>
+        <li><span class="fi fi-ok">?</span> Lean Six Sigma (7 outils)</li>
+        <li><span class="fi fi-ok">?</span> GIS Foncier — 18 ZAI</li>
+        <li><span class="fi fi-ok">?</span> Analyse Stop/Go & TNB 2025</li>
+        <li><span class="fi fi-ok">?</span> ESG / RSE scoring</li>
+        <li><span class="fi fi-lim">?</span> Assistant IA — 100 messages/mois</li>
+        <li><span class="fi fi-lim">?</span> Rapports IA — 20/mois</li>
+        <li><span class="fi fi-no">?</span> Agent IA autonome InvestPilot</li>
+      </ul>
+      <a href="smart_invest_register_v2.html?plan=pro" class="plan-cta cta-gold">Essai Pro 7 jours gratuit ?</a>
+      <div class="trial-note">? Sans engagement · Sans carte bancaire</div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="plan">
+      <div class="plan-header">
+        <div class="plan-icon">??</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-tagline">Pour les entreprises & investisseurs</div>
+      </div>
+      <div class="plan-price">
+        <div class="plan-amount" id="prem-price">990<small> MAD</small></div>
+      </div>
+      <div class="plan-period" id="prem-period">par mois HT</div>
+      <div class="plan-annual-note" id="prem-annual-note"></div>
+      <div class="plan-divider"></div>
+      <ul class="feat-list">
+        <li><span class="fi fi-ok">?</span> Tout le plan Pro</li>
+        <li><span class="fi fi-ok">?</span> Dashboard Projet personnel</li>
+        <li><span class="fi fi-ok">?</span> Agent IA InvestPilot autonome</li>
+        <li><span class="fi fi-ok">?</span> Rapports B2B + Annuaire 15 experts</li>
+        <li><span class="fi fi-ok">?</span> Données live BAM/HCP/OMPIC</li>
+        <li><span class="fi fi-ok">?</span> Parcours sectoriels & Communauté</li>
+        <li><span class="fi fi-ok">?</span> Assistant IA — illimité</li>
+        <li><span class="fi fi-ok">?</span> Rapports IA — illimités</li>
+        <li><span class="fi fi-ok">?</span> Support prioritaire 48h</li>
+        <li><span class="fi fi-ok">?</span> Export données & back-office</li>
+      </ul>
+      <a href="smart_invest_register_v2.html?plan=premium" class="plan-cta cta-blue">Démarrer Premium ?</a>
+      <div class="trial-note">Accès complet immédiat</div>
+    </div>
+
+  </div>
+
+  <!-- Code promo -->
+  <div style="text-align:center;padding:16px 0">
+    <span style="font-family:var(--fm);font-size:11px;color:var(--sm)">Vous avez un code promo ?</span>
+    <a href="smart_invest_abonnements_v2.html#promo" style="font-family:var(--fm);font-size:11px;color:var(--gold);margin-left:6px;text-decoration:underline">L'activer ici ?</a>
+  </div>
+</section>
+
+<!-- -- COMPARE TABLE -- -->
+<section class="compare-section" id="compare">
+  <div class="compare-title">Comparaison détaillée</div>
+  <table class="cmp-table">
+    <thead><tr>
+      <th style="text-align:left;width:40%">Fonctionnalité</th>
+      <th>?? Gratuit</th><th>? Pro</th><th>?? Premium</th>
+    </tr></thead>
+    <tbody>
+      <tr class="cmp-cat-row"><td colspan="4">Modules & Outils</td></tr>
+      <tr><td>Modules de base (fiscal, juridique, zones)</td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>Cockpit EVM / Gantt / PERT / WBS</td><td><span class="cno">?</span></td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>GIS Foncier — 18 ZAI interactives</td><td><span class="cno">?</span></td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>Lean Six Sigma complet (FMEA, SIPOC, DMAIC)</td><td><span class="cno">?</span></td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>Dashboard Projet personnel</td><td><span class="cno">?</span></td><td><span class="cno">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>Données live BAM/HCP/OMPIC</td><td><span class="cno">?</span></td><td><span class="cno">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr class="cmp-cat-row"><td colspan="4">Intelligence Artificielle</td></tr>
+      <tr><td>Assistant IA Claude Sonnet 4</td><td><span class="clim">10 msg/j</span></td><td><span class="clim">100/mois</span></td><td style="color:var(--ok);font-weight:600">Illimité</td></tr>
+      <tr><td>Rapports IA sectoriels générés</td><td><span class="clim">3/mois</span></td><td><span class="clim">20/mois</span></td><td style="color:var(--ok);font-weight:600">Illimité</td></tr>
+      <tr><td>Agent IA InvestPilot autonome</td><td><span class="cno">?</span></td><td><span class="cno">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>Annuaire 15 experts vérifiés (avocats, CRI)</td><td><span class="cno">?</span></td><td><span class="cno">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr class="cmp-cat-row"><td colspan="4">Support & Administration</td></tr>
+      <tr><td>Mises à jour réglementaires automatiques</td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>Support email</td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>Support prioritaire (48h)</td><td><span class="cno">?</span></td><td><span class="cno">?</span></td><td><span class="cyes">?</span></td></tr>
+      <tr><td>Projets simultanés</td><td>1</td><td>5</td><td style="color:var(--ok);font-weight:600">Illimité</td></tr>
+      <tr class="cmp-cat-row"><td colspan="4">Tarification</td></tr>
+      <tr><td>Mensuel</td><td style="font-weight:700">Gratuit</td><td style="font-weight:700;color:var(--gold)">490 MAD</td><td style="font-weight:700;color:var(--ac)">990 MAD</td></tr>
+      <tr><td>Annuel (-20%)</td><td>Gratuit</td><td style="color:var(--gold)">392 MAD/m</td><td style="color:var(--ac)">792 MAD/m</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- -- SOCIAL PROOF -- -->
+<section class="proof-section">
+  <div class="proof-title">Ils ont investi au Maroc avec Smart-Invest.ia</div>
+  <div class="proof-sub">Des investisseurs locaux et étrangers qui ont simplifié leur parcours</div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n">1 240+</div><div class="stat-l">Investisseurs accompagnés</div></div>
+    <div class="stat"><div class="stat-n">28</div><div class="stat-l">Pays d'origine</div></div>
+    <div class="stat"><div class="stat-n">340M+</div><div class="stat-l">MAD de primes calculées</div></div>
+    <div class="stat"><div class="stat-n">26</div><div class="stat-l">Modules spécialisés</div></div>
+  </div>
+  <div class="testimonials">
+    <div class="testi">
+      <div class="testi-text">« Le simulateur fiscal m'a permis de comparer IS normal vs régime ZAI en 5 minutes. J'aurais mis des semaines avec un cabinet. »</div>
+      <div class="testi-author">
+        <div class="testi-avatar">K</div>
+        <div><div class="testi-name">Khalid B.</div><div class="testi-role">Directeur — PME textile, Casablanca</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-text">« En tant qu'investisseur français, le module GIS Foncier m'a montré les disponibilités dans les ZAI en quelques clics. Indispensable. »</div>
+      <div class="testi-author">
+        <div class="testi-avatar">M</div>
+        <div><div class="testi-name">Marie-Claire D.</div><div class="testi-role">Investisseur IDE — Secteur automobile</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-text">« Le Cockpit EVM/Gantt a transformé notre suivi de projet. L'intégration avec la Charte d'Investissement est vraiment utile. »</div>
+      <div class="testi-author">
+        <div class="testi-avatar">Y</div>
+        <div><div class="testi-name">Youssef A.</div><div class="testi-role">Chef de projet — Agroalimentaire, Meknès</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- -- FAQ -- -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="faq-title">Questions fréquentes</div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Puis-je changer de plan à tout moment ? <span class="arr">+</span></div>
+      <div class="faq-a">Oui, l'upgrade est immédiat. La rétrogradation prend effet à la fin de la période facturée en cours. Aucun frais de changement de plan.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">L'essai Pro 7 jours est-il vraiment gratuit ? <span class="arr">+</span></div>
+      <div class="faq-a">Totalement gratuit, sans aucune carte bancaire requise. À la fin des 7 jours, vous passez automatiquement au plan Gratuit — sans surprise ni prélèvement automatique.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Les données fiscales sont-elles à jour ? <span class="arr">+</span></div>
+      <div class="faq-a">Oui. Les simulateurs intègrent le CGI 2024, la Charte d'Investissement Loi 03-22, et les barèmes CNSS/SMIG en vigueur. Les mises à jour sont déployées à chaque loi de finances.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Mes données sont-elles sécurisées ? <span class="arr">+</span></div>
+      <div class="faq-a">Les simulations et données de projet sont stockées localement dans votre navigateur. Aucune donnée confidentielle n'est transmise à nos serveurs. La clé API Anthropic (pour l'IA) est masquée et jamais exposée dans le code source.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Existe-t-il une offre pour les cabinets et CRI ? <span class="arr">+</span></div>
+      <div class="faq-a">Une offre sur-mesure est disponible pour les cabinets d'expertise comptable, avocats d'affaires et Centres Régionaux d'Investissement. Contactez-nous via le back-office ou par email.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Quels moyens de paiement acceptez-vous ? <span class="arr">+</span></div>
+      <div class="faq-a">Carte bancaire (Visa, Mastercard, CMI), virement bancaire CIH/CMP, et chèque. Les paiements sont traités de manière sécurisée via chiffrement TLS 1.3.</div>
+    </div>
+  </div>
+</section>
+
+<!-- -- CTA BOTTOM -- -->
+<section class="cta-bottom">
+  <h2>Prêt à <span>investir au Maroc</span><br>avec les bons outils ?</h2>
+  <p>Rejoignez 1 240+ investisseurs qui utilisent Smart-Invest.ia pour structurer, simuler et piloter leur projet.</p>
+  <div class="cta-btns">
+    <a href="smart_invest_register_v2.html?plan=pro" class="btn-main">Essai Pro gratuit 7 jours ?</a>
+    <a href="smart_invest_portail.html" class="btn-sec">Explorer les modules</a>
+  </div>
+  <div style="margin-top:14px;font-family:var(--fm);font-size:10px;color:var(--sm)">
+    ? Sans carte bancaire · ? Sans engagement · ? Résiliation en 1 clic
+  </div>
+</section>
+
+<!-- -- FOOTER -- -->
+<footer>
+  <div class="foot-logo">Smart-<span>Invest</span>.ia</div>
+  <div class="foot-links">
+    <a href="landing.html">Accueil</a>
+    <a href="smart_invest_portail.html">Modules</a>
+    <a href="smart_invest_login.html">Connexion</a>
+    <a href="smart_invest_register_v2.html">S'inscrire</a>
+  </div>
+  <div class="foot-copy">© 2026 Smart-Invest.ia · Propulsé par Claude Sonnet 4</div>
+</footer>
+
+<script src='lib/auth.js'></script>
+<script>
+// -- BILLING TOGGLE -----------------------------------------
+let billing = 'monthly';
+function setBilling(mode) {
+  billing = mode;
+  document.getElementById('btn-monthly').classList.toggle('active', mode==='monthly');
+  document.getElementById('btn-annual').classList.toggle('active',  mode==='annual');
+  document.getElementById('savePill').style.display = mode==='annual' ? 'inline-block' : 'none';
+
+  if (mode === 'annual') {
+    document.getElementById('pro-price').innerHTML  = '392<small> MAD</small>';
+    document.getElementById('prem-price').innerHTML = '792<small> MAD</small>';
+    document.getElementById('pro-period').textContent  = 'par mois · facturé annuellement';
+    document.getElementById('prem-period').textContent = 'par mois · facturé annuellement';
+    document.getElementById('pro-annual-note').textContent  = '?? Soit 4 704 MAD/an (économisez 1 176 MAD)';
+    document.getElementById('prem-annual-note').textContent = '?? Soit 9 504 MAD/an (économisez 2 376 MAD)';
+  } else {
+    document.getElementById('pro-price').innerHTML  = '490<small> MAD</small>';
+    document.getElementById('prem-price').innerHTML = '990<small> MAD</small>';
+    document.getElementById('pro-period').textContent  = 'par mois HT';
+    document.getElementById('prem-period').textContent = 'par mois HT';
+    document.getElementById('pro-annual-note').textContent  = '';
+    document.getElementById('prem-annual-note').textContent = '';
+  }
+}
+
+// -- FAQ ----------------------------------------------------
+function toggleFaq(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+
+// -- AUTO-REDIRECT SI DÉJÀ CONNECTÉ ------------------------
+window.addEventListener('load', () => {
+  if (window.AuthService && AuthService.isLoggedIn()) {
+    const plan = AuthService.getCurrentPlan();
+    // Mettre à jour les CTAs pour utilisateur connecté
+    document.querySelectorAll('.plan-cta').forEach(btn => {
+      if (btn.classList.contains('cta-green')) {
+        btn.textContent = plan === 'gratuit' ? '? Plan actuel' : 'Voir mes modules ?';
+        btn.href = 'smart_invest_portail.html';
+      }
+    });
+  }
+  // Pré-sélectionner le plan depuis l'URL
+  const urlPlan = new URLSearchParams(location.search).get('plan');
+  if (urlPlan === 'annual') setBilling('annual');
+});
+
+// -- ANALYTICS ---------------------------------------------
+if (window.IMAnalytics) IMAnalytics.track('pricing_page_view');
+</script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>
+

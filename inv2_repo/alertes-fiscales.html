@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alertes fiscales · Bien gérer vos impôts — Transit-IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
+<!-- ═══════════════════════════════════════════════════════
+     BACKEND ENGINE — toute la logique métier est ici.
+     Cette page ne contient aucune formule de calcul.
+     ═══════════════════════════════════════════════════════ -->
+<script src="fiscal-engine.js"></script>
+
+<style>
+:root {
+  --bg:#F7F5F0; --ink:#1C1A14; --sf:#FFF; --s2:#F0EDE5; --s3:#E6E2D6;
+  --bd:rgba(28,26,20,.09); --bd2:rgba(28,26,20,.16);
+  --tx:#1C1A14; --tx2:#5C5747; --tx3:#9C9480;
+  --r:#B92929; --rbg:#FDF1F1; --rbr:rgba(185,41,41,.18);
+  --a:#8F5500; --abg:#FFF8EC; --abr:rgba(143,85,0,.16);
+  --g:#1A6038; --gbg:#EFF8F3; --gbr:rgba(26,96,56,.16);
+  --b:#1A3BA0; --bbg:#EEF2FD; --bbr:rgba(26,59,160,.14);
+  --r8:8px; --r14:14px; --r22:22px;
+  --fh:'Libre Baskerville',Georgia,serif;
+  --fb:'Outfit',sans-serif;
+  --fm:'DM Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:var(--fb);font-size:14px;line-height:1.6}
+
+/* ── TICKER ── */
+.ticker{background:var(--ink);overflow:hidden;padding:9px 0}
+.ticker-t{display:flex;width:max-content;animation:tick 55s linear infinite}
+.ticker-t:hover{animation-play-state:paused}
+.ti{display:inline-flex;align-items:center;gap:10px;padding:0 28px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.1)}
+.ti-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.dot-r{background:#FF7070}.dot-a{background:#FFBB55}.dot-g{background:rgba(255,255,255,.4)}
+.ti-lbl{font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.45);max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.ti-val{font-family:var(--fm);font-size:11px;font-weight:500}
+.ti-val.r{color:#FF7070}.ti-val.a{color:#FFBB55}.ti-val.g{color:rgba(255,255,255,.75)}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── HEADER ── */
+.hdr{background:var(--sf);border-bottom:1px solid var(--bd);padding:0 36px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.hdr-brand{display:flex;align-items:center;gap:11px}
+.brand-chip{background:var(--ink);color:#fff;font-family:var(--fm);font-size:10px;letter-spacing:.06em;padding:4px 9px;border-radius:5px}
+.brand-name{font-family:var(--fh);font-size:16px;font-weight:700;font-style:italic}
+.hdr-nav{display:flex;gap:2px}
+.hn{padding:5px 13px;border-radius:var(--r8);font-size:12px;cursor:pointer;font-family:var(--fb);border:1px solid transparent;transition:all .18s;font-weight:500}
+/* Alertes & échéances — actif, rouge doux */
+.hn[data-hn="alertes"]{background:rgba(185,28,28,.08);color:#B91C1C;border-color:rgba(185,28,28,.2)}
+.hn[data-hn="alertes"].active,.hn[data-hn="alertes"]:hover{background:#B91C1C;color:#fff;border-color:#7F1D1D}
+/* Simulateur pénalités — ambre */
+.hn[data-hn="sim"]{background:rgba(180,83,9,.07);color:#B45309;border-color:rgba(180,83,9,.2)}
+.hn[data-hn="sim"].active,.hn[data-hn="sim"]:hover{background:#B45309;color:#fff;border-color:#7C2D12}
+/* Veille DGI — bleu */
+.hn[data-hn="veille"]{background:rgba(26,59,160,.07);color:#1A3BA0;border-color:rgba(26,59,160,.2)}
+.hn[data-hn="veille"].active,.hn[data-hn="veille"]:hover{background:#1A3BA0;color:#fff;border-color:#122B7A}
+/* Barème fiscal — vert */
+.hn[data-hn="bareme"]{background:rgba(22,101,52,.07);color:#166534;border-color:rgba(22,101,52,.2)}
+.hn[data-hn="bareme"].active,.hn[data-hn="bareme"]:hover{background:#166534;color:#fff;border-color:#0F4623}
+.hdr-r{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--r8);font-size:12px;cursor:pointer;font-family:var(--fb);transition:all .15s;border:1px solid var(--bd2);background:transparent;color:var(--tx2)}
+.btn:hover{background:var(--s2);color:var(--tx)}
+.btn.p{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.p:hover{background:#2e2b20}
+.btn i{font-size:14px}
+
+/* ── PAGE ── */
+.page{max-width:1080px;margin:0 auto;padding:34px 22px 64px}
+
+/* ── HERO ── */
+.hero-eyebrow{font-family:var(--fm);font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::after{content:'';flex:1;height:1px;background:var(--bd)}
+h1{font-family:var(--fh);font-size:34px;font-weight:700;line-height:1.15;margin-bottom:11px}
+h1 em{font-style:italic;color:var(--r)}
+.hero-sub{font-size:15px;color:var(--tx2);max-width:600px;line-height:1.75;margin-bottom:18px}
+.profil-bar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:30px}
+.profil-lbl{font-size:12px;color:var(--tx3);margin-right:2px}
+.pp{padding:6px 15px;border-radius:999px;font-size:12px;border:1.5px solid;cursor:pointer;transition:background-color 200ms ease,color 200ms ease,border-color 200ms ease,transform 200ms ease;font-family:var(--fb);font-weight:500}
+/* PME / DAF — bleu acier */
+.pp[data-pp="pme"]{background:rgba(26,59,160,.09);color:#1A3BA0;border-color:rgba(26,59,160,.3)}
+.pp[data-pp="pme"]:hover,.pp[data-pp="pme"].active{background:#1A3BA0;color:#fff;border-color:#122B7A;transform:translateY(-2px)}
+/* Opérateur transit — vert trafic */
+.pp[data-pp="transit"]{background:rgba(22,101,52,.09);color:#166534;border-color:rgba(22,101,52,.3)}
+.pp[data-pp="transit"]:hover,.pp[data-pp="transit"].active{background:#166534;color:#fff;border-color:#0F4623;transform:translateY(-2px)}
+/* Investisseur ZAI — or/ambre */
+.pp[data-pp="invest"]{background:rgba(161,98,7,.09);color:#A16207;border-color:rgba(161,98,7,.3)}
+.pp[data-pp="invest"]:hover,.pp[data-pp="invest"].active{background:#B45309;color:#fff;border-color:#8A3E06;transform:translateY(-2px)}
+/* Auto-entrepreneur — violet */
+.pp[data-pp="ae"]{background:rgba(109,40,217,.09);color:#6D28D9;border-color:rgba(109,40,217,.3)}
+.pp[data-pp="ae"]:hover,.pp[data-pp="ae"].active{background:#6D28D9;color:#fff;border-color:#4C1D95;transform:translateY(-2px)}
+
+/* ── RADAR ── */
+.radar-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r22);padding:24px;margin-bottom:18px;display:grid;grid-template-columns:156px 1fr;gap:24px;align-items:center}
+.radar-wrap{position:relative;width:156px;height:156px;flex-shrink:0}
+.radar-svg{width:156px;height:156px}
+.radar-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.r-days{font-family:var(--fh);font-size:30px;font-weight:700;line-height:1}
+.r-days.r{color:var(--r)}.r-days.a{color:var(--a)}.r-days.g{color:var(--g)}
+.r-lbl{font-family:var(--fm);font-size:10px;color:var(--tx3);margin-top:4px}
+.r-cat{font-family:var(--fm);font-size:10px;color:var(--r);margin-top:3px}
+.radar-info-title{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px;line-height:1.35}
+.radar-info-desc{font-size:13px;color:var(--tx2);line-height:1.65;margin-bottom:14px}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kpi{background:var(--s2);border-radius:var(--r8);padding:10px 12px;text-align:center}
+.kpi-v{font-family:var(--fh);font-size:22px;font-weight:700}
+.kpi-v.r{color:var(--r)}.kpi-v.a{color:var(--a)}.kpi-v.g{color:var(--g)}
+.kpi-l{font-size:10px;color:var(--tx3);font-family:var(--fm);margin-top:2px}
+
+/* ── CONFORMITE ── */
+.conf-band{background:var(--bbg);border:1px solid var(--bbr);border-radius:var(--r14);padding:14px 18px;margin-bottom:16px;display:flex;gap:12px}
+.conf-band i{color:var(--b);font-size:18px;flex-shrink:0;margin-top:1px}
+.conf-title{font-size:13px;font-weight:600;color:var(--b);font-family:var(--fh);margin-bottom:4px}
+.conf-text{font-size:12px;color:var(--b);line-height:1.65;opacity:.85}
+.conf-tag{font-family:var(--fm);font-size:10px;background:rgba(26,59,160,.1);color:var(--b);border-radius:999px;padding:2px 8px;display:inline-block;margin-top:6px}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:1fr 308px;gap:22px;align-items:start}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);margin-bottom:14px}
+.tab{
+  padding:7px 16px;font-size:12px;font-family:var(--fb);cursor:pointer;
+  border:1.5px solid;border-radius:8px;
+  transition:background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 200ms ease;
+  font-weight:500;
+}
+/* Calendrier complet — marron (défaut/neutre) */
+.tab[data-tab="toutes"]{background:rgba(61,31,10,.08);color:#3D1F0A;border-color:rgba(61,31,10,.25)}
+.tab[data-tab="toutes"]:hover,.tab[data-tab="toutes"].active{background:#3D1F0A;color:#F5C896;border-color:#2A1206;transform:translateY(-2px)}
+/* Urgentes — rouge */
+.tab[data-tab="urgentes"]{background:rgba(185,28,28,.08);color:#B91C1C;border-color:rgba(185,28,28,.25)}
+.tab[data-tab="urgentes"]:hover,.tab[data-tab="urgentes"].active{background:#B91C1C;color:#fff;border-color:#7F1D1D;transform:translateY(-2px)}
+/* 30 prochains jours — ambre */
+.tab[data-tab="proches"]{background:rgba(180,83,9,.08);color:#B45309;border-color:rgba(180,83,9,.25)}
+.tab[data-tab="proches"]:hover,.tab[data-tab="proches"].active{background:#B45309;color:#fff;border-color:#7C2D12;transform:translateY(-2px)}
+/* Conformité DGI — bleu marine */
+.tab[data-tab="conformite"]{background:rgba(26,59,160,.08);color:#1A3BA0;border-color:rgba(26,59,160,.25)}
+.tab[data-tab="conformite"]:hover,.tab[data-tab="conformite"].active{background:#1A3BA0;color:#fff;border-color:#122B7A;transform:translateY(-2px)}
+/* Traitées — vert */
+.tab[data-tab="traitees"]{background:rgba(22,101,52,.08);color:#166534;border-color:rgba(22,101,52,.25)}
+.tab[data-tab="traitees"]:hover,.tab[data-tab="traitees"].active{background:#166534;color:#fff;border-color:#0F4623;transform:translateY(-2px)}
+
+/* ── ALERT CARD ── */
+.ac{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r14);padding:15px 17px;margin-bottom:9px;display:flex;gap:13px;align-items:flex-start;transition:border-color .15s}
+.ac:hover{border-color:var(--bd2)}
+.ac.crit{border-left:3px solid var(--r);border-radius:0 var(--r14) var(--r14) 0;background:var(--rbg)}
+.ac.high{border-left:3px solid var(--a);border-radius:0 var(--r14) var(--r14) 0;background:var(--abg)}
+.ac.done-c{opacity:.45;border-color:var(--gbr);background:var(--gbg)}
+.ac-ico{width:37px;height:37px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:1px solid}
+.i-r{background:var(--rbg);color:var(--r);border-color:var(--rbr)}
+.i-a{background:var(--abg);color:var(--a);border-color:var(--abr)}
+.i-b{background:var(--bbg);color:var(--b);border-color:var(--bbr)}
+.i-g{background:var(--gbg);color:var(--g);border-color:var(--gbr)}
+.i-m{background:var(--s2);color:var(--tx3);border-color:var(--bd)}
+.ac-body{flex:1;min-width:0}
+.ac-name{font-size:14px;font-weight:600;font-family:var(--fh);color:var(--tx);margin-bottom:4px;line-height:1.3}
+.ac-desc{font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:8px}
+.ac-meta{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.ac-ref{font-size:11px;color:var(--tx3);font-family:var(--fm)}
+.tag{display:inline-flex;align-items:center;font-size:11px;padding:2px 8px;border-radius:999px;font-family:var(--fm);font-weight:500;border:1px solid}
+.tr{background:var(--rbg);color:var(--r);border-color:var(--rbr)}
+.ta{background:var(--abg);color:var(--a);border-color:var(--abr)}
+.tg{background:var(--gbg);color:var(--g);border-color:var(--gbr)}
+.tb{background:var(--bbg);color:var(--b);border-color:var(--bbr)}
+.tn{background:var(--s2);color:var(--tx3);border-color:var(--bd)}
+.pen-chip{font-size:10px;padding:2px 8px;border-radius:999px;background:var(--rbg);color:var(--r);border:1px solid var(--rbr);font-family:var(--fm);display:inline-flex;align-items:center;gap:4px}
+.imp-dots{display:flex;gap:3px;align-items:center;margin-left:4px}
+.imp-d{width:9px;height:9px;border-radius:2px;background:var(--s3)}
+.imp-d.on{background:var(--r)}
+.check-btn{width:27px;height:27px;border-radius:50%;border:1px solid var(--bd2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--tx3);font-size:14px;transition:all .15s}
+.check-btn:hover,.check-btn.done{background:var(--gbg);border-color:var(--gbr);color:var(--g)}
+.ac-date{font-size:12px;font-weight:500;font-family:var(--fm)}
+.ac-date.r{color:var(--r)}.ac-date.a{color:var(--a)}.ac-date.n{color:var(--tx3)}
+.empty-s{text-align:center;padding:2.5rem;color:var(--tx3)}
+.empty-s i{font-size:26px;display:block;margin-bottom:8px;color:var(--g)}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.widget{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r14);overflow:hidden}
+.wh{padding:13px 17px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;font-family:var(--fh);font-size:14px;font-weight:700;color:var(--tx)}
+.wh i{font-size:15px;color:var(--tx2)}
+.wb{padding:15px 17px}
+
+/* Countdown */
+.cd-item{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--bd)}
+.cd-item:last-child{border-bottom:none}
+.cd-num{font-family:var(--fh);font-size:22px;font-weight:700;min-width:44px;line-height:1}
+.cd-num.r{color:var(--r)}.cd-num.a{color:var(--a)}.cd-num.g{color:var(--g)}
+.cd-n{font-size:12px;font-weight:600;color:var(--tx);line-height:1.35}
+.cd-d{font-size:11px;color:var(--tx3);font-family:var(--fm);margin-top:2px}
+.cd-p{font-size:10px;color:var(--r);font-family:var(--fm);margin-top:1px}
+
+/* Simulateur — AFFICHAGE SEULEMENT */
+.sim-input-row{margin-bottom:11px}
+.sim-lbl-row{display:flex;justify-content:space-between;font-size:11px;color:var(--tx3);font-family:var(--fm);margin-bottom:5px}
+.sim-lbl-row span.v{color:var(--tx);font-weight:500}
+.sim-result-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd)}
+.sim-result-row:last-of-type{border-bottom:none}
+.sim-key{font-size:12px;color:var(--tx2)}
+.sim-val{font-family:var(--fm);font-size:12px;font-weight:500;color:var(--r)}
+.sim-val.ok{color:var(--g)}
+.sim-box{background:var(--rbg);border:1px solid var(--rbr);border-radius:var(--r8);padding:11px;margin-top:9px;text-align:center}
+.sim-big{font-family:var(--fh);font-size:20px;font-weight:700;color:var(--r)}
+.sim-sub{font-size:10px;color:var(--r);opacity:.75;font-family:var(--fm);margin-top:2px}
+.disclaimer-box{background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r8);padding:11px 13px;margin-top:10px;font-size:11px;color:var(--tx3);line-height:1.6}
+.disclaimer-box strong{color:var(--tx2);font-weight:500}
+
+/* Mini-cal */
+.mini-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.mc-h{font-family:var(--fm);font-size:9px;color:var(--tx3);text-align:center;padding-bottom:2px}
+.mc-d{font-family:var(--fm);font-size:10px;color:var(--tx3);text-align:center;padding:3px 2px;border-radius:3px}
+.mc-d.today{background:var(--ink);color:#fff;border-radius:50%;font-weight:500}
+.mc-d.ev-r{background:var(--rbg);color:var(--r)}
+.mc-d.ev-a{background:var(--abg);color:var(--a)}
+.mc-d.ev-b{background:var(--bbg);color:var(--b)}
+.cal-legend{display:flex;gap:10px;margin-top:9px;flex-wrap:wrap}
+.cl-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--tx3);font-family:var(--fm)}
+.cl-sq{width:8px;height:8px;border-radius:2px;display:inline-block}
+
+/* Barème */
+.bar-row{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);gap:9px}
+.bar-row:last-child{border-bottom:none}
+.bar-imp{font-family:var(--fm);font-size:11px;font-weight:500;min-width:36px;color:var(--ink)}
+.bar-desc{flex:1;font-size:12px;color:var(--tx2);line-height:1.4}
+.bar-taux{font-family:var(--fm);font-size:12px;font-weight:500;color:var(--b);white-space:nowrap}
+
+/* Veille */
+.vi{padding:9px 0;border-bottom:1px solid var(--bd);display:flex;gap:9px}
+.vi:last-child{border-bottom:none}
+.vi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.vi-dot.new{background:var(--r)}.vi-dot.info{background:var(--b)}.vi-dot.actif{background:var(--g)}
+.vi-t{font-size:12px;font-weight:600;color:var(--tx);font-family:var(--fh);margin-bottom:2px}
+.vi-d{font-size:11px;color:var(--tx2);line-height:1.55}
+.vi-src{font-size:10px;color:var(--tx3);font-family:var(--fm);margin-top:3px}
+
+/* CTA */
+.cta-strip{background:var(--ink);border-radius:var(--r14);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-top:20px}
+.cta-t{font-family:var(--fh);font-size:15px;font-weight:700;color:#fff}
+.cta-s{font-size:12px;color:rgba(255,255,255,.45);margin-top:3px}
+.cta-btns{display:flex;gap:7px}
+.cta-btn{padding:7px 14px;border-radius:var(--r8);font-size:13px;cursor:pointer;font-family:var(--fb);display:flex;align-items:center;gap:5px;transition:all .15s}
+.cta-btn.w{background:#fff;color:var(--ink);border:none;font-weight:500}
+.cta-btn.gh{background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15)}
+.cta-btn.gh:hover{background:rgba(255,255,255,.08);color:#fff}
+input[type=range]{width:100%;accent-color:var(--ink)}
+
+/* ── SECTIONS FONCTIONNELLES nav hn ── */
+.hn-section { display:none; background:var(--sf); border:1px solid var(--bd2); border-radius:12px; margin:0 24px 20px; padding:24px 28px; animation:fadeIn .2s ease }
+.hn-section.visible { display:block }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.hn-section-title { font-family:var(--fh); font-size:16px; font-weight:700; color:var(--tx); margin-bottom:4px; display:flex; align-items:center; gap:8px }
+.hn-section-sub { font-size:12px; color:var(--tx3); font-family:var(--fm); margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--bd1) }
+.hn-source { display:inline-block; font-family:var(--fm); font-size:10px; color:#1A3BA0; background:rgba(26,59,160,.07); border:1px solid rgba(26,59,160,.15); padding:2px 8px; border-radius:4px; margin-left:8px }
+
+/* Simulateur pénalités */
+.sim-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px }
+.sim-input-block { display:flex; flex-direction:column; gap:6px }
+.sim-label { font-size:11px; font-family:var(--fm); color:var(--tx3); text-transform:uppercase; letter-spacing:.06em }
+.sim-input { padding:8px 12px; border:1px solid var(--bd2); border-radius:8px; font-size:14px; font-family:var(--fb); background:var(--s2); color:var(--tx); outline:none; transition:border .15s }
+.sim-input:focus { border-color:#B45309 }
+.sim-select { padding:8px 12px; border:1px solid var(--bd2); border-radius:8px; font-size:13px; font-family:var(--fb); background:var(--s2); color:var(--tx); outline:none }
+.sim-result-box { background:linear-gradient(135deg,rgba(180,83,9,.06),rgba(180,83,9,.02)); border:1px solid rgba(180,83,9,.2); border-radius:10px; padding:16px 20px; display:flex; gap:20px; flex-wrap:wrap; align-items:center }
+.sim-result-item { text-align:center }
+.sim-result-num { font-family:var(--fh); font-size:22px; font-weight:800; color:#B45309 }
+.sim-result-lbl { font-size:10px; font-family:var(--fm); color:var(--tx3); margin-top:2px }
+.sim-btn { margin-top:12px; padding:9px 20px; background:#B45309; color:#fff; border:none; border-radius:8px; font-size:13px; font-family:var(--fb); font-weight:600; cursor:pointer; transition:background .15s }
+.sim-btn:hover { background:#92400e }
+.sim-note { font-size:11px; color:var(--tx3); margin-top:10px; font-style:italic }
+
+/* Veille fiscale */
+.veille-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px }
+.veille-card { background:var(--s2); border-radius:10px; padding:14px 16px; border:1px solid var(--bd1) }
+.veille-card-title { font-size:12px; font-weight:600; color:var(--tx); margin-bottom:6px; display:flex; align-items:center; gap:6px }
+.veille-card-body { font-size:12px; color:var(--tx2); line-height:1.7 }
+.veille-badge { display:inline-block; font-family:var(--fm); font-size:9px; padding:2px 7px; border-radius:4px; margin-bottom:6px }
+.vb-lf { background:rgba(22,101,52,.1); color:#166534 }
+.vb-circ { background:rgba(26,59,160,.1); color:#1A3BA0 }
+.vb-cgi { background:rgba(180,83,9,.1); color:#B45309 }
+.vb-bo { background:rgba(107,58,31,.1); color:#6B3A1F }
+.veille-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:5px }
+.veille-list li { font-size:12px; color:var(--tx2); display:flex; align-items:flex-start; gap:6px }
+.veille-list li::before { content:"→"; color:#B45309; flex-shrink:0; margin-top:1px }
+
+/* Barème fiscal */
+.bareme-tabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap }
+.bareme-tab { padding:5px 14px; border-radius:6px; border:1.5px solid; font-size:12px; font-family:var(--fb); font-weight:500; cursor:pointer; transition:all .15s }
+.bt-is { background:rgba(26,59,160,.08); color:#1A3BA0; border-color:rgba(26,59,160,.25) }
+.bt-is.act,.bt-is:hover { background:#1A3BA0; color:#fff; border-color:#122B7A }
+.bt-ir { background:rgba(22,101,52,.08); color:#166534; border-color:rgba(22,101,52,.25) }
+.bt-ir.act,.bt-ir:hover { background:#166534; color:#fff; border-color:#0F4623 }
+.bt-tva { background:rgba(180,83,9,.08); color:#B45309; border-color:rgba(180,83,9,.25) }
+.bt-tva.act,.bt-tva:hover { background:#B45309; color:#fff; border-color:#7C2D12 }
+.bt-cm { background:rgba(107,58,31,.08); color:#6B3A1F; border-color:rgba(107,58,31,.25) }
+.bt-cm.act,.bt-cm:hover { background:#6B3A1F; color:#fff; border-color:#4A2510 }
+.bareme-panel { display:none }
+.bareme-panel.act { display:block }
+.bareme-table { width:100%; border-collapse:collapse; font-size:13px }
+.bareme-table th { background:var(--s2); font-family:var(--fm); font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--tx3); padding:8px 10px; text-align:left; border-bottom:2px solid var(--bd2) }
+.bareme-table td { padding:8px 10px; border-bottom:1px solid var(--bd1); color:var(--tx2) }
+.bareme-table tr:last-child td { border-bottom:none }
+.bareme-table .rate { font-weight:700; font-family:var(--fh); color:var(--tx) }
+.bareme-table .highlight { background:rgba(180,83,9,.04) }
+.bareme-art { font-family:var(--fm); font-size:10px; color:#1A3BA0; margin-top:10px }
+.not-available { font-size:13px; color:var(--tx3); font-style:italic; padding:10px 0 }
+
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker" role="marquee" aria-label="Compte à rebours des prochaines échéances fiscales">
+  <div class="ticker-t" id="ticker-track"></div>
+</div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <span class="brand-chip">TRANSIT-IA</span>
+    <span class="brand-name">Alertes Fiscales</span>
+  </div>
+  <nav class="hdr-nav">
+    <button class="hn active" data-hn="alertes" onclick="showSection('alertes')" title="Section active">Alertes &amp; échéances</button>
+    <button class="hn" data-hn="sim" onclick="showSection('sim')" title="">Simulateur pénalités</button>
+    <button class="hn" data-hn="veille" onclick="showSection('veille')" title="">Veille fiscale</button>
+    <button class="hn" data-hn="bareme" onclick="showSection('bareme')" title="">Barème fiscal</button>
+  </nav>
+  <div class="hdr-r">
+    <button class="btn"><i class="ti ti-download"></i> PDF</button>
+    <button class="btn p"><i class="ti ti-bell"></i> Activer alertes</button>
+  </div>
+</header>
+
+<!-- ══ SECTIONS FONCTIONNELLES ══ -->
+
+<!-- SIMULATEUR PÉNALITÉS -->
+<div class="hn-section" id="sec-sim">
+  <div class="hn-section-title">
+    🧮 Simulateur de pénalités de retard
+    <span class="hn-source">Art. 208 CGI 2026</span>
+  </div>
+  <div class="hn-section-sub">Calcul basé sur l'article 208 du CGI 2026 — données officielles uniquement. Résultat indicatif, non opposable à l'administration.</div>
+
+  <div class="sim-grid">
+    <div class="sim-input-block">
+      <span class="sim-label">Montant des droits dus (MAD)</span>
+      <input class="sim-input" id="sim-montant" type="number" min="0" placeholder="ex: 50000" oninput="calcPenalite()">
+    </div>
+    <div class="sim-input-block">
+      <span class="sim-label">Type d'impôt</span>
+      <select class="sim-select" id="sim-type" onchange="calcPenalite()">
+        <option value="normal">IS / IR (paiement spontané hors délai)</option>
+        <option value="tva">TVA / Retenue à la source (paiement tardif)</option>
+        <option value="court">IS / IR (retard ≤ 30 jours)</option>
+        <option value="enreg">Droits d'enregistrement</option>
+      </select>
+    </div>
+    <div class="sim-input-block">
+      <span class="sim-label">Mois de retard</span>
+      <input class="sim-input" id="sim-mois" type="number" min="1" max="120" value="3" oninput="calcPenalite()">
+    </div>
+    <div class="sim-input-block">
+      <span class="sim-label">Mois supplémentaires après le 1er mois</span>
+      <input class="sim-input" id="sim-mois-supp" type="number" min="0" max="120" value="2" oninput="calcPenalite()" disabled>
+      <span style="font-size:10px;color:var(--tx3)">Auto-calculé (= mois total - 1)</span>
+    </div>
+  </div>
+
+  <div class="sim-result-box" id="sim-result-box">
+    <div class="sim-result-item">
+      <div class="sim-result-num" id="sim-r-pen">—</div>
+      <div class="sim-result-lbl" id="sim-r-pen-lbl">Pénalité de base (10%)</div>
+    </div>
+    <div style="font-size:22px;color:var(--tx3)">+</div>
+    <div class="sim-result-item">
+      <div class="sim-result-num" id="sim-r-maj1">—</div>
+      <div class="sim-result-lbl">Majoration 1er mois (5%)</div>
+    </div>
+    <div style="font-size:22px;color:var(--tx3)">+</div>
+    <div class="sim-result-item">
+      <div class="sim-result-num" id="sim-r-majsupp">—</div>
+      <div class="sim-result-lbl">Majorations mois supp. (0,5%/mois)</div>
+    </div>
+    <div style="font-size:22px;color:var(--tx3)">=</div>
+    <div class="sim-result-item" style="background:rgba(180,83,9,.12);padding:10px 16px;border-radius:8px">
+      <div class="sim-result-num" id="sim-r-total" style="font-size:26px">—</div>
+      <div class="sim-result-lbl">TOTAL PÉNALITÉS (MAD)</div>
+    </div>
+  </div>
+  <div class="sim-note">
+    📘 Références légales : Art. 208-I CGI 2026 — Pénalité 10% (ou 5% si retard ≤30j, ou 20% pour TVA/RAS) + majoration 5% pour le 1er mois + 0,50% par mois ou fraction de mois supplémentaire. Art. 208-II : minimum 100 MAD pour droits d'enregistrement. Art. 208 bis : majoration 1% pour non-télépaiement (min. 1 000 MAD).
+  </div>
+  <div class="sim-note" style="color:#B91C1C;margin-top:6px">⚠️ Informations non incluses (non disponibles dans le CGI) : taux de change, délais de prescription, majorations spécifiques conventions fiscales.</div>
+</div>
+
+<!-- VEILLE FISCALE -->
+<div class="hn-section" id="sec-veille">
+  <div class="hn-section-title">
+    📡 Veille fiscale — Sources officielles
+    <span class="hn-source">CGI 2026 · LF 50-25</span>
+  </div>
+  <div class="hn-section-sub">Mesures en vigueur issues du CGI 2026 (Loi de Finances n° 50-25 pour 2026). Sources vérifiées — aucune extrapolation.</div>
+
+  <div class="veille-grid">
+    <div class="veille-card">
+      <div class="veille-card-title">
+        <span class="veille-badge vb-lf">LF 2026 · Art. 7 LF n°50-25</span>
+      </div>
+      <div class="veille-card-title">IS — Taux définitifs 2026</div>
+      <ul class="veille-list">
+        <li>Taux général : <strong>20%</strong> (bénéfice net &lt; 100M MAD)</li>
+        <li>Taux majoré : <strong>35%</strong> (bénéfice net ≥ 100M MAD, hors ZAI/CFC/investisseurs ≥1,5Mds)</li>
+        <li>Banques & assurances : <strong>40%</strong></li>
+        <li>ZAI & CFC (après exonération 5 ans) : <strong>20%</strong> (convergence finale Art. 247-XXXVII-A)</li>
+      </ul>
+    </div>
+    <div class="veille-card">
+      <div class="veille-card-title">
+        <span class="veille-badge vb-cgi">Art. 73-I CGI 2026</span>
+      </div>
+      <div class="veille-card-title">IR — Barème révisé (LF 2025)</div>
+      <ul class="veille-list">
+        <li>≤ 40 000 MAD/an : <strong>Exonéré</strong></li>
+        <li>40 001 – 60 000 : <strong>10%</strong></li>
+        <li>60 001 – 80 000 : <strong>20%</strong></li>
+        <li>80 001 – 100 000 : <strong>30%</strong></li>
+        <li>100 001 – 180 000 : <strong>34%</strong></li>
+        <li>&gt; 180 000 : <strong>37%</strong></li>
+      </ul>
+    </div>
+    <div class="veille-card">
+      <div class="veille-card-title">
+        <span class="veille-badge vb-lf">Art. 7 LF n°50-25 · 2026</span>
+      </div>
+      <div class="veille-card-title">Nouvelles mesures LF 2026</div>
+      <ul class="veille-list">
+        <li>Revenus de capitaux mobiliers étrangers : nouveau taux 15% IR (Art. 73-II-C-2°)</li>
+        <li>Location à des personnes IS : RAS 5% (Art. 73-II-A)</li>
+        <li>Pâtes alimentaires : passage de TVA exonérée à 10% (Art. 7)</li>
+        <li>Institutions de microfinance SA : exclusion taux 40% pendant 5 ans (Art. 7)</li>
+      </ul>
+    </div>
+    <div class="veille-card">
+      <div class="veille-card-title">
+        <span class="veille-badge vb-bo">Art. 6-II-B-8° CGI 2026</span>
+      </div>
+      <div class="veille-card-title">ZAI — Régime fiscal en vigueur</div>
+      <ul class="veille-list">
+        <li>IS : <strong>exonération totale 5 premiers exercices</strong> à compter du début d'exploitation</li>
+        <li>Après exonération : taux de droit commun (20% en 2026)</li>
+        <li>Exclusions : chantiers construction/montage, banques, assurances</li>
+        <li>Applicable aux exercices ouverts à compter du 01/01/2023</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sim-note" style="margin-top:14px">⚠️ Informations non incluses faute de données CGI suffisantes : circulaires DGI postérieures à mars 2026, notes de service, jurisprudence fiscale. Pour la veille réglementaire en temps réel, consulter le <a href="https://www.tax.gov.ma" target="_blank" style="color:#1A3BA0">portail DGI tax.gov.ma</a> et le Bulletin Officiel.</div>
+</div>
+
+<!-- BARÈME FISCAL -->
+<div class="hn-section" id="sec-bareme">
+  <div class="hn-section-title">
+    📊 Barème fiscal officiel 2026
+    <span class="hn-source">CGI 2026 — Art. 19, 73, 99, 144</span>
+  </div>
+  <div class="hn-section-sub">Données extraites du Code Général des Impôts 2026. Seules les données expressément mentionnées dans le CGI sont incluses.</div>
+
+  <div class="bareme-tabs">
+    <button class="bareme-tab bt-is act" onclick="switchBareme('is',this)">IS — Impôt sur les sociétés</button>
+    <button class="bareme-tab bt-ir" onclick="switchBareme('ir',this)">IR — Impôt sur le revenu</button>
+    <button class="bareme-tab bt-tva" onclick="switchBareme('tva',this)">TVA — Taux applicables</button>
+    <button class="bareme-tab bt-cm" onclick="switchBareme('cm',this)">Cotisation minimale</button>
+  </div>
+
+  <!-- IS -->
+  <div class="bareme-panel act" id="bp-is">
+    <table class="bareme-table">
+      <thead><tr><th>Situation / Profil</th><th>Taux IS 2026</th><th>Référence</th></tr></thead>
+      <tbody>
+        <tr class="highlight"><td>Taux général (bénéfice net &lt; 100M MAD)</td><td class="rate">20%</td><td>Art. 19-I-A + Art. 247-XXXVII-A</td></tr>
+        <tr><td>Bénéfice net ≥ 100 000 000 MAD (hors exclusions)</td><td class="rate">35%</td><td>Art. 19-I-B</td></tr>
+        <tr><td>Banques, organismes de crédit, BAM, CDG, assurances</td><td class="rate">40%</td><td>Art. 19-I-C</td></tr>
+        <tr class="highlight"><td>ZAI — 5 premiers exercices (début d'exploitation)</td><td class="rate">0% (exonération totale)</td><td>Art. 6-II-B-8°</td></tr>
+        <tr><td>ZAI & CFC — après exonération (2026)</td><td class="rate">20%</td><td>Art. 247-XXXVII-A-2</td></tr>
+        <tr><td>Casablanca Finance City (services) — après exonération</td><td class="rate">20%</td><td>Art. 247-XXXVII-A-2</td></tr>
+        <tr><td>Marchés travaux/construction (sociétés non résidentes, option forfait)</td><td class="rate">8% (forfaitaire)</td><td>Art. 19-III-A</td></tr>
+        <tr><td>RAS — Produits bruts non-résidents (Art. 15)</td><td class="rate">10%</td><td>Art. 19-IV-B</td></tr>
+        <tr><td>RAS — Produits placements à revenu fixe (Art. 14)</td><td class="rate">20%</td><td>Art. 19-IV-C</td></tr>
+        <tr><td>RAS — Dividendes / produits participations (Art. 13)</td><td class="rate">10%</td><td>Art. 19-IV-B</td></tr>
+        <tr><td>RAS — Loyers (personnes morales IS, versés par entités ≥200M CA)</td><td class="rate">5%</td><td>Art. 19-IV-A</td></tr>
+        <tr><td>Introduction en bourse (+20% capital) — réduction 3 ans</td><td class="rate">-50% de l'IS</td><td>Art. 6-III</td></tr>
+        <tr><td>Introduction en bourse (cession actions existantes) — réduction 3 ans</td><td class="rate">-25% de l'IS</td><td>Art. 6-III</td></tr>
+      </tbody>
+    </table>
+    <div class="bareme-art">📘 Art. 19 CGI 2026 — Taux définitifs 2026 issus de la convergence transitoire Art. 247-XXXVII-A (LF n°50-22 → LF n°50-25)</div>
+  </div>
+
+  <!-- IR -->
+  <div class="bareme-panel" id="bp-ir">
+    <table class="bareme-table">
+      <thead><tr><th>Tranche de revenu annuel (MAD)</th><th>Taux IR</th><th>Référence</th></tr></thead>
+      <tbody>
+        <tr class="highlight"><td>Jusqu'à 40 000</td><td class="rate">0% — Exonéré</td><td>Art. 73-I</td></tr>
+        <tr><td>40 001 — 60 000</td><td class="rate">10%</td><td>Art. 73-I</td></tr>
+        <tr><td>60 001 — 80 000</td><td class="rate">20%</td><td>Art. 73-I</td></tr>
+        <tr><td>80 001 — 100 000</td><td class="rate">30%</td><td>Art. 73-I</td></tr>
+        <tr><td>100 001 — 180 000</td><td class="rate">34%</td><td>Art. 73-I</td></tr>
+        <tr class="highlight"><td>Supérieur à 180 000</td><td class="rate">37%</td><td>Art. 73-I</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px">
+      <table class="bareme-table">
+        <thead><tr><th>Taux spécifiques IR</th><th>Taux</th><th>Référence</th></tr></thead>
+        <tbody>
+          <tr><td>Produits bruts non-résidents (Art. 15)</td><td class="rate">10%</td><td>Art. 73-II-B-1°</td></tr>
+          <tr><td>Revenus fonciers imposables &lt; 120 000 MAD</td><td class="rate">10%</td><td>Art. 73-II-B-5°</td></tr>
+          <tr><td>Revenus fonciers imposables ≥ 120 000 MAD</td><td class="rate">15%</td><td>Art. 73-II-C-4°</td></tr>
+          <tr><td>Profits cessions actions cotées en bourse</td><td class="rate">15%</td><td>Art. 73-II-C-1°a</td></tr>
+          <tr><td>Revenus bruts de capitaux mobiliers étrangers</td><td class="rate">15%</td><td>Art. 73-II-C-2° (LF 2026)</td></tr>
+          <tr><td>Dividendes / produits participations (Art. 13)</td><td class="rate">10%</td><td>Art. 73-II-B-7°</td></tr>
+          <tr><td>Location (personnes physiques, régime RNR/RNS)</td><td class="rate">5% RAS</td><td>Art. 73-II-A (LF 2026)</td></tr>
+          <tr><td>CPU (contribution professionnelle unique)</td><td class="rate">10% + droits complémentaires</td><td>Art. 73-II-B-6°</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bareme-art">📘 Art. 73 CGI 2026 — Barème modifié par LF n°60-24 (2025) et LF n°50-25 (2026)</div>
+  </div>
+
+  <!-- TVA -->
+  <div class="bareme-panel" id="bp-tva">
+    <table class="bareme-table">
+      <thead><tr><th>Taux TVA</th><th>Domaine d'application principal</th><th>Référence</th></tr></thead>
+      <tbody>
+        <tr class="highlight"><td class="rate">20%</td><td>Taux normal (toutes opérations non listées ci-dessous)</td><td>Art. 99-A</td></tr>
+        <tr><td class="rate">10%</td><td>Hôtellerie, restauration, cafés · Huiles alimentaires · Sel, riz usiné, pâtes alimentaires (LF 2026) · Banques & crédit · Panneaux photovoltaïques · Chauffe-eaux solaires · Gaz de pétrole · Financements Mourabaha/Ijara</td><td>Art. 99-B</td></tr>
+        <tr><td class="rate">7%</td><td>Pêche maritime (armateur, adjudicataire, fermier) — taux spécifique</td><td>Art. CGI (tableau RAS)</td></tr>
+        <tr class="highlight"><td class="rate">0% (exonération)</td><td>Exportations · Certains produits de base (farine, sucre, eau, médicaments, électricité) · Équipements agricoles spécifiques · Actes et opérations visés Art. 91 CGI</td><td>Art. 91 + 92</td></tr>
+      </tbody>
+    </table>
+    <div class="sim-note" style="margin-top:10px">ℹ️ Le taux 14% existait dans les versions antérieures du CGI. <strong>Dans le CGI 2026 consulté, l'article 100 est abrogé</strong> (mention explicite : "(abrogé)"). Seuls les taux 20%, 10% et les exonérations Art. 91 sont confirmés. Le taux 7% apparaît dans un tableau de RAS pour la pêche — à vérifier selon l'activité.</div>
+    <div class="bareme-art">📘 Art. 99 CGI 2026 — Modifié par LF n°55-23 (2024) et LF n°50-25 (2026)</div>
+  </div>
+
+  <!-- Cotisation minimale -->
+  <div class="bareme-panel" id="bp-cm">
+    <table class="bareme-table">
+      <thead><tr><th>Situation</th><th>Taux CM</th><th>Minimum MAD</th><th>Référence</th></tr></thead>
+      <tbody>
+        <tr class="highlight"><td>Taux général (IS et IR)</td><td class="rate">0,25%</td><td>3 000 MAD (IS) · 1 500 MAD (IR professionnel/agricole)</td><td>Art. 144-I-D</td></tr>
+        <tr><td>Ventes produits pétroliers, gaz, beurre, huile, sucre, farine, eau, électricité, médicaments</td><td class="rate">0,15%</td><td>3 000 MAD (IS)</td><td>Art. 144-I-D</td></tr>
+        <tr><td>Professions libérales (Art. 89-I-12° et 91-VI-1°)</td><td class="rate">4%</td><td>1 500 MAD (IR)</td><td>Art. 144-I-D</td></tr>
+        <tr class="highlight"><td>Exonération CM — 3 premiers exercices</td><td class="rate">0%</td><td>—</td><td>Art. 144-I-C</td></tr>
+      </tbody>
+    </table>
+    <div class="sim-note" style="margin-top:10px">ℹ️ La cotisation minimale est due même en l'absence de chiffre d'affaires. Elle est imputable sur le montant de l'IS ou de l'IR de l'exercice (Art. 144-I-E). Base de calcul : CA HT + produits accessoires + subventions + primes reçues (Art. 144-I-B).</div>
+    <div class="bareme-art">📘 Art. 144 CGI 2026</div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero-eyebrow">DGI Maroc · CGI 2026 · Référentiel mis à jour le <span id="date-today"></span></div>
+  <h1>Alertes fiscales :<br><em>Bien gérer</em> vos impôts.</h1>
+  <p class="hero-sub">Suivez vos obligations légales, anticipez les pénalités et restez en conformité avec le Code Général des Impôts marocain. Choisissez votre profil pour afficher les échéances qui vous concernent.</p>
+
+  <div class="profil-bar">
+    <span class="profil-lbl">Votre profil :</span>
+    <button class="pp active"  onclick="setProfile(this,'all')">Tous profils</button>
+    <button class="pp" data-pp="pme" onclick="setProfile(this,'pme')">PME / DAF</button>
+    <button class="pp" data-pp="transit" onclick="setProfile(this,'transit')">Opérateur transit</button>
+    <button class="pp" data-pp="invest" onclick="setProfile(this,'invest')">Investisseur ZAI</button>
+    <button class="pp" data-pp="ae" onclick="setProfile(this,'ae')">Auto-entrepreneur</button>
+  </div>
+
+  <!-- RADAR -->
+  <div class="radar-card">
+    <div class="radar-wrap" aria-hidden="true">
+      <svg class="radar-svg" viewBox="0 0 156 156" fill="none">
+        <circle cx="78" cy="78" r="65" stroke="#E6E2D6" stroke-width="12"/>
+        <circle id="radar-arc" cx="78" cy="78" r="65"
+          stroke="#B92929" stroke-width="12" stroke-linecap="round"
+          stroke-dasharray="408.4" stroke-dashoffset="100"
+          transform="rotate(-90 78 78)"/>
+        <circle cx="78" cy="78" r="50" fill="#FDF1F1"/>
+      </svg>
+      <div class="radar-center">
+        <div class="r-days r" id="radar-jours">—</div>
+        <div class="r-lbl">jours restants</div>
+        <div class="r-cat" id="radar-cat"></div>
+      </div>
+    </div>
+    <div>
+      <div class="radar-info-title" id="radar-title">Chargement…</div>
+      <div class="radar-info-desc" id="radar-desc"></div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-v r" id="kpi-u">—</div><div class="kpi-l">Urgentes</div></div>
+        <div class="kpi"><div class="kpi-v a" id="kpi-p">—</div><div class="kpi-l">Ce mois</div></div>
+        <div class="kpi"><div class="kpi-v g" id="kpi-t">—</div><div class="kpi-l">Traitées</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BANNIÈRE CONFORMITÉ -->
+  <div class="conf-band">
+    <i class="ti ti-shield-check"></i>
+    <div>
+      <div class="conf-title">Nouveautés réglementaires · LF 2025 &amp; LF 2026</div>
+      <div class="conf-text">
+        LF 2025 : seuil exonération IR → 40 000 DH · RAS dividendes 11,25 % (→ 10 % en 2027) · CSS reconduite jusqu'en 2028 ·
+        autoliquidation TVA hors champ (Art. 88) · TVA services numériques non-résidents.
+        LF 2026 : extension RAS aux prestations de services grandes entreprises · Loi 69-21 (délais paiement CA ≥ 2 M DH).
+      </div>
+      <span class="conf-tag">Source : DGI · tax.gov.ma · Bulletin Officiel</span>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- LISTE ALERTES -->
+    <div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="toutes" onclick="switchTab(this,'toutes')">Calendrier complet</button>
+        <button class="tab" data-tab="urgentes" onclick="switchTab(this,'urgentes')">Urgentes</button>
+        <button class="tab" data-tab="proches" onclick="switchTab(this,'proches')">30 prochains jours</button>
+        <button class="tab" data-tab="conformite" onclick="switchTab(this,'conformite')">Conformité DGI</button>
+        <button class="tab" data-tab="traitees" onclick="switchTab(this,'traitees')">Traitées</button>
+      </div>
+      <div id="alert-list" role="list" aria-live="polite"></div>
+
+      <div class="cta-strip">
+        <div>
+          <div class="cta-t">Exporter mon calendrier fiscal</div>
+          <div class="cta-s">PDF personnalisé · iCal · ou partager avec votre comptable</div>
+        </div>
+        <div class="cta-btns">
+          <button class="cta-btn gh"><i class="ti ti-calendar-share"></i> iCal</button>
+          <button class="cta-btn w"><i class="ti ti-download"></i> PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- COMPTE À REBOURS -->
+      <div class="widget">
+        <div class="wh"><i class="ti ti-hourglass"></i> Compte à rebours</div>
+        <div class="wb" id="countdown-list" aria-live="polite"></div>
+      </div>
+
+      <!-- SIMULATEUR — INTERFACE UNIQUEMENT -->
+      <!-- Les calculs sont délégués à FiscalEngine.calculerPenaliteRetard() -->
+      <div class="widget">
+        <div class="wh"><i class="ti ti-calculator"></i> Simulateur de pénalités</div>
+        <div class="wb">
+          <div class="sim-input-row">
+            <div class="sim-lbl-row">
+              <span>Montant de l'impôt dû (DH)</span>
+              <span class="v" id="sim-montant-lbl">50 000</span>
+            </div>
+            <input type="range" min="5000" max="500000" value="50000" step="5000"
+              id="sim-montant" oninput="onSimChange()">
+          </div>
+          <div class="sim-input-row">
+            <div class="sim-lbl-row">
+              <span>Mois de retard</span>
+              <span class="v" id="sim-mois-lbl">3 mois</span>
+            </div>
+            <input type="range" min="1" max="24" value="3" step="1"
+              id="sim-mois" oninput="onSimChange()">
+          </div>
+          <div class="sim-result-row">
+            <span class="sim-key">Majoration initiale (5 %)</span>
+            <span class="sim-val" id="sim-maj">—</span>
+          </div>
+          <div class="sim-result-row">
+            <span class="sim-key">Pénalité mensuelle (0,5 %/mois)</span>
+            <span class="sim-val" id="sim-pen">—</span>
+          </div>
+          <div class="sim-result-row">
+            <span class="sim-key">Total impôt + pénalités</span>
+            <span class="sim-val" id="sim-total">—</span>
+          </div>
+          <div class="sim-box">
+            <div class="sim-big" id="sim-pct">—</div>
+            <div class="sim-sub">Surcoût fiscal · Art. 208 CGI</div>
+          </div>
+          <div class="disclaimer-box">
+            <strong>Avertissement :</strong> Ce simulateur est fourni à titre indicatif uniquement. Les montants peuvent varier. Consultez un expert-comptable agréé ou la DGI (tax.gov.ma). <em>Transit-IA ne saurait être tenu responsable d'une décision fondée sur ces données.</em>
+          </div>
+        </div>
+      </div>
+
+      <!-- MINI-CAL -->
+      <div class="widget">
+        <div class="wh"><i class="ti ti-calendar"></i> Mai 2026</div>
+        <div class="wb">
+          <div class="mini-cal" id="mini-cal"></div>
+          <div class="cal-legend">
+            <div class="cl-item"><span class="cl-sq" style="background:var(--rbg);border:1px solid var(--rbr)"></span>Critique</div>
+            <div class="cl-item"><span class="cl-sq" style="background:var(--abg);border:1px solid var(--abr)"></span>Proche</div>
+            <div class="cl-item"><span class="cl-sq" style="background:var(--bbg);border:1px solid var(--bbr)"></span>À venir</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BARÈME — données issues de FiscalEngine.TAUX -->
+      <div class="widget">
+        <div class="wh"><i class="ti ti-receipt-tax"></i> Taux clés 2026</div>
+        <div class="wb" id="bareme-list"></div>
+      </div>
+
+      <!-- VEILLE RÉGLEMENTAIRE -->
+      <div class="widget">
+        <div class="wh"><i class="ti ti-radar"></i> Veille réglementaire</div>
+        <div class="wb">
+          <div id="veille-list"></div>
+          <div class="disclaimer-box" style="margin-top:8px">
+            <strong>Non-opposabilité :</strong> Cette veille est indicative. En cas d'ambiguïté, la version officielle du Bulletin Officiel et les circulaires DGI prévalent. Transit-IA ne saurait être tenu responsable.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+  </div><!-- /layout -->
+</div><!-- /page -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     COUCHE DE PRÉSENTATION UNIQUEMENT
+     Aucune formule ici. Toute logique → FiscalEngine.*
+     ═══════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  /* ─── STATE ─── */
+  const TODAY    = new Date(2026, 4, 8);
+  const ANNEE    = 2026;
+  let activeProfile = 'all';
+  let activeTab     = 'toutes';
+  const traitees    = new Set();
+
+  /* ─── Hydratation au chargement (calculs dans le moteur) ─── */
+  let ECHEANCES = FiscalEngine.hydaterEcheances(ANNEE, TODAY);
+
+  /* ─── HELPERS D'AFFICHAGE ─── */
+  function fmtDH(n) { return n.toLocaleString('fr-FR') + ' DH'; }
+
+  function dStr(date) {
+    if (!date) return 'Permanent';
+    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function urgToClass(urgence) {
+    return { critique: 'r', eleve: 'a', normal: 'g', passe: 'n', permanent: 'n' }[urgence] || 'n';
+  }
+
+  function acIcoClass(urgence, isDone) {
+    if (isDone) return 'i-g';
+    return { critique: 'i-r', eleve: 'i-a', normal: 'i-b', passe: 'i-m', permanent: 'i-b' }[urgence] || 'i-b';
+  }
+
+  function catIco(cat) {
+    const m = { IS: 'ti-building-bank', TVA: 'ti-receipt-tax', IR: 'ti-user-dollar', TP: 'ti-map-pin', CSS: 'ti-shield-dollar' };
+    return m[cat] || 'ti-file';
+  }
+
+  function catTag(cat) {
+    const m = { IS: 'tb', TVA: 'tg', IR: 'ta', TP: 'tn', CSS: 'tn' };
+    return `<span class="tag ${m[cat] || 'tn'}">${cat}</span>`;
+  }
+
+  function freqTag(freq) {
+    if (!freq) return '';
+    const m = { Mensuel: 'tg', Trimestriel: 'tb', Annuel: 'ta', Ponctuel: 'tn', Annuel: 'ta' };
+    return `<span class="tag ${m[freq] || 'tn'}">${freq}</span>`;
+  }
+
+  function dayBadge(e, isDone) {
+    const j = e.joursRestants;
+    if (isDone) return '<span class="tag tg">Traité</span>';
+    if (j === null) return '<span class="tag tn">Permanent</span>';
+    if (j < 0)  return '<span class="tag tn">Passée</span>';
+    if (j === 0) return '<span class="tag tr">Aujourd\'hui</span>';
+    if (j <= 14) return `<span class="tag tr">J-${j}</span>`;
+    if (j <= 30) return `<span class="tag ta">J-${j}</span>`;
+    return `<span class="tag tn">J-${j}</span>`;
+  }
+
+  function impactDots(n) {
+    let h = '<div class="imp-dots">';
+    for (let i = 0; i < 3; i++) h += `<div class="imp-d${i < n ? ' on' : ''}"></div>`;
+    return h + '</div>';
+  }
+
+  /* ─── RENDER ALERT CARD ─── */
+  function cardHTML(e) {
+    const isDone  = traitees.has(e.id);
+    const j       = e.joursRestants;
+    const urg     = e.urgence;
+    const cls     = `ac${urg === 'critique' && !isDone ? ' crit' : urg === 'eleve' && !isDone ? ' high' : isDone ? ' done-c' : ''}`;
+    const dateCls = j !== null && j <= 14 && !isDone ? 'r' : j !== null && j <= 30 && !isDone ? 'a' : 'n';
+    return `<div class="${cls}" role="listitem">
+      <div class="ac-ico ${acIcoClass(urg, isDone)}"><i class="ti ${catIco(e.cat)}"></i></div>
+      <div class="ac-body">
+        <div class="ac-name">${e.name}</div>
+        <div class="ac-desc">${e.desc} <span class="ac-ref">${e.ref}</span></div>
+        <div class="ac-meta">
+          ${dayBadge(e, isDone)}
+          ${catTag(e.cat)}
+          ${freqTag(e.freq)}
+          <span class="ac-date ${dateCls}"><i class="ti ti-calendar" style="font-size:11px;vertical-align:-2px"></i> ${dStr(e.dueDate)}</span>
+          <span class="pen-chip"><i class="ti ti-alert-triangle" style="font-size:10px"></i>${e.penaliteLabel}</span>
+          ${impactDots(e.impact)}
+        </div>
+      </div>
+      <button class="check-btn${isDone ? ' done' : ''}" onclick="toggleTraite(${e.id})" aria-label="Marquer comme traité">
+        <i class="ti ti-check"></i>
+      </button>
+    </div>`;
+  }
+
+  /* ─── RENDER CONFORMITÉ ─── */
+  const CONFORMITE_ITEMS = [
+    { id: 'c1', name: 'Obligation de télédéclaration SIMPL', cat: 'Info',
+      desc: 'Toutes les déclarations IS, IR, TVA et RAS doivent être souscrites par voie électronique (SIMPL). La déclaration papier est irrecevable pour les entreprises et professions libérales.',
+      ref: 'Art. 155 CGI', impact: 3, penaliteLabel: 'Déclaration non valide · amende 500 DH + pénalités' },
+    { id: 'c2', name: 'Mesures dérogatoires — veille obligatoire', cat: 'Veille',
+      desc: 'Le Maroc publie régulièrement des mesures dérogatoires (amnisties fiscales, reports). Ne vous fiez pas uniquement à cet outil. Veille active sur le Bulletin Officiel et les circulaires DGI indispensable.',
+      ref: 'BO marocain · DGI', impact: 2, penaliteLabel: 'Retard non couvert par l\'outil' },
+    { id: 'c3', name: 'Clause de non-responsabilité Transit-IA', cat: 'Info',
+      desc: 'Les informations présentées ont une valeur indicative et ne constituent pas un conseil fiscal. En cas de doute, consultez un expert-comptable agréé ou la DGI (tax.gov.ma).',
+      ref: 'Non-opposabilité · CGI', impact: 1, penaliteLabel: '—' },
+  ];
+
+  function conformiteHTML(c) {
+    return `<div class="ac" role="listitem">
+      <div class="ac-ico i-b"><i class="ti ti-shield-check"></i></div>
+      <div class="ac-body">
+        <div class="ac-name">${c.name}</div>
+        <div class="ac-desc">${c.desc} <span class="ac-ref">${c.ref}</span></div>
+        <div class="ac-meta">
+          <span class="tag tb">${c.cat}</span>
+          <span class="pen-chip"><i class="ti ti-alert-triangle" style="font-size:10px"></i>${c.penaliteLabel}</span>
+          ${impactDots(c.impact)}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ─── RENDER PRINCIPAL ─── */
+  function render() {
+    /* Filtrage profil via le moteur */
+    let liste = FiscalEngine.filtrerParProfil(ECHEANCES, activeProfile);
+
+    /* Calcul KPIs via le moteur */
+    const kpis = FiscalEngine.calculerKPIs(liste, traitees);
+    document.getElementById('kpi-u').textContent = kpis.urgentes;
+    document.getElementById('kpi-p').textContent = kpis.proches;
+    document.getElementById('kpi-t').textContent = kpis.traitees;
+
+    /* Sélection selon onglet */
+    let show = [];
+    if (activeTab === 'urgentes')  show = liste.filter(e => !traitees.has(e.id) && e.urgence === 'critique');
+    else if (activeTab === 'proches')   show = liste.filter(e => !traitees.has(e.id) && e.urgence === 'eleve');
+    else if (activeTab === 'toutes')    show = liste.filter(e => !traitees.has(e.id)).sort((a, b) => {
+      if (!a.dueDate && !b.dueDate) return 0;
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return a.dueDate - b.dueDate;
+    });
+    else if (activeTab === 'conformite') {
+      document.getElementById('alert-list').innerHTML = CONFORMITE_ITEMS.map(conformiteHTML).join('');
+      updateRadar(liste); buildCountdown(liste); return;
+    }
+    else if (activeTab === 'traitees') show = ECHEANCES.filter(e => traitees.has(e.id));
+
+    const el = document.getElementById('alert-list');
+    el.innerHTML = show.length
+      ? show.map(cardHTML).join('')
+      : `<div class="empty-s"><i class="ti ti-circle-check"></i><p>Aucune échéance dans cette catégorie${activeProfile !== 'all' ? ' pour ce profil' : ''}.</p></div>`;
+
+    updateRadar(liste);
+    buildCountdown(liste);
+  }
+
+  /* ─── RADAR — angle calculé par le moteur ─── */
+  function updateRadar(liste) {
+    const actives = liste.filter(e => !traitees.has(e.id) && e.dueDate);
+    if (!actives.length) { document.getElementById('radar-jours').textContent = '—'; return; }
+    const next = actives.sort((a, b) => a.dueDate - b.dueDate)[0];
+    const j = next.joursRestants;
+    const jEl = document.getElementById('radar-jours');
+    jEl.textContent = j <= 0 ? '0' : j;
+    jEl.className = 'r-days ' + (j <= 14 ? 'r' : j <= 30 ? 'a' : 'g');
+    document.getElementById('radar-cat').textContent = next.cat;
+    document.getElementById('radar-title').textContent = `Prochaine : ${next.name}`;
+    document.getElementById('radar-desc').textContent = next.desc;
+    /* Délègue le calcul de l'angle au moteur */
+    const angle = FiscalEngine.angleRadar(j, 90);
+    const circ = 408.4;
+    const offset = circ - (circ * angle / 360);
+    const arc = document.getElementById('radar-arc');
+    arc.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    arc.setAttribute('stroke', j <= 14 ? '#B92929' : j <= 30 ? '#8F5500' : '#1A6038');
+  }
+
+  /* ─── COMPTE À REBOURS ─── */
+  function buildCountdown(liste) {
+    const items = liste
+      .filter(e => e.dueDate && !traitees.has(e.id) && e.joursRestants >= 0)
+      .sort((a, b) => a.dueDate - b.dueDate)
+      .slice(0, 5);
+    const el = document.getElementById('countdown-list');
+    el.innerHTML = items.map(e => {
+      const j = e.joursRestants;
+      const cls = j <= 14 ? 'r' : j <= 30 ? 'a' : 'g';
+      return `<div class="cd-item">
+        <div class="cd-num ${cls}">${j === 0 ? '0j' : j + 'j'}</div>
+        <div>
+          <div class="cd-n">${e.name}</div>
+          <div class="cd-d">${dStr(e.dueDate)}</div>
+          <div class="cd-p">${e.penaliteLabel.split('·')[0].trim()}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  /* ─── SIMULATEUR — délègue à FiscalEngine.calculerPenaliteRetard() ─── */
+  function onSimChange() {
+    const montant = parseInt(document.getElementById('sim-montant').value);
+    const mois    = parseInt(document.getElementById('sim-mois').value);
+    /* Seul appel de calcul — le moteur fait le reste */
+    const r = FiscalEngine.calculerPenaliteRetard(montant, mois);
+    document.getElementById('sim-montant-lbl').textContent = montant.toLocaleString('fr-FR') + ' DH';
+    document.getElementById('sim-mois-lbl').textContent    = mois + ' mois';
+    document.getElementById('sim-maj').textContent   = fmtDH(r.majorationInitiale);
+    document.getElementById('sim-pen').textContent   = fmtDH(r.penaliteMensuelle);
+    document.getElementById('sim-total').textContent = fmtDH(r.totalDu);
+    document.getElementById('sim-pct').textContent   = '+' + r.surCoutPct.toFixed(1) + ' %';
+  }
+
+  /* ─── MINI-CAL ─── */
+  function buildCal() {
+    const evts = {};
+    ECHEANCES.forEach(e => {
+      if (!e.dueDate) return;
+      if (e.dueDate.getMonth() !== 4 || e.dueDate.getFullYear() !== 2026) return;
+      const d = e.dueDate.getDate();
+      const j = e.joursRestants;
+      if (j <= 14) evts[d] = 'ev-r';
+      else if (j <= 30) evts[d] = evts[d] || 'ev-a';
+      else evts[d] = evts[d] || 'ev-b';
+    });
+    const firstDay = new Date(2026, 4, 1).getDay();
+    const offset = (firstDay + 6) % 7;
+    const g = document.getElementById('mini-cal');
+    let h = ['L','M','M','J','V','S','D'].map(d => `<div class="mc-h">${d}</div>`).join('');
+    for (let i = 0; i < offset; i++) h += '<div></div>';
+    for (let d = 1; d <= 31; d++) {
+      let cls = 'mc-d';
+      if (d === 8) cls += ' today';
+      else if (evts[d]) cls += ' ' + evts[d];
+      h += `<div class="${cls}">${d}</div>`;
+    }
+    g.innerHTML = h;
+  }
+
+  /* ─── BARÈME — données issues de FiscalEngine.TAUX ─── */
+  function buildBareme() {
+    const t = FiscalEngine.TAUX;
+    const rows = [
+      { imp: 'IS', desc: 'Bénéfice &lt; 300 000 DH', taux: '10 %' },
+      { imp: 'IS', desc: '300 001 – 1 000 000 DH', taux: '20 %' },
+      { imp: 'IS', desc: '&gt; 1 000 000 DH', taux: '35 %' },
+      { imp: 'TVA', desc: 'Taux normal', taux: (t.TVA.normal * 100) + ' %' },
+      { imp: 'TVA', desc: 'Hôtellerie, restauration', taux: (t.TVA.hotellerie * 100) + ' %' },
+      { imp: 'IR', desc: 'Exonération (seuil LF 2025)', taux: '≤ ' + t.IR.seuilExoneration.toLocaleString('fr-FR') + ' DH' },
+      { imp: 'RAS', desc: 'Dividendes distribués 2026', taux: (t.RAS.dividendes2026 * 100) + ' %' },
+      { imp: 'CM', desc: 'Cotisation minimale IS', taux: t.IS.cotisationMinimale.plancher.toLocaleString('fr-FR') + ' DH min.' },
+    ];
+    document.getElementById('bareme-list').innerHTML = rows
+      .map(r => `<div class="bar-row"><span class="bar-imp">${r.imp}</span><span class="bar-desc">${r.desc}</span><span class="bar-taux">${r.taux}</span></div>`)
+      .join('');
+  }
+
+  /* ─── VEILLE ─── */
+  function buildVeille() {
+    const dotClass = { nouveau: 'new', info: 'info', actif: 'actif' };
+    document.getElementById('veille-list').innerHTML = FiscalEngine.VEILLE_DATA
+      .map(v => `<div class="vi">
+        <div class="vi-dot ${dotClass[v.statut] || 'info'}"></div>
+        <div>
+          <div class="vi-t">${v.titre}</div>
+          <div class="vi-d">${v.texte}</div>
+          <div class="vi-src">${v.source} · ${v.date}</div>
+        </div>
+      </div>`)
+      .join('');
+  }
+
+  /* ─── TICKER ─── */
+  function buildTicker() {
+    const items = ECHEANCES
+      .filter(e => e.dueDate && e.joursRestants !== null && e.joursRestants >= 0)
+      .sort((a, b) => a.dueDate - b.dueDate)
+      .slice(0, 10);
+    const html = items.map(e => {
+      const j = e.joursRestants;
+      const cls = j <= 14 ? 'r' : j <= 30 ? 'a' : 'g';
+      return `<div class="ti"><div class="ti-dot dot-${cls}"></div><span class="ti-lbl">${e.name}</span><span class="ti-val ${cls}">J-${j} · ${dStr(e.dueDate)}</span></div>`;
+    }).join('');
+    document.getElementById('ticker-track').innerHTML = html + html;
+  }
+
+  /* ─── INTERACTIONS ─── */
+  window.toggleTraite = function(id) {
+    traitees.has(id) ? traitees.delete(id) : traitees.add(id);
+    render();
+  };
+  window.setProfile = function(el, prof) {
+    document.querySelectorAll('.pp').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    activeProfile = prof;
+    render();
+  };
+  window.switchTab = function(el, tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    activeTab = tab;
+    render();
+  };
+  window.onSimChange = onSimChange;
+
+  /* ─── INIT ─── */
+  document.getElementById('date-today').textContent =
+    TODAY.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  buildTicker();
+  buildCal();
+  buildBareme();
+  buildVeille();
+  onSimChange();
+  render();
+
+})();
+
+  /* ══════════════════════════════════════════════════════
+     NAVIGATION SECTIONS — showSection / switchBareme / calcPenalite
+  ══════════════════════════════════════════════════════ */
+
+  function showSection(id) {
+    // Cache all panels
+    ['sim','veille','bareme'].forEach(function(s) {
+      var el = document.getElementById('sec-' + s);
+      if (el) el.classList.remove('visible');
+    });
+    // Reset all hn buttons
+    document.querySelectorAll('.hn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    // Activate clicked button
+    var btn = document.querySelector('.hn[data-hn="' + id + '"]');
+    if (btn) btn.classList.add('active');
+    // Show panel if not "alertes" (alertes = default main view)
+    if (id !== 'alertes') {
+      var sec = document.getElementById('sec-' + id);
+      if (sec) sec.classList.add('visible');
+    }
+  }
+
+  function switchBareme(tab, el) {
+    document.querySelectorAll('.bareme-panel').forEach(function(p) {
+      p.classList.remove('act');
+    });
+    document.querySelectorAll('.bareme-tab').forEach(function(b) {
+      b.classList.remove('act');
+    });
+    var panel = document.getElementById('bp-' + tab);
+    if (panel) panel.classList.add('act');
+    el.classList.add('act');
+  }
+
+  function calcPenalite() {
+    var montant = parseFloat(document.getElementById('sim-montant').value) || 0;
+    var type    = document.getElementById('sim-type').value;
+    var mois    = parseInt(document.getElementById('sim-mois').value) || 1;
+
+    // Pénalité de base Art. 208-I CGI 2026
+    var tauxPen = 0.10;
+    if (type === 'court')  tauxPen = 0.05;   // retard ≤ 30j
+    if (type === 'tva')    tauxPen = 0.20;   // TVA / RAS
+    if (type === 'enreg')  tauxPen = 0.10;   // enregistrement
+
+    var moisSupp  = Math.max(0, mois - 1);
+    var penBase   = montant * tauxPen;
+    var maj1      = montant * 0.05;
+    var majSupp   = montant * 0.005 * moisSupp;
+    var total     = penBase + maj1 + majSupp;
+
+    // Minimum 100 MAD droits d'enregistrement (Art. 208-II)
+    if (type === 'enreg' && total < 100) total = 100;
+
+    var fmt = function(v) {
+      return v.toLocaleString('fr-MA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' MAD';
+    };
+
+    document.getElementById('sim-r-pen').textContent     = montant > 0 ? fmt(penBase)  : '—';
+    document.getElementById('sim-r-maj1').textContent    = montant > 0 ? fmt(maj1)     : '—';
+    document.getElementById('sim-r-majsupp').textContent = montant > 0 ? fmt(majSupp)  : '—';
+    document.getElementById('sim-r-total').textContent   = montant > 0 ? fmt(total)    : '—';
+
+    // Update label for pénalité base
+    var labels = {
+      normal: '10% de base (IS/IR)',
+      court:  '5% de base (retard ≤ 30j)',
+      tva:    '20% de base (TVA/RAS)',
+      enreg:  '10% de base (enregistrement)'
+    };
+    var lbl = document.getElementById('sim-r-pen-lbl');
+    if (lbl) lbl.textContent = labels[type] || 'Pénalité de base';
+  }
+
+  // Expose globally (called from onclick in HTML)
+  window.showSection   = showSection;
+  window.switchBareme  = switchBareme;
+  window.calcPenalite  = calcPenalite;
+
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

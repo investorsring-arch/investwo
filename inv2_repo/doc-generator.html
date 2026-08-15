@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart-Invest.IA — Suite documentaire complète</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f1117;--ink2:#3a3d4a;--ink3:#6b6f7e;
+  --paper:#f7f6f2;--paper2:#eeecea;--paper3:#e3e0db;
+  --gold:#B8922A;--gold-h:#D4A940;--gold-pale:#FBF5E6;--gold-bd:rgba(184,146,42,.25);--gold-dim:rgba(184,146,42,.12);
+  --orange:#c8410a;--orange2:#e8572a;
+  --teal:#0d6e6e;--teal2:#0f8080;--teal-bg:rgba(13,110,110,.08);
+  --blue:#1A3A9A;--blue2:#2550cc;--blue-bg:rgba(26,58,154,.08);
+  --purple:#6d28d9;--purple2:#7c3aed;--purple-bg:rgba(109,40,217,.08);
+  --green:#1E7A4A;--green2:#15a356;--green-bg:#EBF7EE;--green-bd:#B0DDB8;
+  --red:#b91c1c;--red2:#dc2626;--red-bg:rgba(185,28,28,.08);
+  --slate:#334155;--slate2:#475569;--slate-bg:rgba(51,65,85,.08);
+  --border:rgba(15,17,23,0.11);--border2:rgba(15,17,23,0.06);
+  --radius:8px;--radius2:12px;--radius3:16px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.05);
+  --sh-md:0 4px 20px rgba(0,0,0,.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--paper);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ═══ HEADER ═══ */
+.app-header{background:rgba(247,246,242,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;gap:12px;height:54px;position:sticky;top:0;z-index:300;box-shadow:var(--shadow)}
+.logo-mark{width:28px;height:28px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{fill:#fff}
+.logo-txt{font-family:'DM Serif Display',serif;font-size:15px;color:var(--ink);line-height:1.1;white-space:nowrap}
+.logo-txt span{display:block;font-size:8.5px;font-family:'IBM Plex Mono',monospace;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
+.logo-tagline{font-size:13px!important;font-family:'DM Sans',sans-serif!important;letter-spacing:.01em!important;text-transform:none!important;color:var(--ink2)!important;font-weight:500}
+.hdr-sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.hdr-count{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);white-space:nowrap}
+.hdr-count strong{color:var(--gold)}
+.hdr-right{margin-left:auto;display:flex;gap:6px;align-items:center}
+.btn-hdr{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:var(--radius);border:1px solid var(--border);background:none;color:var(--ink2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-hdr:hover{background:var(--paper3)}
+.btn-hdr.primary{background:var(--gold);color:#fff;border-color:var(--gold)}
+.btn-hdr.primary:hover{background:var(--gold-h)}
+.btn-entreprise{background:var(--gold-dim)!important;border-color:var(--gold-bd)!important;color:var(--gold)!important;font-weight:700}
+.btn-entreprise:hover{background:var(--gold-pale)!important}
+
+/* ═══ LAYOUT ═══ */
+.app-body{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 54px)}
+.panel-form{background:var(--paper);border-right:1px solid var(--border);overflow-y:auto;height:calc(100vh - 54px);position:sticky;top:54px}
+.panel-preview{background:var(--paper2);overflow-y:auto;height:calc(100vh - 54px);display:flex;flex-direction:column}
+
+/* ═══ FORM PANEL ═══ */
+.form-section{padding:1rem 1.3rem;border-bottom:1px solid var(--border2)}
+.section-label{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.field-row{display:grid;gap:7px;margin-bottom:7px}
+.field-row.cols2{grid-template-columns:1fr 1fr}
+.field-row.cols3{grid-template-columns:1fr 1fr 1fr}
+.field-group{display:flex;flex-direction:column;gap:3px}
+label{font-size:10.5px;font-weight:500;color:var(--ink3)}
+input,select,textarea{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:6px 9px;width:100%;transition:border-color .15s,box-shadow .15s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim)}
+textarea{resize:vertical;min-height:56px}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6f7e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;padding-right:26px}
+
+/* ═══ ITEMS TABLE ═══ */
+.items-table{width:100%;border-collapse:collapse;font-size:11.5px;margin-bottom:7px}
+.items-table th{text-align:left;padding:5px 4px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border);white-space:nowrap}
+.items-table td{padding:3px 3px;vertical-align:middle;border-bottom:1px solid var(--border2)}
+.items-table input{padding:4px 5px;font-size:11.5px;border-radius:5px}
+.btn-icon{background:none;border:none;cursor:pointer;padding:3px;border-radius:4px;color:var(--ink3);transition:color .15s,background .15s;font-size:12px;line-height:1}
+.btn-icon:hover{color:var(--red);background:var(--red-bg)}
+.total-bar{display:flex;flex-wrap:wrap;gap:10px;font-size:11.5px;padding:7px 0;border-top:1px solid var(--border);font-weight:500}
+.total-bar span{color:var(--ink3);font-weight:400}
+.btn-add{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;color:var(--teal);background:var(--teal-bg);border:1px dashed rgba(13,110,110,.3);border-radius:var(--radius);padding:6px 12px;cursor:pointer;width:100%;justify-content:center;transition:all .15s}
+.btn-add:hover{background:rgba(13,110,110,.14);border-color:var(--teal)}
+
+/* ═══ BUTTONS ═══ */
+.btn{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn-sm{padding:5px 11px;font-size:10.5px}
+
+
+/* ═══ PREVIEW HEADER — 2 LIGNES ═══ */
+.preview-header{background:var(--paper);border-bottom:2px solid var(--border);padding:0;flex-shrink:0}
+.tabs-row{display:flex;align-items:center;gap:6px;padding:5px 10px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.tabs-row::-webkit-scrollbar{display:none}
+.tabs-row-1{border-bottom:1px solid var(--border2)}
+.tabs-row-2{background:rgba(26,58,154,.03)}
+
+/* Pill de groupe */
+.tabs-group-pill{display:flex;align-items:center;gap:2px;background:rgba(0,0,0,.03);border:1px solid var(--border);border-radius:10px;padding:3px 4px;border-left:3px solid var(--grp)}
+.tg-label{font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grp);padding:0 6px;white-space:nowrap;opacity:.9}
+
+/* Tuiles / onglets */
+.doc-tab{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:6px 12px;border:1px solid transparent;border-radius:7px;cursor:pointer;transition:all .15s;color:var(--tc,var(--ink3));background:none;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.doc-tab:hover{background:var(--tbg);border-color:color-mix(in srgb, var(--tc) 30%, transparent)}
+.doc-tab.active{background:var(--tc);color:#fff;border-color:var(--tc);box-shadow:0 2px 8px color-mix(in srgb, var(--tc) 35%, transparent)}
+
+/* ═══ PREVIEW CONTENT ═══ */
+.preview-body{flex:1;overflow-y:auto;padding:1.3rem}
+.doc-preview{display:none}
+.doc-preview.active{display:block}
+.doc-sheet{background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:2.2rem;box-shadow:var(--shadow);max-width:800px;margin:0 auto;font-size:12.5px;line-height:1.5}
+
+/* ═══ DOC INTERNALS ═══ */
+.doc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.8rem;padding-bottom:1.3rem;border-bottom:2px solid var(--gold)}
+.doc-company{max-width:54%;display:flex;align-items:flex-start;gap:10px}
+.doc-logo-img{max-height:48px;max-width:110px;object-fit:contain;flex-shrink:0}
+.doc-logo-ph{width:38px;height:38px;border-radius:5px;background:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.doc-logo-ph svg{fill:#fff}
+.doc-company-name{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);margin-bottom:2px}
+.doc-company-details{font-size:10.5px;color:var(--ink3);line-height:1.8}
+.doc-title-block{text-align:right}
+.doc-title{font-family:'DM Serif Display',serif;font-size:20px;font-style:italic;margin-bottom:5px}
+.doc-meta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink3);line-height:1.8}
+.doc-meta strong{color:var(--ink)}
+
+.doc-parties{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.doc-party{background:var(--paper2);border-radius:var(--radius);padding:.65rem .85rem}
+.doc-party-label{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.doc-party-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.doc-party-name{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.doc-party-addr{font-size:10.5px;color:var(--ink2);line-height:1.7}
+
+.doc-info-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem}
+.doc-info-cell{background:var(--paper2);border-radius:var(--radius);padding:.45rem .65rem}
+.doc-info-cell-label{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+.doc-info-cell-val{font-size:11.5px;font-weight:500;color:var(--ink)}
+
+.doc-table{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:11.5px}
+.doc-table th{background:var(--ink);color:#fff;padding:7px 9px;text-align:left;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.doc-table td{padding:6px 9px;border-bottom:1px solid var(--paper3)}
+.doc-table tr:nth-child(even) td{background:var(--paper2)}
+.doc-table .num{text-align:right}
+
+.doc-totals{display:flex;justify-content:flex-end;margin-bottom:1rem}
+.doc-totals-box{width:240px}
+.doc-total-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11.5px;border-bottom:1px solid var(--border2)}
+.doc-total-row.grand{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--gold);border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);padding:7px 0;margin-top:3px}
+
+.doc-footer{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
+.doc-footer-block-label{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+.doc-sig-line{border-bottom:1px solid var(--ink3);height:46px;margin-bottom:3px}
+.doc-sig-text{font-size:9.5px;color:var(--ink3)}
+.doc-colophon{margin-top:1.2rem;padding:9px 11px;background:var(--teal-bg);border-left:3px solid var(--teal);border-radius:0 var(--radius) var(--radius) 0;font-size:9.5px;color:var(--ink3);line-height:1.7}
+
+/* CERT ORIGINE */
+.cert-border{border:4px double var(--gold);padding:1.8rem;border-radius:4px}
+.cert-state{text-align:center;margin-bottom:1.3rem;padding-bottom:.9rem;border-bottom:2px solid var(--gold)}
+.cert-state-name{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold);margin-bottom:3px}
+.cert-table{width:100%;border-collapse:collapse;font-size:11px;margin:.9rem 0}
+.cert-table th,.cert-table td{border:1px solid var(--border);padding:5px 7px;vertical-align:top}
+.cert-table th{background:var(--paper2);font-weight:600;font-size:9.5px;text-transform:uppercase;letter-spacing:.05em}
+.cert-declaration{font-size:11px;font-style:italic;color:var(--ink2);margin:.9rem 0;padding:9px 11px;border:1px solid var(--border);border-radius:var(--radius);background:var(--paper2)}
+
+/* ═══ MON ENTREPRISE ═══ */
+.ent-panel{max-width:640px;margin:0 auto}
+.ent-header{text-align:center;margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid var(--border)}
+.ent-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);margin-bottom:6px}
+.ent-alert{color:#b91c1c;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.ent-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius2);padding:1.3rem;box-shadow:var(--shadow);margin-bottom:.9rem}
+.ent-card-title{font-family:'Syne',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.9rem;padding-bottom:.5rem;border-bottom:1px solid var(--border2)}
+.logo-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:1.3rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--paper);position:relative}
+.logo-zone:hover,.logo-zone.has-logo{border-color:var(--gold-bd);background:var(--gold-pale)}
+.logo-zone-inner img{max-height:70px;max-width:180px;object-fit:contain;margin-bottom:.4rem}
+.logo-hint{font-size:11px;color:var(--ink3)}
+.logo-hint strong{color:var(--gold)}
+.save-status{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink3);padding:7px 11px;border-radius:var(--radius);background:var(--paper2);border:1px solid var(--border2)}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--ink3);transition:background .3s;flex-shrink:0}
+.sdot.ok{background:var(--green)}.sdot.no{background:var(--orange)}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.4rem;right:1.4rem;background:var(--ink);color:#fff;font-size:12px;font-family:'Syne',sans-serif;font-weight:600;padding:9px 16px;border-radius:var(--radius2);box-shadow:var(--sh-md);z-index:9999;opacity:0;transform:translateY(6px);transition:all .22s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{background:var(--green)}
+
+
+/* ═══ DOC ACTION BAR ═══ */
+.doc-action-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--paper2);border-top:1px solid var(--border);border-radius:0 0 var(--radius2) var(--radius2);margin-top:1.4rem}
+.doc-action-bar .btn-print{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.doc-action-bar .btn-pdf{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff}
+.doc-action-bar .btn-pdf:hover{opacity:.85}
+.doc-action-bar .doc-action-label{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-left:auto}
+/* PRINT */
+@media print{
+  .app-header,.panel-form,.preview-header,.form-actions{display:none!important}
+  .app-body{display:block}
+  .panel-preview{height:auto;overflow:visible;display:block}
+  .preview-body{padding:0;overflow:visible}
+  .doc-preview{display:none}
+  .doc-preview.print-active{display:block!important}
+  .doc-sheet{box-shadow:none;border:none;border-radius:0;max-width:100%;padding:0}
+  @page{margin:1.5cm 2cm}
+}
+@media(max-width:900px){
+  .app-body{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .panel-form,.panel-preview{height:auto;position:static}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="logo-mark"><svg width="14" height="14" viewBox="0 0 14 14"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="8" y="0" width="6" height="6" rx="1"/><rect x="0" y="8" width="6" height="6" rx="1"/><rect x="8" y="8" width="6" height="6" rx="1"/></svg></div>
+  <div class="logo-txt">Smart-Invest.IA <span class="logo-tagline">Créer mes documents commerciaux : Import/Export</span></div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-count"><strong>10</strong> documents disponibles</div>
+  <div class="hdr-right">
+    <button class="btn-hdr btn-entreprise" onclick="switchTabByName('entreprise')">⚙ Mon Entreprise</button>
+    <button class="btn-hdr" onclick="resetForm()">↺ Reset</button>
+  </div>
+</header>
+
+<div class="app-body">
+
+<!-- ══ FORM PANEL ══ -->
+<aside class="panel-form">
+
+  <!-- Expéditeur -->
+  <div class="form-section">
+    <div class="section-label">Expéditeur / Exportateur</div>
+    <div class="field-row"><div class="field-group"><label>Raison sociale *</label><input id="exp_nom" placeholder="Société ABC Sarl" oninput="render()"></div></div>
+    <div class="field-row"><div class="field-group"><label>Adresse</label><input id="exp_adresse" placeholder="123, Rue Mohammed V" oninput="render()"></div></div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Ville</label><input id="exp_ville" placeholder="Casablanca" oninput="render()"></div>
+      <div class="field-group"><label>Pays</label><input id="exp_pays" value="Maroc" oninput="render()"></div>
+    </div>
+    <div class="field-row cols3">
+      <div class="field-group"><label>ICE</label><input id="exp_ice" placeholder="000000000" oninput="render()"></div>
+      <div class="field-group"><label>IF</label><input id="exp_if" placeholder="12345678" oninput="render()"></div>
+      <div class="field-group"><label>RC</label><input id="exp_rc" placeholder="12345" oninput="render()"></div>
+    </div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Tél.</label><input id="exp_tel" placeholder="+212 5xx xxxxxx" oninput="render()"></div>
+      <div class="field-group"><label>Email</label><input type="email" id="exp_email" placeholder="contact@societe.ma" oninput="render()"></div>
+    </div>
+  </div>
+
+  <!-- Destinataire -->
+  <div class="form-section">
+    <div class="section-label">Destinataire / Importateur</div>
+    <div class="field-row"><div class="field-group"><label>Raison sociale *</label><input id="dest_nom" placeholder="Company XYZ Ltd" oninput="render()"></div></div>
+    <div class="field-row"><div class="field-group"><label>Adresse complète</label><textarea id="dest_adresse" rows="2" placeholder="456 Trade Street, London" oninput="render()"></textarea></div></div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Contact</label><input id="dest_contact" placeholder="John Smith" oninput="render()"></div>
+      <div class="field-group"><label>Tél.</label><input id="dest_tel" placeholder="+44 20 xxxx" oninput="render()"></div>
+    </div>
+  </div>
+
+  <!-- Expédition -->
+  <div class="form-section">
+    <div class="section-label">Détails de l'expédition</div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>N° document *</label><input id="doc_num" placeholder="PF-2025-001" oninput="render()"></div>
+      <div class="field-group"><label>Date</label><input type="date" id="doc_date" oninput="render()"></div>
+    </div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Incoterm</label>
+        <select id="incoterm" onchange="render()">
+          <option value="">— Sélectionner —</option>
+          <optgroup label="Multimodal"><option>EXW</option><option>FCA</option><option>CPT</option><option>CIP</option><option>DAP</option><option>DPU</option><option>DDP</option></optgroup>
+          <optgroup label="Maritime"><option>FAS</option><option>FOB</option><option>CFR</option><option>CIF</option></optgroup>
+        </select>
+      </div>
+      <div class="field-group"><label>Devise</label>
+        <select id="devise" onchange="render()">
+          <option value="EUR" selected>EUR — Euro</option>
+          <option value="MAD">MAD — Dirham</option>
+          <option value="USD">USD — Dollar</option>
+          <option value="GBP">GBP — Livre</option>
+          <option value="AED">AED — Dirham EAU</option>
+          <option value="SAR">SAR — Riyal</option>
+          <option value="CNY">CNY — Yuan</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Port départ</label><input id="port_dep" placeholder="Tanger Med" oninput="render()"></div>
+      <div class="field-group"><label>Port destination</label><input id="port_arr" placeholder="Marseille" oninput="render()"></div>
+    </div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Mode de transport</label>
+        <select id="transport" onchange="render()">
+          <option>Maritime</option><option>Aérien</option><option>Routier</option><option>Ferroviaire</option><option>Multimodal</option>
+        </select>
+      </div>
+      <div class="field-group"><label>Réf. BL / LTA / CMR</label><input id="ref_bl" placeholder="BL-XXXX-2025" oninput="render()"></div>
+    </div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Moyen de paiement</label>
+        <select id="paiement" onchange="render()">
+          <option>Virement bancaire (TT)</option><option>Crédit documentaire (LC)</option><option>Remise documentaire (DR)</option><option>Avance à la commande</option><option>CAD</option><option>Compte ouvert (O/A)</option>
+        </select>
+      </div>
+      <div class="field-group"><label>Délai de paiement</label><input id="delai_pmt" placeholder="30 jours date BL" oninput="render()"></div>
+    </div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Pays d'origine marchandises</label><input id="pays_origine" value="Maroc" oninput="render()"></div>
+      <div class="field-group"><label>N° connaissement / LTA</label><input id="num_bl" placeholder="MSCU1234567" oninput="render()"></div>
+    </div>
+  </div>
+
+  <!-- Articles -->
+  <div class="form-section">
+    <div class="section-label">Lignes de marchandises</div>
+    <div style="overflow-x:auto">
+      <table class="items-table">
+        <thead><tr>
+          <th style="min-width:100px">Description</th><th style="min-width:48px">Code HS</th>
+          <th style="min-width:38px">Qté</th><th style="min-width:48px">Unité</th>
+          <th style="min-width:56px">P.U.</th><th style="min-width:46px">P.net</th>
+          <th style="min-width:46px">P.brut</th><th style="min-width:36px">Colis</th>
+          <th style="min-width:70px">Dims (cm)</th><th></th>
+        </tr></thead>
+        <tbody id="items-tbody"></tbody>
+      </table>
+    </div>
+    <button class="btn-add" onclick="addItem()">+ Ajouter une ligne</button>
+    <div class="total-bar">
+      <span>P.net : <strong id="tot-pnet">0</strong> kg</span>
+      <span>P.brut : <strong id="tot-pbrut">0</strong> kg</span>
+      <span>Colis : <strong id="tot-colis">0</strong></span>
+      <span>Total : <strong id="tot-montant">0</strong></span>
+    </div>
+  </div>
+
+  <!-- Mentions -->
+  <div class="form-section">
+    <div class="section-label">Mentions complémentaires</div>
+    <div class="field-row"><div class="field-group"><label>Marques et numéros de colis</label><input id="marques" placeholder="ABC/CAS/2025 — N°1 à N°10" oninput="render()"></div></div>
+    <div class="field-row"><div class="field-group"><label>Observations / Notes</label><textarea id="observations" rows="2" placeholder="Instructions spéciales..." oninput="render()"></textarea></div></div>
+    <div class="field-row cols2">
+      <div class="field-group"><label>Signataire</label><input id="signataire" placeholder="Nom, Titre" oninput="render()"></div>
+      <div class="field-group"><label>Lieu de signature</label><input id="lieu_sig" placeholder="Casablanca" oninput="render()"></div>
+    </div>
+    <!-- Champs spécifiques CMR -->
+    <div class="field-row cols2">
+      <div class="field-group"><label>N° plaque véhicule</label><input id="plaque_veh" placeholder="W-12345-A" oninput="render()"></div>
+      <div class="field-group"><label>Transporteur (CMR)</label><input id="transporteur" placeholder="Transports XYZ" oninput="render()"></div>
+    </div>
+    <!-- Champs AT -->
+    <div class="field-row cols2">
+      <div class="field-group"><label>Durée AT (mois)</label><input id="at_duree" placeholder="6" oninput="render()"></div>
+      <div class="field-group"><label>Bureau douanier AT</label><input id="at_bureau" placeholder="Bureau Casaport" oninput="render()"></div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- ══ PREVIEW PANEL ══ -->
+<main class="panel-preview">
+
+  <!-- TABS BAR — 2 lignes -->
+  <div class="preview-header">
+    <!-- Ligne 1 : Commercial + Logistique -->
+    <div class="tabs-row tabs-row-1">
+      <div class="tabs-group-pill" style="--grp:#c8410a">
+        <span class="tg-label">Commercial</span>
+        <button class="doc-tab grp-commercial active" onclick="switchTab('facture',this)" style="--tc:#c8410a;--tbg:rgba(200,65,10,.1)">Facture</button>
+        <button class="doc-tab grp-commercial" onclick="switchTab('proforma',this)" style="--tc:#e8572a;--tbg:rgba(232,87,42,.1)">Pro Forma</button>
+        <button class="doc-tab grp-commercial" onclick="switchTab('bon_cde',this)" style="--tc:#a33208;--tbg:rgba(163,50,8,.1)">Bon de cde</button>
+        <button class="doc-tab grp-commercial" onclick="switchTab('avoir',this)" style="--tc:#c84a0a;--tbg:rgba(200,74,10,.1)">Avoir</button>
+      </div>
+      <div class="tabs-group-pill" style="--grp:#0d6e6e">
+        <span class="tg-label">Logistique</span>
+        <button class="doc-tab grp-logistique" onclick="switchTab('packing',this)" style="--tc:#0d6e6e;--tbg:rgba(13,110,110,.1)">Packing List</button>
+        <button class="doc-tab grp-logistique" onclick="switchTab('cmr',this)" style="--tc:#0f8080;--tbg:rgba(15,128,128,.1)">CMR</button>
+      </div>
+    </div>
+    <!-- Ligne 2 : Douane -->
+    <div class="tabs-row tabs-row-2">
+      <div class="tabs-group-pill" style="--grp:#1A3A9A">
+        <span class="tg-label">Douane</span>
+        <button class="doc-tab grp-douane" onclick="switchTab('certif',this)" style="--tc:#1A3A9A;--tbg:rgba(26,58,154,.1)">Cert. Origine</button>
+        <button class="doc-tab grp-douane" onclick="switchTab('eur1',this)" style="--tc:#2550cc;--tbg:rgba(37,80,204,.1)">EUR.1 / EUR-MED</button>
+        <button class="doc-tab grp-douane" onclick="switchTab('dv1',this)" style="--tc:#0e2d7a;--tbg:rgba(14,45,122,.1)">Décl. valeur DV1</button>
+        <button class="doc-tab grp-douane" onclick="switchTab('at',this)" style="--tc:#334155;--tbg:rgba(51,65,85,.1)">Adm. Temporaire</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW BODY -->
+  <div class="preview-body">
+
+    <!-- FACTURE COMMERCIALE -->
+    <div class="doc-preview active" id="preview-facture"><div class="doc-sheet" id="sheet-facture"></div></div>
+    <!-- PRO FORMA -->
+    <div class="doc-preview" id="preview-proforma"><div class="doc-sheet" id="sheet-proforma"></div></div>
+    <!-- BON DE COMMANDE -->
+    <div class="doc-preview" id="preview-bon_cde"><div class="doc-sheet" id="sheet-bon_cde"></div></div>
+    <!-- AVOIR -->
+    <div class="doc-preview" id="preview-avoir"><div class="doc-sheet" id="sheet-avoir"></div></div>
+    <!-- PACKING LIST -->
+    <div class="doc-preview" id="preview-packing"><div class="doc-sheet" id="sheet-packing"></div></div>
+    <!-- CMR -->
+    <div class="doc-preview" id="preview-cmr"><div class="doc-sheet" id="sheet-cmr"></div></div>
+    <!-- CERTIF ORIGINE -->
+    <div class="doc-preview" id="preview-certif"><div class="doc-sheet" id="sheet-certif"></div></div>
+    <!-- EUR.1 -->
+    <div class="doc-preview" id="preview-eur1"><div class="doc-sheet" id="sheet-eur1"></div></div>
+    <!-- DV1 -->
+    <div class="doc-preview" id="preview-dv1"><div class="doc-sheet" id="sheet-dv1"></div></div>
+    <!-- ADMISSION TEMPORAIRE -->
+    <div class="doc-preview" id="preview-at"><div class="doc-sheet" id="sheet-at"></div></div>
+
+    <!-- MON ENTREPRISE -->
+    <div class="doc-preview" id="preview-entreprise">
+      <div class="ent-panel">
+        <div class="ent-header">
+          <div class="ent-title">Mon Entreprise</div>
+          <div class="ent-alert">⚠ Ces informations sont sauvegardées localement et pré-remplies dans tous vos documents.</div>
+        </div>
+        <!-- Logo -->
+        <div class="ent-card">
+          <div class="ent-card-title">Logo</div>
+          <div class="logo-zone" id="logo-zone" onclick="document.getElementById('logo-input').click()">
+            <input type="file" id="logo-input" accept="image/*" style="display:none" onchange="handleLogo(event)">
+            <div id="logo-zone-inner" class="logo-zone-inner">
+              <div style="font-size:26px;margin-bottom:.3rem">🖼</div>
+              <div class="logo-hint">Cliquez pour uploader<br><strong>PNG, JPG, SVG</strong> — max 1 Mo</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:7px;margin-top:.6rem">
+            <button class="btn btn-sm" style="background:var(--gold);color:#fff" onclick="document.getElementById('logo-input').click()">Changer</button>
+            <button class="btn btn-sm" style="background:var(--red);color:#fff" onclick="removeLogo()">Supprimer</button>
+          </div>
+        </div>
+        <!-- Identité -->
+        <div class="ent-card">
+          <div class="ent-card-title">Identité légale</div>
+          <div class="field-row"><div class="field-group"><label>Raison sociale *</label><input id="co_nom" placeholder="Société ABC Sarl" oninput="markUnsaved()"></div></div>
+          <div class="field-row"><div class="field-group"><label>Adresse</label><input id="co_adresse" placeholder="123, Rue Mohammed V, Casablanca" oninput="markUnsaved()"></div></div>
+          <div class="field-row cols2">
+            <div class="field-group"><label>Ville</label><input id="co_ville" placeholder="Casablanca" oninput="markUnsaved()"></div>
+            <div class="field-group"><label>Pays</label><input id="co_pays" value="Maroc" oninput="markUnsaved()"></div>
+          </div>
+          <div class="field-row cols3">
+            <div class="field-group"><label>ICE</label><input id="co_ice" placeholder="000000000000000" oninput="markUnsaved()"></div>
+            <div class="field-group"><label>IF</label><input id="co_if" placeholder="12345678" oninput="markUnsaved()"></div>
+            <div class="field-group"><label>RC</label><input id="co_rc" placeholder="12345" oninput="markUnsaved()"></div>
+          </div>
+          <div class="field-row cols2">
+            <div class="field-group"><label>Tél.</label><input id="co_tel" placeholder="+212 5xx xxxxxx" oninput="markUnsaved()"></div>
+            <div class="field-group"><label>Email</label><input type="email" id="co_email" placeholder="contact@societe.ma" oninput="markUnsaved()"></div>
+          </div>
+        </div>
+        <!-- Défauts -->
+        <div class="ent-card">
+          <div class="ent-card-title">Valeurs par défaut</div>
+          <div class="field-row cols2">
+            <div class="field-group"><label>Pays d'origine</label><input id="co_origine" value="Maroc" oninput="markUnsaved()"></div>
+            <div class="field-group"><label>Devise</label>
+              <select id="co_devise" onchange="markUnsaved()">
+                <option value="EUR" selected>EUR</option><option value="MAD">MAD</option><option value="USD">USD</option><option value="GBP">GBP</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row cols2">
+            <div class="field-group"><label>Port habitueld</label><input id="co_port_dep" placeholder="Tanger Med" oninput="markUnsaved()"></div>
+            <div class="field-group"><label>Incoterm habituel</label>
+              <select id="co_incoterm" onchange="markUnsaved()">
+                <option value="">—</option><option>FOB</option><option>CIF</option><option>EXW</option><option>DAP</option><option>DDP</option><option>CFR</option><option>FCA</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row"><div class="field-group"><label>Signataire habituel</label><input id="co_signataire" placeholder="Prénom Nom, Directeur Export" oninput="markUnsaved()"></div></div>
+        </div>
+        <!-- Actions -->
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <button class="btn" style="background:#1E7A4A;color:#fff;font-size:13px;padding:10px 20px" onclick="saveCompany()">💾 Sauvegarder</button>
+          <button class="btn btn-sm" style="background:#1A3A9A;color:#fff" onclick="applyCompanyToForm()">↻ Appliquer au formulaire</button>
+          <button class="btn btn-sm" style="background:#b91c1c;color:#fff" onclick="clearCompany()">✕ Effacer</button>
+          <div class="save-status"><div class="sdot" id="sdot"></div><span id="slabel">Chargement…</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /preview-body -->
+</main>
+</div><!-- /app-body -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══ STATE ═══ */
+let items=[], itemCounter=0, activeTab='facture', companyLogo=null;
+const LS='smart_invest_ia_v3';
+
+/* ═══ HELPERS ═══ */
+const g=id=>(document.getElementById(id)||{}).value||'';
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmt=(n,d=2)=>(+n).toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const df=d=>{if(!d)return'';const p=d.split('-');return p[2]+'/'+p[1]+'/'+p[0];};
+function totM(){return items.reduce((s,i)=>s+(+i.qty||0)*(+i.pu||0),0)}
+function totPN(){return items.reduce((s,i)=>s+(+i.pnet||0),0)}
+function totPB(){return items.reduce((s,i)=>s+(+i.pbrut||0),0)}
+function totC(){return items.reduce((s,i)=>s+(+i.colis||0),0)}
+
+function toast(msg,ok=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show'+(ok?' ok':'');
+  setTimeout(()=>t.className='toast',2500);
+}
+
+function montantLettres(n,dev){
+  const u=['','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf'];
+  const d=['','','vingt','trente','quarante','cinquante','soixante','soixante','quatre-vingt','quatre-vingt'];
+  function ct(n){if(!n)return'';if(n<20)return u[n];const dz=Math.floor(n/10),un=n%10;if(dz===7)return'soixante-'+(un===1?'et-onze':u[10+un]);if(dz===9)return'quatre-vingt-'+(un===0?'s':u[10+un]);return d[dz]+(un===1&&dz!==8?'-et-'+u[un]:un?'-'+u[un]:(dz===8?'s':''));}
+  const ei=Math.floor(n),dc=Math.round((n-ei)*100);
+  let r='';if(ei>=1000)r+=ct(Math.floor(ei/1000))+' mille ';if(ei%1000>=100)r+=u[Math.floor((ei%1000)/100)]+' cent ';r+=ct(ei%100);
+  r=r.trim()||'zéro';if(dc>0)r+=' virgule '+ct(dc)+' centimes';
+  return r.charAt(0).toUpperCase()+r.slice(1)+' '+dev;
+}
+
+/* ═══ LOGO ═══ */
+function logoHTML(){
+  if(companyLogo)return`<img src="${companyLogo}" class="doc-logo-img" alt="Logo">`;
+  return`<div class="doc-logo-ph"><svg width="14" height="14" viewBox="0 0 14 14"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="8" y="0" width="6" height="6" rx="1"/><rect x="0" y="8" width="6" height="6" rx="1"/><rect x="8" y="8" width="6" height="6" rx="1"/></svg></div>`;
+}
+function handleLogo(e){
+  const f=e.target.files[0];if(!f)return;
+  if(f.size>1.2*1024*1024){toast('Logo trop volumineux');return;}
+  const r=new FileReader();r.onload=ev=>{companyLogo=ev.target.result;updateLogoZone();markUnsaved();render();};r.readAsDataURL(f);
+}
+function updateLogoZone(){
+  const z=document.getElementById('logo-zone-inner'),lz=document.getElementById('logo-zone');
+  if(companyLogo){z.innerHTML=`<img src="${companyLogo}" style="max-height:70px;max-width:180px;object-fit:contain;margin-bottom:.4rem"><div class="logo-hint" style="color:var(--green)">✓ Logo chargé</div>`;lz.classList.add('has-logo');}
+  else{z.innerHTML=`<div style="font-size:26px;margin-bottom:.3rem">🖼</div><div class="logo-hint">Cliquez pour uploader<br><strong>PNG, JPG, SVG</strong></div>`;lz.classList.remove('has-logo');}
+}
+function removeLogo(){companyLogo=null;document.getElementById('logo-input').value='';updateLogoZone();markUnsaved();render();}
+
+/* ═══ COMPANY STORAGE ═══ */
+function saveCompany(){
+  const d={nom:g('co_nom'),adresse:g('co_adresse'),ville:g('co_ville'),pays:g('co_pays'),ice:g('co_ice'),if_:g('co_if'),rc:g('co_rc'),tel:g('co_tel'),email:g('co_email'),origine:g('co_origine'),devise:g('co_devise'),port_dep:g('co_port_dep'),incoterm:g('co_incoterm'),signataire:g('co_signataire'),logo:companyLogo};
+  try{localStorage.setItem(LS,JSON.stringify(d));setSS(true);toast('✓ Sauvegardé',true);applyCompanyToForm();}
+  catch(e){toast('Erreur sauvegarde (logo trop lourd ?)');}
+}
+function loadCompany(){
+  try{
+    const raw=localStorage.getItem(LS);if(!raw){setSS(null);return;}
+    const d=JSON.parse(raw);
+    const m={co_nom:'nom',co_adresse:'adresse',co_ville:'ville',co_pays:'pays',co_ice:'ice',co_if:'if_',co_rc:'rc',co_tel:'tel',co_email:'email',co_origine:'origine',co_port_dep:'port_dep',co_signataire:'signataire'};
+    for(const[id,k]of Object.entries(m)){if(d[k])setv(id,d[k]);}
+    if(d.devise)document.getElementById('co_devise').value=d.devise;
+    if(d.incoterm)document.getElementById('co_incoterm').value=d.incoterm;
+    if(d.logo){companyLogo=d.logo;updateLogoZone();}
+    setSS(true);applyCompanyToForm();
+  }catch(e){setSS(null);}
+}
+function applyCompanyToForm(){
+  const m={exp_nom:'co_nom',exp_adresse:'co_adresse',exp_ville:'co_ville',exp_pays:'co_pays',exp_ice:'co_ice',exp_if:'co_if',exp_rc:'co_rc',exp_tel:'co_tel',exp_email:'co_email'};
+  for(const[fid,cid]of Object.entries(m)){const v=g(cid);if(v)setv(fid,v);}
+  if(g('co_origine')&&!g('pays_origine'))setv('pays_origine',g('co_origine'));
+  if(g('co_port_dep')&&!g('port_dep'))setv('port_dep',g('co_port_dep'));
+  if(g('co_signataire')&&!g('signataire'))setv('signataire',g('co_signataire'));
+  if(g('co_devise'))document.getElementById('devise').value=g('co_devise');
+  if(g('co_incoterm')&&!g('incoterm'))document.getElementById('incoterm').value=g('co_incoterm');
+  render();
+}
+function clearCompany(){if(!confirm('Effacer toutes les données entreprise ?'))return;localStorage.removeItem(LS);companyLogo=null;updateLogoZone();['co_nom','co_adresse','co_ville','co_pays','co_ice','co_if','co_rc','co_tel','co_email','co_origine','co_port_dep','co_signataire'].forEach(id=>setv(id,''));setSS(null);toast('Données effacées');}
+function setSS(s){const dot=document.getElementById('sdot'),lbl=document.getElementById('slabel');if(s===true){dot.className='sdot ok';lbl.textContent='Sauvegardé localement';}else if(s===false){dot.className='sdot no';lbl.textContent='Modifications non sauvegardées';}else{dot.className='sdot';lbl.textContent='Aucune donnée sauvegardée';}}
+function markUnsaved(){setSS(false);}
+function setv(id,val){const el=document.getElementById(id);if(el&&val!==undefined)el.value=val;}
+
+/* ═══ ITEMS ═══ */
+function addItem(){const id=++itemCounter;items.push({id,desc:'',hs:'',qty:1,unit:'Pcs',pu:0,pnet:0,pbrut:0,colis:1,dims:''});renderItemsTable();render();}
+function removeItem(id){items=items.filter(i=>i.id!==id);renderItemsTable();render();}
+function updateItem(id,field,val){const it=items.find(i=>i.id===id);if(!it)return;it[field]=['desc','unit','dims','hs'].includes(field)?val:(parseFloat(val)||0);updateTotals();render();}
+function renderItemsTable(){
+  document.getElementById('items-tbody').innerHTML=items.map(it=>`<tr>
+    <td><input value="${esc(it.desc)}" placeholder="Désignation" oninput="updateItem(${it.id},'desc',this.value)" style="min-width:90px"></td>
+    <td><input value="${esc(it.hs)}" placeholder="6204" style="width:46px" oninput="updateItem(${it.id},'hs',this.value)"></td>
+    <td><input type="number" value="${it.qty}" min="0" style="width:38px" oninput="updateItem(${it.id},'qty',this.value)"></td>
+    <td><select style="width:54px;padding:4px 3px;font-size:11px" onchange="updateItem(${it.id},'unit',this.value)">${['Pcs','Kg','T','L','M','M²','M³','Cartons','Colis','Sets','Lots','Paires'].map(u=>`<option${u===it.unit?' selected':''}>${u}</option>`).join('')}</select></td>
+    <td><input type="number" value="${it.pu}" min="0" step="0.01" style="width:58px" oninput="updateItem(${it.id},'pu',this.value)"></td>
+    <td><input type="number" value="${it.pnet}" min="0" step="0.01" style="width:46px" oninput="updateItem(${it.id},'pnet',this.value)"></td>
+    <td><input type="number" value="${it.pbrut}" min="0" step="0.01" style="width:46px" oninput="updateItem(${it.id},'pbrut',this.value)"></td>
+    <td><input type="number" value="${it.colis}" min="0" style="width:36px" oninput="updateItem(${it.id},'colis',this.value)"></td>
+    <td><input value="${esc(it.dims)}" placeholder="L×l×H" style="width:68px" oninput="updateItem(${it.id},'dims',this.value)"></td>
+    <td><button class="btn-icon" onclick="removeItem(${it.id})">✕</button></td>
+  </tr>`).join('');
+  updateTotals();
+}
+function updateTotals(){
+  document.getElementById('tot-pnet').textContent=fmt(totPN(),3);
+  document.getElementById('tot-pbrut').textContent=fmt(totPB(),3);
+  document.getElementById('tot-colis').textContent=totC();
+  document.getElementById('tot-montant').textContent=fmt(totM(),2)+' '+g('devise');
+}
+
+/* ═══ SHARED BLOCKS ═══ */
+function headerBlock(accentColor){
+  const nom=g('exp_nom'),adr=g('exp_adresse'),ville=g('exp_ville'),pays=g('exp_pays');
+  const ice=g('exp_ice'),iff=g('exp_if'),rc=g('exp_rc'),tel=g('exp_tel'),email=g('exp_email');
+  return`<div class="doc-company">${logoHTML()}<div>
+    <div class="doc-company-name">${esc(nom)||'— Expéditeur —'}</div>
+    <div class="doc-company-details">${adr?esc(adr)+'<br>':''}${ville?esc(ville)+' ':''}${esc(pays)}${ice?'<br>ICE : '+esc(ice):''}${iff?' | IF : '+esc(iff):''}${rc?' | RC : '+esc(rc):''}${tel?'<br>Tél : '+esc(tel):''}${email?' — '+esc(email):''}</div>
+  </div></div>`;
+}
+function titleBlock(title,color,extra=''){
+  return`<div class="doc-title-block"><div class="doc-title" style="color:${color}">${title}</div><div class="doc-meta">N° <strong>${esc(g('doc_num'))||'—'}</strong><br>Date : <strong>${df(g('doc_date'))||'—'}</strong>${extra}</div></div>`;
+}
+function partiesBlock(){
+  const ice=g('exp_ice'),iff=g('exp_if'),rc=g('exp_rc');
+  return`<div class="doc-parties">
+    <div class="doc-party"><div class="doc-party-label">Expéditeur / Exportateur</div><div class="doc-party-name">${esc(g('exp_nom'))||'—'}</div><div class="doc-party-addr">${g('exp_adresse')?esc(g('exp_adresse'))+'<br>':''}${esc(g('exp_ville'))} ${esc(g('exp_pays'))}${ice?'<br><strong>ICE</strong> '+esc(ice):''}${iff?' | <strong>IF</strong> '+esc(iff):''}${rc?' | <strong>RC</strong> '+esc(rc):''}</div></div>
+    <div class="doc-party"><div class="doc-party-label">Destinataire / Importateur</div><div class="doc-party-name">${esc(g('dest_nom'))||'—'}</div><div class="doc-party-addr">${(g('dest_adresse')||'').replace(/\n/g,'<br>')||'—'}${g('dest_contact')?'<br>'+esc(g('dest_contact')):''}${g('dest_tel')?' — '+esc(g('dest_tel')):''}</div></div>
+  </div>`;
+}
+function infoRow6(){
+  return`<div class="doc-info-row">
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Incoterm</div><div class="doc-info-cell-val">${esc(g('incoterm'))||'—'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Transport</div><div class="doc-info-cell-val">${esc(g('transport'))}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Date</div><div class="doc-info-cell-val">${df(g('doc_date'))||'—'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Port départ</div><div class="doc-info-cell-val">${esc(g('port_dep'))||'—'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Port destination</div><div class="doc-info-cell-val">${esc(g('port_arr'))||'—'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Réf. BL / LTA</div><div class="doc-info-cell-val">${esc(g('ref_bl'))||'—'}</div></div>
+  </div>`;
+}
+function itemsTableHTML(dev,showHS=true){
+  const rows=items.map(it=>`<tr>
+    <td>${esc(it.desc)||'—'}</td>${showHS?`<td>${esc(it.hs)||'—'}</td>`:''}
+    <td class="num">${fmt(+it.qty,0)}</td><td>${esc(it.unit)}</td>
+    <td class="num">${fmt(+it.pu,2)}</td><td class="num">${fmt((+it.qty)*(+it.pu),2)}</td>
+  </tr>`).join('');
+  return`<table class="doc-table"><thead><tr>
+    <th style="width:35%">Description</th>${showHS?'<th>Code HS</th>':''}
+    <th class="num">Qté</th><th>Unité</th><th class="num">P.U. ${dev}</th><th class="num">Montant ${dev}</th>
+  </tr></thead><tbody>${rows||noItems(showHS?6:5)}</tbody></table>`;
+}
+function totalsBox(dev,mont){
+  return`<div class="doc-totals"><div class="doc-totals-box">
+    <div class="doc-total-row"><span>Sous-total HT</span><strong>${fmt(mont,2)} ${dev}</strong></div>
+    <div class="doc-total-row"><span>Fret / Assurance</span><strong>—</strong></div>
+    <div class="doc-total-row grand"><span>TOTAL ${dev}</span><strong>${fmt(mont,2)} ${dev}</strong></div>
+  </div></div>`;
+}
+function sigBlock(){return`<div class="doc-footer"><div>${g('observations')?'<div class="doc-footer-block-label">Observations</div><div style="font-size:11px;color:var(--ink2);white-space:pre-line">'+esc(g('observations'))+'</div>':'<div style="font-size:11px;color:var(--ink3)">Document établi sous la responsabilité de l\'expéditeur.</div>'}</div><div><div class="doc-footer-block-label">Signature &amp; cachet — ${esc(g('lieu_sig')||'')}</div><div class="doc-sig-line"></div><div class="doc-sig-text">${esc(g('signataire'))||'Nom, Titre'} — ${esc(g('exp_nom'))||''}</div></div></div>`;}
+function noItems(cols){return`<tr><td colspan="${cols}" style="color:#aaa;text-align:center;padding:14px">Aucun article saisi</td></tr>`;}
+function lettresBlock(mont,dev){return`<div style="margin-bottom:.9rem;padding:9px 11px;background:var(--gold-dim);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:11.5px;color:#3a2e1a"><strong>En lettres :</strong> ${montantLettres(mont,dev)}</div>`;}
+
+/* ═══ RENDERERS ═══ */
+function renderFacture(){
+  const dev=g('devise'),mont=totM();
+  document.getElementById('sheet-facture').innerHTML=`
+  <div class="doc-top">${headerBlock()}${titleBlock('Facture Commerciale','#c8410a','<br>Paiement : <strong>'+esc(g('paiement'))+'</strong>')}</div>
+  ${partiesBlock()}${infoRow6()}
+  ${itemsTableHTML(dev)}${totalsBox(dev,mont)}${lettresBlock(mont,dev)}${sigBlock()}
+  <div class="doc-colophon">Facture commerciale — valeur déclarée en douane. Réglementation Office des Changes Maroc.</div>
+  ${actionBar("facture","#c8410a","Facture Commerciale")}`;
+}
+function renderProforma(){
+  const dev=g('devise'),mont=totM();
+  document.getElementById('sheet-proforma').innerHTML=`
+  <div class="doc-top">${headerBlock()}${titleBlock('Facture Pro Forma','#e8572a','<br>Validité : <strong>30 jours</strong>')}</div>
+  ${partiesBlock()}${infoRow6()}
+  ${itemsTableHTML(dev)}${totalsBox(dev,mont)}${lettresBlock(mont,dev)}${sigBlock()}
+  <div style="margin-bottom:.9rem;padding:9px 11px;background:rgba(232,87,42,.06);border-left:3px solid #e8572a;border-radius:0 8px 8px 0;font-size:11px;color:#6b3a2a"><strong>Note :</strong> Document pro forma émis à titre indicatif pour faciliter les démarches administratives et douanières. Il ne constitue pas une facture commerciale définitive.</div>
+  ${actionBar("proforma","#e8572a","Facture Pro Forma")}`;
+}
+function renderBonCde(){
+  const dev=g('devise'),mont=totM();
+  document.getElementById('sheet-bon_cde').innerHTML=`
+  <div class="doc-top">${headerBlock()}${titleBlock('Bon de Commande','#c8410a','<br>Validité : <strong>30 jours</strong>')}</div>
+  <div class="doc-parties">
+    <div class="doc-party"><div class="doc-party-label">Acheteur / Donneur d'ordre</div><div class="doc-party-name">${esc(g('exp_nom'))||'—'}</div><div class="doc-party-addr">${esc(g('exp_adresse'))||'—'}<br>${esc(g('exp_ville'))} ${esc(g('exp_pays'))}</div></div>
+    <div class="doc-party"><div class="doc-party-label">Fournisseur / Vendeur</div><div class="doc-party-name">${esc(g('dest_nom'))||'—'}</div><div class="doc-party-addr">${(g('dest_adresse')||'').replace(/\n/g,'<br>')||'—'}</div></div>
+  </div>
+  ${infoRow6()}${itemsTableHTML(dev)}${totalsBox(dev,mont)}
+  <div class="doc-footer">
+    <div><div class="doc-footer-block-label">Conditions de livraison</div><div style="font-size:11px;color:var(--ink2)">${esc(g('incoterm'))} — ${esc(g('port_dep'))||'—'}<br>Transport : ${esc(g('transport'))}<br>Paiement : ${esc(g('paiement'))} — ${esc(g('delai_pmt'))||'—'}</div></div>
+    <div><div class="doc-footer-block-label">Signature acheteur</div><div class="doc-sig-line"></div><div class="doc-sig-text">${esc(g('signataire'))||'Nom, Titre'} — ${esc(g('exp_nom'))||''}</div></div>
+  </div>
+  ${actionBar("bon_cde","#c8410a","Bon de Commande")}`;
+}
+function renderAvoir(){
+  const dev=g('devise'),mont=totM();
+  document.getElementById('sheet-avoir').innerHTML=`
+  <div class="doc-top">${headerBlock()}${titleBlock('Note de Crédit / Avoir','#e8572a','<br>Réf. facture : <strong>—</strong>')}</div>
+  ${partiesBlock()}
+  <div style="margin-bottom:1rem;padding:10px 12px;background:rgba(232,87,42,.06);border:1px solid rgba(232,87,42,.2);border-radius:var(--radius);font-size:11.5px">
+    <strong>Motif :</strong> ${esc(g('observations'))||'À préciser — retour marchandise / erreur de facturation / remise commerciale'}
+  </div>
+  ${itemsTableHTML(dev,false)}
+  <div class="doc-totals"><div class="doc-totals-box">
+    <div class="doc-total-row"><span>Montant HT à créditer</span><strong>${fmt(mont,2)} ${dev}</strong></div>
+    <div class="doc-total-row grand"><span>TOTAL AVOIR ${dev}</span><strong>${fmt(mont,2)} ${dev}</strong></div>
+  </div></div>
+  ${sigBlock()}
+  ${actionBar("avoir","#e8572a","Note de Crédit")}`;
+}
+function renderPacking(){
+  const num=g('doc_num');
+  const rows=items.map((it,i)=>`<tr><td>${i+1}</td><td>${esc(it.desc)||'—'}</td><td>${esc(it.hs)||'—'}</td><td class="num">${fmt(+it.qty,0)}</td><td>${esc(it.unit)}</td><td class="num">${fmt(+it.pnet,3)}</td><td class="num">${fmt(+it.pbrut,3)}</td><td class="num">${it.colis||1}</td><td>${esc(it.dims)||'—'}</td></tr>`).join('');
+  document.getElementById('sheet-packing').innerHTML=`
+  <div class="doc-top">${headerBlock()}${titleBlock('Packing List','#0d6e6e')}</div>
+  ${partiesBlock()}${infoRow6()}
+  ${g('marques')?`<div style="margin-bottom:.9rem;padding:7px 11px;background:var(--paper2);border-radius:var(--radius);font-size:11.5px"><strong>Marques &amp; numéros :</strong> ${esc(g('marques'))}</div>`:''}
+  <table class="doc-table"><thead><tr><th>#</th><th style="width:26%">Description</th><th>Code HS</th><th class="num">Qté</th><th>Unité</th><th class="num">P.net (kg)</th><th class="num">P.brut (kg)</th><th class="num">Colis</th><th>Dims (cm)</th></tr></thead>
+  <tbody>${rows||noItems(9)}</tbody>
+  <tfoot><tr><td colspan="5" style="font-weight:700;background:var(--paper2);font-size:10px;text-transform:uppercase;letter-spacing:.05em">Totaux</td><td class="num" style="font-weight:700;background:var(--paper2)">${fmt(totPN(),3)}</td><td class="num" style="font-weight:700;background:var(--paper2)">${fmt(totPB(),3)}</td><td class="num" style="font-weight:700;background:var(--paper2)">${totC()}</td><td style="background:var(--paper2)"></td></tr></tfoot>
+  </table>
+  <div class="doc-info-row"><div class="doc-info-cell"><div class="doc-info-cell-label">Poids net total</div><div class="doc-info-cell-val">${fmt(totPN(),3)} kg</div></div><div class="doc-info-cell"><div class="doc-info-cell-label">Poids brut total</div><div class="doc-info-cell-val">${fmt(totPB(),3)} kg</div></div><div class="doc-info-cell"><div class="doc-info-cell-label">Nombre de colis</div><div class="doc-info-cell-val">${totC()} colis</div></div></div>
+  ${sigBlock()}
+  ${actionBar("packing","#0d6e6e","Packing List")}`;
+}
+function renderCMR(){
+  document.getElementById('sheet-cmr').innerHTML=`
+  <div class="doc-top">${headerBlock()}<div class="doc-title-block"><div class="doc-title" style="color:#0f8080">Lettre de Voiture CMR</div><div class="doc-meta">N° <strong>${esc(g('doc_num'))||'—'}</strong><br>Date : <strong>${df(g('doc_date'))||'—'}</strong></div></div></div>
+  <div style="background:#fff3e0;border:1px solid #ffcc80;border-radius:var(--radius);padding:8px 12px;font-size:10.5px;color:#5d3a00;margin-bottom:1rem"><strong>Convention relative au contrat de transport international de marchandises par route</strong><br>Conforme à la Convention CMR signée à Genève le 19 mai 1956</div>
+  ${partiesBlock()}
+  <div class="doc-parties">
+    <div class="doc-party"><div class="doc-party-label">Transporteur (case 16)</div><div class="doc-party-name">${esc(g('transporteur'))||'—'}</div><div class="doc-party-addr">Plaque véhicule : <strong>${esc(g('plaque_veh'))||'—'}</strong></div></div>
+    <div class="doc-party"><div class="doc-party-label">Détails transport</div><div class="doc-party-addr">Mode : ${esc(g('transport'))}<br>Port départ : ${esc(g('port_dep'))||'—'}<br>Port arrivée : ${esc(g('port_arr'))||'—'}<br>Incoterm : ${esc(g('incoterm'))||'—'}</div></div>
+  </div>
+  <table class="doc-table"><thead><tr><th style="width:35%">Désignation (case 6)</th><th>Code HS</th><th class="num">Colis (case 8)</th><th class="num">Poids brut kg (case 11)</th><th>Marques (case 7)</th></tr></thead>
+  <tbody>${items.map(it=>`<tr><td>${esc(it.desc)||'—'}</td><td>${esc(it.hs)||'—'}</td><td class="num">${it.colis||1}</td><td class="num">${fmt(+it.pbrut,3)}</td><td>${esc(g('marques'))||'—'}</td></tr>`).join('')||noItems(5)}</tbody>
+  <tfoot><tr><td style="font-weight:700;background:var(--paper2)">Totaux</td><td style="background:var(--paper2)"></td><td class="num" style="font-weight:700;background:var(--paper2)">${totC()}</td><td class="num" style="font-weight:700;background:var(--paper2)">${fmt(totPB(),3)}</td><td style="background:var(--paper2)"></td></tr></tfoot></table>
+  <div class="doc-info-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Poids brut total</div><div class="doc-info-cell-val">${fmt(totPB(),3)} kg</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Nombre de colis</div><div class="doc-info-cell-val">${totC()}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Plaque véhicule</div><div class="doc-info-cell-val">${esc(g('plaque_veh'))||'—'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Réf. BL / CMR</div><div class="doc-info-cell-val">${esc(g('ref_bl'))||'—'}</div></div>
+  </div>
+  <div class="doc-footer" style="grid-template-columns:1fr 1fr 1fr">
+    <div><div class="doc-footer-block-label">Expéditeur (case 22)</div><div class="doc-sig-line"></div><div class="doc-sig-text">${esc(g('exp_nom'))||'—'} — ${df(g('doc_date'))||'—'}</div></div>
+    <div><div class="doc-footer-block-label">Transporteur (case 23)</div><div class="doc-sig-line"></div><div class="doc-sig-text">${esc(g('transporteur'))||'—'}</div></div>
+    <div><div class="doc-footer-block-label">Destinataire (case 24)</div><div class="doc-sig-line"></div><div class="doc-sig-text">${esc(g('dest_nom'))||'—'}</div></div>
+  </div>
+  <div class="doc-colophon">Ce document est établi en 3 exemplaires originaux (expéditeur, transporteur, destinataire). Il tient lieu de preuve du contrat de transport.</div>
+  ${actionBar("cmr","#0f8080","Lettre de Voiture CMR")}`;
+}
+function renderCertif(){
+  const origine=g('pays_origine')||'Maroc';
+  const rows=items.map(it=>`<tr><td>${esc(it.desc)||'—'}</td><td>${esc(it.hs)||'—'}</td><td>${fmt(+it.qty,0)} ${esc(it.unit)}</td><td>${fmt(+it.pbrut,3)} kg</td><td style="text-align:center;font-weight:500">${esc(origine)}</td></tr>`).join('');
+  document.getElementById('sheet-certif').innerHTML=`
+  <div class="cert-border">
+    <div class="cert-state"><div class="cert-state-name">Royaume du Maroc — Certificat d'Origine</div><div style="font-size:11px;color:var(--ink3)">Chambre de Commerce, d'Industrie et de Services (CCIS)<br>Conforme aux normes internationales du commerce</div></div>
+    <div class="doc-parties" style="margin-bottom:1rem">
+      <div class="doc-party"><div class="doc-party-label">Exportateur (case 1)</div><div class="doc-party-name">${esc(g('exp_nom'))||'—'}</div><div class="doc-party-addr">${g('exp_adresse')?esc(g('exp_adresse'))+'<br>':''}${esc(g('exp_ville'))} ${esc(g('exp_pays'))}${g('exp_ice')?'<br><strong>ICE</strong> '+esc(g('exp_ice')):''}</div></div>
+      <div class="doc-party"><div class="doc-party-label">Destinataire (case 2)</div><div class="doc-party-name">${esc(g('dest_nom'))||'—'}</div><div class="doc-party-addr">${(g('dest_adresse')||'').replace(/\n/g,'<br>')||'—'}</div></div>
+    </div>
+    <div class="doc-info-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:1rem">
+      <div class="doc-info-cell"><div class="doc-info-cell-label">N° certif. (case 3)</div><div class="doc-info-cell-val">${esc(g('doc_num'))||'—'}</div></div>
+      <div class="doc-info-cell"><div class="doc-info-cell-label">Date (case 4)</div><div class="doc-info-cell-val">${df(g('doc_date'))||'—'}</div></div>
+      <div class="doc-info-cell"><div class="doc-info-cell-label">Transport (case 5)</div><div class="doc-info-cell-val">${esc(g('transport'))}</div></div>
+      <div class="doc-info-cell"><div class="doc-info-cell-label">Destination (case 6)</div><div class="doc-info-cell-val">${esc(g('port_arr'))||'—'}</div></div>
+    </div>
+    <table class="cert-table"><thead><tr><th style="width:36%">Désignation (case 7)</th><th>Code SH (case 8)</th><th>Quantité (case 9)</th><th>Poids brut (case 10)</th><th>Origine (case 11)</th></tr></thead>
+    <tbody>${rows||noItems(5)}</tbody></table>
+    <div class="cert-declaration"><strong>Déclaration exportateur (case 12) :</strong><br>Le soussigné déclare que les marchandises décrites ci-dessus sont originaires du <strong>${esc(origine)}</strong> au sens des règles d'origine applicables, et que les renseignements fournis sont exacts et véridiques.</div>
+    <div class="doc-footer">
+      <div><div class="doc-footer-block-label">Signature exportateur (case 13)</div><div class="doc-sig-line" style="height:56px"></div><div class="doc-sig-text">${esc(g('signataire'))||'Nom, Titre'} — ${df(g('doc_date'))||'—'}</div></div>
+      <div><div class="doc-footer-block-label">Visa CCIS / Autorité compétente (case 14)</div><div class="doc-sig-line" style="height:56px;border-color:var(--gold)"></div><div class="doc-sig-text" style="color:var(--gold)">Cachet &amp; signature de l'organisme certificateur</div></div>
+    </div>
+    <div class="doc-colophon">Certif. conforme aux règles d'origine. Peut être requis pour préférences tarifaires (Accord d'Agadir, UE-Maroc, ZLECAf, etc.)</div>
+  </div>
+  ${actionBar("certif","#1A3A9A","Certificat d'Origine")}`;
+}
+function renderEUR1(){
+  const origine=g('pays_origine')||'Maroc';
+  const rows=items.map(it=>`<tr><td>${esc(it.desc)||'—'}</td><td>${esc(it.hs)||'—'}</td><td class="num">${fmt(+it.qty,0)} ${esc(it.unit)}</td><td class="num">${fmt(+it.pbrut,3)}</td><td class="num">${fmt((+it.qty)*(+it.pu),2)}</td></tr>`).join('');
+  document.getElementById('sheet-eur1').innerHTML=`
+  <div style="border:3px solid #1A3A9A;padding:1.8rem;border-radius:4px">
+    <div style="text-align:center;margin-bottom:1.3rem;padding-bottom:1rem;border-bottom:2px solid #1A3A9A">
+      <div style="font-family:'DM Serif Display',serif;font-size:16px;color:#1A3A9A;margin-bottom:3px">CERTIFICAT DE CIRCULATION DES MARCHANDISES</div>
+      <div style="font-size:13px;font-weight:700;color:#2550cc;letter-spacing:.1em">EUR.1 / EUR-MED</div>
+      <div style="font-size:10.5px;color:var(--ink3);margin-top:4px">Accord d'association UE-Maroc / Accord d'Agadir / Conventions Pan-Euro-Méditerranéennes</div>
+    </div>
+    <div class="doc-parties" style="margin-bottom:1rem">
+      <div class="doc-party"><div class="doc-party-label">Exportateur (case 1)</div><div class="doc-party-name">${esc(g('exp_nom'))||'—'}</div><div class="doc-party-addr">${esc(g('exp_adresse'))||'—'}<br>${esc(g('exp_ville'))} ${esc(g('exp_pays'))}${g('exp_ice')?'<br>ICE : '+esc(g('exp_ice')):''}</div></div>
+      <div class="doc-party"><div class="doc-party-label">Destinataire (case 2)</div><div class="doc-party-name">${esc(g('dest_nom'))||'—'}</div><div class="doc-party-addr">${(g('dest_adresse')||'').replace(/\n/g,'<br>')||'—'}</div></div>
+    </div>
+    <div class="doc-info-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:1rem">
+      <div class="doc-info-cell"><div class="doc-info-cell-label">N° certif. (case 3)</div><div class="doc-info-cell-val">${esc(g('doc_num'))||'—'}</div></div>
+      <div class="doc-info-cell"><div class="doc-info-cell-label">Pays d'origine (case 4)</div><div class="doc-info-cell-val"><strong>${esc(origine)}</strong></div></div>
+      <div class="doc-info-cell"><div class="doc-info-cell-label">Pays de destination (case 5)</div><div class="doc-info-cell-val">${esc(g('port_arr'))||'—'}</div></div>
+      <div class="doc-info-cell"><div class="doc-info-cell-label">Transport (case 6)</div><div class="doc-info-cell-val">${esc(g('transport'))} — ${esc(g('port_dep'))||'—'}</div></div>
+    </div>
+    <table class="cert-table"><thead><tr><th style="width:38%">Désignation (case 8)</th><th>Code HS (case 9)</th><th class="num">Quantité (case 10)</th><th class="num">Poids brut kg</th><th class="num">Valeur ${g('devise')}</th></tr></thead>
+    <tbody>${rows||noItems(5)}</tbody></table>
+    <div class="cert-declaration"><strong>Déclaration de l'exportateur (case 11) :</strong><br>Le soussigné, exportateur des marchandises décrites ci-dessus, déclare que ces marchandises remplissent les conditions requises pour l'obtention du présent certificat, qu'elles sont originaires du <strong>${esc(origine)}</strong> et que les renseignements fournis sont exacts.</div>
+    <div class="doc-footer">
+      <div><div class="doc-footer-block-label">Visa de l'autorité douanière (case 12) — ADII Maroc</div><div class="doc-sig-line" style="height:56px;border-color:#1A3A9A"></div><div class="doc-sig-text" style="color:#1A3A9A">Cachet &amp; visa de l'Administration des Douanes et Impôts Indirects</div></div>
+      <div><div class="doc-footer-block-label">Déclaration exportateur (case 11)</div><div class="doc-sig-line" style="height:56px"></div><div class="doc-sig-text">${esc(g('signataire'))||'Nom, Titre'} — ${df(g('doc_date'))||'—'} — ${esc(g('lieu_sig'))||'—'}</div></div>
+    </div>
+    <div class="doc-colophon">Le présent certificat EUR.1 / EUR-MED est émis conformément aux dispositions du Protocole relatif à la définition de la notion de « produits originaires » et aux méthodes de coopération administrative.</div>
+  </div>
+  ${actionBar("eur1","#2550cc","EUR.1 / EUR-MED")}`;
+}
+function renderDV1(){
+  const dev=g('devise'),mont=totM();
+  document.getElementById('sheet-dv1').innerHTML=`
+  <div class="doc-top">${headerBlock()}<div class="doc-title-block"><div class="doc-title" style="color:#1A3A9A;font-size:17px">Déclaration de Valeur en Douane</div><div class="doc-meta" style="font-size:10px">Formulaire DV1 / Annexe 28 CDA<br>N° : <strong>${esc(g('doc_num'))||'—'}</strong><br>Date : <strong>${df(g('doc_date'))||'—'}</strong></div></div></div>
+  <div style="background:var(--blue-bg);border:1px solid rgba(26,58,154,.2);border-radius:var(--radius);padding:10px 14px;font-size:11px;margin-bottom:1rem;color:#1A3A9A"><strong>Base légale :</strong> Accord sur la valeur en douane de l'OMC (Art. VII GATT) — Méthode 1 : Valeur transactionnelle</div>
+  ${partiesBlock()}
+  <div class="doc-info-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Incoterm</div><div class="doc-info-cell-val">${esc(g('incoterm'))||'—'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Devise</div><div class="doc-info-cell-val">${dev}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Pays d'origine</div><div class="doc-info-cell-val">${esc(g('pays_origine'))||'Maroc'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Port d'entrée</div><div class="doc-info-cell-val">${esc(g('port_arr'))||'—'}</div></div>
+  </div>
+  <table class="doc-table"><thead><tr><th style="width:35%">Désignation</th><th>Code HS</th><th class="num">Qté</th><th>Unité</th><th class="num">P.U. ${dev}</th><th class="num">Val. transact. ${dev}</th></tr></thead>
+  <tbody>${items.map(it=>`<tr><td>${esc(it.desc)||'—'}</td><td>${esc(it.hs)||'—'}</td><td class="num">${fmt(+it.qty,0)}</td><td>${esc(it.unit)}</td><td class="num">${fmt(+it.pu,2)}</td><td class="num">${fmt((+it.qty)*(+it.pu),2)}</td></tr>`).join('')||noItems(6)}</tbody></table>
+  <div class="doc-info-row" style="grid-template-columns:repeat(3,1fr)">
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Valeur marchandises</div><div class="doc-info-cell-val">${fmt(mont,2)} ${dev}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Fret (à compléter)</div><div class="doc-info-cell-val">—</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Assurance (à compléter)</div><div class="doc-info-cell-val">—</div></div>
+  </div>
+  <div style="margin-bottom:1rem;padding:10px 14px;background:var(--paper2);border:1px solid var(--border);border-radius:var(--radius);font-size:11.5px">
+    <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:6px">Valeur en douane (CAF / CIF)</div>
+    <div style="font-size:15px;font-weight:700;color:#1A3A9A">= Valeur transaction + Fret + Assurance<br>≈ <strong>${fmt(mont,2)} ${dev}</strong> (valeur transactionnelle)</div>
+  </div>
+  <div class="doc-footer">
+    <div><div class="doc-footer-block-label">Déclaration de l'importateur / déclarant</div><div style="font-size:11px;color:var(--ink2)">Je soussigné certifie l'exactitude des informations fournies et que le prix payé ou à payer est conforme à la valeur transactionnelle déclarée.</div></div>
+    <div><div class="doc-footer-block-label">Signature &amp; cachet</div><div class="doc-sig-line"></div><div class="doc-sig-text">${esc(g('signataire'))||'Nom, Titre'} — ${df(g('doc_date'))||'—'}</div></div>
+  </div>
+  <div class="doc-colophon">Formulaire DV1 conforme au Code des Douanes et Accises (ADII Maroc) et à l'Accord OMC sur l'évaluation en douane.</div>
+  ${actionBar("dv1","#1A3A9A","Déclaration Valeur DV1")}`;
+}
+function renderAT(){
+  document.getElementById('sheet-at').innerHTML=`
+  <div class="doc-top">${headerBlock()}<div class="doc-title-block"><div class="doc-title" style="color:#334155;font-size:17px">Demande d'Admission Temporaire</div><div class="doc-meta" style="font-size:10px">Régime AT — Art. 153 et s. Code des Douanes<br>N° : <strong>${esc(g('doc_num'))||'—'}</strong><br>Date : <strong>${df(g('doc_date'))||'—'}</strong></div></div></div>
+  <div style="background:var(--slate-bg);border:1px solid rgba(51,65,85,.2);border-radius:var(--radius);padding:10px 14px;font-size:11px;margin-bottom:1rem;color:#334155"><strong>Régime AT :</strong> Permet l'introduction temporaire en franchise de droits et taxes de marchandises destinées à être réexportées en l'état ou après transformation. Durée maximale légale : 6 mois renouvelables.</div>
+  ${partiesBlock()}
+  <div class="doc-info-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Bureau douanier</div><div class="doc-info-cell-val">${esc(g('at_bureau'))||'—'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Durée demandée</div><div class="doc-info-cell-val">${esc(g('at_duree'))||'—'} mois</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Date entrée</div><div class="doc-info-cell-val">${df(g('doc_date'))||'—'}</div></div>
+    <div class="doc-info-cell"><div class="doc-info-cell-label">Date réexportation</div><div class="doc-info-cell-val">—</div></div>
+  </div>
+  <table class="doc-table"><thead><tr><th style="width:35%">Désignation marchandise</th><th>Code HS</th><th class="num">Qté</th><th>Unité</th><th class="num">Valeur déclarée ${g('devise')}</th><th>Usage prévu</th></tr></thead>
+  <tbody>${items.map(it=>`<tr><td>${esc(it.desc)||'—'}</td><td>${esc(it.hs)||'—'}</td><td class="num">${fmt(+it.qty,0)}</td><td>${esc(it.unit)}</td><td class="num">${fmt((+it.qty)*(+it.pu),2)}</td><td>Réexportation en l'état</td></tr>`).join('')||noItems(6)}</tbody></table>
+  <div style="margin-bottom:1rem;padding:10px 14px;background:var(--paper2);border:1px solid var(--border);border-radius:var(--radius);font-size:11.5px">
+    <div style="font-family:'Syne',sans-serif;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:6px">Engagement de l'opérateur</div>
+    <div style="font-size:11.5px;color:var(--ink2)">Je soussigné m'engage à réexporter les marchandises ci-dessus décrites dans le délai accordé et à me conformer aux conditions du régime d'admission temporaire tel que prévu par le Code des Douanes et Accises du Royaume du Maroc.</div>
+  </div>
+  <div class="doc-footer">
+    <div><div class="doc-footer-block-label">Visa du bureau douanier</div><div class="doc-sig-line" style="border-color:#334155"></div><div class="doc-sig-text" style="color:#334155">Cachet &amp; signature ADII — ${esc(g('at_bureau'))||'—'}</div></div>
+    <div><div class="doc-footer-block-label">Signature du demandeur</div><div class="doc-sig-line"></div><div class="doc-sig-text">${esc(g('signataire'))||'Nom, Titre'} — ${df(g('doc_date'))||'—'} — ${esc(g('lieu_sig'))||'—'}</div></div>
+  </div>
+  <div class="doc-colophon">Demande établie conformément aux dispositions du Code des Douanes et Accises (Dahir du 9 octobre 1977) et des instructions de l'ADII. La caution ou la garantie peut être exigée par le bureau.</div>
+  ${actionBar("at","#334155","Demande Admission Temporaire")}`;
+}
+
+
+/* ═══ ACTION BAR ═══ */
+function actionBar(tab, color, label){
+  return `<div class="doc-action-bar">
+    <span class="doc-action-label">${label}</span>
+    <button class="btn-print" style="background:${color}22;color:${color};border:1px solid ${color}44" onclick="printDoc('${tab}')">
+      ⎙ Imprimer
+    </button>
+    <button class="btn-pdf" onclick="downloadPDF('${tab}','${label.replace(/\s+/g,'-').toLowerCase()}')">
+      ↓ Télécharger PDF
+    </button>
+  </div>`;
+}
+
+/* ═══ RENDER ALL ═══ */
+function render(){
+  renderFacture();renderProforma();renderBonCde();renderAvoir();
+  renderPacking();renderCMR();
+  renderCertif();renderEUR1();renderDV1();renderAT();
+}
+
+
+/* ═══ PDF DOWNLOAD ═══ */
+function downloadPDF(tab, filename){
+  // Mark active doc for print
+  document.querySelectorAll('.doc-preview').forEach(p=>p.classList.remove('print-active'));
+  document.getElementById('preview-'+tab).classList.add('print-active');
+  
+  // Create a blob with just the doc content for printing
+  const sheetEl = document.getElementById('sheet-'+tab);
+  if(!sheetEl){ toast('Document non trouvé'); return; }
+  
+  // Get all styles from the page
+  const styles = Array.from(document.querySelectorAll('style,link[rel="stylesheet"]'))
+    .map(el => el.outerHTML).join('\n');
+  
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+    ${styles}
+    <style>
+      body{margin:0;padding:1.5cm 2cm;background:#fff;font-family:'DM Sans',sans-serif}
+      .doc-action-bar{display:none!important}
+      .doc-sheet{box-shadow:none!important;border:none!important;border-radius:0!important;padding:0!important;max-width:100%!important}
+    </style>
+    <title>${filename}</title>
+  </head><body>${sheetEl.outerHTML}
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body></html>`;
+  
+  const w = window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(()=>{
+    w.print();
+    // w.close(); // let user close after saving
+  },600);
+  
+  setTimeout(()=>document.querySelectorAll('.doc-preview').forEach(p=>p.classList.remove('print-active')),1200);
+  toast('Fenêtre PDF ouverte — Enregistrer sous PDF dans la boîte de dialogue',true);
+}
+
+/* ═══ TABS ═══ */
+function switchTabByName(tab){
+  // Désactiver tous les onglets et previews
+  document.querySelectorAll('.doc-preview').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.doc-tab').forEach(b=>b.classList.remove('active'));
+  // Activer la preview cible
+  const preview = document.getElementById('preview-'+tab);
+  if(preview) preview.classList.add('active');
+  // Activer le bouton onglet si présent
+  const btn = document.querySelector(`button[onclick="switchTab('${tab}',this)"]`);
+  if(btn) btn.classList.add('active');
+  activeTab = tab;
+}
+function switchTab(tab,btn){
+  activeTab=tab;
+  document.querySelectorAll('.doc-preview').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.doc-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('preview-'+tab).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ═══ PRINT ═══ */
+function printDoc(tab){
+  document.querySelectorAll('.doc-preview').forEach(p=>p.classList.remove('print-active'));
+  document.getElementById('preview-'+tab).classList.add('print-active');
+  window.print();
+  setTimeout(()=>document.querySelectorAll('.doc-preview').forEach(p=>p.classList.remove('print-active')),1000);
+}
+function printAll(){
+  document.querySelectorAll('.doc-preview:not(#preview-entreprise)').forEach(p=>p.classList.add('print-active'));
+  window.print();
+  setTimeout(()=>document.querySelectorAll('.doc-preview').forEach(p=>p.classList.remove('print-active')),1000);
+}
+
+/* ═══ JSON / RESET ═══ */
+function saveJSON(){
+  const fields=['exp_nom','exp_adresse','exp_ville','exp_pays','exp_ice','exp_if','exp_rc','exp_tel','exp_email','dest_nom','dest_adresse','dest_contact','dest_tel','doc_num','doc_date','incoterm','devise','port_dep','port_arr','transport','ref_bl','num_bl','paiement','delai_pmt','pays_origine','marques','observations','signataire','lieu_sig','plaque_veh','transporteur','at_duree','at_bureau'];
+  const data={fields:Object.fromEntries(fields.map(f=>[f,g(f)])),items};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='smart_invest_'+g('doc_num').replace(/[^a-zA-Z0-9]/g,'_')+'.json';a.click();
+  toast('JSON exporté',true);
+}
+function resetForm(){
+  if(!confirm('Réinitialiser tous les champs ?'))return;
+  document.querySelectorAll('input,textarea').forEach(el=>el.value=el.defaultValue||'');
+  document.querySelectorAll('select').forEach(el=>el.selectedIndex=0);
+  document.getElementById('doc_date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('doc_num').value='PF-'+new Date().getFullYear()+'-001';
+  items=[];itemCounter=0;document.getElementById('items-tbody').innerHTML='';
+  addItem();applyCompanyToForm();
+}
+
+/* ═══ INIT ═══ */
+window.onload=()=>{
+  document.getElementById('doc_date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('doc_num').value='PF-'+new Date().getFullYear()+'-001';
+  loadCompany();addItem();render();
+};
+</script>
+</body>
+</html>

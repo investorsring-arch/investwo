@@ -1,0 +1,2314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart-Invest — Ingénierie Financière · Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════
+   DESIGN SYSTEM — Smart-Invest.ia (hérité)
+══════════════════════════════════════════ */
+:root {
+  --gold: #96690F;
+  --gold-light: #B8862A;
+  --gold-pale: #FBF3DE;
+  --ink: #1A1A16;
+  --ink-mid: #2E2E28;
+  --ink-soft: #4A4A40;
+  --smoke: #6A6A60;
+  --bg: #F4F2EB;
+  --bg2: #EAE7DE;
+  --white: #FFFFFE;
+  --accent: #1E4D6B;
+  --success: #1A6B3C;
+  --danger: #7A1A1A;
+  --border: rgba(0,0,0,0.10);
+  --surface: #FFFFFF;
+  --header-bg: rgba(255,253,245,0.96);
+  --footer-bg: #1A1A16;
+  --font-title: 'Syne', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  padding-top: 64px;
+}
+a { text-decoration: none; color: inherit; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--gold-light); border-radius: 3px; }
+
+/* ══ HEADER ══ */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: var(--header-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(184,134,42,0.20);
+  box-shadow: 0 1px 16px rgba(0,0,0,0.07);
+}
+.logo {
+  font-family: var(--font-title);
+  font-size: 18px; font-weight: 800;
+  color: var(--ink); letter-spacing: -0.02em;
+  display: flex; align-items: center; gap: 6px;
+}
+.logo-site { color: var(--gold-light); }
+.logo-sep { color: rgba(184,134,42,0.35); font-weight: 300; }
+.logo-module {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--smoke); letter-spacing: 0.08em;
+  background: rgba(184,134,42,0.10);
+  border: 1px solid rgba(184,134,42,0.25);
+  padding: 3px 8px; border-radius: 4px;
+  margin-left: 4px;
+}
+.header-back {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--smoke);
+  padding: 7px 14px; border-radius: 7px;
+  border: 1px solid transparent;
+  transition: all 0.2s; cursor: pointer;
+}
+.header-back:hover {
+  color: var(--gold); background: rgba(184,134,42,0.08);
+  border-color: rgba(184,134,42,0.2);
+}
+
+/* ══ HERO MODULE ══ */
+.module-hero {
+  padding: 56px 80px 48px;
+  background: linear-gradient(160deg, #F4F2EB 0%, #EDE9DE 100%);
+  border-bottom: 1px solid rgba(184,134,42,0.15);
+  position: relative; overflow: hidden;
+}
+.module-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(184,134,42,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,134,42,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+.module-hero::after {
+  content: '';
+  position: absolute; top: -30%; right: -5%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(184,134,42,0.09) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--gold);
+  background: rgba(184,134,42,0.10);
+  border: 1px solid rgba(184,134,42,0.30);
+  padding: 5px 14px; border-radius: 100px;
+  margin-bottom: 24px; width: fit-content;
+  position: relative; z-index: 1;
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.hero-title {
+  font-family: var(--font-title);
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 800; color: var(--ink);
+  line-height: 1.08; letter-spacing: -0.03em;
+  max-width: 700px;
+  position: relative; z-index: 1;
+}
+.hero-title .gold { color: var(--gold); }
+.hero-sub {
+  font-size: 16px; color: var(--smoke);
+  max-width: 540px; line-height: 1.7;
+  margin-top: 16px;
+  position: relative; z-index: 1;
+}
+.hero-kpis {
+  display: flex; gap: 32px;
+  margin-top: 40px;
+  position: relative; z-index: 1;
+}
+.kpi-pill {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.kpi-val {
+  font-family: var(--font-title);
+  font-size: 38px; font-weight: 800;
+  color: var(--gold); line-height: 1;
+}
+.kpi-lbl {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--smoke); letter-spacing: 0.06em;
+}
+.kpi-sep { width: 1px; background: rgba(0,0,0,0.12); align-self: stretch; }
+
+/* ══ LAYOUT 2 COLONNES ══ */
+.app-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  min-height: calc(100vh - 64px - 180px);
+}
+
+/* ══ PANNEAU GAUCHE — FORMULAIRE ══ */
+.panel-form {
+  background: var(--white);
+  border-right: 1px solid rgba(184,134,42,0.15);
+  padding: 32px 28px;
+  overflow-y: auto;
+  max-height: calc(100vh - 64px);
+  position: sticky; top: 64px;
+}
+
+.form-section {
+  margin-bottom: 28px;
+}
+.form-section-title {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--smoke);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(184,134,42,0.15);
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.form-section-num {
+  font-size: 9px; background: rgba(184,134,42,0.10);
+  color: var(--gold); padding: 2px 6px; border-radius: 3px;
+}
+
+label {
+  display: block;
+  font-size: 12px; color: var(--smoke);
+  margin-bottom: 5px; font-weight: 500;
+}
+.input-wrap { position: relative; margin-bottom: 12px; }
+input[type=text], input[type=number], select {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-body); font-size: 13px;
+  color: var(--ink);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+input[type=text]:focus, input[type=number]:focus, select:focus {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 0 3px rgba(184,134,42,0.12);
+}
+.input-suffix {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--smoke); pointer-events: none;
+}
+input.has-suffix { padding-right: 44px; }
+
+/* Flux de trésorerie */
+.cashflow-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 8px;
+}
+.cashflow-year {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--smoke); width: 52px; shrink: 0;
+  flex-shrink: 0;
+}
+.cashflow-row input { margin-bottom: 0; flex: 1; }
+.btn-remove {
+  background: none; border: none; cursor: pointer;
+  color: rgba(0,0,0,0.2); font-size: 18px; line-height: 1;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+.btn-remove:hover { color: #7A1A1A; }
+.btn-add-year {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--gold); letter-spacing: 0.06em;
+  background: rgba(184,134,42,0.08);
+  border: 1px solid rgba(184,134,42,0.25);
+  padding: 6px 12px; border-radius: 6px;
+  cursor: pointer; transition: all 0.2s;
+  margin-top: 4px;
+}
+.btn-add-year:hover { background: rgba(184,134,42,0.15); border-color: var(--gold); }
+
+/* Grid 2 colonnes */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Bouton calcul */
+.btn-calc {
+  width: 100%;
+  background: var(--ink);
+  color: var(--white);
+  border: none; border-radius: 10px;
+  padding: 14px 20px;
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.25s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 8px;
+}
+.btn-calc:hover { background: var(--gold); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+.btn-calc:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* Onglets outils */
+.tool-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+  padding: 0;
+  margin: 0 0 28px;
+  background: none;
+  border-bottom: none;
+}
+.tool-tab {
+  font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  letter-spacing: -0.01em; text-transform: none;
+  padding: 20px 20px; cursor: pointer;
+  border: 1.5px solid;
+  border-radius: 12px;
+  white-space: normal; text-align: left;
+  line-height: 1.4;
+  min-height: 72px;
+  transition: all 0.22s;
+  background: var(--bg);
+}
+
+/* ── Bouton 1 : Financier — Bleu acier ── */
+.tool-tabs .tool-tab:nth-child(1) {
+  color: #1E4D6B;
+  border-color: rgba(30,77,107,0.35);
+  background: rgba(30,77,107,0.06);
+}
+.tool-tabs .tool-tab:nth-child(1):hover {
+  background: rgba(30,77,107,0.13);
+  border-color: #1E4D6B;
+  box-shadow: 0 3px 12px rgba(30,77,107,0.15);
+  transform: translateY(-1px);
+}
+.tool-tabs .tool-tab:nth-child(1).active {
+  color: #fff;
+  background: #1E4D6B;
+  border-color: #1E4D6B;
+  box-shadow: 0 4px 16px rgba(30,77,107,0.30);
+  font-weight: 700;
+}
+
+/* ── Bouton 2 : Subventions — Vert émeraude ── */
+.tool-tabs .tool-tab:nth-child(2) {
+  color: #1A6B3C;
+  border-color: rgba(26,107,60,0.35);
+  background: rgba(26,107,60,0.06);
+}
+.tool-tabs .tool-tab:nth-child(2):hover {
+  background: rgba(26,107,60,0.13);
+  border-color: #1A6B3C;
+  box-shadow: 0 3px 12px rgba(26,107,60,0.15);
+  transform: translateY(-1px);
+}
+.tool-tabs .tool-tab:nth-child(2).active {
+  color: #fff;
+  background: #1A6B3C;
+  border-color: #1A6B3C;
+  box-shadow: 0 4px 16px rgba(26,107,60,0.30);
+  font-weight: 700;
+}
+
+/* ── Bouton 3 : Masse salariale — Violet profond ── */
+.tool-tabs .tool-tab:nth-child(3) {
+  color: #6B3FA0;
+  border-color: rgba(107,63,160,0.35);
+  background: rgba(107,63,160,0.06);
+}
+.tool-tabs .tool-tab:nth-child(3):hover {
+  background: rgba(107,63,160,0.13);
+  border-color: #6B3FA0;
+  box-shadow: 0 3px 12px rgba(107,63,160,0.15);
+  transform: translateY(-1px);
+}
+.tool-tabs .tool-tab:nth-child(3).active {
+  color: #fff;
+  background: #6B3FA0;
+  border-color: #6B3FA0;
+  box-shadow: 0 4px 16px rgba(107,63,160,0.30);
+  font-weight: 700;
+}
+
+/* ── Bouton 4 : ESG — Teal naturel ── */
+.tool-tabs .tool-tab:nth-child(4) {
+  color: #0D7B6A;
+  border-color: rgba(13,123,106,0.35);
+  background: rgba(13,123,106,0.06);
+}
+.tool-tabs .tool-tab:nth-child(4):hover {
+  background: rgba(13,123,106,0.13);
+  border-color: #0D7B6A;
+  box-shadow: 0 3px 12px rgba(13,123,106,0.15);
+  transform: translateY(-1px);
+}
+.tool-tabs .tool-tab:nth-child(4).active {
+  color: #fff;
+  background: #0D7B6A;
+  border-color: #0D7B6A;
+  box-shadow: 0 4px 16px rgba(13,123,106,0.30);
+  font-weight: 700;
+}
+
+/* ── Bouton 5 : ROI — Ambre structuré ── */
+.tool-tabs .tool-tab:nth-child(5) {
+  color: #8A5A00;
+  border-color: rgba(138,90,0,0.35);
+  background: rgba(138,90,0,0.06);
+}
+.tool-tabs .tool-tab:nth-child(5):hover {
+  background: rgba(138,90,0,0.13);
+  border-color: #8A5A00;
+  box-shadow: 0 3px 12px rgba(138,90,0,0.15);
+  transform: translateY(-1px);
+}
+.tool-tabs .tool-tab:nth-child(5).active {
+  color: #fff;
+  background: #8A5A00;
+  border-color: #8A5A00;
+  box-shadow: 0 4px 16px rgba(138,90,0,0.30);
+  font-weight: 700;
+}
+
+/* ══ PANNEAU DROIT — RÉSULTATS ══ */
+.panel-results {
+  padding: 32px 36px;
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+/* État vide */
+.empty-state {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 400px;
+  text-align: center; gap: 12px;
+}
+.empty-icon {
+  width: 72px; height: 72px;
+  background: rgba(184,134,42,0.08);
+  border: 1px solid rgba(184,134,42,0.20);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 8px;
+}
+.empty-title {
+  font-family: var(--font-title); font-size: 18px; font-weight: 700;
+  color: var(--ink-soft);
+}
+.empty-sub {
+  font-size: 13px; color: var(--smoke); max-width: 280px; line-height: 1.6;
+}
+
+/* KPIs résultats */
+.result-kpis {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-bottom: 20px;
+}
+.kpi-card {
+  background: var(--white);
+  border: 1px solid rgba(184,134,42,0.15);
+  border-radius: 12px; padding: 20px 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: all 0.2s;
+}
+.kpi-card:hover { border-color: rgba(184,134,42,0.35); box-shadow: 0 4px 14px rgba(184,134,42,0.08); }
+.kpi-card-label {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--smoke); margin-bottom: 8px;
+}
+.kpi-card-label span { color: rgba(0,0,0,0.3); }
+.kpi-card-value {
+  font-family: var(--font-title); font-size: 26px;
+  font-weight: 800; line-height: 1; margin-bottom: 6px;
+}
+.kpi-card-hint {
+  font-size: 11px; color: var(--smoke); line-height: 1.4;
+}
+.val-positive { color: var(--success); }
+.val-negative { color: var(--danger); }
+.val-neutral { color: var(--ink); }
+.val-amber { color: #8A5A00; }
+
+/* Score gauge */
+.score-card {
+  border-radius: 12px; padding: 20px 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  border: 1px solid;
+}
+.score-good { background: rgba(26,107,60,0.06); border-color: rgba(26,107,60,0.25); }
+.score-medium { background: rgba(138,90,0,0.06); border-color: rgba(138,90,0,0.25); }
+.score-bad { background: rgba(122,26,26,0.06); border-color: rgba(122,26,26,0.25); }
+
+/* Bloc pénalités */
+.penalties-block {
+  background: rgba(122,26,26,0.04);
+  border: 1px solid rgba(122,26,26,0.15);
+  border-radius: 10px; padding: 14px 16px;
+  margin-top: 16px;
+}
+.penalty-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; color: #7A1A1A;
+  padding: 4px 0;
+}
+.penalty-dot { color: #7A1A1A; margin-top: 1px; flex-shrink: 0; }
+
+/* Expert banner */
+.expert-banner {
+  background: rgba(138,90,0,0.08);
+  border: 1px solid rgba(138,90,0,0.30);
+  border-radius: 12px; padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; gap: 16px;
+}
+.expert-banner-text p:first-child {
+  font-weight: 600; font-size: 13px; color: #5A3A00;
+  margin-bottom: 3px;
+}
+.expert-banner-text p:last-child {
+  font-size: 12px; color: #8A5A00;
+}
+.btn-expert {
+  background: var(--gold-light); color: var(--ink);
+  border: none; border-radius: 8px;
+  padding: 9px 18px; font-size: 12px; font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer; white-space: nowrap;
+  transition: all 0.2s;
+}
+.btn-expert:hover { background: var(--gold); transform: translateY(-1px); }
+
+/* Détail simulation */
+.detail-card {
+  background: var(--white);
+  border: 1px solid rgba(184,134,42,0.15);
+  border-radius: 12px; padding: 20px 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.detail-card-title {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.10em; text-transform: uppercase;
+  color: var(--smoke); margin-bottom: 14px;
+}
+.detail-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.detail-item p:first-child { font-size: 11px; color: var(--smoke); margin-bottom: 3px; }
+.detail-item p:last-child { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+/* Tabs résultats secondaires */
+.result-tabs {
+  display: flex; gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.rtab {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 7px 14px; border-radius: 7px;
+  border: 1px solid rgba(184,134,42,0.20);
+  background: var(--white);
+  color: var(--smoke); cursor: pointer;
+  transition: all 0.2s;
+}
+.rtab:hover { border-color: rgba(184,134,42,0.45); color: var(--gold); }
+.rtab.active {
+  background: var(--gold-light); color: var(--ink);
+  border-color: var(--gold-light); font-weight: 600;
+}
+
+/* Comparateur A/B */
+.compare-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--white);
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  border: 1px solid rgba(184,134,42,0.15);
+  font-size: 13px;
+}
+.compare-table th {
+  padding: 12px 20px; text-align: center;
+  border-bottom: 1px solid rgba(184,134,42,0.12);
+  background: rgba(184,134,42,0.04);
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.08em; color: var(--smoke);
+}
+.compare-table th:first-child { text-align: left; }
+.compare-table td {
+  padding: 14px 20px; text-align: center;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.compare-table td:first-child { text-align: left; color: var(--smoke); font-size: 12px; }
+.compare-table tr:last-child td { border-bottom: none; }
+.cell-winner { color: var(--success); background: rgba(26,107,60,0.06); font-weight: 700; }
+
+/* ESG */
+.esg-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 10px; margin-bottom: 16px;
+}
+.esg-kpi {
+  background: var(--white);
+  border: 1px solid rgba(184,134,42,0.15);
+  border-radius: 10px; padding: 16px 14px; text-align: center;
+}
+.esg-kpi-val {
+  font-family: var(--font-title); font-size: 28px; font-weight: 800;
+  margin-bottom: 4px;
+}
+.esg-kpi-lbl { font-size: 11px; color: var(--smoke); }
+.esg-niveau {
+  background: rgba(26,107,60,0.08);
+  border: 1px solid rgba(26,107,60,0.25);
+  border-radius: 10px; padding: 14px 18px;
+  font-size: 13px; font-weight: 600; color: var(--success);
+}
+.esg-q-row { margin-bottom: 14px; }
+.esg-q-label { font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; }
+.esg-q-btns { display: flex; gap: 4px; }
+.esg-btn {
+  flex: 1; padding: 7px 6px; font-size: 11px;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 6px; cursor: pointer;
+  background: var(--bg); color: var(--smoke);
+  transition: all 0.15s; font-family: var(--font-body);
+}
+.esg-btn.sel { background: var(--ink); color: var(--white); border-color: var(--ink); }
+
+/* RH */
+.rh-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--white);
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(184,134,42,0.15);
+  font-size: 12px;
+}
+.rh-table th {
+  padding: 10px 14px; text-align: right;
+  border-bottom: 1px solid rgba(184,134,42,0.12);
+  background: rgba(184,134,42,0.04);
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.08em; color: var(--smoke);
+  font-weight: normal;
+}
+.rh-table th:first-child { text-align: left; }
+.rh-table td {
+  padding: 10px 14px; text-align: right;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  color: var(--ink);
+}
+.rh-table td:first-child { text-align: left; }
+.rh-table tr:last-child td { border-bottom: none; }
+.rh-table input[type=text],
+.rh-table input[type=number] {
+  background: transparent; border: none;
+  font-family: var(--font-body); font-size: 12px;
+  color: var(--ink); width: 100%;
+  padding: 0; border-radius: 0;
+  box-shadow: none;
+}
+.rh-table input[type=text]:focus,
+.rh-table input[type=number]:focus {
+  background: rgba(184,134,42,0.06);
+  border-radius: 4px; padding: 2px 4px;
+  box-shadow: none;
+}
+.btn-add-rh {
+  font-size: 11px; color: var(--gold);
+  background: none; border: none; cursor: pointer;
+  padding: 8px 14px;
+}
+.rh-totaux {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-top: 14px;
+}
+.rh-total-card {
+  background: var(--white);
+  border: 1px solid rgba(184,134,42,0.15);
+  border-radius: 10px; padding: 16px 18px;
+}
+.rh-total-card p:first-child { font-size: 11px; color: var(--smoke); margin-bottom: 4px; }
+.rh-total-card p:last-child { font-size: 20px; font-weight: 700; color: var(--ink); font-family: var(--font-title); }
+.rh-total-card.highlight p:last-child { color: var(--gold); }
+
+/* Subventions */
+.sub-result-item {
+  background: var(--white);
+  border: 1px solid rgba(184,134,42,0.15);
+  border-radius: 10px; padding: 16px 18px;
+  margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px;
+}
+.sub-result-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.sub-result-desc { font-size: 11px; color: var(--smoke); }
+.sub-result-base { font-size: 10px; color: rgba(0,0,0,0.3); font-style: italic; margin-top: 2px; }
+.sub-result-amount { font-size: 18px; font-weight: 800; color: var(--success); white-space: nowrap; font-family: var(--font-title); }
+.sub-total {
+  background: rgba(184,134,42,0.08);
+  border: 1px solid rgba(184,134,42,0.30);
+  border-radius: 10px; padding: 16px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.sub-total span:first-child { font-size: 13px; font-weight: 600; }
+.sub-total span:last-child { font-size: 24px; font-weight: 800; color: var(--gold); font-family: var(--font-title); }
+
+/* Disclaimer */
+.disclaimer {
+  background: rgba(122,26,26,0.04);
+  border: 1px solid rgba(122,26,26,0.15);
+  border-radius: 10px; padding: 14px 16px;
+  margin-top: 20px;
+}
+.disclaimer p:first-child {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: #7A1A1A; margin-bottom: 5px;
+}
+.disclaimer p:last-child {
+  font-size: 11px; color: #9A3A3A; line-height: 1.6;
+}
+
+/* Loading */
+.loading-bar {
+  height: 3px; background: rgba(184,134,42,0.15);
+  border-radius: 2px; margin-bottom: 20px; overflow: hidden;
+}
+.loading-bar-inner {
+  height: 100%; background: var(--gold-light);
+  border-radius: 2px;
+  animation: loadProgress 1.8s ease-in-out infinite;
+}
+@keyframes loadProgress {
+  0% { width: 0%; }
+  60% { width: 75%; }
+  100% { width: 100%; }
+}
+
+/* InvestBot */
+.investbot-fab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 300;
+  display: flex; align-items: center; gap: 8px;
+  background: var(--ink); color: var(--white);
+  border: none; border-radius: 100px;
+  padding: 12px 22px; font-size: 13px; font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  transition: all 0.25s;
+}
+.investbot-fab:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(184,134,42,0.35); }
+.investbot-panel {
+  position: fixed; bottom: 28px; right: 28px; z-index: 300;
+  width: 380px; height: 520px;
+  background: var(--white);
+  border: 1px solid rgba(184,134,42,0.20);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.bot-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(184,134,42,0.12);
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(184,134,42,0.04);
+}
+.bot-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+.bot-sub { font-size: 11px; color: var(--smoke); margin-top: 1px; }
+.bot-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--smoke); font-size: 20px; line-height: 1;
+  padding: 0;
+}
+.bot-close:hover { color: var(--ink); }
+.bot-messages {
+  flex: 1; overflow-y: auto;
+  padding: 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.bot-prompt-list { display: flex; flex-direction: column; gap: 6px; }
+.bot-prompt {
+  font-size: 11px; text-align: left;
+  padding: 8px 12px; border-radius: 8px;
+  border: 1px solid rgba(184,134,42,0.20);
+  background: none; cursor: pointer; color: var(--ink-soft);
+  font-family: var(--font-body); transition: all 0.15s;
+}
+.bot-prompt:hover { border-color: var(--gold); background: rgba(184,134,42,0.06); color: var(--gold); }
+.msg-user, .msg-ai {
+  max-width: 88%; padding: 10px 13px; border-radius: 12px;
+  font-size: 12px; line-height: 1.55;
+}
+.msg-user { background: var(--ink); color: var(--white); align-self: flex-end; }
+.msg-ai { background: rgba(184,134,42,0.07); border: 1px solid rgba(184,134,42,0.20); color: var(--ink-soft); }
+.msg-thinking { color: var(--smoke); font-style: italic; font-size: 11px; }
+.bot-input-row {
+  padding: 12px 16px; border-top: 1px solid rgba(184,134,42,0.12);
+  display: flex; gap: 8px;
+}
+.bot-input {
+  flex: 1; background: var(--bg);
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 8px; padding: 8px 12px;
+  font-size: 12px; font-family: var(--font-body);
+  outline: none; transition: border-color 0.2s;
+}
+.bot-input:focus { border-color: var(--gold-light); }
+.bot-send {
+  background: var(--ink); color: var(--white);
+  border: none; border-radius: 8px;
+  padding: 8px 14px; cursor: pointer; font-size: 13px;
+  transition: background 0.2s;
+}
+.bot-send:hover { background: var(--gold); }
+.bot-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ══ PIED DE PAGE ══ */
+.page-footer {
+  background: var(--footer-bg);
+  padding: 28px 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px;
+}
+.footer-copy {
+  font-family: var(--font-mono); font-size: 11px;
+  color: rgba(255,255,255,0.35);
+}
+.footer-links {
+  display: flex; gap: 24px;
+}
+.footer-links a {
+  font-size: 12px; color: rgba(255,255,255,0.35);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold-light); }
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .app-layout { grid-template-columns: 1fr; }
+  .panel-form { position: static; max-height: none; border-right: none; border-bottom: 1px solid rgba(184,134,42,0.15); }
+  .module-hero { padding: 40px 32px; }
+  .result-kpis { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .header { padding: 0 20px; }
+  .module-hero { padding: 32px 20px; }
+  .panel-form, .panel-results { padding: 24px 20px; }
+  .result-kpis { grid-template-columns: 1fr; }
+  .hero-kpis { gap: 20px; flex-wrap: wrap; }
+  .esg-grid { grid-template-columns: repeat(2, 1fr); }
+  .page-footer { padding: 24px 20px; flex-direction: column; text-align: center; }
+  .investbot-panel { width: calc(100vw - 32px); right: 16px; }
+}
+</style>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="pro"></script>
+<script src='lib/upgrade-modal.js'></script>
+
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <div class="logo">
+    <a href="landing.html" style="color:inherit;display:flex;align-items:center;gap:6px">
+      <span class="logo-site">Smart-Invest</span><span style="color:rgba(184,134,42,.35)">.ia</span>
+    </a>
+    <span class="logo-sep">›</span>
+    <span class="logo-module">Smart-Invest · v1.0</span>
+  </div>
+  <a href="admin/index.html" class="header-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    Portail modules
+  </a>
+</header>
+
+<!-- ══ HERO MODULE ══ -->
+<section class="module-hero">
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    MODULE 23 · INGÉNIERIE FINANCIÈRE
+  </div>
+  <h1 class="hero-title">
+    Smart-Invest — <span class="gold">Simulateur</span><br>d'Investissement
+  </h1>
+  <p class="hero-sub">
+    VAN, TRI, Score de Vigilance, Stress Test, ESG/RSE, masse salariale et subventions Charte 2022. Tout sur une page.
+  </p>
+  <div class="hero-kpis">
+    <div class="kpi-pill">
+      <span class="kpi-val">5</span>
+      <span class="kpi-lbl">Modules intégrés</span>
+    </div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-pill">
+      <span class="kpi-val">VAN</span>
+      <span class="kpi-lbl">Valeur Actuelle Nette</span>
+    </div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-pill">
+      <span class="kpi-val">TRI</span>
+      <span class="kpi-lbl">Taux de Rendement Interne</span>
+    </div>
+    <div class="kpi-sep"></div>
+    <div class="kpi-pill">
+      <span class="kpi-val">Charte</span>
+      <span class="kpi-lbl">Subventions Loi-cadre 03-22</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ APP LAYOUT ══ -->
+<div class="app-layout">
+
+  <!-- ══ PANNEAU GAUCHE : FORMULAIRE ══ -->
+  <div class="panel-form">
+
+    <!-- Onglets outils -->
+    <div class="tool-tabs">
+      <button class="tool-tab active" onclick="switchTool('financier', this)">
+        Simulez votre rentabilité financière
+      </button>
+      <button class="tool-tab" onclick="switchTool('subventions', this)">
+        Évaluez vos subventions d'investissement
+      </button>
+      <button class="tool-tab" onclick="switchTool('roi', this)">
+        Calculez votre ROI
+      </button>
+      <button class="tool-tab" onclick="switchTool('rh', this)">
+        Simulateur de la masse salariale
+      </button>
+      <button class="tool-tab" onclick="switchTool('esg', this)">
+        Évaluez votre ESG
+      </button>
+    </div>
+
+    <!-- ─── OUTIL 1 : FINANCIER ─── -->
+    <div id="tool-financier">
+
+      <div class="form-section">
+        <div class="form-section-title">
+          Informations générales
+          <span class="form-section-num">01</span>
+        </div>
+        <div class="input-wrap">
+          <label>Nom du projet</label>
+          <input type="text" id="f-title" placeholder="Ex: Usine de production Tanger" />
+        </div>
+        <div class="input-wrap">
+          <label>Secteur</label>
+          <select id="f-sector">
+            <option value="">Sélectionner...</option>
+            <option>Automobile</option>
+            <option>Agri-tech</option>
+            <option>Hydrogène vert</option>
+            <option>Aéronautique</option>
+            <option>Textile</option>
+            <option>Tourisme</option>
+            <option>Immobilier</option>
+            <option>Pharma</option>
+            <option>Autre</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">
+          Paramètres financiers
+          <span class="form-section-num">02</span>
+        </div>
+        <div class="grid-2">
+          <div class="input-wrap">
+            <label>Mise de départ <span style="color:rgba(0,0,0,.3);font-size:10px">(Investissement)</span></label>
+            <input type="number" id="f-invest" placeholder="0" class="has-suffix" />
+            <span class="input-suffix">MAD</span>
+          </div>
+          <div class="input-wrap">
+            <label>Seuil de rentabilité <span style="color:rgba(0,0,0,.3);font-size:10px">(Taux)</span></label>
+            <input type="number" id="f-rate" value="10" min="1" max="99" class="has-suffix" />
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">
+          Revenus nets annuels <span style="color:rgba(0,0,0,.3);font-weight:normal">(Flux trésorerie)</span>
+          <span class="form-section-num">03</span>
+        </div>
+        <div id="cashflows-container"></div>
+        <button class="btn-add-year" onclick="addCashFlow()">+ Ajouter une année</button>
+      </div>
+
+      <button class="btn-calc" id="btn-calc" onclick="calculerFinancier()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5A6.5 6.5 0 118 14.5 6.5 6.5 0 018 1.5z" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M8 5v3.5l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        Calculer et analyser
+      </button>
+
+    </div><!-- /tool-financier -->
+
+    <!-- ─── OUTIL 2 : SUBVENTIONS ─── -->
+    <div id="tool-subventions" style="display:none">
+      <div class="form-section">
+        <div class="form-section-title">
+          Paramètres d'investissement
+          <span class="form-section-num">01</span>
+        </div>
+        <div class="grid-2">
+          <div class="input-wrap">
+            <label>Montant investi (MAD)</label>
+            <input type="number" id="s-montant" placeholder="50000000" />
+          </div>
+          <div class="input-wrap">
+            <label>Emplois permanents créés</label>
+            <input type="number" id="s-emplois" placeholder="100" />
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="input-wrap">
+            <label>Secteur</label>
+            <select id="s-sector">
+              <option>Automobile</option>
+              <option>Aéronautique</option>
+              <option>Hydrogène vert</option>
+              <option>Pharma</option>
+              <option>Textile</option>
+              <option>Tourisme</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="input-wrap">
+            <label>Zone géographique</label>
+            <select id="s-zone">
+              <option value="principale">Zone principale</option>
+              <option value="specifique">Zone spécifique (avantages +)</option>
+              <option value="offshoring">Zone offshoring</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-calc" onclick="calculerSubventions()">
+        💰 Calculer les subventions éligibles
+      </button>
+    </div>
+
+    <!-- ─── OUTIL ROI ─── -->
+    <div id="tool-roi" style="display:none">
+      <div class="form-section">
+        <div class="form-section-title">
+          Paramètres de l'investissement
+          <span class="form-section-num">01</span>
+        </div>
+        <div class="grid-2">
+          <div class="input-wrap">
+            <label>Investissement initial (MAD)</label>
+            <input type="number" id="roi-invest" placeholder="5 000 000" class="has-suffix" />
+            <span class="input-suffix">MAD</span>
+          </div>
+          <div class="input-wrap">
+            <label>Durée de l'analyse</label>
+            <input type="number" id="roi-years" placeholder="5" min="1" max="30" class="has-suffix" />
+            <span class="input-suffix">ans</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">
+          Revenus & Coûts
+          <span class="form-section-num">02</span>
+        </div>
+        <div class="grid-2">
+          <div class="input-wrap">
+            <label>Chiffre d'affaires annuel moyen (MAD)</label>
+            <input type="number" id="roi-ca" placeholder="2 000 000" class="has-suffix" />
+            <span class="input-suffix">MAD</span>
+          </div>
+          <div class="input-wrap">
+            <label>Charges opérationnelles annuelles (MAD)</label>
+            <input type="number" id="roi-charges" placeholder="1 200 000" class="has-suffix" />
+            <span class="input-suffix">MAD</span>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="input-wrap">
+            <label>Taux IS applicable (%)</label>
+            <input type="number" id="roi-is" placeholder="20" min="0" max="35" class="has-suffix" />
+            <span class="input-suffix">%</span>
+          </div>
+          <div class="input-wrap">
+            <label>Valeur résiduelle à la fin (MAD)</label>
+            <input type="number" id="roi-residuel" placeholder="0" class="has-suffix" />
+            <span class="input-suffix">MAD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">
+          Croissance prévisionnelle
+          <span class="form-section-num">03</span>
+        </div>
+        <div class="grid-2">
+          <div class="input-wrap">
+            <label>Taux de croissance CA (%/an)</label>
+            <input type="number" id="roi-growth-ca" placeholder="5" class="has-suffix" />
+            <span class="input-suffix">%</span>
+          </div>
+          <div class="input-wrap">
+            <label>Taux de croissance charges (%/an)</label>
+            <input type="number" id="roi-growth-charges" placeholder="3" class="has-suffix" />
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-calc" onclick="calculerROI()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 13L7 9l2.5 2.5L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Calculer le ROI
+      </button>
+    </div>
+
+    <!-- ─── OUTIL 3 : RH ─── -->
+    <div id="tool-rh" style="display:none">
+      <div class="form-section">
+        <div class="form-section-title">
+          Équipe projet — Masse salariale
+          <span class="form-section-num">01</span>
+        </div>
+        <p style="font-size:11px;color:var(--smoke);margin-bottom:14px;line-height:1.5">
+          CNSS 21.09% + AMO 4.11% + TFP 1.6% · Droit marocain. Cochez IDMAJ pour -50% charges patronales.
+        </p>
+        <table class="rh-table" id="rh-table">
+          <thead>
+            <tr>
+              <th style="text-align:left">Poste</th>
+              <th>Salaire brut</th>
+              <th>Charges</th>
+              <th>Coût total</th>
+              <th>IDMAJ</th>
+            </tr>
+          </thead>
+          <tbody id="rh-tbody"></tbody>
+        </table>
+        <div style="padding:4px 0">
+          <button class="btn-add-rh" onclick="addRHRow()">+ Ajouter un employé</button>
+        </div>
+      </div>
+      <div class="rh-totaux" id="rh-totaux">
+        <div class="rh-total-card">
+          <p>Coût mensuel employeur</p>
+          <p id="rh-mensuel">0 MAD</p>
+        </div>
+        <div class="rh-total-card highlight">
+          <p>Coût annuel employeur</p>
+          <p id="rh-annuel">0 MAD</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── OUTIL 4 : ESG ─── -->
+    <div id="tool-esg" style="display:none">
+      <div class="form-section">
+        <div class="form-section-title">Pré-diagnostic RSE CGEM <span class="form-section-num">01</span></div>
+        <div id="esg-questions"></div>
+      </div>
+    </div>
+
+  </div><!-- /panel-form -->
+
+  <!-- ══ PANNEAU DROIT : RÉSULTATS ══ -->
+  <div class="panel-results" id="panel-results">
+
+    <!-- État vide -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4a12 12 0 100 24A12 12 0 0016 4z" stroke="#B8862A" stroke-width="1.5"/>
+          <path d="M16 10v6.5l3.5 3.5" stroke="#B8862A" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="empty-title">Résultats en attente</p>
+      <p class="empty-sub">Renseignez les paramètres du projet et cliquez sur « Calculer » pour voir apparaître les indicateurs ici.</p>
+    </div>
+
+    <!-- Résultats financiers -->
+    <div id="results-financier" style="display:none">
+      <div id="loading-state" style="display:none">
+        <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+        <p style="font-family:var(--font-mono);font-size:11px;color:var(--smoke);letter-spacing:.08em">Calcul en cours — VAN · TRI · Score de Vigilance...</p>
+      </div>
+
+      <div id="results-content" style="display:none">
+        <!-- Expert banner (conditionnel) -->
+        <div class="expert-banner" id="expert-banner" style="display:none">
+          <div class="expert-banner-text">
+            <p>Ce dossier nécessite une attention</p>
+            <p>Score de vigilance ou rendement en zone de risque</p>
+          </div>
+          <button class="btn-expert">Parler à l'Expert</button>
+        </div>
+
+        <!-- KPIs -->
+        <div class="result-kpis">
+          <div class="kpi-card">
+            <div class="kpi-card-label">Gain net <span>(VAN)</span></div>
+            <div class="kpi-card-value" id="r-npv">—</div>
+            <div class="kpi-card-hint" id="r-npv-hint">—</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-card-label">Rendement <span>(TRI)</span></div>
+            <div class="kpi-card-value" id="r-irr">—</div>
+            <div class="kpi-card-hint" id="r-irr-hint">—</div>
+          </div>
+          <div class="kpi-card score-card" id="score-card">
+            <div class="kpi-card-label">Santé du dossier</div>
+            <div class="kpi-card-value" id="r-score">—</div>
+            <div class="kpi-card-hint" id="r-score-hint">—</div>
+          </div>
+        </div>
+
+        <!-- Pénalités -->
+        <div class="penalties-block" id="penalties-block" style="display:none">
+          <div id="penalties-list"></div>
+        </div>
+
+        <!-- Tabs résultats secondaires -->
+        <div class="result-tabs" style="margin-top:20px">
+          <button class="rtab active" onclick="switchResult('detail', this)">Détail</button>
+          <button class="rtab" onclick="switchResult('scenario-b', this)">⚖️ Scénario B</button>
+          <button class="rtab" onclick="switchResult('stress', this)">🔥 Stress Test</button>
+        </div>
+
+        <!-- Onglet Détail -->
+        <div id="rtab-detail">
+          <div class="detail-card">
+            <div class="detail-card-title">Paramètres de la simulation</div>
+            <div class="detail-grid">
+              <div class="detail-item"><p>Projet</p><p id="d-title">—</p></div>
+              <div class="detail-item"><p>Secteur</p><p id="d-sector">—</p></div>
+              <div class="detail-item"><p>Investissement initial</p><p id="d-invest">—</p></div>
+              <div class="detail-item"><p>Taux d'actualisation</p><p id="d-rate">—</p></div>
+              <div class="detail-item"><p>Nombre d'années</p><p id="d-years">—</p></div>
+              <div class="detail-item"><p>Flux total</p><p id="d-totalcf">—</p></div>
+            </div>
+          </div>
+          <div class="disclaimer">
+            <p>Avertissement légal</p>
+            <p>Smart-Invest est un simulateur indicatif. Les résultats affichés ne constituent pas un avis financier, fiscal ou juridique certifié. Seuls les experts agréés et administrations fiscales compétentes fournissent des chiffres définitifs et opposables.</p>
+          </div>
+        </div>
+
+        <!-- Onglet Scénario B -->
+        <div id="rtab-scenario-b" style="display:none">
+          <div class="detail-card">
+            <div class="detail-card-title">Comparateur A / B — Modifier le scénario B</div>
+            <div class="grid-2" style="margin-bottom:16px">
+              <div class="input-wrap">
+                <label>Investissement B (MAD)</label>
+                <input type="number" id="sb-invest" placeholder="Scénario A par défaut" />
+              </div>
+              <div class="input-wrap">
+                <label>Taux actualisation B (%)</label>
+                <input type="number" id="sb-rate" placeholder="10" />
+              </div>
+            </div>
+            <button class="btn-calc" style="margin-top:0" onclick="calculerScenarioB()">Calculer Scénario B</button>
+          </div>
+          <table class="compare-table" id="compare-table" style="display:none">
+            <thead>
+              <tr>
+                <th>Indicateur</th>
+                <th>Scénario A</th>
+                <th>Scénario B</th>
+              </tr>
+            </thead>
+            <tbody id="compare-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Onglet Stress Test -->
+        <div id="rtab-stress" style="display:none">
+          <div class="detail-card">
+            <div class="detail-card-title">Stress Test — Impact sur les flux de trésorerie</div>
+            <table class="compare-table" id="stress-table">
+              <thead>
+                <tr>
+                  <th>Choc appliqué</th>
+                  <th>VAN stressée</th>
+                  <th>TRI stressé</th>
+                  <th>Signal</th>
+                </tr>
+              </thead>
+              <tbody id="stress-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /results-content -->
+    </div><!-- /results-financier -->
+
+    <!-- Résultats subventions -->
+    <div id="results-subventions" style="display:none">
+      <div class="detail-card-title" style="margin-bottom:14px;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke)">
+        Subventions éligibles — Charte d'Investissement 2022
+      </div>
+      <div id="sub-results-list"></div>
+    </div>
+
+    <!-- Résultats ROI -->
+    <div id="results-roi" style="display:none">
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-bottom:14px">
+        Retour sur Investissement — Analyse complète
+      </div>
+
+      <!-- KPIs ROI principaux -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div class="kpi-card" style="grid-column:1/-1">
+          <div class="kpi-card-label">ROI global <span>(Return on Investment)</span></div>
+          <div class="kpi-card-value val-positive" id="roi-r-global" style="font-size:36px">—</div>
+          <div class="kpi-card-hint" id="roi-r-global-hint">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card-label">ROI annualisé</div>
+          <div class="kpi-card-value" id="roi-r-annuel" style="font-size:22px">—</div>
+          <div class="kpi-card-hint">Rendement moyen par an</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card-label">Délai de récupération</div>
+          <div class="kpi-card-value val-amber" id="roi-r-payback" style="font-size:22px">—</div>
+          <div class="kpi-card-hint">Remboursement de la mise initiale</div>
+        </div>
+      </div>
+
+      <!-- Détail financier ROI -->
+      <div class="detail-card">
+        <div class="detail-card-title">Analyse financière détaillée</div>
+        <div class="detail-grid">
+          <div class="detail-item"><p>Investissement initial</p><p id="roi-r-invest">—</p></div>
+          <div class="detail-item"><p>Gain net total (après IS)</p><p id="roi-r-gain">—</p></div>
+          <div class="detail-item"><p>CA cumulé sur la période</p><p id="roi-r-ca-cum">—</p></div>
+          <div class="detail-item"><p>Charges cumulées</p><p id="roi-r-charges-cum">—</p></div>
+          <div class="detail-item"><p>IS cumulé</p><p id="roi-r-is-cum">—</p></div>
+          <div class="detail-item"><p>Valeur résiduelle</p><p id="roi-r-residuel">—</p></div>
+        </div>
+      </div>
+
+      <!-- Tableau année par année -->
+      <div class="detail-card" style="margin-top:12px">
+        <div class="detail-card-title">Évolution annuelle du ROI cumulé</div>
+        <table class="compare-table" id="roi-annee-table">
+          <thead>
+            <tr>
+              <th style="text-align:left">Année</th>
+              <th>Résultat net</th>
+              <th>Flux cumulé</th>
+              <th>ROI cumulé</th>
+            </tr>
+          </thead>
+          <tbody id="roi-annee-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="disclaimer" style="margin-top:12px">
+        <p>Avertissement</p>
+        <p>Le ROI est un indicateur simplifié. Pour une analyse complète incluant la valeur temporelle de l'argent, utilisez le module VAN/TRI.</p>
+      </div>
+    </div>
+
+    <!-- Résultats ESG -->
+    <div id="results-esg" style="display:none">
+      <div class="detail-card-title" style="margin-bottom:14px;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke)">
+        Scores ESG en temps réel
+      </div>
+      <div class="esg-grid">
+        <div class="esg-kpi"><div class="esg-kpi-val" id="esg-global">—</div><div class="esg-kpi-lbl">Score global</div></div>
+        <div class="esg-kpi"><div class="esg-kpi-val" id="esg-e" style="color:var(--success)">—</div><div class="esg-kpi-lbl">Environnement</div></div>
+        <div class="esg-kpi"><div class="esg-kpi-val" id="esg-s" style="color:var(--accent)">—</div><div class="esg-kpi-lbl">Social</div></div>
+        <div class="esg-kpi"><div class="esg-kpi-val" id="esg-g" style="color:var(--gold)">—</div><div class="esg-kpi-lbl">Gouvernance</div></div>
+      </div>
+      <div class="esg-niveau" id="esg-niveau">Renseignez les critères pour voir votre niveau RSE CGEM</div>
+      <div class="disclaimer" style="margin-top:14px">
+        <p>Avertissement</p>
+        <p>Ce diagnostic est indicatif. La certification officielle Label RSE CGEM nécessite un audit par un organisme agréé.</p>
+      </div>
+    </div>
+
+  </div><!-- /panel-results -->
+</div><!-- /app-layout -->
+
+<!-- ══ FOOTER ══ -->
+<footer class="page-footer">
+  <span class="footer-copy">© 2026 Smart-Invest.ia — Smart-Invest · Module 23 · Propulsé par Claude Sonnet 4</span>
+  <div class="footer-links">
+    <a href="landing.html">Accueil</a>
+    <a href="admin/index.html">Portail modules</a>
+    <a href="smart_invest_abonnements_v2.html">Plans</a>
+    <a href="smart_invest_assistant.html">Assistant IA</a>
+  </div>
+  <span style="font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.3)">v1.0.0</span>
+</footer>
+
+<!-- ══ INVESTBOT FAB ══ -->
+<button class="investbot-fab" id="bot-fab" onclick="openBot()">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <path d="M2 4a2 2 0 012-2h8a2 2 0 012 2v5a2 2 0 01-2 2H5l-3 3V4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+  </svg>
+  InvestBot
+</button>
+
+<div class="investbot-panel" id="bot-panel" style="display:none">
+  <div class="bot-header">
+    <div>
+      <div class="bot-title">InvestBot</div>
+      <div class="bot-sub">Expert investissement Maroc · Claude Sonnet 4</div>
+    </div>
+    <button class="bot-close" onclick="closeBot()">×</button>
+  </div>
+  <div class="bot-messages" id="bot-messages">
+    <p style="font-size:11px;color:var(--smoke);margin-bottom:8px;font-family:var(--font-mono);letter-spacing:.06em">Questions fréquentes :</p>
+    <div class="bot-prompt-list">
+      <button class="bot-prompt" onclick="sendBot(this.textContent)">Quelles aides pour mon secteur selon la Charte 2022 ?</button>
+      <button class="bot-prompt" onclick="sendBot(this.textContent)">Mon TRI est négatif — que faire ?</button>
+      <button class="bot-prompt" onclick="sendBot(this.textContent)">Quels sont les avantages fiscaux zone franche ?</button>
+      <button class="bot-prompt" onclick="sendBot(this.textContent)">Comment améliorer mon score de vigilance ?</button>
+    </div>
+  </div>
+  <div class="bot-input-row">
+    <input class="bot-input" id="bot-input" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')sendBotInput()" />
+    <button class="bot-send" id="bot-send" onclick="sendBotInput()">→</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   Smart-Invest — Logique JS autonome (sans Edge Functions)
+   Tous les calculs sont faits côté client en local
+═══════════════════════════════════════════════════ */
+
+/* ── ÉTAT GLOBAL ── */
+const state = {
+  cashFlows: [
+    { year: 1, amount: 0 },
+    { year: 2, amount: 0 },
+    { year: 3, amount: 0 },
+  ],
+  result: null,
+  roiResult: null,
+  rhEmployes: [
+    { poste: 'Directeur', salaire: 15000, idmaj: false },
+    { poste: 'Technicien', salaire: 5000, idmaj: true },
+  ],
+  esgScores: {},
+  currentTool: 'financier',
+  botMessages: [],
+  botLoading: false,
+}
+
+/* ── FORMAT ── */
+const fmtMAD = n => n === null || isNaN(n) ? '—'
+  : new Intl.NumberFormat('fr-MA', { maximumFractionDigits: 0 }).format(n) + ' MAD'
+const fmtPct = n => n === null || isNaN(n) ? '—' : (n * 100).toFixed(2) + '%'
+
+/* ═══════════════════════════
+   CALCULS FINANCIERS
+═══════════════════════════ */
+function calcNPV(invest, flows, rate) {
+  return flows.reduce((npv, cf, t) => npv + cf.amount / Math.pow(1 + rate, t + 1), -invest)
+}
+
+function calcIRR(invest, flows) {
+  const all = [-invest, ...flows.map(f => f.amount)]
+  let rate = 0.10
+  for (let i = 0; i < 100; i++) {
+    const npv = all.reduce((s, cf, t) => s + cf / Math.pow(1 + rate, t), 0)
+    const d = all.reduce((s, cf, t) => s - t * cf / Math.pow(1 + rate, t + 1), 0)
+    if (Math.abs(d) < 1e-10) return null
+    const nr = rate - npv / d
+    if (Math.abs(nr - rate) < 1e-7) {
+      if (nr < -0.99 || nr > 10) return null
+      return Math.round(nr * 10000) / 10000
+    }
+    rate = nr
+  }
+  return null
+}
+
+function calcVigilance(npv, irr, discountRate, cashFlowsCount) {
+  let score = 100
+  const penalties = []
+  if (irr !== null && irr < discountRate) {
+    score -= 20
+    penalties.push('Rendement (TRI) inférieur au seuil de rentabilité')
+  }
+  if (npv !== null && npv < 0) {
+    score -= 20
+    penalties.push('VAN négative — le projet détruit de la valeur')
+  }
+  if (cashFlowsCount < 3) {
+    score -= 10
+    penalties.push('Projection sur moins de 3 ans — insuffisant pour un dossier solide')
+  }
+  return { score: Math.max(0, score), penalties, showExpert: score < 50 }
+}
+
+/* ─── Initialisation flux ─── */
+function renderCashFlows() {
+  const c = document.getElementById('cashflows-container')
+  c.innerHTML = ''
+  state.cashFlows.forEach((cf, i) => {
+    const row = document.createElement('div')
+    row.className = 'cashflow-row'
+    row.innerHTML = `
+      <span class="cashflow-year">Année ${cf.year}</span>
+      <input type="number" value="${cf.amount || ''}" placeholder="Montant en MAD"
+        oninput="state.cashFlows[${i}].amount = parseFloat(this.value)||0" />
+      ${state.cashFlows.length > 1
+        ? `<button class="btn-remove" onclick="removeCashFlow(${i})">×</button>`
+        : ''}
+    `
+    c.appendChild(row)
+  })
+}
+
+function addCashFlow() {
+  state.cashFlows.push({ year: state.cashFlows.length + 1, amount: 0 })
+  renderCashFlows()
+}
+
+function removeCashFlow(idx) {
+  state.cashFlows.splice(idx, 1)
+  state.cashFlows.forEach((cf, i) => cf.year = i + 1)
+  renderCashFlows()
+}
+
+/* ─── Calcul principal ─── */
+async function calculerFinancier() {
+  const invest = parseFloat(document.getElementById('f-invest').value)
+  const rate = parseFloat(document.getElementById('f-rate').value) / 100
+  const title = document.getElementById('f-title').value || 'Projet sans titre'
+  const sector = document.getElementById('f-sector').value || '—'
+
+  if (!invest || invest <= 0) return showError('Investissement initial requis (> 0)')
+  if (!rate || rate <= 0) return showError('Taux d\'actualisation requis')
+
+  // Afficher loading
+  document.getElementById('empty-state').style.display = 'none'
+  document.getElementById('results-financier').style.display = 'block'
+  document.getElementById('loading-state').style.display = 'block'
+  document.getElementById('results-content').style.display = 'none'
+
+  await new Promise(r => setTimeout(r, 900)) // simulation délai réseau
+
+  const npv = Math.round(calcNPV(invest, state.cashFlows, rate) * 100) / 100
+  const irr = calcIRR(invest, state.cashFlows)
+  const { score, penalties, showExpert } = calcVigilance(npv, irr, rate, state.cashFlows.length)
+
+  state.result = { invest, rate, title, sector, npv, irr, score, penalties, showExpert }
+
+  // Stress test
+  state.stressScenarios = [0.20, 0.30, 0.50].map(reduction => {
+    const stressed = state.cashFlows.map(cf => ({ ...cf, amount: cf.amount * (1 - reduction) }))
+    return {
+      reduction: `−${reduction * 100}%`,
+      npv: Math.round(calcNPV(invest, stressed, rate) * 100) / 100,
+      irr: calcIRR(invest, stressed),
+    }
+  })
+
+  // Afficher résultats
+  document.getElementById('loading-state').style.display = 'none'
+  document.getElementById('results-content').style.display = 'block'
+
+  // Expert banner
+  const eb = document.getElementById('expert-banner')
+  eb.style.display = showExpert ? 'flex' : 'none'
+
+  // KPIs
+  const npvEl = document.getElementById('r-npv')
+  npvEl.textContent = fmtMAD(npv)
+  npvEl.className = 'kpi-card-value ' + (npv > 0 ? 'val-positive' : 'val-negative')
+  document.getElementById('r-npv-hint').textContent = npv > 0 ? 'Le projet crée de la valeur' : 'Le projet détruit de la valeur'
+
+  const irrEl = document.getElementById('r-irr')
+  irrEl.textContent = irr !== null ? fmtPct(irr) : 'Non convergent'
+  irrEl.className = 'kpi-card-value ' + (irr !== null && irr >= rate ? 'val-positive' : 'val-negative')
+  document.getElementById('r-irr-hint').textContent = `Seuil minimum : ${(rate * 100).toFixed(0)}%`
+
+  const scoreEl = document.getElementById('r-score')
+  scoreEl.textContent = `${score}/100`
+  const sc = document.getElementById('score-card')
+  sc.className = 'kpi-card score-card ' + (score >= 75 ? 'score-good' : score >= 50 ? 'score-medium' : 'score-bad')
+  scoreEl.className = 'kpi-card-value ' + (score >= 75 ? 'val-positive' : score >= 50 ? 'val-amber' : 'val-negative')
+  document.getElementById('r-score-hint').textContent = score >= 75 ? 'Dossier solide' : score >= 50 ? 'À surveiller' : 'Attention requise'
+
+  // Pénalités
+  const pb = document.getElementById('penalties-block')
+  const pl = document.getElementById('penalties-list')
+  if (penalties.length > 0) {
+    pl.innerHTML = penalties.map(p =>
+      `<div class="penalty-item"><span class="penalty-dot">◆</span><span>${p}</span></div>`
+    ).join('')
+    pb.style.display = 'block'
+  } else {
+    pb.style.display = 'none'
+  }
+
+  // Détail
+  document.getElementById('d-title').textContent = title
+  document.getElementById('d-sector').textContent = sector
+  document.getElementById('d-invest').textContent = fmtMAD(invest)
+  document.getElementById('d-rate').textContent = (rate * 100).toFixed(0) + '%'
+  document.getElementById('d-years').textContent = state.cashFlows.length + ' ans'
+  document.getElementById('d-totalcf').textContent = fmtMAD(state.cashFlows.reduce((s, cf) => s + cf.amount, 0))
+
+  // Stress table
+  const sb = document.getElementById('stress-tbody')
+  sb.innerHTML = state.stressScenarios.map(s => {
+    const signal = s.npv > 0 ? '✅ Résistant' : '⚠️ Fragile'
+    return `<tr>
+      <td><strong>${s.reduction}</strong> des flux</td>
+      <td class="${s.npv > 0 ? 'cell-winner' : ''}">${fmtMAD(s.npv)}</td>
+      <td>${s.irr !== null ? fmtPct(s.irr) : 'N/A'}</td>
+      <td>${signal}</td>
+    </tr>`
+  }).join('')
+}
+
+function calculerScenarioB() {
+  const investB = parseFloat(document.getElementById('sb-invest').value) || state.result?.invest
+  const rateB = parseFloat(document.getElementById('sb-rate').value) / 100 || state.result?.rate
+
+  if (!state.result) return
+
+  const npvB = Math.round(calcNPV(investB, state.cashFlows, rateB) * 100) / 100
+  const irrB = calcIRR(investB, state.cashFlows)
+  const { score: scoreB } = calcVigilance(npvB, irrB, rateB, state.cashFlows.length)
+
+  const tbody = document.getElementById('compare-tbody')
+  const rows = [
+    { label: 'Gain net (VAN)', a: fmtMAD(state.result.npv), b: fmtMAD(npvB), aVal: state.result.npv, bVal: npvB },
+    { label: 'Rendement (TRI)', a: fmtPct(state.result.irr), b: fmtPct(irrB), aVal: state.result.irr ?? -Infinity, bVal: irrB ?? -Infinity },
+    { label: 'Santé du dossier', a: state.result.score + '/100', b: scoreB + '/100', aVal: state.result.score, bVal: scoreB },
+  ]
+  tbody.innerHTML = rows.map(r => `<tr>
+    <td>${r.label}</td>
+    <td class="${r.aVal > r.bVal ? 'cell-winner' : ''}">${r.a}</td>
+    <td class="${r.bVal > r.aVal ? 'cell-winner' : ''}">${r.b}</td>
+  </tr>`).join('')
+  document.getElementById('compare-table').style.display = 'table'
+}
+
+/* ═══════════════════════════
+   SUBVENTIONS — Charte 2022
+═══════════════════════════ */
+function calculerSubventions() {
+  const montant = parseFloat(document.getElementById('s-montant').value) || 0
+  const emplois = parseInt(document.getElementById('s-emplois').value) || 0
+  const secteur = document.getElementById('s-sector').value
+  const zone = document.getElementById('s-zone').value
+
+  const resultats = []
+
+  if (montant >= 50_000_000) {
+    const taux = zone === 'specifique' ? 0.30 : 0.20
+    resultats.push({
+      type: 'Prime d\'investissement commune',
+      montant: montant * taux,
+      description: `${taux * 100}% de l'investissement — Zone ${zone}`,
+      base: 'Art. 17 Charte Investissement 2022'
+    })
+  }
+  if (emplois >= 50) {
+    const primeParEmploi = zone === 'specifique' ? 10000 : 6000
+    resultats.push({
+      type: 'Prime à la création d\'emploi',
+      montant: emplois * primeParEmploi,
+      description: `${primeParEmploi.toLocaleString()} MAD × ${emplois} emplois`,
+      base: 'Art. 20 Charte Investissement 2022'
+    })
+  }
+  if (zone === 'specifique') {
+    const isEstime = montant * 0.08
+    resultats.push({
+      type: 'Exonération IS 5 ans',
+      montant: isEstime * 5,
+      description: 'Exonération totale IS pendant 5 ans (zones spécifiques)',
+      base: 'Art. 6 CGI — Zones d\'accélération industrielle'
+    })
+  }
+  const secteursStrat = ['Automobile', 'Aéronautique', 'Hydrogène vert', 'Pharma']
+  if (secteursStrat.includes(secteur)) {
+    resultats.push({
+      type: 'Prime sectorielle stratégique',
+      montant: montant * 0.05,
+      description: `5% supplémentaire — Secteur stratégique : ${secteur}`,
+      base: 'Décret d\'application Charte 2022'
+    })
+  }
+
+  const total = resultats.reduce((s, r) => s + r.montant, 0)
+
+  document.getElementById('empty-state').style.display = 'none'
+  document.getElementById('results-financier').style.display = 'none'
+  document.getElementById('results-esg').style.display = 'none'
+  const subDiv = document.getElementById('results-subventions')
+  subDiv.style.display = 'block'
+
+  const list = document.getElementById('sub-results-list')
+  if (resultats.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--smoke);padding:32px;font-size:13px">Aucune aide disponible — augmentez le montant (min 50M MAD) ou les emplois (min 50).</div>'
+    return
+  }
+
+  list.innerHTML = resultats.map(r => `
+    <div class="sub-result-item">
+      <div>
+        <div class="sub-result-name">${r.type}</div>
+        <div class="sub-result-desc">${r.description}</div>
+        <div class="sub-result-base">${r.base}</div>
+      </div>
+      <div class="sub-result-amount">${fmtMAD(r.montant)}</div>
+    </div>
+  `).join('') + `
+  <div class="sub-total">
+    <span>Total subventions estimées</span>
+    <span>${fmtMAD(total)}</span>
+  </div>
+  <p style="font-size:11px;color:var(--smoke);text-align:center;margin-top:10px">
+    Estimation indicative — confirmation auprès de l'AMDIE requise
+  </p>
+  <div class="disclaimer" style="margin-top:14px">
+    <p>Avertissement</p>
+    <p>Les montants indiqués sont des estimations basées sur la Charte d'Investissement 2022 (Loi-cadre 03-22). Les décisions définitives relèvent de la Commission Nationale des Investissements et de l'AMDIE.</p>
+  </div>`
+}
+
+/* ═══════════════════════════
+   RH — Masse Salariale
+═══════════════════════════ */
+const RH = { CNSS_P: 0.2109, AMO_P: 0.0411, TFP: 0.016, CNSS_S: 0.0629, AMO_S: 0.0226 }
+
+function calcRH(e) {
+  const cnss = e.salaire * RH.CNSS_P * (e.idmaj ? 0.5 : 1)
+  const charges = cnss + e.salaire * RH.AMO_P + e.salaire * RH.TFP
+  return { charges, total: e.salaire + charges }
+}
+
+function renderRH() {
+  const tbody = document.getElementById('rh-tbody')
+  tbody.innerHTML = state.rhEmployes.map((e, i) => {
+    const c = calcRH(e)
+    return `<tr>
+      <td><input type="text" value="${e.poste}" placeholder="Intitulé du poste" oninput="state.rhEmployes[${i}].poste=this.value" /></td>
+      <td><input type="number" value="${e.salaire||''}" style="text-align:right;width:90px" oninput="state.rhEmployes[${i}].salaire=parseFloat(this.value)||0;renderRH()" /></td>
+      <td>${fmtMAD(c.charges)}</td>
+      <td style="font-weight:600">${fmtMAD(c.total)}</td>
+      <td style="text-align:center"><input type="checkbox" ${e.idmaj ? 'checked' : ''} onchange="state.rhEmployes[${i}].idmaj=this.checked;renderRH()" style="accent-color:var(--gold-light)" /></td>
+    </tr>`
+  }).join('')
+
+  const mensuel = state.rhEmployes.reduce((s, e) => s + calcRH(e).total, 0)
+  document.getElementById('rh-mensuel').textContent = fmtMAD(mensuel)
+  document.getElementById('rh-annuel').textContent = fmtMAD(mensuel * 12)
+}
+
+function addRHRow() {
+  state.rhEmployes.push({ poste: '', salaire: 0, idmaj: false })
+  renderRH()
+}
+
+/* ═══════════════════════════
+   ROI
+═══════════════════════════ */
+function calculerROI() {
+  const invest = parseFloat(document.getElementById('roi-invest').value)
+  const years = parseInt(document.getElementById('roi-years').value)
+  const caBase = parseFloat(document.getElementById('roi-ca').value)
+  const chargesBase = parseFloat(document.getElementById('roi-charges').value)
+  const tauxIS = parseFloat(document.getElementById('roi-is').value) / 100 || 0.20
+  const residuel = parseFloat(document.getElementById('roi-residuel').value) || 0
+  const growthCA = parseFloat(document.getElementById('roi-growth-ca').value) / 100 || 0
+  const growthCharges = parseFloat(document.getElementById('roi-growth-charges').value) / 100 || 0
+
+  if (!invest || invest <= 0) { showError('Veuillez renseigner un investissement initial.'); return }
+  if (!years || years < 1) { showError('Veuillez renseigner une durée valide.'); return }
+  if (!caBase || caBase <= 0) { showError('Veuillez renseigner un chiffre d\'affaires annuel.'); return }
+
+  let caCum = 0, chargesCum = 0, isCum = 0
+  let fluxCum = -invest
+  let paybackYear = null
+  const rows = []
+
+  for (let y = 1; y <= years; y++) {
+    const ca = caBase * Math.pow(1 + growthCA, y - 1)
+    const charges = chargesBase * Math.pow(1 + growthCharges, y - 1)
+    const ebitda = ca - charges
+    const isAmt = ebitda > 0 ? ebitda * tauxIS : 0
+    const netY = ebitda - isAmt + (y === years ? residuel : 0)
+    caCum += ca
+    chargesCum += charges
+    isCum += isAmt
+    fluxCum += netY
+    if (paybackYear === null && fluxCum >= 0) paybackYear = y
+    rows.push({ year: y, net: netY, cumFlux: fluxCum, roiCum: (fluxCum + invest) / invest * 100 })
+  }
+
+  const gainNet = fluxCum + invest
+  const roiGlobal = (gainNet / invest) * 100
+  const roiAnnuel = roiGlobal / years
+
+  state.roiResult = { roiGlobal, roiAnnuel, gainNet, invest, caCum, chargesCum, isCum, residuel, paybackYear, rows, years }
+
+  // Affichage
+  document.getElementById('empty-state').style.display = 'none'
+  document.getElementById('results-roi').style.display = 'block'
+
+  const cls = roiGlobal >= 50 ? 'val-positive' : roiGlobal >= 0 ? 'val-amber' : 'val-negative'
+  const roiGEl = document.getElementById('roi-r-global')
+  roiGEl.textContent = roiGlobal.toFixed(1) + '%'
+  roiGEl.className = 'kpi-card-value ' + cls
+
+  document.getElementById('roi-r-global-hint').textContent =
+    roiGlobal >= 100 ? 'Excellent — investissement plus que doublé' :
+    roiGlobal >= 50 ? 'Bon rendement — mise initiale largement récupérée' :
+    roiGlobal >= 0 ? 'ROI positif — rentable sur la période' :
+    'ROI négatif — révision du modèle recommandée'
+
+  document.getElementById('roi-r-annuel').textContent = roiAnnuel.toFixed(1) + '%'
+  document.getElementById('roi-r-payback').textContent = paybackYear ? paybackYear + ' an' + (paybackYear > 1 ? 's' : '') : '> ' + years + ' ans'
+  document.getElementById('roi-r-invest').textContent = fmtMAD(invest)
+  document.getElementById('roi-r-gain').textContent = fmtMAD(gainNet)
+  document.getElementById('roi-r-ca-cum').textContent = fmtMAD(caCum)
+  document.getElementById('roi-r-charges-cum').textContent = fmtMAD(chargesCum)
+  document.getElementById('roi-r-is-cum').textContent = fmtMAD(isCum)
+  document.getElementById('roi-r-residuel').textContent = fmtMAD(residuel)
+
+  const tbody = document.getElementById('roi-annee-tbody')
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td style="text-align:left;font-family:var(--font-mono);font-size:11px">Année ${r.year}</td>
+      <td style="font-weight:600;color:${r.net >= 0 ? 'var(--success)' : 'var(--danger)'}">${fmtMAD(r.net)}</td>
+      <td style="color:${r.cumFlux >= -1 ? 'var(--success)' : 'var(--smoke)'}">${fmtMAD(r.cumFlux + invest)}</td>
+      <td style="font-weight:700;color:${r.roiCum >= 100 ? 'var(--success)' : r.roiCum >= 0 ? 'var(--gold)' : 'var(--danger)'}">${r.roiCum.toFixed(1)}%</td>
+    </tr>
+  `).join('')
+}
+
+/* ═══════════════════════════
+   ESG / RSE
+═══════════════════════════ */
+const ESG_DATA = {
+  environnement: {
+    label: 'Environnement', weight: 0.35,
+    questions: [
+      { id: 'e1', label: 'Le projet mesure et réduit son empreinte carbone', poids: 10 },
+      { id: 'e2', label: 'Gestion des déchets conforme aux normes environnementales', poids: 10 },
+      { id: 'e3', label: 'Utilisation d\'énergie renouvelable (solaire, éolien)', poids: 10 },
+      { id: 'e4', label: 'Plan de gestion de la consommation d\'eau', poids: 5 },
+    ]
+  },
+  social: {
+    label: 'Social', weight: 0.40,
+    questions: [
+      { id: 's1', label: 'Nombre d\'emplois directs créés (>10 = score max)', poids: 15 },
+      { id: 's2', label: 'Programme de formation professionnelle', poids: 10 },
+      { id: 's3', label: 'Conditions de travail conformes au Code du Travail marocain', poids: 10 },
+      { id: 's4', label: 'Politique de diversité et d\'inclusion', poids: 5 },
+    ]
+  },
+  gouvernance: {
+    label: 'Gouvernance', weight: 0.25,
+    questions: [
+      { id: 'g1', label: 'Transparence financière et rapports annuels publics', poids: 10 },
+      { id: 'g2', label: 'Conformité fiscale et juridique complète', poids: 10 },
+      { id: 'g3', label: 'Charte éthique interne formalisée', poids: 5 },
+    ]
+  }
+}
+
+function renderESG() {
+  const container = document.getElementById('esg-questions')
+  container.innerHTML = ''
+  Object.entries(ESG_DATA).forEach(([axe, data]) => {
+    const sec = document.createElement('div')
+    sec.style.marginBottom = '20px'
+    sec.innerHTML = `<div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">${data.label}</div>`
+    data.questions.forEach(q => {
+      const row = document.createElement('div')
+      row.className = 'esg-q-row'
+      row.innerHTML = `<div class="esg-q-label">${q.label}</div>
+      <div class="esg-q-btns">
+        ${['Non', 'Partiel', 'En cours', 'Oui'].map((l, v) => `
+          <button class="esg-btn${state.esgScores[q.id] === v ? ' sel' : ''}"
+            onclick="setESG('${q.id}', ${v})">${l}</button>
+        `).join('')}
+      </div>`
+      sec.appendChild(row)
+    })
+    container.appendChild(sec)
+  })
+  updateESGResults()
+}
+
+function setESG(id, val) {
+  state.esgScores[id] = val
+  renderESG()
+}
+
+function updateESGResults() {
+  const calcAxe = (axe) => {
+    const qs = ESG_DATA[axe].questions
+    const total = qs.reduce((s, q) => s + q.poids, 0)
+    const got = qs.reduce((s, q) => s + ((state.esgScores[q.id] ?? 0) / 4) * q.poids, 0)
+    return Math.round((got / total) * 100)
+  }
+  const e = calcAxe('environnement')
+  const s = calcAxe('social')
+  const g = calcAxe('gouvernance')
+  const global = Math.round(e * 0.35 + s * 0.40 + g * 0.25)
+
+  document.getElementById('esg-global').textContent = global + '%'
+  document.getElementById('esg-e').textContent = e + '%'
+  document.getElementById('esg-s').textContent = s + '%'
+  document.getElementById('esg-g').textContent = g + '%'
+
+  const niveau = global >= 75 ? '🥇 Éligible Label RSE CGEM Or'
+    : global >= 50 ? '🥈 Éligible Label RSE CGEM Argent'
+    : global >= 25 ? '📋 En cours de qualification RSE'
+    : '🌱 Démarche RSE à initier'
+  document.getElementById('esg-niveau').textContent = niveau
+}
+
+/* ═══════════════════════════
+   NAVIGATION OUTILS
+═══════════════════════════ */
+function switchTool(tool, btn) {
+  state.currentTool = tool
+  document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'))
+  btn.classList.add('active')
+
+  document.getElementById('tool-financier').style.display = tool === 'financier' ? 'block' : 'none'
+  document.getElementById('tool-subventions').style.display = tool === 'subventions' ? 'block' : 'none'
+  document.getElementById('tool-rh').style.display = tool === 'rh' ? 'block' : 'none'
+  document.getElementById('tool-esg').style.display = tool === 'esg' ? 'block' : 'none'
+  document.getElementById('tool-roi').style.display = tool === 'roi' ? 'block' : 'none'
+
+  if (tool !== 'financier') document.getElementById('results-financier').style.display = 'none'
+  if (tool !== 'subventions') document.getElementById('results-subventions').style.display = 'none'
+  if (tool !== 'roi') document.getElementById('results-roi').style.display = 'none'
+
+  if (tool === 'esg') {
+    document.getElementById('empty-state').style.display = 'none'
+    document.getElementById('results-esg').style.display = 'block'
+  } else if (tool === 'roi') {
+    document.getElementById('results-esg').style.display = 'none'
+    if (!state.roiResult) document.getElementById('empty-state').style.display = 'flex'
+  } else if (tool !== 'financier' && tool !== 'subventions') {
+    document.getElementById('results-esg').style.display = 'none'
+    if (!state.result) document.getElementById('empty-state').style.display = 'flex'
+  }
+}
+
+function switchResult(tab, btn) {
+  document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'))
+  btn.classList.add('active')
+  document.getElementById('rtab-detail').style.display = tab === 'detail' ? 'block' : 'none'
+  document.getElementById('rtab-scenario-b').style.display = tab === 'scenario-b' ? 'block' : 'none'
+  document.getElementById('rtab-stress').style.display = tab === 'stress' ? 'block' : 'none'
+}
+
+/* ═══════════════════════════
+   INVESTBOT (API Claude)
+═══════════════════════════ */
+function openBot() {
+  document.getElementById('bot-fab').style.display = 'none'
+  document.getElementById('bot-panel').style.display = 'flex'
+}
+function closeBot() {
+  document.getElementById('bot-panel').style.display = 'none'
+  document.getElementById('bot-fab').style.display = 'flex'
+}
+
+async function sendBot(msg) {
+  if (!msg.trim() || state.botLoading) return
+  state.botLoading = true
+
+  const mc = document.getElementById('bot-messages')
+  mc.innerHTML += `<div class="msg-user">${msg}</div>`
+  mc.innerHTML += `<div class="msg-ai msg-thinking" id="thinking">Analyse en cours...</div>`
+  mc.scrollTop = mc.scrollHeight
+  document.getElementById('bot-send').disabled = true
+
+  const ctx = state.result ? `
+Projet actif : ${state.result.title} | Secteur : ${state.result.sector}
+Investissement : ${fmtMAD(state.result.invest)} | VAN : ${fmtMAD(state.result.npv)}
+TRI : ${fmtPct(state.result.irr)} | Score : ${state.result.score}/100
+Taux actualisation : ${(state.result.rate * 100).toFixed(0)}%` : 'Aucun projet calculé'
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': window.ANTHROPIC_API_KEY || '',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        system: 'Tu es InvestBot, assistant IA spécialisé en ingénierie financière pour investisseurs au Maroc (Smart-Invest.ia). Réponds en français, de façon concise et actionnable.',
+        messages: [{ role: 'user', content: `${ctx}\n\nQuestion: ${msg}` }]
+      })
+    })
+    const data = await res.json()
+    document.getElementById('thinking').remove()
+    const reply = data.content?.[0]?.text ?? 'Réponse indisponible'
+    mc.innerHTML += `<div class="msg-ai">${reply}</div>`
+  } catch {
+    document.getElementById('thinking').remove()
+    mc.innerHTML += `<div class="msg-ai">⚠️ Connexion à l'API indisponible en mode autonome HTML. Intégrez ce module dans la plateforme Next.js pour activer InvestBot.</div>`
+  }
+
+  mc.scrollTop = mc.scrollHeight
+  state.botLoading = false
+  document.getElementById('bot-send').disabled = false
+}
+
+function sendBotInput() {
+  const inp = document.getElementById('bot-input')
+  sendBot(inp.value)
+  inp.value = ''
+}
+
+function showError(msg) {
+  alert('⚠️ ' + msg)
+}
+
+/* ═══════════════════════════
+   INIT
+═══════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderCashFlows()
+  renderRH()
+  renderESG()
+})
+</script>
+<script src='lib/auth.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<div id="api-key-banner" style="position:fixed;bottom:0;left:0;right:0;background:#0E0E0C;border-top:1px solid rgba(184,134,42,.3);padding:10px 20px;display:flex;align-items:center;gap:12px;z-index:9999;font-family:'Space Grotesk',sans-serif;font-size:13px">
+  <span style="color:rgba(255,255,255,.5)">🔑 InvestBot API key :</span>
+  <input id="api-key-input" type="password" placeholder="sk-ant-..." style="flex:1;max-width:340px;background:rgba(255,255,255,.06);border:1px solid rgba(184,134,42,.3);border-radius:7px;padding:6px 12px;color:#F0C460;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none">
+  <button onclick="window.ANTHROPIC_API_KEY=document.getElementById('api-key-input').value;document.getElementById('api-key-banner').style.display='none'" style="background:#B8862A;color:#0E0E0C;border:none;border-radius:7px;padding:7px 16px;font-weight:700;cursor:pointer">Activer</button>
+  <span style="color:rgba(255,255,255,.3);font-size:11px">Clé stockée en mémoire locale uniquement</span>
+</div>
+
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

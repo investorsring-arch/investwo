@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur TNB / Taxe Foncière 2025 — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --border:rgba(0,0,0,0.09);--danger:#8B1A1A;
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.header{
+  position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  border-bottom:1px solid rgba(184,134,42,.2);
+}
+.header-left{display:flex;align-items:center;gap:16px}
+.back-btn{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
+.back-btn:hover{color:var(--gold-light)}
+.logo{font-family:var(--font-title);font-size:16px;font-weight:800;color:var(--white)}
+.logo span{color:var(--gold-light)}
+.module-badge{font-family:var(--font-mono);font-size:10px;color:var(--gold-light);background:rgba(184,134,42,.12);border:1px solid rgba(184,134,42,.25);padding:4px 10px;border-radius:100px}
+
+.page{max-width:1100px;margin:0 auto;padding:36px 32px 80px}
+
+/* HERO */
+.page-hero{margin-bottom:36px}
+.page-label{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.page-title{font-family:var(--font-title);font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.page-sub{font-size:15px;color:var(--smoke);max-width:600px;line-height:1.7}
+
+/* ALERT BANNER */
+.alert-banner{
+  background:linear-gradient(135deg,rgba(140,30,30,.08),rgba(184,134,42,.06));
+  border:1px solid rgba(140,30,30,.2);border-left:4px solid #B41414;
+  border-radius:12px;padding:16px 20px;margin-bottom:32px;display:flex;gap:14px;align-items:flex-start;
+}
+.alert-icon{font-size:22px;flex-shrink:0}
+.alert-text{font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.alert-text strong{color:var(--ink);font-weight:700}
+
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:28px;background:var(--bg2);border-radius:12px;padding:4px;width:fit-content}
+.tab{padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--smoke);transition:all .2s;font-family:var(--font-body)}
+.tab.active{background:var(--white);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+.sim-panel{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+@media(max-width:900px){.sim-panel{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:24px}
+.card:last-child{margin-bottom:0}
+.card-title{font-family:var(--font-title);font-size:18px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.card-sub{font-size:13px;color:var(--smoke);margin-bottom:20px;line-height:1.6}
+
+/* FORM */
+.field{margin-bottom:20px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.field .note{font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-top:4px}
+select,input[type=number]{
+  width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;
+  font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--bg);
+  outline:none;transition:border-color .2s;-webkit-appearance:none;
+}
+select:focus,input[type=number]:focus{border-color:var(--gold)}
+.input-group{position:relative}
+.input-suffix{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:12px;color:var(--smoke)}
+
+/* ZONE OPTIONS */
+.zone-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.zone-opt{
+  padding:14px 16px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);
+  cursor:pointer;transition:all .2s;text-align:left;
+}
+.zone-opt:hover{border-color:var(--gold);background:var(--gold-pale)}
+.zone-opt.sel{border-color:var(--gold);background:var(--gold-pale)}
+.zone-opt .zone-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.zone-opt .zone-rate{font-family:var(--font-mono);font-size:11px;color:var(--gold)}
+.zone-opt .zone-desc{font-size:11px;color:var(--smoke);margin-top:3px}
+
+/* RESULTS */
+.result-card{background:var(--ink);border-radius:16px;padding:28px;color:var(--white)}
+.result-title{font-family:var(--font-title);font-size:16px;font-weight:700;color:var(--gold-light);margin-bottom:20px}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13.5px}
+.result-row:last-of-type{border-bottom:none}
+.result-label{color:rgba(255,255,255,.55)}
+.result-val{font-family:var(--font-mono);font-weight:500;color:var(--white)}
+.result-row.total{background:rgba(184,134,42,.1);border-radius:8px;padding:12px 14px;margin-top:8px}
+.result-row.total .result-label{color:var(--gold-light);font-weight:700}
+.result-row.total .result-val{color:var(--gold-light);font-size:18px}
+.result-row.danger .result-val{color:#FF6B6B}
+
+/* TNB TABLE */
+.tnb-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:20px}
+.tnb-table th{text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:var(--smoke);padding:8px 10px;border-bottom:2px solid var(--border)}
+.tnb-table td{padding:10px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tnb-table tr:last-child td{border-bottom:none}
+.tnb-table .zone-tag{display:inline-flex;padding:3px 10px;border-radius:100px;font-family:var(--font-mono);font-size:10px}
+.tnb-table tr.highlight-row{background:rgba(184,134,42,.05)}
+
+/* PANEL VISIBILITY */
+.calc-panel{display:none}
+.calc-panel.active{display:block}
+
+/* BTN */
+.btn-calc{
+  width:100%;padding:13px;border-radius:10px;background:var(--gold);border:none;
+  font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--ink);
+  cursor:pointer;margin-top:8px;transition:all .2s;
+}
+.btn-calc:hover{background:var(--gold-light);transform:translateY(-1px)}
+
+.source-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.source-badge{font-family:var(--font-mono);font-size:10px;background:rgba(184,134,42,.1);border:1px solid rgba(184,134,42,.2);color:var(--gold);padding:3px 9px;border-radius:4px}
+
+/* SIMULATOR TAB PANEL */
+.tab-content{display:none}
+.tab-content.active{display:block}
+</style>
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="pro"></script>
+<script src='lib/upgrade-modal.js'></script>
+
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="smart_invest_simulateur_fiscal.html" class="back-btn">← Simulateur Fiscal</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="module-badge">MODULE 20 · TNB 2025</span>
+  </div>
+  <span style="font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.25)">Loi TNB révisée 2025 · DGI Maroc</span>
+</header>
+
+<div class="page">
+
+  <div class="page-hero">
+    <div class="page-label">Fiscal Foncier · Nouveau 2025</div>
+    <h1 class="page-title">Simulateur TNB<br>Taxe sur Terrains Non Bâtis</h1>
+    <p class="page-sub">Calculez votre TNB annuelle selon la loi révisée 2025 : nouvelles zones d'équipement, nouveaux taux progressifs. Outil exclusif — aucun calculateur officiel disponible en ligne.</p>
+  </div>
+
+  <div class="alert-banner">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-text">
+      <strong>Loi TNB révisée en 2025 — Nouveaux taux en vigueur</strong><br>
+      La révision 2025 a introduit une progression des taux selon le niveau d'équipement de la zone. Les terrains en zone très équipée (voirie + eau + électricité + assainissement) sont désormais soumis à des taux significativement plus élevés pour décourager la rétention spéculative. Les taux présentés sont ceux en vigueur à compter du 1er janvier 2025.
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('calc')">Calculateur TNB</button>
+    <button class="tab" onclick="showTab('grille')">Grille des taux 2025</button>
+    <button class="tab" onclick="showTab('strategie')">Stratégies d'investissement</button>
+  </div>
+
+  <!-- ═══ TAB CALC ═══ -->
+  <div class="tab-content active" id="tab-calc">
+    <div class="sim-panel">
+
+      <!-- LEFT -->
+      <div>
+        <div class="card">
+          <div class="card-title">📍 Localisation & Caractéristiques du terrain</div>
+
+          <div class="field">
+            <label>Région</label>
+            <select id="region" onchange="updateCalc()">
+              <option value="">-- Sélectionnez une région --</option>
+              <option value="casa">Casablanca-Settat</option>
+              <option value="rsk">Rabat-Salé-Kénitra</option>
+              <option value="tth">Tanger-Tétouan-Al Hoceïma</option>
+              <option value="msp">Marrakech-Safi-Rehamna</option>
+              <option value="fmbm">Fès-Meknès-Boulemane</option>
+              <option value="smd">Souss-Massa-Drâa</option>
+              <option value="od">Oriental-Driouch</option>
+              <option value="bkm">Béni Mellal-Khénifra</option>
+              <option value="drs">Draâ-Tafilalet</option>
+              <option value="gss">Guelmim-Oued Noun</option>
+              <option value="lss">Laâyoune-Sakia El Hamra</option>
+              <option value="dln">Dakhla-Oued Ed-Dahab</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Zone d'équipement urbain</label>
+            <div class="zone-options">
+              <button class="zone-opt sel" id="z1" onclick="selectZone('Z1',this)">
+                <div class="zone-name">Zone A — Très équipée</div>
+                <div class="zone-rate">15‰ / an</div>
+                <div class="zone-desc">Voirie + eau + élec + assainissement</div>
+              </button>
+              <button class="zone-opt" id="z2" onclick="selectZone('Z2',this)">
+                <div class="zone-name">Zone B — Bien équipée</div>
+                <div class="zone-rate">10‰ / an</div>
+                <div class="zone-desc">3 réseaux sur 4 présents</div>
+              </button>
+              <button class="zone-opt" id="z3" onclick="selectZone('Z3',this)">
+                <div class="zone-name">Zone C — Moyennement équipée</div>
+                <div class="zone-rate">6‰ / an</div>
+                <div class="zone-desc">1 à 2 réseaux présents</div>
+              </button>
+              <button class="zone-opt" id="z4" onclick="selectZone('Z4',this)">
+                <div class="zone-name">Zone D — Peu équipée</div>
+                <div class="zone-rate">3‰ / an</div>
+                <div class="zone-desc">Aucun ou faible équipement</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Superficie du terrain (m²)</label>
+            <div class="input-group">
+              <input type="number" id="superficie" value="1000" min="0" step="100" oninput="updateCalc()">
+              <span class="input-suffix">m²</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Valeur vénale (ou valeur cadastrale) du terrain</label>
+            <div class="input-group">
+              <input type="number" id="valeur" value="2000000" min="0" step="50000" oninput="updateCalc()">
+              <span class="input-suffix">MAD</span>
+            </div>
+            <div class="note">Base de calcul : valeur vénale à dire d'expert ou valeur cadastrale DGI · Actualisation obligatoire tous les 5 ans</div>
+          </div>
+
+          <div class="field">
+            <label>Durée de détention prévue</label>
+            <div class="input-group">
+              <input type="number" id="duree" value="5" min="1" max="30" step="1" oninput="updateCalc()">
+              <span class="input-suffix">ans</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Situation du terrain</label>
+            <select id="situation" onchange="updateCalc()">
+              <option value="nob">Terrain nu non bâti (standard)</option>
+              <option value="zai">Dans une Zone d'Accélération Industrielle (ZAI)</option>
+              <option value="agri">Usage agricole déclaré</option>
+              <option value="projet">Permis de construire en cours</option>
+            </select>
+            <div class="note" id="sitNote">La TNB standard s'applique aux terrains nus en zone urbaine non agricole</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div>
+        <div class="result-card">
+          <div class="result-title">Résultats TNB 2025</div>
+
+          <div class="result-row">
+            <span class="result-label">Zone sélectionnée</span>
+            <span class="result-val" id="rZone">Zone A</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Taux TNB applicable</span>
+            <span class="result-val" id="rTaux">15‰</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Superficie déclarée</span>
+            <span class="result-val" id="rSuperficie">1 000 m²</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Valeur de la base</span>
+            <span class="result-val" id="rValeur">2 000 000 MAD</span>
+          </div>
+          <div class="result-row danger">
+            <span class="result-label">TNB annuelle</span>
+            <span class="result-val" id="rAnnuel">30 000 MAD</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">TNB mensuelle</span>
+            <span class="result-val" id="rMensuel">2 500 MAD</span>
+          </div>
+          <div class="result-row total">
+            <span class="result-label">Coût total sur <span id="rDureeLabel">5 ans</span></span>
+            <span class="result-val" id="rTotal">150 000 MAD</span>
+          </div>
+          <div class="result-row" style="margin-top:12px">
+            <span class="result-label">Statut TNB</span>
+            <span class="result-val" id="rStatut" style="font-size:12px;color:var(--gold-light)">TAXABLE</span>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:20px">
+          <div class="card-title" style="font-size:15px">⚡ Exonérations & Réductions</div>
+          <div id="exemptions" style="font-size:13px;color:var(--smoke);line-height:1.7">
+            Sélectionnez une situation pour voir les exonérations applicables.
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="card-title" style="font-size:15px">📊 Comparaison avec IS/IR</div>
+          <div style="font-size:13px;color:var(--smoke);line-height:1.7;margin-bottom:12px">Optimisation : coût annuel TNB vs revenu foncier potentiel</div>
+          <div id="compareBox" style="background:var(--bg2);border-radius:10px;padding:14px;font-family:var(--font-mono);font-size:12px;line-height:1.8"></div>
+        </div>
+
+        <div class="source-badges">
+          <span class="source-badge">CGI 2025 Art. 244-254</span>
+          <span class="source-badge">DGI Maroc</span>
+          <span class="source-badge">Loi TNB révisée 2025</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ TAB GRILLE ═══ -->
+  <div class="tab-content" id="tab-grille">
+    <div class="card">
+      <div class="card-title">Grille des taux TNB 2025 — Barème officiel révisé</div>
+      <div class="card-sub">Les taux sont appliqués sur la valeur vénale du terrain (ou valeur cadastrale actualisée). Base légale : Code Général des Impôts 2025, Articles 244–254.</div>
+
+      <table class="tnb-table">
+        <thead>
+          <tr>
+            <th>Zone</th><th>Équipements présents</th><th>Taux annuel</th><th>Exemples</th><th>Évolution vs 2024</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td><span class="tnb-table zone-tag" style="background:rgba(180,20,20,.1);color:#B41414">Zone A</span></td>
+            <td>Voirie + Eau potable + Électricité + Assainissement</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#B41414">15 ‰</td>
+            <td>Casablanca centre, Agdal Rabat, Tanger ville</td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:#B41414">↑ +5‰ (était 10‰)</td>
+          </tr>
+          <tr>
+            <td><span class="tnb-table zone-tag" style="background:rgba(184,134,42,.12);color:var(--gold)">Zone B</span></td>
+            <td>3 réseaux sur 4 (voirie + 2 autres)</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:var(--gold)">10 ‰</td>
+            <td>Périphéries urbaines équipées, nouvelles zones résidentielles</td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:var(--gold)">↑ +2‰ (était 8‰)</td>
+          </tr>
+          <tr>
+            <td><span class="tnb-table zone-tag" style="background:rgba(26,107,60,.1);color:var(--success)">Zone C</span></td>
+            <td>1 à 2 réseaux présents</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:var(--success)">6 ‰</td>
+            <td>Zones péri-urbaines en développement</td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:var(--smoke)">= Inchangé</td>
+          </tr>
+          <tr>
+            <td><span class="tnb-table zone-tag" style="background:rgba(0,0,0,.06);color:var(--smoke)">Zone D</span></td>
+            <td>Aucun ou équipement minimal</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:var(--smoke)">3 ‰</td>
+            <td>Zones rurales urbanisées, périphérie lointaine</td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:var(--smoke)">= Inchangé</td>
+          </tr>
+          <tr>
+            <td><span class="tnb-table zone-tag" style="background:rgba(30,77,107,.1);color:var(--accent)">ZAI</span></td>
+            <td>Zone d'Accélération Industrielle</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:var(--accent)">EXONÉRÉ</td>
+            <td>Tanger, Kénitra, Berrechid, Oujda ZAI</td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:var(--accent)">Exonération maintenue</td>
+          </tr>
+          <tr>
+            <td><span class="tnb-table zone-tag" style="background:rgba(26,107,60,.1);color:var(--success)">Agricole</span></td>
+            <td>Usage agricole déclaré + permis agriculture</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:var(--success)">EXONÉRÉ</td>
+            <td>Terres agricoles déclarées Ministère Agriculture</td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:var(--smoke)">= Inchangé</td>
+          </tr>
+          <tr>
+            <td><span class="tnb-table zone-tag" style="background:rgba(184,134,42,.12);color:var(--gold)">PC en cours</span></td>
+            <td>Permis de construire accordé (36 mois max)</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:var(--gold)">50% réduction</td>
+            <td>Terrain avec PC accordé mais chantier non démarré</td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:var(--gold)">Nouveau 2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="font-size:16px">📅 Calendrier de paiement TNB</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:8px">
+        <div style="background:var(--bg2);border-radius:10px;padding:16px;text-align:center">
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--smoke);margin-bottom:6px">ÉMISSION AVIS</div>
+          <div style="font-family:var(--font-title);font-size:20px;font-weight:700">1er mars</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:4px">Envoi des avis d'imposition par la DGI</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:16px;text-align:center">
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--smoke);margin-bottom:6px">ÉCHÉANCE PAIEMENT</div>
+          <div style="font-family:var(--font-title);font-size:20px;font-weight:700">30 septembre</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:4px">Date limite de paiement sans pénalité</div>
+        </div>
+        <div style="background:rgba(180,20,20,.06);border-radius:10px;padding:16px;text-align:center;border:1px solid rgba(180,20,20,.15)">
+          <div style="font-family:var(--font-mono);font-size:11px;color:#B41414;margin-bottom:6px">PÉNALITÉS</div>
+          <div style="font-family:var(--font-title);font-size:20px;font-weight:700;color:#B41414">+ 5% / mois</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:4px">Majoration par mois de retard après le 30/09</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:16px;text-align:center">
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--smoke);margin-bottom:6px">CONTESTATION</div>
+          <div style="font-family:var(--font-title);font-size:20px;font-weight:700">30 jours</div>
+          <div style="font-size:12px;color:var(--smoke);margin-top:4px">Délai de réclamation auprès de la DGI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB STRATEGIE ═══ -->
+  <div class="tab-content" id="tab-strategie">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+
+      <div class="card">
+        <div class="card-title">🏭 Stratégie ZAI — Exonération totale</div>
+        <div class="card-sub">La meilleure stratégie pour éviter la TNB dans les zones industrielles</div>
+        <div style="font-size:13px;line-height:1.7;color:var(--ink-soft)">
+          Les terrains situés dans les <strong>Zones d'Accélération Industrielle (ZAI)</strong> sont totalement exonérés de TNB. Pour un terrain de 5 000 m² en zone A (valeur 5M MAD) :
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:14px;margin:14px 0;font-family:var(--font-mono);font-size:12px;line-height:2">
+          TNB Zone A : 5 000 000 × 15‰ = <strong style="color:#B41414">75 000 MAD/an</strong><br>
+          TNB en ZAI : <strong style="color:var(--success)">0 MAD/an</strong><br>
+          Économie sur 5 ans : <strong style="color:var(--success)">375 000 MAD</strong>
+        </div>
+        <div style="font-size:13px;color:var(--smoke)">ZAI disponibles avec foncier : Tanger Meloussa, Kénitra Atlantic Free Zone, Berrechid, Oujda, Laâyoune.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔨 Stratégie Permis de Construire</div>
+        <div class="card-sub">Réduire la TNB de 50% pendant 36 mois grâce à un PC</div>
+        <div style="font-size:13px;line-height:1.7;color:var(--ink-soft)">
+          Un terrain avec un <strong>Permis de Construire (PC) accordé</strong> bénéficie d'une réduction de 50% de la TNB pendant 36 mois (nouveauté 2025). Idéal pour les promoteurs qui préparent un projet.
+        </div>
+        <div style="background:var(--bg2);border-radius:10px;padding:14px;margin:14px 0;font-family:var(--font-mono);font-size:12px;line-height:2">
+          Sans PC : 75 000 MAD/an<br>
+          Avec PC (3 ans) : <strong style="color:var(--gold)">37 500 MAD/an</strong><br>
+          Économie totale : <strong style="color:var(--gold)">112 500 MAD</strong>
+        </div>
+        <div style="font-size:13px;color:var(--smoke)">Déposez votre PC dès l'acquisition. Délai d'instruction : 60 à 90 jours selon la commune.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📉 Stratégie Cession vs Détention</div>
+        <div class="card-sub">Analyse coût-bénéfice : payer la TNB ou vendre ?</div>
+        <div style="font-size:13px;line-height:1.7;color:var(--ink-soft)">
+          La TNB alourdissant le coût de détention, comparez avec la TPI (Taxe sur les Plus-values Immobilières) en cas de cession. La TPI au Maroc est de <strong>20% sur la plus-value</strong> (minimum 3% du prix de cession).
+        </div>
+        <div style="background:rgba(30,77,107,.06);border-radius:10px;padding:14px;margin:14px 0;font-size:13px;line-height:1.7;border:1px solid rgba(30,77,107,.15)">
+          <strong>Point de rupture :</strong> Si le coût TNB cumulé dépasse la TPI attendue sur la plus-value, la cession est plus avantageuse que la détention prolongée. Utilisez notre Simulateur Fiscal (onglet IR) pour calculer la TPI.
+        </div>
+        <a href="smart_invest_simulateur_fiscal.html" style="display:inline-block;padding:9px 18px;border-radius:8px;background:var(--gold-pale);border:1px solid rgba(184,134,42,.3);font-size:13px;font-weight:600;color:var(--gold);text-decoration:none">→ Calculer ma TPI</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🌾 Stratégie Classification Agricole</div>
+        <div class="card-sub">Exonération TNB par usage agricole déclaré</div>
+        <div style="font-size:13px;line-height:1.7;color:var(--ink-soft)">
+          Un terrain classé <strong>usage agricole</strong> est exonéré de TNB. Cette classification nécessite une déclaration auprès du Ministère de l'Agriculture et doit correspondre à une utilisation réelle.
+        </div>
+        <div style="background:rgba(180,20,20,.05);border-radius:10px;padding:14px;margin:14px 0;font-size:12px;color:var(--smoke);line-height:1.6;border:1px solid rgba(180,20,20,.12)">
+          ⚠️ <strong>Attention :</strong> Un terrain classé agricole qui n'est pas effectivement exploité agricole peut faire l'objet d'un redressement fiscal. La DGI contrôle l'usage réel sur 3 ans.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+var selectedZone = 'Z1';
+var zoneTaux = {Z1:0.015, Z2:0.010, Z3:0.006, Z4:0.003};
+var zoneLabel = {Z1:'Zone A — Très équipée', Z2:'Zone B — Bien équipée', Z3:'Zone C — Moyennement équipée', Z4:'Zone D — Peu équipée'};
+var zoneTauxLabel = {Z1:'15 ‰', Z2:'10 ‰', Z3:'6 ‰', Z4:'3 ‰'};
+
+function selectZone(z, btn) {
+  selectedZone = z;
+  document.querySelectorAll('.zone-opt').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  updateCalc();
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function fmt(n) { return Math.round(n).toLocaleString('fr-FR') + ' MAD'; }
+
+function updateCalc() {
+  const superficie = parseFloat(document.getElementById('superficie').value) || 0;
+  const valeur = parseFloat(document.getElementById('valeur').value) || 0;
+  const duree = parseInt(document.getElementById('duree').value) || 1;
+  const situation = document.getElementById('situation').value;
+
+  let taux = zoneTaux[selectedZone] || 0.015;
+  let statut = 'TAXABLE';
+  let reduction = 1;
+  let note = '';
+
+  if (situation === 'zai') { reduction = 0; statut = 'EXONÉRÉ (ZAI)'; note = '✅ Exonération totale de TNB dans les ZAI. Aucun impôt foncier pendant toute la durée d\'exploitation.'; }
+  else if (situation === 'agri') { reduction = 0; statut = 'EXONÉRÉ (Agricole)'; note = '✅ Exonération TNB pour usage agricole déclaré. Doit être maintenu actif et contrôlable.'; }
+  else if (situation === 'projet') { reduction = 0.5; statut = 'RÉDUCTION 50% (PC accordé)'; note = '⚡ Réduction TNB de 50% pendant 36 mois maximum. Nouveauté Loi TNB 2025. Présentez votre PC à la perception DGI.'; }
+  else { note = 'Terrain nu non bâti — TNB standard applicable selon la zone d\'équipement.'; }
+
+  const sitNotes = {
+    'nob':'La TNB standard s\'applique aux terrains nus en zone urbaine non agricole.',
+    'zai':'Exonération totale TNB en Zone d\'Accélération Industrielle — Avantage fiscal maintenu en 2025.',
+    'agri':'Exonération TNB si usage agricole réel et déclaré au Ministère de l\'Agriculture.',
+    'projet':'Réduction 50% de la TNB pendant 36 mois si Permis de Construire accordé (nouveauté 2025).'
+  };
+  document.getElementById('sitNote').textContent = sitNotes[situation] || '';
+
+  const tnbAnnuel = valeur * taux * reduction;
+  const tnbTotal = tnbAnnuel * duree;
+
+  document.getElementById('rZone').textContent = reduction === 0 ? 'Exonéré' : zoneLabel[selectedZone];
+  document.getElementById('rTaux').textContent = reduction === 0 ? 'Exonéré' : zoneTauxLabel[selectedZone];
+  document.getElementById('rSuperficie').textContent = Math.round(superficie).toLocaleString('fr-FR') + ' m²';
+  document.getElementById('rValeur').textContent = fmt(valeur);
+  document.getElementById('rAnnuel').textContent = fmt(tnbAnnuel);
+  document.getElementById('rMensuel').textContent = fmt(tnbAnnuel/12);
+  document.getElementById('rTotal').textContent = fmt(tnbTotal);
+  document.getElementById('rDureeLabel').textContent = duree + ' an' + (duree>1?'s':'');
+  document.getElementById('rStatut').textContent = statut;
+  document.getElementById('rStatut').style.color = reduction===0 ? '#2ECC71' : reduction<1 ? 'var(--gold-light)' : '#FF6B6B';
+
+  document.getElementById('exemptions').innerHTML = note || 'Aucune exonération applicable dans la situation sélectionnée.';
+
+  // Comparatif
+  const revLoc = valeur * 0.05; // Rendement locatif estimé 5% valeur vénale
+  const irLoc = revLoc * 0.10; // IR sur revenus fonciers simplifié 10%
+  document.getElementById('compareBox').innerHTML =
+    'Valeur terrain : ' + fmt(valeur) + '\n' +
+    'TNB/an : ' + fmt(tnbAnnuel) + '\n' +
+    'Revenu locatif estimé (5%) : ' + fmt(revLoc) + '/an\n' +
+    'IR sur loyers (10%) : ' + fmt(irLoc) + '/an\n' +
+    'Rendement net estimé : ' + fmt(revLoc - tnbAnnuel - irLoc) + '/an';
+}
+
+updateCalc();
+</script>
+<script src='lib/auth.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion — Smart-Invest.ia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gold-light:#F0C460;--gold-pale:#FBF3DE;
+  --ink:#0E0E0C;--ink-mid:#2A2A24;--ink-soft:#4A4A40;--smoke:#7A7A70;
+  --bg:#F7F6F1;--bg2:#EFEDE6;--white:#FFFFFE;--accent:#1E4D6B;--success:#1A6B3C;
+  --danger:#8B1A1A;--border:rgba(0,0,0,0.09);
+  --font-title:'Syne',sans-serif;--font-body:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{min-height:100vh}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.header{height:56px;background:rgba(14,14,12,.98);display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(184,134,42,.2);position:sticky;top:0;z-index:50}
+.logo{font-family:var(--font-title);font-size:18px;font-weight:800;color:var(--white);text-decoration:none}
+.logo span{color:var(--gold-light)}
+.header-badge{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em}
+
+/* ── MAIN ── */
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem 1rem}
+.login-wrap{width:100%;max-width:420px}
+
+/* ── ALERTS ── */
+.alert{padding:.75rem 1rem;border-radius:10px;font-size:13px;margin-bottom:1.25rem;display:flex;align-items:flex-start;gap:.625rem;line-height:1.5}
+.alert-warn{background:rgba(184,134,42,.08);border:1px solid rgba(184,134,42,.2);border-left:3px solid var(--gold);color:var(--ink-soft)}
+.alert-danger{background:rgba(139,26,26,.06);border:1px solid rgba(139,26,26,.15);color:var(--danger)}
+.alert-success{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.15);color:var(--success)}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+
+/* ── CARD ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:1.25rem}
+.card-header{padding:1.625rem 2rem 1.25rem;border-bottom:1px solid var(--border)}
+.card-title{font-family:var(--font-title);font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:.25rem}
+.card-title span{color:var(--gold)}
+.card-sub{font-size:13px;color:var(--smoke)}
+.card-body{padding:1.625rem 2rem}
+
+/* ── FORM ── */
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:.4rem;text-transform:uppercase}
+input[type=email],input[type=password],input[type=text]{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--bg);
+  outline:none;transition:border-color .2s;
+}
+input:focus{border-color:var(--gold);background:var(--white)}
+input::placeholder{color:rgba(0,0,0,.25)}
+.input-group{position:relative}
+.input-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--smoke);line-height:1;padding:2px}
+
+/* ── SUBMIT ── */
+.btn-submit{
+  width:100%;padding:13px;border-radius:10px;
+  background:var(--ink);color:var(--gold-light);border:none;
+  font-family:var(--font-body);font-size:13px;font-weight:600;letter-spacing:.08em;
+  cursor:pointer;transition:all .2s;margin-top:.25rem;
+}
+.btn-submit:hover:not(:disabled){background:var(--ink-mid);transform:translateY(-1px)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ── LINKS ROW ── */
+.links-row{margin-top:.875rem;display:flex;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:.375rem}
+.link-gold{color:var(--gold);font-weight:600;text-decoration:none}
+.link-gold:hover{color:var(--gold-light)}
+.link-muted{color:var(--smoke);text-decoration:none}
+.link-muted:hover{color:var(--ink)}
+
+/* ── DIVIDER ── */
+.divider{display:flex;align-items:center;gap:.75rem;margin:1.25rem 0;font-size:12px;color:var(--smoke)}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── SSO BUTTONS ── */
+.sso-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-sso{
+  padding:10px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--white);
+  font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--ink-soft);
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;
+  text-decoration:none;
+}
+.btn-sso:hover{border-color:var(--gold);color:var(--ink);background:var(--gold-pale)}
+.sso-icon{width:16px;height:16px;object-fit:contain}
+
+/* ── PLANS PREVIEW ── */
+.plans-preview{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;font-size:12px}
+.plans-row{display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap;margin-bottom:.5rem}
+.plan-item{text-align:center}
+.plan-name{font-family:var(--font-mono);font-size:10px;color:var(--smoke);margin-bottom:2px;letter-spacing:.06em}
+.plan-price{font-size:14px;font-weight:600;color:var(--gold)}
+.plan-link{display:block;text-align:center;margin-top:.375rem;font-size:11px;color:var(--smoke);text-decoration:none}
+.plan-link:hover{color:var(--ink)}
+
+/* ── FOOTER ── */
+footer{padding:.875rem 2rem;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--smoke);border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+footer a{color:var(--smoke);text-decoration:none}
+footer a:hover{color:var(--ink)}
+
+/* ── LOADING OVERLAY ── */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(240,196,96,.3);border-top-color:var(--gold-light);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:480px){
+  .card-header,.card-body{padding:1.25rem 1.25rem}
+  .header{padding:0 1.25rem}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <a href="landing.html" class="logo">Smart-<span>Invest</span>.ia</a>
+  <span class="header-badge">ESPACE ABONNÉ</span>
+</header>
+
+<!-- Main -->
+<main>
+  <div class="login-wrap">
+
+    <!-- Alert : session expirée -->
+    <div class="alert alert-warn" id="alertExpired" style="display:none">
+      <span class="alert-icon">⏱</span>
+      <span>Votre session a expiré — veuillez vous reconnecter pour continuer.</span>
+    </div>
+
+    <!-- Alert : module restreint -->
+    <div class="alert alert-warn" id="alertModule" style="display:none">
+      <span class="alert-icon">🔒</span>
+      <span>Connectez-vous pour accéder au module <strong id="moduleName"></strong></span>
+    </div>
+
+    <!-- Alert : erreur -->
+    <div class="alert alert-danger" id="alertError" style="display:none">
+      <span class="alert-icon">⚠</span>
+      <span id="errorText">Erreur de connexion.</span>
+    </div>
+
+    <!-- Alert : succès inscription -->
+    <div class="alert alert-success" id="alertWelcome" style="display:none">
+      <span class="alert-icon">✓</span>
+      <span>Compte créé avec succès ! Connectez-vous pour accéder à vos modules.</span>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Connexion à <span>Smart-Invest.ia</span></div>
+        <div class="card-sub">Accédez à votre espace et reprenez là où vous en étiez.</div>
+      </div>
+      <div class="card-body">
+
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="votre@email.ma" autocomplete="email" oninput="clearError()">
+        </div>
+
+        <div class="field">
+          <label>Mot de passe</label>
+          <div class="input-group">
+            <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" oninput="clearError()" onkeydown="if(event.key==='Enter')doLogin()">
+            <button class="input-toggle" onclick="togglePwd('password')" type="button" title="Afficher/Masquer">👁</button>
+          </div>
+        </div>
+
+        <button class="btn-submit" id="btnLogin" onclick="doLogin()">SE CONNECTER →</button>
+
+        <div class="links-row">
+          <span style="color:var(--smoke)">Pas de compte ? <a href="smart_invest_register_v2.html" class="link-gold">Essai gratuit 7 jours</a></span>
+          <a href="#" class="link-muted" onclick="forgotPwd(event)">Mot de passe oublié</a>
+        </div>
+
+        <div class="divider">ou continuer avec</div>
+
+        <div class="sso-grid">
+          <a class="btn-sso" href="#" onclick="ssoLogin('google')">
+            <svg class="sso-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Google
+          </a>
+          <a class="btn-sso" href="#" onclick="ssoLogin('linkedin')">
+            <svg class="sso-icon" viewBox="0 0 24 24"><path fill="#0A66C2" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Plans preview -->
+    <div class="plans-preview">
+      <div class="plans-row">
+        <div class="plan-item">
+          <div class="plan-name">GRATUIT</div>
+          <div class="plan-price">0 MAD</div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-name">PRO</div>
+          <div class="plan-price">199 MAD/mois</div>
+        </div>
+        <div class="plan-item">
+          <div class="plan-name">ENTERPRISE</div>
+          <div class="plan-price">990 MAD/mois</div>
+        </div>
+      </div>
+      <a href="smart_invest_abonnements_v2.html" class="plan-link">Voir les plans et fonctionnalités →</a>
+    </div>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <span>© 2026 Smart-Invest.ia</span>
+  <div style="display:flex;gap:1.5rem">
+    <a href="#">Mentions légales</a>
+    <a href="#">Confidentialité</a>
+    <a href="#">Contact</a>
+    <a href="landing.html">← Portail</a>
+  </div>
+</footer>
+
+<script>
+/* ── URL PARAMS ── */
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+/* ── INIT ALERTS ── */
+(function initAlerts() {
+  if(getParam('expired')) document.getElementById('alertExpired').style.display='flex';
+  if(getParam('welcome')) document.getElementById('alertWelcome').style.display='flex';
+  const mod = getParam('module');
+  if(mod) {
+    document.getElementById('alertModule').style.display='flex';
+    document.getElementById('moduleName').textContent = decodeURIComponent(mod);
+  }
+})();
+
+/* ── TOGGLE PASSWORD ── */
+function togglePwd(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+/* ── CLEAR ERROR ── */
+function clearError() {
+  document.getElementById('alertError').style.display='none';
+}
+function showError(msg) {
+  document.getElementById('errorText').textContent = msg;
+  document.getElementById('alertError').style.display='flex';
+}
+
+/* ── LOGIN LOGIC (Phase 1 : localStorage) ── */
+function doLogin() {
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if(!email || !password) { showError('Email et mot de passe requis.'); return; }
+  if(!email.includes('@')) { showError('Format email invalide.'); return; }
+
+  const btn = document.getElementById('btnLogin');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>CONNEXION...';
+
+  // Phase 1 : vérification localStorage
+  // Phase 2 : fetch('/.netlify/functions/auth-login', { method:'POST', body: JSON.stringify({email,password}) })
+  setTimeout(() => {
+    const stored = localStorage.getItem('im_registered_users');
+    const users  = stored ? JSON.parse(stored) : [];
+    const user   = users.find(u => u.email === email && u.password === btoa(password));
+
+    if(user) {
+      // Sauvegarder session
+      const session = {
+        user_id:  user.user_id,
+        email:    user.email,
+        prenom:   user.prenom,
+        nom:      user.nom,
+        plan:     user.plan || 'FREE',
+        expires_at: Date.now() + 7*24*60*60*1000, // 7 jours
+      };
+      localStorage.setItem('im_session', JSON.stringify(session));
+
+      // Mettre à jour le profil DB
+      const dbUser = JSON.parse(localStorage.getItem('im_user') || '{}');
+      Object.assign(dbUser, user);
+      localStorage.setItem('im_user', JSON.stringify(dbUser));
+
+      const redirect = getParam('redirect') || 'index.html';
+      window.location.href = redirect;
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'SE CONNECTER →';
+      showError('Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.');
+    }
+  }, 800);
+}
+
+/* ── SSO (stub) ── */
+function ssoLogin(provider) {
+  alert(`Connexion ${provider} — Disponible en Phase 2 avec intégration OAuth2.`);
+}
+
+/* ── FORGOT PASSWORD ── */
+function forgotPwd(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  if(!email) { showError('Entrez votre email ci-dessus pour réinitialiser votre mot de passe.'); return; }
+  alert('📧 Un email de réinitialisation sera envoyé à ' + email + ' — fonctionnalité Phase 2.');
+}
+
+/* ── AUTO-REDIRECT si déjà connecté ── */
+(function checkSession() {
+  try {
+    const s = JSON.parse(localStorage.getItem('im_session') || 'null');
+    if(s && s.expires_at > Date.now()) {
+      const redirect = getParam('redirect') || 'index.html';
+      window.location.href = redirect;
+    }
+  } catch {}
+})();
+</script>
+
+
+<!-- ═══ Scripts Smart-Invest.ia ═══ -->
+<script src='lib/config.js'></script>
+<script src='lib/auth.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

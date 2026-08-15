@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ComptaMA — Gestion RH & Paie</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8F4EE;--sf:#FFFFFF;--sf2:#F3EEE4;--sf3:#EAE2D3;
+  --bd:#DDD3BF;--bd2:#EAE2D3;
+  --gd:#B8860B;--gd2:#D4A017;--gd-a:rgba(184,134,11,.10);--gd-b:rgba(184,134,11,.05);
+  --bl:#1A5FA8;--bl-a:rgba(26,95,168,.09);
+  --gn:#1A7A38;--gn-a:rgba(26,122,56,.09);
+  --rd:#B83232;--rd-a:rgba(184,50,50,.09);
+  --am:#A0621A;--am-a:rgba(160,98,26,.10);
+  --pu:#6840A8;--pu-a:rgba(104,64,168,.09);
+  --cy:#0E7490;--cy-a:rgba(14,116,144,.09);
+  --t1:#1A1510;--t2:#6B5B45;--t3:#A09078;
+  --sw:238px;--r:7px;--rl:11px;
+  --shadow:0 1px 3px rgba(100,80,40,.10),0 1px 2px rgba(100,80,40,.06);
+  --shadow-md:0 4px 12px rgba(100,80,40,.12),0 2px 4px rgba(100,80,40,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;display:flex;font-size:14px;line-height:1.5}
+#sb{width:var(--sw);min-height:100vh;background:var(--sf);border-right:1px solid var(--bd);position:fixed;left:0;top:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto;box-shadow:2px 0 8px rgba(100,80,40,.06)}
+.logo{padding:14px 14px 10px;border-bottom:1px solid var(--bd);background:linear-gradient(135deg,#FDF8EF,#F8F0DC)}
+.logo-brand{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--gd);letter-spacing:-.3px;display:flex;align-items:center;gap:7px}
+.logo-brand span{background:var(--gd);color:#fff;padding:2px 6px;border-radius:5px;font-size:11px;font-weight:700}
+.logo-sub{font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.ns{padding:9px 6px 2px}
+.nl{font-size:9.5px;text-transform:uppercase;letter-spacing:1.3px;color:var(--t3);padding:0 8px;font-weight:600}
+.ni{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:var(--r);cursor:pointer;color:var(--t2);font-size:12.5px;margin:1px 0;transition:all .15s;user-select:none;border:1px solid transparent}
+.ni:hover{background:var(--sf2);color:var(--t1)}
+.ni.active{background:var(--gd-a);color:var(--gd);font-weight:600;border-color:rgba(184,134,11,.18)}
+.ni .ic{font-size:13px;width:16px;text-align:center;flex-shrink:0}
+.nbadge{margin-left:auto;font-size:10px;background:var(--gd-a);color:var(--gd);padding:1px 6px;border-radius:10px;min-width:18px;text-align:center;font-weight:600}
+.nbadge.red{background:var(--rd-a);color:var(--rd)}
+.sbottom{margin-top:auto;padding:10px 8px;border-top:1px solid var(--bd)}
+.sb-info{font-size:10px;color:var(--t3);padding:6px 8px;line-height:1.4}
+#mn{margin-left:var(--sw);flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:48px;background:var(--sf);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow)}
+.tb-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--t1)}
+.tb-sub{font-size:11px;color:var(--t3)}
+.tb-right{margin-left:auto;display:flex;gap:6px;align-items:center}
+.page{padding:18px 20px;display:none;animation:fadeIn .18s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);box-shadow:var(--shadow)}
+.ch{padding:11px 16px;border-bottom:1px solid var(--bd2);display:flex;align-items:center;justify-content:space-between;gap:8px;background:linear-gradient(180deg,#FDFAF5,var(--sf));border-radius:var(--rl) var(--rl) 0 0}
+.ct{font-size:12.5px;font-weight:600;color:var(--t1)}
+.cb{padding:14px 16px}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kgrid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.kgrid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:12px 14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--rl) var(--rl) 0 0}
+.kpi.gold::before{background:var(--gd)}.kpi.blue::before{background:var(--bl)}.kpi.green::before{background:var(--gn)}.kpi.red::before{background:var(--rd)}.kpi.purple::before{background:var(--pu)}.kpi.cyan::before{background:var(--cy)}
+.kl{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;font-weight:600}
+.kv{font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.ks{font-size:10.5px;color:var(--t3);margin-top:3px}
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.fg2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+.fg4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.fg1{margin-bottom:12px}
+label{display:block;font-size:11px;font-weight:600;color:var(--t2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+input,select,textarea{width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:13px;color:var(--t1);background:var(--sf);transition:border-color .15s,box-shadow .15s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gd);box-shadow:0 0 0 3px var(--gd-a)}
+textarea{resize:vertical;min-height:60px}
+.btn{padding:7px 14px;border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--gd);color:#fff}.btn-primary:hover{background:var(--gd2)}
+.btn-secondary{background:var(--sf2);color:var(--t1);border:1px solid var(--bd)}.btn-secondary:hover{background:var(--sf3)}
+.btn-danger{background:var(--rd);color:#fff}.btn-danger:hover{opacity:.88}
+.btn-green{background:var(--gn);color:#fff}.btn-green:hover{opacity:.88}
+.btn-blue{background:var(--bl);color:#fff}.btn-blue:hover{opacity:.88}
+.btn-sm{padding:4px 10px;font-size:11.5px}
+.btn-xs{padding:3px 8px;font-size:11px}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{background:var(--sf2);color:var(--t2);font-weight:600;text-transform:uppercase;letter-spacing:.6px;font-size:10.5px;padding:8px 10px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--bd2);vertical-align:middle}
+.tbl tr:hover td{background:var(--gd-b)}
+.tbl .num{font-family:'JetBrains Mono',monospace;text-align:right}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;padding:2px 8px;border-radius:20px;font-weight:600}
+.badge-green{background:var(--gn-a);color:var(--gn)}.badge-red{background:var(--rd-a);color:var(--rd)}.badge-gold{background:var(--gd-a);color:var(--gd)}.badge-blue{background:var(--bl-a);color:var(--bl)}.badge-grey{background:var(--sf3);color:var(--t2)}.badge-purple{background:var(--pu-a);color:var(--pu)}.badge-cyan{background:var(--cy-a);color:var(--cy)}
+.alert{padding:10px 13px;border-radius:var(--r);font-size:12.5px;margin-bottom:12px;display:flex;align-items:flex-start;gap:8px}
+.alert-info{background:var(--bl-a);border-left:3px solid var(--bl);color:var(--bl)}
+.alert-warn{background:var(--am-a);border-left:3px solid var(--am);color:var(--am)}
+.alert-success{background:var(--gn-a);border-left:3px solid var(--gn);color:var(--gn)}
+.alert-danger{background:var(--rd-a);border-left:3px solid var(--rd);color:var(--rd)}
+.tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--bd);padding-bottom:0}
+.tab{padding:7px 13px;font-size:12px;font-weight:600;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;white-space:nowrap}
+.tab.active{color:var(--gd);border-bottom-color:var(--gd)}
+.tab-content{display:none}.tab-content.active{display:block}
+.bp{background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--rl);padding:20px 24px;font-size:12.5px;max-width:700px;margin:0 auto}
+.bp-header{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;padding-bottom:14px;border-bottom:2px solid var(--gd)}
+.bp-company{font-weight:700;font-size:14px;color:var(--gd)}
+.bp-title{text-align:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--t1);margin:10px 0;text-transform:uppercase;letter-spacing:1px}
+.bp-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;background:var(--sf2);padding:10px 12px;border-radius:var(--r)}
+.bp-info-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0}
+.bp-info-row span:first-child{color:var(--t2)}
+.bp-info-row span:last-child{font-weight:600}
+.bp-section{margin-bottom:10px}
+.bp-sh{font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);font-weight:600;margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--bd2)}
+.bp-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;padding:4px 0;font-size:12.5px;border-bottom:1px dotted var(--bd2);align-items:center}
+.bp-label{color:var(--t1)}
+.bp-base{color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:11px;text-align:right;min-width:70px}
+.bp-taux{color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:11px;text-align:right;min-width:60px}
+.bp-mnt{font-family:'JetBrains Mono',monospace;font-size:12.5px;text-align:right;min-width:80px}
+.bp-mnt.debit{color:var(--rd)}.bp-mnt.credit{color:var(--gn)}
+.bp-net{background:var(--gd);color:#fff;padding:10px 14px;border-radius:var(--r);display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-weight:700}
+.bp-net-val{font-family:'JetBrains Mono',monospace;font-size:18px}
+.bp-footer{margin-top:12px;font-size:10.5px;color:var(--t3);text-align:center;padding-top:10px;border-top:1px solid var(--bd2)}
+.pbar-wrap{background:var(--sf3);border-radius:20px;height:7px;overflow:hidden;margin-top:5px}
+.pbar{height:100%;border-radius:20px;transition:width .4s ease}
+.conge-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.conge-avatar{width:36px;height:36px;border-radius:50%;background:var(--gd-a);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--gd);font-size:13px;flex-shrink:0}
+.conge-info{flex:1}
+.conge-status{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.mb10{margin-bottom:10px}.mb14{margin-bottom:14px}.mb16{margin-bottom:16px}
+.mt10{margin-top:10px}.mt14{margin-top:14px}
+.flex{display:flex;align-items:center;gap:8px}
+.flex-between{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sep{border:none;border-top:1px solid var(--bd2);margin:14px 0}
+.mono{font-family:'JetBrains Mono',monospace}
+.text-sm{font-size:11.5px}.text-xs{font-size:10.5px}.text-muted{color:var(--t3)}.text-right{text-align:right}
+.fw6{font-weight:600}.fw7{font-weight:700}
+.hidden{display:none!important}
+.pt-day{display:grid;grid-template-columns:130px repeat(7,1fr);font-size:11.5px;border-bottom:1px solid var(--bd2);align-items:center}
+.pt-day:hover{background:var(--gd-b)}
+.pt-cell{padding:6px 8px;text-align:center}
+.pt-cell.name{text-align:left;font-weight:600;color:var(--t1)}
+.pt-cell input{padding:3px 5px;font-size:11px;text-align:center;width:52px}
+.org-node{background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--rl);padding:10px 14px;text-align:center;min-width:130px;max-width:155px;box-shadow:var(--shadow);cursor:pointer;transition:all .15s}
+.org-node:hover{border-color:var(--gd)}
+.org-node.root{background:var(--gd);color:#fff;border-color:var(--gd)}
+.org-node.manager{background:var(--bl-a);border-color:var(--bl)}
+.org-node .on-name{font-weight:700;font-size:12px}
+.org-node .on-title{font-size:10px;color:var(--t3);margin-top:2px}
+.org-node.root .on-title{color:rgba(255,255,255,.7)}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:10px}
+.modal{display:none;position:fixed;z-index:300;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--sf);border:1px solid var(--bd);border-radius:var(--rl);box-shadow:var(--shadow-md);max-height:90vh;overflow-y:auto}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+<!-- SIDEBAR -->
+<aside id="sb">
+  <div class="logo">
+    <div class="logo-brand">ComptaMA <span>RH</span></div>
+    <div class="logo-sub">Ressources Humaines & Paie · Maroc 2025</div>
+    <a href="landing.html" style="display:inline-block;margin-top:8px;font-size:10.5px;color:inherit;opacity:.55;text-decoration:none">← Retour au portail</a>
+  </div>
+  <div class="ns">
+    <div class="nl">Tableau de Bord</div>
+    <div class="ni active" onclick="nav('dashboard')"><span class="ic">🏠</span> Vue d'ensemble <span class="nbadge" id="badge-alerte">0</span></div>
+  </div>
+  <div class="ns">
+    <div class="nl">Effectif</div>
+    <div class="ni" onclick="nav('employes')"><span class="ic">👥</span> Dossiers Employés <span class="nbadge" id="badge-emp">0</span></div>
+    <div class="ni" onclick="nav('recrutement')"><span class="ic">🔍</span> Recrutement</div>
+    <div class="ni" onclick="nav('orgchart')"><span class="ic">🌿</span> Organigramme</div>
+    <div class="ni" onclick="nav('contrats')"><span class="ic">📋</span> Contrats & CIMR</div>
+  </div>
+  <div class="ns">
+    <div class="nl">Temps & Présence</div>
+    <div class="ni" onclick="nav('pointage')"><span class="ic">⏱</span> Pointage & Heures Sup.</div>
+    <div class="ni" onclick="nav('conges')"><span class="ic">🏖</span> Congés & Absences <span class="nbadge red" id="badge-conge">0</span></div>
+    <div class="ni" onclick="nav('planning')"><span class="ic">📅</span> Planning Équipes</div>
+  </div>
+  <div class="ns">
+    <div class="nl">Paie</div>
+    <div class="ni" onclick="nav('bulletin')"><span class="ic">💸</span> Bulletin de Paie</div>
+    <div class="ni" onclick="nav('virements')"><span class="ic">🏦</span> Virements & États</div>
+    <div class="ni" onclick="nav('declarations')"><span class="ic">📤</span> Déclarations CNSS/IR</div>
+  </div>
+  <div class="ns">
+    <div class="nl">Développement RH</div>
+    <div class="ni" onclick="nav('formations')"><span class="ic">🎓</span> Plan de Formation</div>
+    <div class="ni" onclick="nav('evaluations')"><span class="ic">⭐</span> Évaluations</div>
+    <div class="ni" onclick="nav('disciplinaire')"><span class="ic">⚖</span> Procédures Disc.</div>
+  </div>
+  <div class="ns">
+    <div class="nl">Pilotage</div>
+    <div class="ni" onclick="nav('reporting')"><span class="ic">📊</span> Tableaux de Bord RH</div>
+    <div class="ni" onclick="nav('cloture_rh')"><span class="ic">🔒</span> Clôture Mensuelle</div>
+  </div>
+  <div class="sbottom">
+    <div class="sb-info">📌 Code du Travail · CNSS 2025<br>Barème IR CGI 2025 · SMIG 3 111 MAD</div>
+    <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:6px" onclick="exportDB()">💾 Export JSON</button>
+    <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:5px" onclick="document.getElementById('impFile').click()">📂 Import JSON</button>
+    <input type="file" id="impFile" accept=".json" style="display:none" onchange="importDB(event)">
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main id="mn">
+<div class="topbar">
+  <div>
+    <div class="tb-title" id="tb-title">Vue d'ensemble RH</div>
+    <div class="tb-sub" id="tb-sub">ComptaMA · Gestion RH & Paie · Maroc 2025</div>
+  </div>
+  <div class="tb-right">
+    <span class="badge badge-green">SMIG : 3 111 MAD</span>
+    <span class="badge badge-gold" id="tb-mois">Mai 2025</span>
+    <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨 Imprimer</button>
+  </div>
+</div>
+
+<!-- PAGE DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="kgrid5">
+    <div class="kpi gold"><div class="kl">Effectif Total</div><div class="kv" id="kpi-eff">0</div><div class="ks">salariés actifs</div></div>
+    <div class="kpi blue"><div class="kl">Masse Salariale</div><div class="kv" id="kpi-ms">0</div><div class="ks">MAD brut/mois</div></div>
+    <div class="kpi green"><div class="kl">Coût Employeur</div><div class="kv" id="kpi-ce">0</div><div class="ks">charges incluses</div></div>
+    <div class="kpi red"><div class="kl">Congés en Attente</div><div class="kv" id="kpi-ca">0</div><div class="ks">à valider</div></div>
+    <div class="kpi purple"><div class="kl">Bulletins Mois</div><div class="kv" id="kpi-bul">0</div><div class="ks">générés</div></div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="ch"><span class="ct">🚨 Alertes RH</span></div>
+      <div class="cb" id="dash-alertes"><div class="text-sm text-muted">Aucune alerte active</div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct">📅 Échéances Sociales</span></div>
+      <div class="cb">
+        <div class="flex-between mb10"><span class="text-sm fw6">CNSS/AMO déclaration</span><span class="badge badge-gold">≤ J+10</span></div>
+        <div class="flex-between mb10"><span class="text-sm fw6">IR salaires (SIMPL-IR)</span><span class="badge badge-gold">≤ J+20</span></div>
+        <div class="flex-between mb10"><span class="text-sm fw6">CIMR cotisations</span><span class="badge badge-blue">Trimestriel</span></div>
+        <div class="flex-between mb10"><span class="text-sm fw6">Congés payés calcul</span><span class="badge badge-green">1er juin</span></div>
+        <div class="flex-between"><span class="text-sm fw6">Solde tout compte</span><span class="badge badge-grey">À la demande</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct">📊 Répartition Effectif</span></div>
+      <div class="cb" id="dash-repartition"><div class="text-sm text-muted">Aucun employé</div></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><span class="ct">💰 Taux Sociaux 2025 — Part Salariale</span></div>
+      <div class="cb">
+        <table class="tbl">
+          <tr><th>Cotisation</th><th>Taux</th><th>Plafond</th></tr>
+          <tr><td>CNSS (CT+LT)</td><td class="num">4,48%</td><td>6 000 MAD/m</td></tr>
+          <tr><td>AMO salariale</td><td class="num">2,26%</td><td>Sans plafond</td></tr>
+          <tr><td><strong>Total salarial</strong></td><td class="num fw7">6,74%</td><td>—</td></tr>
+        </table>
+        <div style="font-size:11px;color:var(--t2);margin:12px 0 8px;text-transform:uppercase;letter-spacing:.6px;font-weight:600">Part Patronale</div>
+        <table class="tbl">
+          <tr><th>Cotisation</th><th>Taux</th><th>Assiette</th></tr>
+          <tr><td>CNSS prestations</td><td class="num">8,98%</td><td>Plaf. 6 000</td></tr>
+          <tr><td>Alloc. familiales</td><td class="num">6,40%</td><td>Total brut</td></tr>
+          <tr><td>AMO patronale</td><td class="num">4,11%</td><td>Total brut</td></tr>
+          <tr><td>TFP</td><td class="num">1,60%</td><td>Total brut</td></tr>
+          <tr><td><strong>Total patronal</strong></td><td class="num fw7">~21,09%</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct">📋 Barème IR Salaires 2025</span></div>
+      <div class="cb">
+        <table class="tbl">
+          <tr><th>RNI Annuel (MAD)</th><th>Taux</th><th>Déduction</th></tr>
+          <tr><td>0 — 30 000</td><td class="num">0%</td><td class="num">0</td></tr>
+          <tr><td>30 001 — 50 000</td><td class="num">10%</td><td class="num">3 000</td></tr>
+          <tr><td>50 001 — 60 000</td><td class="num">20%</td><td class="num">8 000</td></tr>
+          <tr><td>60 001 — 80 000</td><td class="num">30%</td><td class="num">14 000</td></tr>
+          <tr><td>80 001 — 180 000</td><td class="num">34%</td><td class="num">17 200</td></tr>
+          <tr><td>&gt; 180 000</td><td class="num">38%</td><td class="num">24 400</td></tr>
+        </table>
+        <div class="alert alert-info mt10" style="font-size:11px">ℹ Frais prof. : 20% du brut (max 2 500/m). Déduct. enfant : 30 MAD/mois/enfant (max 6). Prime ancienneté exonérée IR.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- PAGE EMPLOYES -->
+<div class="page" id="page-employes">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Dossiers Employés</div><div class="text-sm text-muted">Registre du personnel — Art. 24 Code du Travail marocain</div></div>
+    <div class="flex"><input type="search" placeholder="Rechercher…" id="search-emp" oninput="filterEmployes()" style="width:190px;padding:6px 10px;font-size:12.5px">
+    <button class="btn btn-primary btn-sm" onclick="showModal('modal-emp')">+ Nouvel Employé</button></div>
+  </div>
+  <div class="kgrid">
+    <div class="kpi gold"><div class="kl">Total Actifs</div><div class="kv" id="e-total">0</div></div>
+    <div class="kpi blue"><div class="kl">CDI</div><div class="kv" id="e-cdi">0</div></div>
+    <div class="kpi cyan"><div class="kl">CDD</div><div class="kv" id="e-cdd">0</div></div>
+    <div class="kpi purple"><div class="kl">Masse Salariale</div><div class="kv" id="e-ms">0</div><div class="ks">MAD/mois</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Liste des Employés</span>
+      <div class="flex">
+        <select id="filter-dept" onchange="filterEmployes()" style="font-size:11.5px;padding:4px 8px;width:auto"><option value="">Tous depts</option></select>
+        <select id="filter-contrat" onchange="filterEmployes()" style="font-size:11.5px;padding:4px 8px;width:auto"><option value="">Tous contrats</option><option>CDI</option><option>CDD</option><option>Stage</option></select>
+      </div>
+    </div>
+    <div class="cb" style="padding:0">
+      <table class="tbl"><thead><tr><th>Mat.</th><th>Nom & Prénom</th><th>Poste</th><th>Dept</th><th>Contrat</th><th>Ancienneté</th><th>Salaire Brut</th><th>Statut</th><th>Actions</th></tr></thead>
+      <tbody id="tbody-employes"><tr><td colspan="9" style="text-align:center;padding:20px;color:var(--t3)">Aucun employé. Cliquez sur "+ Nouvel Employé".</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE RECRUTEMENT -->
+<div class="page" id="page-recrutement">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Suivi Recrutement</div><div class="text-sm text-muted">Pipeline candidats et postes ouverts</div></div>
+    <button class="btn btn-primary btn-sm" onclick="showModal('modal-poste')">+ Nouveau Poste</button>
+  </div>
+  <div class="kgrid">
+    <div class="kpi blue"><div class="kl">Postes Ouverts</div><div class="kv" id="r-postes">0</div></div>
+    <div class="kpi gold"><div class="kl">Candidatures</div><div class="kv" id="r-cands">0</div></div>
+    <div class="kpi cyan"><div class="kl">En Cours</div><div class="kv" id="r-encours">0</div></div>
+    <div class="kpi green"><div class="kl">Acceptés</div><div class="kv" id="r-acc">0</div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ch"><span class="ct">🔍 Postes Ouverts</span><button class="btn btn-primary btn-xs" onclick="showModal('modal-poste')">+</button></div><div class="cb" id="list-postes"><div class="text-sm text-muted">Aucun poste ouvert</div></div></div>
+    <div class="card"><div class="ch"><span class="ct">👤 Candidats</span><button class="btn btn-secondary btn-xs" onclick="showModal('modal-candidat')">+ Candidat</button></div><div class="cb" id="list-candidats"><div class="text-sm text-muted">Aucun candidat</div></div></div>
+  </div>
+</div>
+
+<!-- PAGE ORGCHART -->
+<div class="page" id="page-orgchart">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Organigramme</div><div class="text-sm text-muted">Structure hiérarchique — généré automatiquement</div></div>
+    <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨 Imprimer</button>
+  </div>
+  <div class="card"><div class="ch"><span class="ct">Structure Organisationnelle</span></div>
+    <div class="cb" style="overflow-x:auto;min-height:200px"><div id="orgchart-render" style="padding:20px;min-width:600px"><div class="text-sm text-muted" style="text-align:center;padding:30px">L'organigramme est généré automatiquement depuis les dossiers employés (champ "Manager direct").</div></div></div>
+  </div>
+</div>
+
+<!-- PAGE CONTRATS & CIMR -->
+<div class="page" id="page-contrats">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Contrats & CIMR</div><div class="text-sm text-muted">Suivi contrats et cotisations retraite complémentaire</div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ch"><span class="ct">📋 Contrats Actifs</span></div>
+      <div class="cb" style="padding:0">
+        <table class="tbl"><thead><tr><th>Employé</th><th>Type</th><th>Début</th><th>Fin</th><th>Statut</th></tr></thead>
+        <tbody id="tbody-contrats"><tr><td colspan="5" style="text-align:center;padding:16px;color:var(--t3)">Aucun contrat</td></tr></tbody></table>
+      </div>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">💼 Simulation CIMR</span></div>
+      <div class="cb">
+        <div class="alert alert-info mb10" style="font-size:11.5px">ℹ La CIMR est facultative. Part salariale déductible de l'assiette IR. Taux typiques : 3–6% salarial + patronal.</div>
+        <div class="fg2">
+          <div><label>Taux salarial CIMR (%)</label><input type="number" id="cimr-sal" value="3" step="0.5"></div>
+          <div><label>Taux patronal CIMR (%)</label><input type="number" id="cimr-pat" value="4" step="0.5"></div>
+        </div>
+        <div class="card" style="background:var(--sf2);padding:12px 14px;margin-top:10px">
+          <div class="flex-between mb10"><span class="text-sm">Masse salariale brute</span><span class="mono fw6" id="cimr-ms">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">Part salariale CIMR</span><span class="mono" id="cimr-sal-total">0 MAD</span></div>
+          <div class="flex-between"><span class="text-sm">Charge patronale CIMR</span><span class="mono" id="cimr-pat-total">0 MAD</span></div>
+          <button class="btn btn-primary btn-sm mt10" onclick="calcCIMR()">Calculer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE POINTAGE -->
+<div class="page" id="page-pointage">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Pointage & Heures Supplémentaires</div><div class="text-sm text-muted">Suivi du temps — Art. 196-201 Code du Travail marocain</div></div>
+    <div class="flex"><input type="month" id="ptg-mois" value="2025-05" onchange="renderPointage()"><button class="btn btn-primary btn-sm" onclick="savePointage()">💾 Sauvegarder</button></div>
+  </div>
+  <div class="alert alert-info mb14" style="font-size:11.5px">📌 <strong>Majorations légales (Art. 196) :</strong> Heures normales 6h–21h : +<strong>25%</strong> · Nuit 21h–6h / jours fériés : +<strong>50%</strong> · Repos hebdomadaire : +<strong>100%</strong> · Durée max : 10h/jour.</div>
+  <div class="kgrid">
+    <div class="kpi gold"><div class="kl">H. Normales</div><div class="kv" id="ptg-normal">0</div></div>
+    <div class="kpi blue"><div class="kl">Sup. +25%</div><div class="kv" id="ptg-25">0</div></div>
+    <div class="kpi red"><div class="kl">Nuit +50%</div><div class="kv" id="ptg-50">0</div></div>
+    <div class="kpi purple"><div class="kl">Coût Sup. Total</div><div class="kv" id="ptg-cout">0</div><div class="ks">MAD</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Saisie Mensuelle des Heures</span></div>
+    <div class="cb" style="padding:0;overflow-x:auto">
+      <div class="pt-day" style="background:var(--sf2);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px">
+        <div class="pt-cell name">Employé</div>
+        <div class="pt-cell">H.Norm.</div><div class="pt-cell">Sup.+25%</div><div class="pt-cell">Nuit+50%</div>
+        <div class="pt-cell">Repos+100%</div><div class="pt-cell">Absents</div><div class="pt-cell">Prime Sp.</div><div class="pt-cell">Total MAD</div>
+      </div>
+      <div id="ptg-body"></div>
+    </div>
+  </div>
+</div>
+<!-- PAGE CONGES -->
+<div class="page" id="page-conges">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Congés & Absences</div><div class="text-sm text-muted">Art. 231–245 Code du Travail — 1,5 j ouvrable/mois</div></div>
+    <button class="btn btn-primary btn-sm" onclick="showModal('modal-conge')">+ Nouvelle Demande</button>
+  </div>
+  <div class="kgrid">
+    <div class="kpi green"><div class="kl">J. Légaux Moy.</div><div class="kv" id="cg-acquis">0</div><div class="ks">j/employé/an</div></div>
+    <div class="kpi gold"><div class="kl">J. Pris Moy.</div><div class="kv" id="cg-pris">0</div></div>
+    <div class="kpi red"><div class="kl">En Attente</div><div class="kv" id="cg-att">0</div></div>
+    <div class="kpi blue"><div class="kl">Approuvés Mois</div><div class="kv" id="cg-mois">0</div><div class="ks">jours</div></div>
+  </div>
+  <div class="alert alert-info mb14" style="font-size:11.5px">📌 <strong>Règle légale :</strong> 1,5 j/mois = 18 j/an. +1,5 j par tranche de 5 ans (max 30 j). Maternité : 14 semaines (Art.152). Paternité : 3 jours. Mariage : 4 jours.</div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchCgTab('cg-demandes',this)">Demandes en Cours</div>
+    <div class="tab" onclick="switchCgTab('cg-planning',this)">Planning Congés</div>
+    <div class="tab" onclick="switchCgTab('cg-soldes',this)">Soldes par Employé</div>
+    <div class="tab" onclick="switchCgTab('cg-types',this)">Types d'Absences</div>
+  </div>
+  <div class="tab-content active" id="cg-demandes"><div id="list-conges"><div class="text-sm text-muted">Aucune demande en cours</div></div></div>
+  <div class="tab-content" id="cg-planning">
+    <div class="card"><div class="ch"><span class="ct">Planning des Congés</span></div><div class="cb" id="cg-calendar"><div class="text-sm text-muted">Aucun congé planifié</div></div></div>
+  </div>
+  <div class="tab-content" id="cg-soldes">
+    <div class="card"><div class="ch"><span class="ct">Soldes de Congés</span></div>
+      <div class="cb" style="padding:0">
+        <table class="tbl"><thead><tr><th>Employé</th><th>Ancienneté</th><th>J. Légaux/an</th><th>J. Acquis</th><th>J. Pris</th><th>Solde</th><th>Statut</th></tr></thead>
+        <tbody id="tbody-soldes-conges"><tr><td colspan="7" style="text-align:center;padding:16px;color:var(--t3)">Aucun employé</td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="cg-types">
+    <div class="g2">
+      <div class="card"><div class="ch"><span class="ct">Types d'Absences Légales</span></div>
+        <div class="cb">
+          <table class="tbl">
+            <thead><tr><th>Type</th><th>Durée</th><th>Impact Paie</th><th>Justificatif</th></tr></thead>
+            <tbody>
+              <tr><td>Congés payés annuels</td><td>18–30 j/an</td><td><span class="badge badge-green">Payé</span></td><td>Demande RH</td></tr>
+              <tr><td>Maladie (Art.267)</td><td>Illimité</td><td><span class="badge badge-gold">CNSS dès J+4</span></td><td>Certificat médical</td></tr>
+              <tr><td>Maternité (Art.152)</td><td>14 semaines</td><td><span class="badge badge-green">CNSS</span></td><td>Cert. grossesse</td></tr>
+              <tr><td>Paternité (Art.269)</td><td>3 jours</td><td><span class="badge badge-green">Payé</span></td><td>Acte naissance</td></tr>
+              <tr><td>Mariage salarié</td><td>4 jours</td><td><span class="badge badge-green">Payé</span></td><td>Acte mariage</td></tr>
+              <tr><td>Décès conjoint/parent</td><td>3 jours</td><td><span class="badge badge-green">Payé</span></td><td>Acte décès</td></tr>
+              <tr><td>Absence injustifiée</td><td>—</td><td><span class="badge badge-red">Retenue/jour</span></td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card"><div class="ch"><span class="ct">Taux d'Absentéisme</span></div>
+        <div class="cb">
+          <div class="alert alert-info mb10" style="font-size:11.5px">Formule : (Jours absents / Jours ouvrables) × 100. Seuil alerte : &gt;5%. Benchmark PME Maroc : 2,8%</div>
+          <div class="kpi gold"><div class="kl">Taux Moyen</div><div class="kv" id="kpi-absenteisme">0,0%</div><div class="ks" id="eval-absenteisme">Normal</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE PLANNING -->
+<div class="page" id="page-planning">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Planning Équipes</div><div class="text-sm text-muted">Organisation des rotations mensuelles</div></div>
+    <input type="month" id="plan-mois" value="2025-05" onchange="renderPlanning()">
+  </div>
+  <div class="card"><div class="ch"><span class="ct">Grille de Planning</span></div>
+    <div class="cb" style="overflow-x:auto"><div id="planning-grid"><div class="text-sm text-muted" style="text-align:center;padding:20px">Ajoutez des employés pour générer le planning.</div></div></div>
+  </div>
+  <div class="alert alert-info mt10" style="font-size:11.5px">
+    📌 Légende : <span class="badge badge-green">T</span> Travail · <span class="badge badge-gold">S</span> Heures sup · <span class="badge badge-blue">C</span> Congé · <span class="badge badge-red">A</span> Absent · <span class="badge badge-grey">R</span> Repos
+  </div>
+</div>
+
+<!-- PAGE BULLETIN -->
+<div class="page" id="page-bulletin">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Bulletin de Paie</div><div class="text-sm text-muted">Calcul automatique CNSS · AMO · IR · Ancienneté · Heures sup</div></div>
+    <div class="flex">
+      <input type="month" id="bul-mois" value="2025-05">
+      <button class="btn btn-primary btn-sm" onclick="genererTousBulletins()">⚡ Générer Tous</button>
+    </div>
+  </div>
+  <div class="g2" style="align-items:flex-start">
+    <div>
+      <div class="card mb14">
+        <div class="ch"><span class="ct">📝 Saisie Bulletin</span></div>
+        <div class="cb">
+          <div class="fg2">
+            <div><label>Employé</label><select id="bul-emp" onchange="prefillBulletin()"><option value="">-- Sélectionner --</option></select></div>
+            <div><label>Période</label><input type="month" id="bul-periode" value="2025-05"></div>
+          </div>
+          <div class="fg2">
+            <div><label>Salaire de Base (MAD)</label><input type="number" id="bul-base" value="0" oninput="calcBulletin()"></div>
+            <div><label>Prime Ancienneté (auto)</label><input type="text" id="bul-anc-pct" value="0%" readonly style="background:var(--sf2)"></div>
+          </div>
+          <div class="fg2">
+            <div><label>Prime de Rendement</label><input type="number" id="bul-prime" value="0" oninput="calcBulletin()"></div>
+            <div><label>Indemnité Transport</label><input type="number" id="bul-transport" value="0" oninput="calcBulletin()"></div>
+          </div>
+          <div class="fg2">
+            <div><label>Indemnité Représentation</label><input type="number" id="bul-repres" value="0" oninput="calcBulletin()"></div>
+            <div><label>Avantages en Nature</label><input type="number" id="bul-avantage" value="0" oninput="calcBulletin()"></div>
+          </div>
+          <div class="fg2">
+            <div><label>Heures Sup. +25% (nbr)</label><input type="number" id="bul-sup25" value="0" oninput="calcBulletin()"></div>
+            <div><label>Heures Sup. +50% (nbr)</label><input type="number" id="bul-sup50" value="0" oninput="calcBulletin()"></div>
+          </div>
+          <div class="fg2">
+            <div><label>Heures Sup. +100% (nbr)</label><input type="number" id="bul-sup100" value="0" oninput="calcBulletin()"></div>
+            <div><label>Jours Absences Injust.</label><input type="number" id="bul-absence" value="0" oninput="calcBulletin()"></div>
+          </div>
+          <div class="fg2">
+            <div><label>Enfants à Charge (max 6)</label><input type="number" id="bul-enfants" value="0" min="0" max="6" oninput="calcBulletin()"></div>
+            <div><label>Avance sur Salaire</label><input type="number" id="bul-avance" value="0" oninput="calcBulletin()"></div>
+          </div>
+          <div class="fg2">
+            <div><label>CIMR salarial (%)</label><input type="number" id="bul-cimr" value="0" step="0.5" oninput="calcBulletin()"></div>
+            <div><label>Mutuelle salariale (MAD)</label><input type="number" id="bul-mutuelle" value="0" oninput="calcBulletin()"></div>
+          </div>
+          <div class="flex-between mt10">
+            <button class="btn btn-secondary btn-sm" onclick="resetBulletin()">↺ Réinitialiser</button>
+            <div class="flex">
+              <button class="btn btn-primary" onclick="saveBulletin()">💾 Enregistrer</button>
+              <button class="btn btn-blue btn-sm" onclick="window.print()">🖨 Imprimer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">💼 Coût Total Employeur</span></div>
+        <div class="cb">
+          <div class="flex-between mb10"><span class="text-sm">Net à payer</span><span class="mono fw7" id="ce-net">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">CNSS patronal (8,98%)</span><span class="mono" id="ce-cnss-pat">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">Alloc. familiales (6,40%)</span><span class="mono" id="ce-af">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">AMO patronale (4,11%)</span><span class="mono" id="ce-amo-pat">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">TFP (1,60%)</span><span class="mono" id="ce-tfp">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">CIMR patronal</span><span class="mono" id="ce-cimr">0 MAD</span></div>
+          <hr class="sep" style="margin:8px 0">
+          <div class="flex-between"><span class="fw7">COÛT TOTAL EMPLOYEUR</span><span class="mono fw7" style="color:var(--gd)" id="ce-total">0 MAD</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- APERCU BULLETIN -->
+    <div>
+      <div class="bp">
+        <div class="bp-title">BULLETIN DE PAIE</div>
+        <div class="bp-header">
+          <div><div class="bp-company" id="bp-company">SOCIÉTÉ XXX</div><div class="text-xs text-muted">CNSS Employeur : —</div></div>
+          <div style="text-align:right"><div class="text-sm fw6" id="bp-periode">Période : Mai 2025</div><div class="text-xs text-muted">N° : <span id="bp-num">—</span></div></div>
+        </div>
+        <div class="bp-info">
+          <div>
+            <div class="bp-info-row"><span>Nom & Prénom</span><span id="bp-nom">—</span></div>
+            <div class="bp-info-row"><span>Poste</span><span id="bp-poste">—</span></div>
+            <div class="bp-info-row"><span>N° CNSS</span><span id="bp-cnss">—</span></div>
+            <div class="bp-info-row"><span>CIN</span><span id="bp-cin">—</span></div>
+          </div>
+          <div>
+            <div class="bp-info-row"><span>Département</span><span id="bp-dept">—</span></div>
+            <div class="bp-info-row"><span>Contrat</span><span id="bp-contrat">—</span></div>
+            <div class="bp-info-row"><span>Ancienneté</span><span id="bp-anciennete">—</span></div>
+            <div class="bp-info-row"><span>Enfants à charge</span><span id="bp-enfants-disp">0</span></div>
+          </div>
+        </div>
+        <div class="bp-section">
+          <div class="bp-sh">ÉLÉMENTS DE RÉMUNÉRATION</div>
+          <div class="bp-row"><span class="bp-label">Salaire de base</span><span class="bp-base" id="bp-hbase">191h</span><span class="bp-taux"></span><span class="bp-mnt credit" id="bp-mbase">0,00</span></div>
+          <div class="bp-row" id="bpr-anc"><span class="bp-label">Prime d'ancienneté</span><span class="bp-base" id="bp-hanc">—</span><span class="bp-taux" id="bp-tanc">—</span><span class="bp-mnt credit" id="bp-manc">0,00</span></div>
+          <div class="bp-row" id="bpr-sup25" style="display:none"><span class="bp-label">Heures sup. (+25%)</span><span class="bp-base" id="bp-hsup25">—</span><span class="bp-taux"></span><span class="bp-mnt credit" id="bp-msup25">0,00</span></div>
+          <div class="bp-row" id="bpr-sup50" style="display:none"><span class="bp-label">Heures sup. (+50%)</span><span class="bp-base" id="bp-hsup50">—</span><span class="bp-taux"></span><span class="bp-mnt credit" id="bp-msup50">0,00</span></div>
+          <div class="bp-row" id="bpr-sup100" style="display:none"><span class="bp-label">Heures sup. (+100%)</span><span class="bp-base" id="bp-hsup100">—</span><span class="bp-taux"></span><span class="bp-mnt credit" id="bp-msup100">0,00</span></div>
+          <div class="bp-row" id="bpr-prime" style="display:none"><span class="bp-label">Prime de rendement</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt credit" id="bp-mprime">0,00</span></div>
+          <div class="bp-row" id="bpr-transport" style="display:none"><span class="bp-label">Indemnité transport</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt credit" id="bp-mtransport">0,00</span></div>
+          <div class="bp-row" id="bpr-repres" style="display:none"><span class="bp-label">Indemnité représentation</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt credit" id="bp-mrepres">0,00</span></div>
+          <div class="bp-row" id="bpr-avantage" style="display:none"><span class="bp-label">Avantages en nature</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt credit" id="bp-mavantage">0,00</span></div>
+          <div class="bp-row" id="bpr-absence" style="display:none"><span class="bp-label">Retenue absences injust.</span><span class="bp-base" id="bp-habsence">—</span><span class="bp-taux"></span><span class="bp-mnt debit" id="bp-mabsence">0,00</span></div>
+        </div>
+        <div class="bp-section">
+          <div class="bp-sh">SALAIRE BRUT</div>
+          <div class="bp-row"><span class="bp-label fw7">Salaire Brut Total</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt fw7" id="bp-brut">0,00</span></div>
+        </div>
+        <div class="bp-section">
+          <div class="bp-sh">RETENUES SALARIALES</div>
+          <div class="bp-row"><span class="bp-label">CNSS salariale (4,48%)</span><span class="bp-base" id="bp-hcnss">plaf.6000</span><span class="bp-taux">4,48%</span><span class="bp-mnt debit" id="bp-mcnss">0,00</span></div>
+          <div class="bp-row"><span class="bp-label">AMO salariale (2,26%)</span><span class="bp-base">sans plafond</span><span class="bp-taux">2,26%</span><span class="bp-mnt debit" id="bp-mamo">0,00</span></div>
+          <div class="bp-row" id="bpr-cimr" style="display:none"><span class="bp-label">CIMR part salariale</span><span class="bp-base"></span><span class="bp-taux" id="bp-tcimr">0%</span><span class="bp-mnt debit" id="bp-mcimr">0,00</span></div>
+          <div class="bp-row" id="bpr-mutuelle" style="display:none"><span class="bp-label">Mutuelle salariale</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt debit" id="bp-mmutuelle">0,00</span></div>
+          <div class="bp-row"><span class="bp-label">Frais professionnels (20%, max 2500/m)</span><span class="bp-base"></span><span class="bp-taux">20%</span><span class="bp-mnt" style="color:var(--bl)" id="bp-fp">0,00</span></div>
+          <div class="bp-row"><span class="bp-label">Déduction enfants (30/mois/enf.)</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt" style="color:var(--bl)" id="bp-ded-enf">0,00</span></div>
+        </div>
+        <div class="bp-section">
+          <div class="bp-sh">IMPÔT SUR LE REVENU</div>
+          <div class="bp-row"><span class="bp-label">RNI annualisé</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt" id="bp-rni">0,00</span></div>
+          <div class="bp-row"><span class="bp-label">IR mensuel (retenue source)</span><span class="bp-base" id="bp-tranche">—</span><span class="bp-taux" id="bp-tir">—</span><span class="bp-mnt debit" id="bp-mir">0,00</span></div>
+          <div class="bp-row" id="bpr-avance" style="display:none"><span class="bp-label">Avance sur salaire</span><span class="bp-base"></span><span class="bp-taux"></span><span class="bp-mnt debit" id="bp-mavance">0,00</span></div>
+        </div>
+        <div class="bp-net"><span>NET À PAYER</span><span class="bp-net-val" id="bp-net">0,00 MAD</span></div>
+        <div class="bp-footer">Net en lettres : <strong id="bp-lettre">zéro dirham</strong><br>RIB : <span id="bp-rib">—</span> · <em>ComptaMA · Confidentiel</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="card mt10">
+    <div class="ch"><span class="ct">📁 Historique Bulletins</span></div>
+    <div class="cb" style="padding:0">
+      <table class="tbl"><thead><tr><th>Employé</th><th>Période</th><th>Brut</th><th>CNSS+AMO</th><th>IR</th><th>Net</th><th>Coût Employeur</th><th>Actions</th></tr></thead>
+      <tbody id="tbody-bulletins"><tr><td colspan="8" style="text-align:center;padding:16px;color:var(--t3)">Aucun bulletin</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<!-- PAGE VIREMENTS -->
+<div class="page" id="page-virements">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Virements & État de Paiement</div><div class="text-sm text-muted">Ordres de virement bancaires</div></div>
+    <div class="flex"><input type="month" id="vir-mois" value="2025-05"><button class="btn btn-primary btn-sm" onclick="genVirements()">⚡ Générer</button></div>
+  </div>
+  <div class="kgrid">
+    <div class="kpi gold"><div class="kl">Total Virements</div><div class="kv" id="vir-total">0 MAD</div></div>
+    <div class="kpi blue"><div class="kl">Bénéficiaires</div><div class="kv" id="vir-nb">0</div></div>
+    <div class="kpi green"><div class="kl">Validés</div><div class="kv" id="vir-val">0</div></div>
+    <div class="kpi red"><div class="kl">Sans RIB</div><div class="kv" id="vir-norib">0</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Ordre de Virement Mensuel</span>
+      <div class="flex"><button class="btn btn-secondary btn-sm" onclick="exportVirCSV()">↓ CSV</button><button class="btn btn-green btn-sm" onclick="window.print()">🖨 Imprimer</button></div>
+    </div>
+    <div class="cb" style="padding:0">
+      <table class="tbl"><thead><tr><th>Employé</th><th>Banque</th><th>RIB</th><th>Net à Payer</th><th>Statut</th></tr></thead>
+      <tbody id="tbody-virements"><tr><td colspan="5" style="text-align:center;padding:16px;color:var(--t3)">Générez les bulletins puis cliquez sur "Générer"</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE DECLARATIONS -->
+<div class="page" id="page-declarations">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Déclarations Sociales & Fiscales</div><div class="text-sm text-muted">CNSS Damancom · SIMPL-IR DGI</div></div>
+    <input type="month" id="decl-mois" value="2025-05">
+  </div>
+  <div class="alert alert-warn mb14" style="font-size:11.5px">⚠ <strong>Délais légaux :</strong> CNSS/AMO → avant le <strong>10 du mois suivant</strong> · IR salaires (SIMPL-IR) → avant le <strong>20 du mois suivant</strong>. Pénalités : 15% + 1%/mois CNSS · 15% + majorations DGI.</div>
+  <div class="g3">
+    <div class="card"><div class="ch"><span class="ct">📋 Déclaration CNSS</span></div>
+      <div class="cb">
+        <div class="flex-between mb10"><span class="text-sm">Assiette CNSS totale</span><span class="mono" id="d-cnss-assiette">0 MAD</span></div>
+        <div class="flex-between mb10"><span class="text-sm">Part salariale</span><span class="mono" id="d-cnss-sal">0 MAD</span></div>
+        <div class="flex-between mb10"><span class="text-sm">Part patronale</span><span class="mono" id="d-cnss-pat">0 MAD</span></div>
+        <div class="flex-between mb10"><span class="text-sm">AMO totale</span><span class="mono" id="d-amo">0 MAD</span></div>
+        <hr class="sep">
+        <div class="flex-between"><span class="fw7">Total à verser CNSS</span><span class="mono fw7" style="color:var(--gd)" id="d-cnss-total">0 MAD</span></div>
+        <button class="btn btn-primary btn-sm mt10" onclick="genDeclCNSS()">📤 Générer État</button>
+      </div>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">💰 SIMPL-IR (DGI)</span></div>
+      <div class="cb">
+        <div class="flex-between mb10"><span class="text-sm">Nb salariés</span><span class="mono" id="d-ir-nb">0</span></div>
+        <div class="flex-between mb10"><span class="text-sm">Total salaires bruts</span><span class="mono" id="d-ir-brut">0 MAD</span></div>
+        <div class="flex-between mb10"><span class="text-sm">Total IR retenu</span><span class="mono" id="d-ir-ir">0 MAD</span></div>
+        <div class="flex-between mb10"><span class="text-sm">Frais prof. déduits</span><span class="mono" id="d-ir-fp">0 MAD</span></div>
+        <hr class="sep">
+        <div class="flex-between"><span class="fw7">Versement DGI</span><span class="mono fw7" style="color:var(--rd)" id="d-ir-total">0 MAD</span></div>
+        <button class="btn btn-primary btn-sm mt10" onclick="genDeclIR()">📤 Générer État</button>
+      </div>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">📊 Récap. Mensuel</span></div>
+      <div class="cb">
+        <div class="flex-between mb10"><span class="text-sm">Masse salariale brute</span><span class="mono" id="d-ms">0 MAD</span></div>
+        <div class="flex-between mb10"><span class="text-sm">Total nets à payer</span><span class="mono" id="d-nets">0 MAD</span></div>
+        <div class="flex-between mb10"><span class="text-sm">Charges salariales</span><span class="mono" id="d-ch-sal">0 MAD</span></div>
+        <div class="flex-between mb10"><span class="text-sm">Charges patronales</span><span class="mono" id="d-ch-pat">0 MAD</span></div>
+        <hr class="sep">
+        <div class="flex-between"><span class="fw7">Coût total RH mois</span><span class="mono fw7" style="color:var(--gd)" id="d-cout">0 MAD</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card mt14"><div class="ch"><span class="ct">📋 État Nominatif CNSS/IR</span></div>
+    <div class="cb" style="padding:0">
+      <table class="tbl"><thead><tr><th>Mat.</th><th>Nom</th><th>N° CNSS</th><th>Brut</th><th>CNSS Sal.</th><th>AMO Sal.</th><th>IR</th><th>Net</th><th>CNSS Pat.</th><th>AMO Pat.</th></tr></thead>
+      <tbody id="tbody-decl"><tr><td colspan="10" style="text-align:center;padding:16px;color:var(--t3)">Aucun bulletin pour cette période</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE FORMATIONS -->
+<div class="page" id="page-formations">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Plan de Formation</div><div class="text-sm text-muted">Développement des compétences — TFP 1,60%</div></div>
+    <button class="btn btn-primary btn-sm" onclick="showModal('modal-formation')">+ Nouvelle Formation</button>
+  </div>
+  <div class="alert alert-info mb14" style="font-size:11.5px">📌 <strong>TFP (Taxe de Formation Professionnelle) :</strong> 1,60% de la masse salariale. Récupérable à 70% si formation via organismes agréés (OFPPT, CGEM).</div>
+  <div class="kgrid">
+    <div class="kpi gold"><div class="kl">Formations Planifiées</div><div class="kv" id="f-total">0</div></div>
+    <div class="kpi blue"><div class="kl">En Cours</div><div class="kv" id="f-encours">0</div></div>
+    <div class="kpi green"><div class="kl">Terminées</div><div class="kv" id="f-term">0</div></div>
+    <div class="kpi cyan"><div class="kl">Budget TFP Récupérable</div><div class="kv" id="f-tfp">0 MAD</div></div>
+  </div>
+  <div class="card"><div class="ch"><span class="ct">Catalogue Formations</span></div>
+    <div class="cb" style="padding:0">
+      <table class="tbl"><thead><tr><th>Formation</th><th>Organisme</th><th>Participants</th><th>Dates</th><th>Coût (MAD)</th><th>Statut</th><th>Actions</th></tr></thead>
+      <tbody id="tbody-formations"><tr><td colspan="7" style="text-align:center;padding:16px;color:var(--t3)">Aucune formation planifiée</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE EVALUATIONS -->
+<div class="page" id="page-evaluations">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Évaluations de Performance</div><div class="text-sm text-muted">Entretiens annuels et objectifs</div></div>
+    <button class="btn btn-primary btn-sm" onclick="showModal('modal-eval')">+ Nouvelle Évaluation</button>
+  </div>
+  <div class="kgrid">
+    <div class="kpi gold"><div class="kl">Évaluations Réalisées</div><div class="kv" id="ev-total">0</div></div>
+    <div class="kpi red"><div class="kl">Non Évalués</div><div class="kv" id="ev-retard">0</div></div>
+    <div class="kpi green"><div class="kl">Score Moyen</div><div class="kv" id="ev-score">—</div></div>
+    <div class="kpi blue"><div class="kl">Promos Suggérées</div><div class="kv" id="ev-promo">0</div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ch"><span class="ct">Grille d'Évaluation</span></div>
+      <div class="cb">
+        <div class="fg2">
+          <div><label>Employé</label><select id="ev-emp"><option value="">-- Sélectionner --</option></select></div>
+          <div><label>Période</label><input type="text" id="ev-period" placeholder="2024 / S1 2025"></div>
+        </div>
+        <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px">Critères /10</div>
+        <div class="fg2">
+          <div><label>Performance Technique</label><input type="number" id="ev-tech" min="0" max="10" value="5" oninput="calcEval()"></div>
+          <div><label>Qualité du Travail</label><input type="number" id="ev-qualite" min="0" max="10" value="5" oninput="calcEval()"></div>
+        </div>
+        <div class="fg2">
+          <div><label>Ponctualité & Assiduité</label><input type="number" id="ev-ponct" min="0" max="10" value="5" oninput="calcEval()"></div>
+          <div><label>Esprit d'Équipe</label><input type="number" id="ev-team" min="0" max="10" value="5" oninput="calcEval()"></div>
+        </div>
+        <div class="fg2">
+          <div><label>Initiative & Innovation</label><input type="number" id="ev-init" min="0" max="10" value="5" oninput="calcEval()"></div>
+          <div><label>Respect des Procédures</label><input type="number" id="ev-proc" min="0" max="10" value="5" oninput="calcEval()"></div>
+        </div>
+        <div class="kpi gold mt10 mb10"><div class="kl">Note Globale</div><div class="kv" id="ev-global">5,00 / 10</div><div class="ks" id="ev-mention">Assez Bien</div></div>
+        <div class="fg1"><label>Commentaire Manager</label><textarea id="ev-comment" placeholder="Points forts, axes d'amélioration, objectifs N+1…"></textarea></div>
+        <div class="flex-between">
+          <select id="ev-decision" style="font-size:12.5px;width:auto">
+            <option>Maintien du poste</option><option>Augmentation salariale</option><option>Promotion</option>
+            <option>Formation recommandée</option><option>Avertissement</option><option>Rupture conventionnelle</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="saveEval()">💾 Enregistrer</button>
+        </div>
+      </div>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">Historique Évaluations</span></div>
+      <div class="cb" style="padding:0">
+        <table class="tbl"><thead><tr><th>Employé</th><th>Période</th><th>Note</th><th>Mention</th><th>Décision</th></tr></thead>
+        <tbody id="tbody-evals"><tr><td colspan="5" style="text-align:center;padding:16px;color:var(--t3)">Aucune évaluation</td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE DISCIPLINAIRE -->
+<div class="page" id="page-disciplinaire">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Procédures Disciplinaires</div><div class="text-sm text-muted">Art. 62–67 Code du Travail · Sanctions et licenciements</div></div>
+    <button class="btn btn-primary btn-sm" onclick="showModal('modal-discip')">+ Nouvelle Procédure</button>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ch"><span class="ct">⚖ Échelle des Sanctions (Art. 37-38)</span></div>
+      <div class="cb">
+        <table class="tbl">
+          <thead><tr><th>Niveau</th><th>Sanction</th><th>Prescription</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-gold">Niveau 1</span></td><td>Avertissement écrit</td><td>6 mois</td></tr>
+            <tr><td><span class="badge badge-gold">Niveau 2</span></td><td>Blâme</td><td>6 mois</td></tr>
+            <tr><td><span class="badge badge-gold">Niveau 3</span></td><td>Mise à pied 1–8 jours (sans solde)</td><td>1 an</td></tr>
+            <tr><td><span class="badge badge-red">Niveau 4</span></td><td>Licenciement avec préavis</td><td>—</td></tr>
+            <tr><td><span class="badge badge-red">Faute Grave</span></td><td>Licenciement immédiat (Art. 39)</td><td>—</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-warn mt10" style="font-size:11px">⚠ Faute grave (Art. 39) : vol, fraude, violence, ivresse, divulgation secret, abandon de poste. → Aucune indemnité ni préavis.</div>
+      </div>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">📋 Calculateur Solde de Tout Compte</span></div>
+      <div class="cb">
+        <div class="fg2">
+          <div><label>Employé</label><select id="stc-emp"><option value="">-- Sélectionner --</option></select></div>
+          <div><label>Date de Départ</label><input type="date" id="stc-date"></div>
+        </div>
+        <div class="fg2">
+          <div><label>Motif de Départ</label>
+            <select id="stc-motif" onchange="calcSTC()">
+              <option>Démission</option><option>Licenciement (faute)</option>
+              <option>Licenciement (économique)</option><option>Rupture conventionnelle</option>
+              <option>Fin CDD</option><option>Retraite</option><option>Décès</option>
+            </select>
+          </div>
+          <div><label>Préavis (jours)</label><input type="number" id="stc-preavis" value="0" oninput="calcSTC()"></div>
+        </div>
+        <button class="btn btn-primary btn-sm mb10" onclick="calcSTC()">Calculer STC</button>
+        <div id="stc-result" class="card" style="background:var(--sf2);padding:12px 14px;display:none">
+          <div class="text-sm fw6 mb10">Éléments du Solde de Tout Compte</div>
+          <div class="flex-between mb10"><span class="text-sm">Salaire prorata mois</span><span class="mono" id="stc-sal">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">Congés non pris</span><span class="mono" id="stc-cg">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">Indemnité licenciement</span><span class="mono" id="stc-indemnite">0 MAD</span></div>
+          <div class="flex-between mb10"><span class="text-sm">Préavis non effectué</span><span class="mono" id="stc-preavis-mnt">0 MAD</span></div>
+          <hr class="sep" style="margin:6px 0">
+          <div class="flex-between"><span class="fw7">TOTAL STC BRUT</span><span class="mono fw7" style="color:var(--gd)" id="stc-total">0 MAD</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card mt14"><div class="ch"><span class="ct">Registre Procédures Disciplinaires</span></div>
+    <div class="cb" style="padding:0">
+      <table class="tbl"><thead><tr><th>Employé</th><th>Date</th><th>Faits</th><th>Sanction</th><th>Statut</th><th>Actions</th></tr></thead>
+      <tbody id="tbody-discip"><tr><td colspan="6" style="text-align:center;padding:16px;color:var(--t3)">Aucune procédure</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE REPORTING -->
+<div class="page" id="page-reporting">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Tableaux de Bord RH</div><div class="text-sm text-muted">Indicateurs clés · Analyses · Tendances</div></div>
+    <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨 Rapport</button>
+  </div>
+  <div class="kgrid5">
+    <div class="kpi gold"><div class="kl">Effectif</div><div class="kv" id="rep-eff">0</div></div>
+    <div class="kpi blue"><div class="kl">Masse Salariale</div><div class="kv" id="rep-ms">0</div><div class="ks">MAD/mois</div></div>
+    <div class="kpi cyan"><div class="kl">Coût Moy./Employé</div><div class="kv" id="rep-moy">0</div><div class="ks">MAD brut</div></div>
+    <div class="kpi red"><div class="kl">Turn-over</div><div class="kv" id="rep-turn">0%</div></div>
+    <div class="kpi green"><div class="kl">Absentéisme</div><div class="kv" id="rep-abs">0%</div></div>
+  </div>
+  <div class="g3">
+    <div class="card"><div class="ch"><span class="ct">Répartition Département</span></div><div class="cb" id="rep-dept"><div class="text-sm text-muted">Données insuffisantes</div></div></div>
+    <div class="card"><div class="ch"><span class="ct">Répartition par Contrat</span></div><div class="cb" id="rep-contrats"><div class="text-sm text-muted">Données insuffisantes</div></div></div>
+    <div class="card"><div class="ch"><span class="ct">Pyramide des Salaires</span></div><div class="cb" id="rep-pyramide"><div class="text-sm text-muted">Données insuffisantes</div></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ch"><span class="ct">📊 Charges Sociales Détaillées</span></div><div class="cb" id="rep-charges"><div class="text-sm text-muted">Générez des bulletins pour voir les charges</div></div></div>
+    <div class="card"><div class="ch"><span class="ct">📈 Top 5 Masses Salariales</span></div><div class="cb" id="rep-top5"><div class="text-sm text-muted">Aucun employé</div></div></div>
+  </div>
+</div>
+
+<!-- PAGE CLOTURE RH -->
+<div class="page" id="page-cloture_rh">
+  <div class="flex-between mb14">
+    <div><div style="font-size:16px;font-weight:700">Clôture Mensuelle RH</div><div class="text-sm text-muted">Checklist de clôture paie et déclarations sociales</div></div>
+    <input type="month" id="clt-mois" value="2025-05" onchange="renderClotureSteps()">
+  </div>
+  <div class="alert alert-info mb14" style="font-size:11.5px">📋 Suivez les étapes dans l'ordre. Chaque étape validée débloque la suivante. La clôture génère un récapitulatif pour la comptabilité.</div>
+  <div id="cloture-steps"></div>
+  <div class="card mt14" id="cloture-recap" style="display:none">
+    <div class="ch"><span class="ct" style="color:var(--gn)">✅ Clôture Validée — Récapitulatif</span></div>
+    <div class="cb">
+      <div class="kgrid5">
+        <div class="kpi gold"><div class="kl">Bulletins émis</div><div class="kv" id="cl-bul">0</div></div>
+        <div class="kpi blue"><div class="kl">Masse Salariale</div><div class="kv" id="cl-ms">0</div></div>
+        <div class="kpi red"><div class="kl">Total Retenues</div><div class="kv" id="cl-ret">0</div></div>
+        <div class="kpi green"><div class="kl">Total Nets</div><div class="kv" id="cl-net">0</div></div>
+        <div class="kpi purple"><div class="kl">Charges Patronales</div><div class="kv" id="cl-pat">0</div></div>
+      </div>
+      <div class="alert alert-success mt10">✅ Écriture comptable : <span class="mono">Dr.6411/Cr.4421+4461+4462+4441</span> · <span class="mono">Dr.6414-6415/Cr.4461+4462</span></div>
+    </div>
+  </div>
+</div>
+<!-- MODALS OVERLAY -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200" onclick="hideAllModals(event)"></div>
+
+<!-- MODAL EMPLOYE -->
+<div class="modal" id="modal-emp" style="width:680px">
+  <div class="ch" style="position:sticky;top:0;z-index:1;background:var(--sf)">
+    <span class="ct">👤 Dossier Employé</span>
+    <button class="btn btn-secondary btn-xs" onclick="closeModal('modal-emp')">✕</button>
+  </div>
+  <div style="padding:16px">
+    <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Identité</div>
+    <div class="fg4">
+      <div style="grid-column:span 2"><label>Nom & Prénom</label><input type="text" id="e-nom" placeholder="ALAMI Mohamed"></div>
+      <div><label>Matricule</label><input type="text" id="e-mat" placeholder="EMP-001"></div>
+      <div><label>Date Naissance</label><input type="date" id="e-nais"></div>
+    </div>
+    <div class="fg4">
+      <div><label>CIN</label><input type="text" id="e-cin" placeholder="AB123456"></div>
+      <div><label>N° CNSS</label><input type="text" id="e-cnss" placeholder="12345678"></div>
+      <div><label>Nationalité</label><input type="text" id="e-nat" value="Marocaine"></div>
+      <div><label>Sexe</label><select id="e-sex"><option>Masculin</option><option>Féminin</option></select></div>
+    </div>
+    <div class="fg4">
+      <div style="grid-column:span 2"><label>Adresse</label><input type="text" id="e-adr" placeholder="Rue, Ville"></div>
+      <div><label>Téléphone</label><input type="text" id="e-tel" placeholder="06 00 00 00 00"></div>
+      <div><label>Email</label><input type="email" id="e-email"></div>
+    </div>
+    <hr class="sep">
+    <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Poste & Contrat</div>
+    <div class="fg4">
+      <div style="grid-column:span 2"><label>Intitulé du Poste</label><input type="text" id="e-poste" placeholder="Responsable Comptable"></div>
+      <div><label>Département</label>
+        <input type="text" id="e-dept" list="dept-list" placeholder="Finance">
+        <datalist id="dept-list"><option>Direction Générale</option><option>Finance & Comptabilité</option><option>RH</option><option>Commercial</option><option>Production</option><option>Logistique</option><option>IT</option><option>Juridique</option></datalist>
+      </div>
+      <div><label>Manager Direct</label><input type="text" id="e-manager" placeholder="Nom du responsable"></div>
+    </div>
+    <div class="fg4">
+      <div><label>Type Contrat</label><select id="e-contrat"><option>CDI</option><option>CDD</option><option>Stage</option><option>Interim</option></select></div>
+      <div><label>Date Embauche</label><input type="date" id="e-embauche"></div>
+      <div><label>Fin Contrat (CDD)</label><input type="date" id="e-fin"></div>
+      <div><label>Statut</label><select id="e-statut"><option>Actif</option><option>Inactif</option><option>Suspendu</option><option>Démissionné</option></select></div>
+    </div>
+    <hr class="sep">
+    <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Rémunération & Banque</div>
+    <div class="fg4">
+      <div><label>Salaire de Base (MAD)</label><input type="number" id="e-salaire" placeholder="5000"></div>
+      <div><label>Catégorie</label><input type="text" id="e-cat" placeholder="Cadre, Agent maîtrise…"></div>
+      <div><label>Enfants à Charge</label><input type="number" id="e-enfants" value="0" min="0" max="6"></div>
+      <div><label>Convention Collective</label><input type="text" id="e-conv" placeholder="Branche prof."></div>
+    </div>
+    <div class="fg4">
+      <div><label>Banque</label><input type="text" id="e-banque" placeholder="CIH, Attijariwafa…"></div>
+      <div style="grid-column:span 2"><label>RIB (24 chiffres)</label><input type="text" id="e-rib" placeholder="000 000 0000000000000000 00"></div>
+      <div><label>Mode Paiement</label><select id="e-paiement"><option>Virement</option><option>Chèque</option><option>Espèces</option></select></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-emp')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveEmploye()">💾 Enregistrer Dossier</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONGE -->
+<div class="modal" id="modal-conge" style="width:520px">
+  <div class="ch"><span class="ct">🏖 Demande de Congé</span><button class="btn btn-secondary btn-xs" onclick="closeModal('modal-conge')">✕</button></div>
+  <div style="padding:16px">
+    <div class="fg2">
+      <div><label>Employé</label><select id="cg-emp"><option value="">-- Sélectionner --</option></select></div>
+      <div><label>Type de Congé</label>
+        <select id="cg-type"><option>Congés payés annuels</option><option>Maladie</option><option>Maternité</option><option>Paternité</option><option>Mariage</option><option>Deuil</option><option>Sans solde</option><option>Autre</option></select>
+      </div>
+    </div>
+    <div class="fg2">
+      <div><label>Date Début</label><input type="date" id="cg-debut" onchange="calcJoursCg()"></div>
+      <div><label>Date Fin</label><input type="date" id="cg-fin" onchange="calcJoursCg()"></div>
+    </div>
+    <div class="fg2">
+      <div><label>Jours (calculé)</label><input type="text" id="cg-jours" readonly style="background:var(--sf2)"></div>
+      <div><label>Justificatif</label><input type="text" id="cg-justif" placeholder="Certificat médical…"></div>
+    </div>
+    <div class="fg1"><label>Commentaire</label><textarea id="cg-comment" placeholder="Remarques…"></textarea></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-conge')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveConge()">💾 Soumettre</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL POSTE -->
+<div class="modal" id="modal-poste" style="width:500px">
+  <div class="ch"><span class="ct">🔍 Nouveau Poste Ouvert</span><button class="btn btn-secondary btn-xs" onclick="closeModal('modal-poste')">✕</button></div>
+  <div style="padding:16px">
+    <div class="fg2">
+      <div><label>Intitulé du Poste</label><input type="text" id="p-titre" placeholder="Comptable Senior"></div>
+      <div><label>Département</label><input type="text" id="p-dept"></div>
+    </div>
+    <div class="fg2">
+      <div><label>Type Contrat</label><select id="p-contrat"><option>CDI</option><option>CDD</option><option>Stage</option></select></div>
+      <div><label>Salaire Prévu (MAD)</label><input type="number" id="p-salaire" placeholder="0"></div>
+    </div>
+    <div class="fg1"><label>Description</label><textarea id="p-desc" placeholder="Missions, profil recherché…"></textarea></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-poste')">Annuler</button>
+      <button class="btn btn-primary" onclick="savePoste()">💾 Ouvrir le Poste</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CANDIDAT -->
+<div class="modal" id="modal-candidat" style="width:500px">
+  <div class="ch"><span class="ct">👤 Nouveau Candidat</span><button class="btn btn-secondary btn-xs" onclick="closeModal('modal-candidat')">✕</button></div>
+  <div style="padding:16px">
+    <div class="fg2">
+      <div><label>Nom & Prénom</label><input type="text" id="c-nom"></div>
+      <div><label>Poste Candidaté</label><select id="c-poste"><option value="">-- Sélectionner --</option></select></div>
+    </div>
+    <div class="fg2">
+      <div><label>Email</label><input type="email" id="c-email"></div>
+      <div><label>Téléphone</label><input type="text" id="c-tel"></div>
+    </div>
+    <div class="fg2">
+      <div><label>Étape</label><select id="c-etape"><option>CV Reçu</option><option>Présélection</option><option>Entretien RH</option><option>Entretien Technique</option><option>Offre Envoyée</option><option>Accepté</option><option>Refusé</option></select></div>
+      <div><label>Date Candidature</label><input type="date" id="c-date"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-candidat')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveCandidat()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FORMATION -->
+<div class="modal" id="modal-formation" style="width:520px">
+  <div class="ch"><span class="ct">🎓 Nouvelle Formation</span><button class="btn btn-secondary btn-xs" onclick="closeModal('modal-formation')">✕</button></div>
+  <div style="padding:16px">
+    <div class="fg2">
+      <div><label>Intitulé Formation</label><input type="text" id="fm-titre"></div>
+      <div><label>Organisme</label><input type="text" id="fm-org" placeholder="OFPPT, ISCAE…"></div>
+    </div>
+    <div class="fg2">
+      <div><label>Date Début</label><input type="date" id="fm-debut"></div>
+      <div><label>Date Fin</label><input type="date" id="fm-fin"></div>
+    </div>
+    <div class="fg2">
+      <div><label>Coût (MAD)</label><input type="number" id="fm-cout" value="0"></div>
+      <div><label>Participants</label><input type="text" id="fm-parts" placeholder="Noms séparés par virgule"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-formation')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveFormation()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EVAL -->
+<div class="modal" id="modal-eval" style="width:420px">
+  <div class="ch"><span class="ct">⭐ Évaluation Rapide</span><button class="btn btn-secondary btn-xs" onclick="closeModal('modal-eval')">✕</button></div>
+  <div style="padding:16px">
+    <div class="fg2">
+      <div><label>Employé</label><select id="mev-emp"><option value="">-- Sélectionner --</option></select></div>
+      <div><label>Période</label><input type="text" id="mev-period" placeholder="2024"></div>
+    </div>
+    <div class="alert alert-info" style="font-size:11.5px">Utilisez le formulaire complet dans la page Évaluations.</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-eval')">Fermer</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-eval');nav('evaluations')">→ Ouvrir Évaluations</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DISCIPLINAIRE -->
+<div class="modal" id="modal-discip" style="width:520px">
+  <div class="ch"><span class="ct">⚖ Procédure Disciplinaire</span><button class="btn btn-secondary btn-xs" onclick="closeModal('modal-discip')">✕</button></div>
+  <div style="padding:16px">
+    <div class="fg2">
+      <div><label>Employé</label><select id="d-emp"><option value="">-- Sélectionner --</option></select></div>
+      <div><label>Date des Faits</label><input type="date" id="d-date"></div>
+    </div>
+    <div class="fg1"><label>Description des Faits</label><textarea id="d-faits"></textarea></div>
+    <div class="fg2">
+      <div><label>Sanction Proposée</label>
+        <select id="d-sanction"><option>Avertissement</option><option>Blâme</option><option>Mise à pied (1-8j)</option><option>Licenciement préavis</option><option>Licenciement faute grave</option></select>
+      </div>
+      <div><label>Statut</label>
+        <select id="d-statut"><option>En cours</option><option>Convocation envoyée</option><option>Sanction notifiée</option><option>Clôturée</option></select>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-discip')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveDiscip()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+<script>
+// ═══════════════════ DATA STORE ═══════════════════
+let DB={employes:[],bulletins:[],conges:[],pointages:{},evaluations:[],formations:[],disciplinaires:[],postes:[],candidats:[],clotureMois:{},settings:{entreprise:'Mon Entreprise',cimrSal:3,cimrPat:4}};
+
+// ═══════════════════ NAVIGATION ═══════════════════
+const TITLES={dashboard:['Vue d\'ensemble RH','ComptaMA · RH & Paie'],employes:['Dossiers Employés','Registre du personnel Art.24 CT'],recrutement:['Recrutement','Pipeline candidats'],orgchart:['Organigramme','Structure organisationnelle'],contrats:['Contrats & CIMR','Suivi contrats et retraite'],pointage:['Pointage & Heures Sup.','Art. 196-201 Code du Travail'],conges:['Congés & Absences','Art. 231-245 Code du Travail'],planning:['Planning Équipes','Rotations mensuelles'],bulletin:['Bulletin de Paie','CNSS · AMO · IR 2025'],virements:['Virements & États','Ordres de virement'],declarations:['Déclarations CNSS/IR','Damancom · SIMPL-IR'],formations:['Plan de Formation','TFP 1,60%'],evaluations:['Évaluations Performance','Entretiens annuels'],disciplinaire:['Procédures Disciplinaires','Art. 62-67 CT'],reporting:['Tableaux de Bord RH','KPIs & Analyses'],cloture_rh:['Clôture Mensuelle RH','Checklist paie']};
+function nav(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));const pg=document.getElementById('page-'+id);if(pg)pg.classList.add('active');const ni=document.querySelector(`.ni[onclick="nav('${id}')"]`);if(ni)ni.classList.add('active');if(TITLES[id]){document.getElementById('tb-title').textContent=TITLES[id][0];document.getElementById('tb-sub').textContent=TITLES[id][1];}refreshAll();}
+
+// ═══════════════════ MODALS ═══════════════════
+function showModal(id){document.getElementById('modal-overlay').style.display='block';document.getElementById(id).style.display='block';refreshEmpSelects();}
+function closeModal(id){document.getElementById(id).style.display='none';document.getElementById('modal-overlay').style.display='none';}
+function hideAllModals(e){if(e.target.id==='modal-overlay'){document.querySelectorAll('.modal').forEach(m=>m.style.display='none');document.getElementById('modal-overlay').style.display='none';}}
+
+// ═══════════════════ UTILS ═══════════════════
+const fmt=n=>Math.round(n).toLocaleString('fr-MA');
+const fmt2=n=>n.toFixed(2).replace('.',',');
+const fmtM=n=>fmt(n)+' MAD';
+function ancPct(d){if(!d)return 0;const y=(new Date()-new Date(d))/(365.25*86400000);if(y<2)return 0;if(y<5)return 5;if(y<10)return 10;if(y<15)return 15;if(y<20)return 20;return 25;}
+function ancYears(d){if(!d)return 0;return Math.floor((new Date()-new Date(d))/(365.25*86400000));}
+function congesLegaux(d){const y=ancYears(d);const base=18+Math.floor(y/5)*1.5;return Math.min(base,30);}
+function genMat(){return 'EMP-'+String(DB.employes.length+1).padStart(3,'0');}
+
+// ═══════════════════ CALCUL IR ═══════════════════
+function calcIR(rni){const T=[[30000,0,0],[50000,.10,3000],[60000,.20,8000],[80000,.30,14000],[180000,.34,17200],[Infinity,.38,24400]];for(const[max,taux,ded]of T){if(rni<=max)return{ir:Math.max(0,rni*taux-ded)/12,taux,tranche:(taux*100).toFixed(0)+'%'};} return{ir:0,taux:0,tranche:'0%'};}
+
+// ═══════════════════ BULLETIN ═══════════════════
+function calcBulletin(){
+  const base=+document.getElementById('bul-base').value||0;
+  const prime=+document.getElementById('bul-prime').value||0;
+  const transport=+document.getElementById('bul-transport').value||0;
+  const repres=+document.getElementById('bul-repres').value||0;
+  const avantage=+document.getElementById('bul-avantage').value||0;
+  const sup25=+document.getElementById('bul-sup25').value||0;
+  const sup50=+document.getElementById('bul-sup50').value||0;
+  const sup100=+document.getElementById('bul-sup100').value||0;
+  const absJours=+document.getElementById('bul-absence').value||0;
+  const enfants=+document.getElementById('bul-enfants').value||0;
+  const avance=+document.getElementById('bul-avance').value||0;
+  const cimrPct=+document.getElementById('bul-cimr').value||0;
+  const mutuelle=+document.getElementById('bul-mutuelle').value||0;
+  const empId=document.getElementById('bul-emp').value;
+  const emp=DB.employes.find(e=>e.id==empId);
+  const apct=emp?ancPct(emp.embauche):0;
+  document.getElementById('bul-anc-pct').value=apct+'%';
+  const primeAnc=base*apct/100;
+  const th=base/191;
+  const mSup25=th*sup25*1.25,mSup50=th*sup50*1.5,mSup100=th*sup100*2;
+  const retAbs=(base/26)*absJours;
+  const brut=base+primeAnc+prime+transport+repres+avantage+mSup25+mSup50+mSup100-retAbs;
+  const assietteCNSS=Math.min(base,6000);
+  const cnss_sal=assietteCNSS*0.0448;
+  const amo_sal=brut*0.0226;
+  const cimr_sal=brut*cimrPct/100;
+  const fp=Math.min(brut*0.20,2500);
+  const dedEnf=Math.min(enfants,6)*30;
+  const rni_m=brut-cnss_sal-amo_sal-cimr_sal-fp-dedEnf;
+  const{ir,taux:tirTaux,tranche}=calcIR(rni_m*12);
+  const net=brut-cnss_sal-amo_sal-cimr_sal-mutuelle-ir-avance;
+  const cnss_pat=assietteCNSS*0.0898,af_pat=brut*0.064,amo_pat=brut*0.0411,tfp_pat=brut*0.016;
+  const cimrPat=DB.settings.cimrPat||4;
+  const cimr_pat=brut*cimrPat/100;
+  const totalPat=cnss_pat+af_pat+amo_pat+tfp_pat+cimr_pat;
+  const coutTotal=net+cnss_sal+amo_sal+ir+totalPat+mutuelle+avance;
+
+  // Update preview
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  const sh=(id,show)=>{const el=document.getElementById(id);if(el)el.style.display=show?'':'none';};
+  s('bp-mbase',fmt2(base));s('bp-manc',fmt2(primeAnc));s('bp-tanc',apct+'%');s('bp-hanc',base+' MAD');
+  sh('bpr-anc',primeAnc>0);
+  s('bp-msup25',fmt2(mSup25));s('bp-hsup25',sup25+'h×'+fmt2(th*1.25));sh('bpr-sup25',sup25>0);
+  s('bp-msup50',fmt2(mSup50));sh('bpr-sup50',sup50>0);
+  s('bp-msup100',fmt2(mSup100));sh('bpr-sup100',sup100>0);
+  s('bp-mprime',fmt2(prime));sh('bpr-prime',prime>0);
+  s('bp-mtransport',fmt2(transport));sh('bpr-transport',transport>0);
+  s('bp-mrepres',fmt2(repres));sh('bpr-repres',repres>0);
+  s('bp-mavantage',fmt2(avantage));sh('bpr-avantage',avantage>0);
+  s('bp-mabsence',fmt2(retAbs));s('bp-habsence',absJours+'j×'+fmt2(base/26));sh('bpr-absence',absJours>0);
+  s('bp-brut',fmt2(brut));s('bp-mcnss',fmt2(cnss_sal));s('bp-hcnss',assietteCNSS===6000?'plaf.6000':fmt2(assietteCNSS));
+  s('bp-mamo',fmt2(amo_sal));s('bp-mcimr',fmt2(cimr_sal));s('bp-tcimr',cimrPct+'%');sh('bpr-cimr',cimrPct>0);
+  s('bp-mmutuelle',fmt2(mutuelle));sh('bpr-mutuelle',mutuelle>0);
+  s('bp-fp','-'+fmt2(fp));s('bp-ded-enf','-'+fmt2(dedEnf));
+  s('bp-rni',fmt2(rni_m)+'×12='+fmt2(rni_m*12));s('bp-mir',fmt2(ir));s('bp-tranche',tranche);s('bp-tir',(tirTaux*100).toFixed(0)+'%');
+  s('bp-mavance',fmt2(avance));sh('bpr-avance',avance>0);
+  s('bp-net',fmt2(net)+' MAD');s('bp-enfants-disp',enfants);
+  s('bp-lettre',nbEnLettres(Math.round(net)));
+  // Coût employeur
+  s('ce-net',fmtM(net));s('ce-cnss-pat',fmtM(cnss_pat));s('ce-af',fmtM(af_pat));
+  s('ce-amo-pat',fmtM(amo_pat));s('ce-tfp',fmtM(tfp_pat));s('ce-cimr',fmtM(cimr_pat));s('ce-total',fmtM(coutTotal));
+  return{brut,cnss_sal,amo_sal,ir,net,coutTotal,totalPat,fp,cimr_sal,mutuelle,base,primeAnc};
+}
+
+function prefillBulletin(){const empId=document.getElementById('bul-emp').value;const emp=DB.employes.find(e=>e.id==empId);if(!emp)return;document.getElementById('bul-base').value=emp.salaire||0;document.getElementById('bul-enfants').value=emp.enfants||0;document.getElementById('bul-cimr').value=DB.settings.cimrSal||0;const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('bp-nom',emp.nom);s('bp-poste',emp.poste||'—');s('bp-cnss',emp.cnss||'—');s('bp-cin',emp.cin||'—');s('bp-dept',emp.dept||'—');s('bp-contrat',emp.contrat||'—');s('bp-anciennete',ancYears(emp.embauche)+' an(s)');s('bp-rib',emp.rib||'—');calcBulletin();}
+
+function resetBulletin(){['bul-base','bul-prime','bul-transport','bul-repres','bul-avantage','bul-sup25','bul-sup50','bul-sup100','bul-absence','bul-avance','bul-mutuelle'].forEach(id=>document.getElementById(id).value=0);document.getElementById('bul-enfants').value=0;document.getElementById('bul-cimr').value=0;calcBulletin();}
+
+function saveBulletin(){const empId=document.getElementById('bul-emp').value;const emp=DB.employes.find(e=>e.id==empId);if(!emp){alert('Sélectionnez un employé.');return;}const res=calcBulletin();DB.bulletins.push({id:Date.now(),empId,empNom:emp.nom,periode:document.getElementById('bul-periode').value,...res});refreshAll();alert('✅ Bulletin enregistré pour '+emp.nom);}
+
+function genererTousBulletins(){if(!DB.employes.length){alert('Aucun employé.');return;}const periode=document.getElementById('bul-mois').value;let count=0;DB.employes.filter(e=>e.statut==='Actif').forEach(emp=>{const brut=emp.salaire||0;const pa=ancPct(emp.embauche);const pA=brut*pa/100;const tb=brut+pA;const ac=Math.min(brut,6000);const cs=ac*0.0448,as=tb*0.0226,fp=Math.min(tb*.2,2500),de=Math.min(+(emp.enfants||0),6)*30;const{ir}=calcIR((tb-cs-as-fp-de)*12);const net=tb-cs-as-ir;const cp=ac*0.0898,af=tb*0.064,ap=tb*0.0411,tp=tb*0.016;DB.bulletins.push({id:Date.now()+Math.random(),empId:emp.id,empNom:emp.nom,periode,brut:tb,cnss_sal:cs,amo_sal:as,ir,net,coutTotal:net+cp+af+ap+tp,totalPat:cp+af+ap+tp,fp,cimr_sal:0,mutuelle:0,base:brut,primeAnc:pA});count++;});refreshAll();alert(`✅ ${count} bulletin(s) générés`);}
+
+function deleteBul(id){DB.bulletins=DB.bulletins.filter(b=>b.id!==id);refreshAll();}
+
+// ═══════════════════ EMPLOYES ═══════════════════
+function saveEmploye(){const nom=document.getElementById('e-nom').value.trim();if(!nom){alert('Le nom est requis.');return;}const fields=['cin','cnss','nais','nat','sex','adr','tel','email','poste','dept','manager','contrat','embauche','fin','statut','cat','conv','banque','rib','paiement'];const emp={id:Date.now(),nom,mat:document.getElementById('e-mat').value||genMat(),salaire:parseFloat(document.getElementById('e-salaire').value)||0,enfants:parseInt(document.getElementById('e-enfants').value)||0,congesPris:0};fields.forEach(f=>{const el=document.getElementById('e-'+f);if(el)emp[f]=el.value;});DB.employes.push(emp);closeModal('modal-emp');refreshAll();alert('✅ Dossier créé : '+emp.nom);}
+
+function filterEmployes(){const q=(document.getElementById('search-emp').value||'').toLowerCase();const dept=document.getElementById('filter-dept').value;const contrat=document.getElementById('filter-contrat').value;const f=DB.employes.filter(e=>(!q||e.nom.toLowerCase().includes(q)||(e.poste||'').toLowerCase().includes(q)||(e.mat||'').toLowerCase().includes(q))&&(!dept||e.dept===dept)&&(!contrat||e.contrat===contrat));renderEmployesTable(f);}
+
+function renderEmployesTable(list){const tbody=document.getElementById('tbody-employes');if(!list.length){tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--t3)">Aucun résultat.</td></tr>';return;}tbody.innerHTML=list.map(e=>{const sc={Actif:'badge-green',Inactif:'badge-grey',Suspendu:'badge-red',Démissionné:'badge-red'};return`<tr><td class="mono" style="font-size:11px">${e.mat||'—'}</td><td><span class="fw6">${e.nom}</span><div class="text-xs text-muted">${e.email||''}</div></td><td>${e.poste||'—'}</td><td><span class="badge badge-blue" style="font-size:10px">${e.dept||'—'}</span></td><td><span class="badge ${e.contrat==='CDI'?'badge-green':e.contrat==='CDD'?'badge-gold':'badge-grey'}">${e.contrat||'—'}</span></td><td>${ancYears(e.embauche)} an(s)<div class="text-xs text-muted">+${ancPct(e.embauche)}%</div></td><td class="num">${fmtM(e.salaire)}</td><td><span class="badge ${sc[e.statut]||'badge-grey'}">${e.statut||'—'}</span></td><td class="flex" style="gap:3px"><button class="btn btn-secondary btn-xs" onclick="editEmploye(${e.id})">✏</button><button class="btn btn-primary btn-xs" onclick="loadBulletin(${e.id})">💸</button><button class="btn btn-danger btn-xs" onclick="deleteEmploye(${e.id})">✕</button></td></tr>`;}).join('');}
+
+function editEmploye(id){const emp=DB.employes.find(e=>e.id===id);if(!emp)return;document.getElementById('e-nom').value=emp.nom||'';['cin','cnss','nais','adr','tel','email','poste','dept','manager','embauche','fin','rib','banque','conv','cat','mat'].forEach(f=>{const el=document.getElementById('e-'+f);if(el)el.value=emp[f]||'';});['contrat','statut','sex','paiement'].forEach(f=>{const el=document.getElementById('e-'+f);if(el)el.value=emp[f]||el.options[0].value;});document.getElementById('e-salaire').value=emp.salaire||0;document.getElementById('e-enfants').value=emp.enfants||0;document.getElementById('e-nat').value=emp.nat||'Marocaine';showModal('modal-emp');}
+
+function deleteEmploye(id){if(!confirm('Supprimer ce dossier ?'))return;DB.employes=DB.employes.filter(e=>e.id!==id);refreshAll();}
+function loadBulletin(id){nav('bulletin');setTimeout(()=>{document.getElementById('bul-emp').value=id;prefillBulletin();},100);}
+
+// ═══════════════════ CONGES ═══════════════════
+function switchCgTab(id,el){document.querySelectorAll('#page-conges .tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('#page-conges .tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');}
+function calcJoursCg(){const d1=new Date(document.getElementById('cg-debut').value),d2=new Date(document.getElementById('cg-fin').value);if(d1&&d2&&d2>=d1){document.getElementById('cg-jours').value=Math.ceil((d2-d1)/86400000)+1+' jour(s)';}}
+function saveConge(){const empId=document.getElementById('cg-emp').value;const emp=DB.employes.find(e=>e.id==empId);if(!emp){alert('Sélectionnez un employé.');return;}const debut=document.getElementById('cg-debut').value,fin=document.getElementById('cg-fin').value;if(!debut||!fin){alert('Dates requises.');return;}const jours=Math.ceil((new Date(fin)-new Date(debut))/86400000)+1;DB.conges.push({id:Date.now(),empId,empNom:emp.nom,type:document.getElementById('cg-type').value,debut,fin,jours,justif:document.getElementById('cg-justif').value,comment:document.getElementById('cg-comment').value,statut:'En attente'});closeModal('modal-conge');refreshAll();}
+function validerConge(id){const cg=DB.conges.find(c=>c.id===id);if(!cg)return;cg.statut='Approuvé';const emp=DB.employes.find(e=>e.id==cg.empId);if(emp)emp.congesPris=(emp.congesPris||0)+cg.jours;refreshAll();}
+function refuserConge(id){const cg=DB.conges.find(c=>c.id===id);if(cg){cg.statut='Refusé';refreshAll();}}
+
+// ═══════════════════ POINTAGE ═══════════════════
+function renderPointage(){const body=document.getElementById('ptg-body');if(!DB.employes.length){body.innerHTML='<div style="padding:14px;color:var(--t3);font-size:12.5px">Aucun employé actif</div>';return;}const mois=document.getElementById('ptg-mois').value;if(!DB.pointages[mois])DB.pointages[mois]={};body.innerHTML=DB.employes.filter(e=>e.statut==='Actif').map(emp=>{const pt=DB.pointages[mois][emp.id]||{normal:191,sup25:0,sup50:0,sup100:0,absent:0,prime:0};const th=emp.salaire/191;const total=emp.salaire+th*pt.sup25*1.25+th*pt.sup50*1.5+th*pt.sup100*2-(emp.salaire/26)*(pt.absent||0)+(+pt.prime||0);return`<div class="pt-day" data-empid="${emp.id}"><div class="pt-cell name">${emp.nom.split(' ')[0]}<div class="text-xs text-muted">${emp.poste||''}</div></div><div class="pt-cell"><input type="number" value="${pt.normal}" onchange="savePtg('${mois}',${emp.id},'normal',this.value)" min="0" max="220" style="width:52px;text-align:center"></div><div class="pt-cell"><input type="number" value="${pt.sup25}" onchange="savePtg('${mois}',${emp.id},'sup25',this.value)" min="0" style="width:52px;text-align:center"></div><div class="pt-cell"><input type="number" value="${pt.sup50}" onchange="savePtg('${mois}',${emp.id},'sup50',this.value)" min="0" style="width:52px;text-align:center"></div><div class="pt-cell"><input type="number" value="${pt.sup100||0}" onchange="savePtg('${mois}',${emp.id},'sup100',this.value)" min="0" style="width:52px;text-align:center"></div><div class="pt-cell"><input type="number" value="${pt.absent||0}" onchange="savePtg('${mois}',${emp.id},'absent',this.value)" min="0" style="width:52px;text-align:center"></div><div class="pt-cell"><input type="number" value="${pt.prime||0}" onchange="savePtg('${mois}',${emp.id},'prime',this.value)" min="0" placeholder="MAD" style="width:65px;text-align:center"></div><div class="pt-cell num fw6">${fmt(total)}</div></div>`;}).join('');updatePtgKpis(mois);}
+function savePtg(mois,empId,field,val){if(!DB.pointages[mois])DB.pointages[mois]={};if(!DB.pointages[mois][empId])DB.pointages[mois][empId]={normal:191,sup25:0,sup50:0,sup100:0,absent:0,prime:0};DB.pointages[mois][empId][field]=parseFloat(val)||0;updatePtgKpis(mois);}
+function savePointage(){renderPointage();alert('Pointage sauvegardé.');}
+function updatePtgKpis(mois){if(!DB.pointages[mois])return;let normal=0,sup25=0,sup50=0,cout=0;DB.employes.filter(e=>e.statut==='Actif').forEach(emp=>{const pt=DB.pointages[mois][emp.id]||{};const th=emp.salaire/191;normal+=(pt.normal||191);sup25+=(pt.sup25||0);sup50+=(pt.sup50||0);cout+=th*(pt.sup25||0)*0.25+th*(pt.sup50||0)*0.5+th*(pt.sup100||0);});document.getElementById('ptg-normal').textContent=fmt(normal);document.getElementById('ptg-25').textContent=fmt(sup25);document.getElementById('ptg-50').textContent=fmt(sup50);document.getElementById('ptg-cout').textContent=fmt(cout);}
+
+// ═══════════════════ RECRUTEMENT ═══════════════════
+function savePoste(){const titre=document.getElementById('p-titre').value.trim();if(!titre)return;DB.postes.push({id:Date.now(),titre,dept:document.getElementById('p-dept').value,contrat:document.getElementById('p-contrat').value,salaire:parseFloat(document.getElementById('p-salaire').value)||0,desc:document.getElementById('p-desc').value,statut:'Ouvert'});closeModal('modal-poste');refreshAll();}
+function saveCandidat(){const nom=document.getElementById('c-nom').value.trim();if(!nom)return;DB.candidats.push({id:Date.now(),nom,posteId:document.getElementById('c-poste').value,email:document.getElementById('c-email').value,tel:document.getElementById('c-tel').value,etape:document.getElementById('c-etape').value,date:document.getElementById('c-date').value});closeModal('modal-candidat');refreshAll();}
+function closePoste(id){const p=DB.postes.find(x=>x.id===id);if(p)p.statut='Fermé';refreshAll();}
+function deleteCand(id){DB.candidats=DB.candidats.filter(c=>c.id!==id);refreshAll();}
+
+// ═══════════════════ FORMATIONS ═══════════════════
+function saveFormation(){const titre=document.getElementById('fm-titre').value.trim();if(!titre)return;DB.formations.push({id:Date.now(),titre,org:document.getElementById('fm-org').value,debut:document.getElementById('fm-debut').value,fin:document.getElementById('fm-fin').value,cout:parseFloat(document.getElementById('fm-cout').value)||0,parts:document.getElementById('fm-parts').value,statut:'Planifiée'});closeModal('modal-formation');refreshAll();}
+function toggleFormationStatus(id){const f=DB.formations.find(x=>x.id===id);if(!f)return;f.statut=f.statut==='Planifiée'?'En cours':f.statut==='En cours'?'Terminée':'Planifiée';refreshAll();}
+function deleteFormation(id){DB.formations=DB.formations.filter(f=>f.id!==id);refreshAll();}
+
+// ═══════════════════ EVALUATIONS ═══════════════════
+function calcEval(){const ids=['ev-tech','ev-qualite','ev-ponct','ev-team','ev-init','ev-proc'];const vals=ids.map(id=>parseFloat(document.getElementById(id).value)||0);const avg=vals.reduce((a,b)=>a+b,0)/vals.length;document.getElementById('ev-global').textContent=avg.toFixed(2)+' / 10';const M=[[9,'Excellent ⭐⭐⭐'],[7.5,'Très Bien ⭐⭐'],[6,'Bien ⭐'],[5,'Assez Bien'],[3,'Insuffisant'],[0,'Mauvais']];document.getElementById('ev-mention').textContent=(M.find(([s])=>avg>=s)||M[M.length-1])[1];return avg;}
+function saveEval(){const empId=document.getElementById('ev-emp').value;const emp=DB.employes.find(e=>e.id==empId);if(!emp){alert('Sélectionnez un employé.');return;}const score=calcEval();DB.evaluations.push({id:Date.now(),empId,empNom:emp.nom,periode:document.getElementById('ev-period').value,score,comment:document.getElementById('ev-comment').value,decision:document.getElementById('ev-decision').value});refreshAll();alert('✅ Évaluation enregistrée');}
+
+// ═══════════════════ DISCIPLINAIRE ═══════════════════
+function saveDiscip(){const empId=document.getElementById('d-emp').value;const emp=DB.employes.find(e=>e.id==empId);if(!emp){alert('Sélectionnez un employé.');return;}DB.disciplinaires.push({id:Date.now(),empId,empNom:emp.nom,date:document.getElementById('d-date').value,faits:document.getElementById('d-faits').value,sanction:document.getElementById('d-sanction').value,statut:document.getElementById('d-statut').value});closeModal('modal-discip');refreshAll();}
+function deleteDiscip(id){DB.disciplinaires=DB.disciplinaires.filter(d=>d.id!==id);refreshAll();}
+
+function calcSTC(){const empId=document.getElementById('stc-emp').value;const emp=DB.employes.find(e=>e.id==empId);if(!emp)return;const motif=document.getElementById('stc-motif').value;const preavis=parseFloat(document.getElementById('stc-preavis').value)||0;const anc=ancYears(emp.embauche);const sal=emp.salaire||0;const dep=new Date(document.getElementById('stc-date').value||Date.now());const salProrata=sal*(dep.getDate()/26);const cgSolde=Math.max(0,congesLegaux(emp.embauche)-(emp.congesPris||0))*(sal/26);let indemnite=0;if(motif.includes('économique')||motif.includes('conventionnelle')||motif==='Retraite')indemnite=anc>=6?sal*anc*0.5/12:0;const preavisM=motif.includes('Démission')?0:(sal/26)*preavis;const total=salProrata+cgSolde+indemnite+preavisM;const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('stc-sal',fmtM(salProrata));s('stc-cg',fmtM(cgSolde));s('stc-indemnite',fmtM(indemnite));s('stc-preavis-mnt',fmtM(preavisM));s('stc-total',fmtM(total));document.getElementById('stc-result').style.display='block';}
+
+// ═══════════════════ CIMR ═══════════════════
+function calcCIMR(){const ms=DB.employes.filter(e=>e.statut==='Actif').reduce((s,e)=>s+(e.salaire||0),0);const sp=parseFloat(document.getElementById('cimr-sal').value)||0;const pp=parseFloat(document.getElementById('cimr-pat').value)||0;document.getElementById('cimr-ms').textContent=fmtM(ms);document.getElementById('cimr-sal-total').textContent=fmtM(ms*sp/100);document.getElementById('cimr-pat-total').textContent=fmtM(ms*pp/100);}
+
+// ═══════════════════ VIREMENTS ═══════════════════
+function genVirements(){const mois=document.getElementById('vir-mois').value;const buls=DB.bulletins.filter(b=>b.periode===mois);const tbody=document.getElementById('tbody-virements');if(!buls.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--t3)">Aucun bulletin pour cette période</td></tr>';return;}let total=0,norib=0;tbody.innerHTML=buls.map(b=>{const emp=DB.employes.find(e=>e.id==b.empId)||{};total+=b.net;if(!emp.rib)norib++;const ok=emp.rib&&emp.rib.length>10;return`<tr><td class="fw6">${b.empNom}</td><td>${emp.banque||'—'}</td><td class="mono" style="font-size:11px">${emp.rib||'<span class="badge badge-red">Manquant</span>'}</td><td class="num fw6">${fmtM(b.net)}</td><td>${ok?'<span class="badge badge-green">✓ Prêt</span>':'<span class="badge badge-red">⚠ RIB manquant</span>'}</td></tr>`;}).join('');document.getElementById('vir-total').textContent=fmtM(total);document.getElementById('vir-nb').textContent=buls.length;document.getElementById('vir-val').textContent=buls.length-norib;document.getElementById('vir-norib').textContent=norib;}
+function exportVirCSV(){const mois=document.getElementById('vir-mois').value;const buls=DB.bulletins.filter(b=>b.periode===mois);const rows=[['Employé','Banque','RIB','Net'],...buls.map(b=>{const emp=DB.employes.find(e=>e.id==b.empId)||{};return[b.empNom,emp.banque||'',emp.rib||'',b.net.toFixed(2)];})];const csv=rows.map(r=>r.join(';')).join('\n');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='virements_'+mois+'.csv';a.click();}
+
+// ═══════════════════ DECLARATIONS ═══════════════════
+function genDeclCNSS(){const mois=document.getElementById('decl-mois').value;const buls=DB.bulletins.filter(b=>b.periode===mois);if(!buls.length){alert('Aucun bulletin pour cette période');return;}const totCS=buls.reduce((s,b)=>s+b.cnss_sal,0),totAS=buls.reduce((s,b)=>s+b.amo_sal,0),ms=buls.reduce((s,b)=>s+b.brut,0);const ac=buls.reduce((s,b)=>{const emp=DB.employes.find(e=>e.id==b.empId);return s+Math.min(emp?emp.salaire:b.base,6000);},0);const cp=ac*0.0898,af=ms*0.064,ap=ms*0.0411;const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('d-cnss-assiette',fmtM(ac));s('d-cnss-sal',fmtM(totCS));s('d-cnss-pat',fmtM(cp+af));s('d-amo',fmtM(totAS+ap));s('d-cnss-total',fmtM(totCS+cp+af+totAS+ap));renderDeclTable(mois);}
+function genDeclIR(){const mois=document.getElementById('decl-mois').value;const buls=DB.bulletins.filter(b=>b.periode===mois);const totIR=buls.reduce((s,b)=>s+b.ir,0),totBrut=buls.reduce((s,b)=>s+b.brut,0),totFP=buls.reduce((s,b)=>s+(b.fp||0),0),nets=buls.reduce((s,b)=>s+b.net,0),chSal=buls.reduce((s,b)=>s+b.cnss_sal+b.amo_sal+b.ir,0);const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('d-ir-nb',buls.length);s('d-ir-brut',fmtM(totBrut));s('d-ir-ir',fmtM(totIR));s('d-ir-fp',fmtM(totFP));s('d-ir-total',fmtM(totIR));s('d-ms',fmtM(totBrut));s('d-nets',fmtM(nets));s('d-ch-sal',fmtM(chSal));s('d-ch-pat',fmtM(buls.reduce((s,b)=>s+(b.totalPat||0),0)));s('d-cout',fmtM(buls.reduce((s,b)=>s+b.coutTotal,0)));}
+function renderDeclTable(mois){const buls=DB.bulletins.filter(b=>b.periode===mois);const tbody=document.getElementById('tbody-decl');if(!buls.length){tbody.innerHTML='<tr><td colspan="10" style="text-align:center;padding:16px;color:var(--t3)">Aucun bulletin</td></tr>';return;}tbody.innerHTML=buls.map(b=>{const emp=DB.employes.find(e=>e.id==b.empId)||{};const ac=Math.min(emp.salaire||b.base,6000);const cp=ac*0.0898,ap=b.brut*0.0411;return`<tr><td class="mono" style="font-size:11px">${emp.mat||'—'}</td><td class="fw6">${b.empNom}</td><td class="mono" style="font-size:11px">${emp.cnss||'—'}</td><td class="num">${fmtM(b.brut)}</td><td class="num">${fmtM(b.cnss_sal)}</td><td class="num">${fmtM(b.amo_sal)}</td><td class="num">${fmtM(b.ir)}</td><td class="num fw6">${fmtM(b.net)}</td><td class="num">${fmtM(cp)}</td><td class="num">${fmtM(ap)}</td></tr>`;}).join('');}
+// ═══════════════════ CLOTURE ═══════════════════
+const STEPS=[{label:'Vérifier les pointages du mois',desc:'Pointer et valider toutes les heures de travail.'},{label:'Générer tous les bulletins de paie',desc:'Onglet Bulletin de Paie → "⚡ Générer Tous".'},{label:'Valider les demandes de congés',desc:'Approuver ou refuser les congés en attente.'},{label:'Préparer l\'état de virement',desc:'Onglet Virements → Générer l\'état bancaire.'},{label:'Déclaration CNSS/AMO (≤ J+10)',desc:'Générer et télédéclarer sur Damancom.'},{label:'Déclaration SIMPL-IR (≤ J+20)',desc:'Générer et soumettre sur le portail DGI.'},{label:'Écritures comptables',desc:'Dr.6411/Cr.4421+4461+4462+4441 · Dr.6414-6415/Cr.4461+4462.'},{label:'Archiver les bulletins',desc:'Export JSON et archivage numérique.'},{label:'Valider la clôture RH',desc:'Confirmer la clôture mensuelle définitive.'}];
+
+function renderClotureSteps(){const mois=document.getElementById('clt-mois')?document.getElementById('clt-mois').value:'2025-05';if(!DB.clotureMois[mois])DB.clotureMois[mois]=[];const done=DB.clotureMois[mois];const c=document.getElementById('cloture-steps');if(!c)return;c.innerHTML=STEPS.map((step,i)=>{const isDone=done.includes(i),isLocked=i>0&&!done.includes(i-1);return`<div class="card mb10" style="border-left:4px solid ${isDone?'var(--gn)':isLocked?'var(--bd)':'var(--gd)'}"><div class="ch" style="padding:10px 14px"><div class="flex" style="gap:10px"><div style="width:28px;height:28px;border-radius:50%;background:${isDone?'var(--gn)':isLocked?'var(--sf3)':'var(--gd-a)'};display:flex;align-items:center;justify-content:center;font-weight:700;color:${isDone?'#fff':isLocked?'var(--t3)':'var(--gd)'};font-size:12px;flex-shrink:0">${isDone?'✓':i+1}</div><div><div class="ct" style="color:${isLocked?'var(--t3)':'var(--t1)'}">${step.label}</div><div class="text-xs text-muted">${step.desc}</div></div></div>${!isDone&&!isLocked?`<button class="btn btn-green btn-sm" onclick="validerEtape(${i},'${mois}')">✓ Valider</button>`:isDone?'<span class="badge badge-green">Validé</span>':'<span class="badge badge-grey">Verrouillé</span>'}</div></div>`;}).join('');const recap=document.getElementById('cloture-recap');if(recap)recap.style.display=done.length===STEPS.length?'block':'none';}
+
+function validerEtape(i,mois){if(!DB.clotureMois[mois])DB.clotureMois[mois]=[];if(!DB.clotureMois[mois].includes(i))DB.clotureMois[mois].push(i);if(DB.clotureMois[mois].length===STEPS.length){const buls=DB.bulletins.filter(b=>b.periode===mois);const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('cl-bul',buls.length);s('cl-ms',fmtM(buls.reduce((x,b)=>x+b.brut,0)));s('cl-ret',fmtM(buls.reduce((x,b)=>x+b.cnss_sal+b.amo_sal+b.ir,0)));s('cl-net',fmtM(buls.reduce((x,b)=>x+b.net,0)));s('cl-pat',fmtM(buls.reduce((x,b)=>x+(b.totalPat||0),0)));}renderClotureSteps();}
+
+// ═══════════════════ REPORTING ═══════════════════
+function renderReporting(){const actifs=DB.employes.filter(e=>e.statut==='Actif');const ms=actifs.reduce((s,e)=>s+(e.salaire||0),0);const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('rep-eff',actifs.length);s('rep-ms',fmt(ms));s('rep-moy',actifs.length?fmt(ms/actifs.length):'0');s('rep-turn','0%');s('rep-abs','0%');
+const depts={};actifs.forEach(e=>{depts[e.dept||'Non défini']=(depts[e.dept||'Non défini']||0)+1;});const deptEl=document.getElementById('rep-dept');if(deptEl)deptEl.innerHTML=Object.entries(depts).length?Object.entries(depts).map(([d,n])=>{const p=actifs.length?Math.round(n/actifs.length*100):0;return`<div class="flex-between mb10" style="font-size:12.5px"><span>${d}</span><span class="fw6">${n} (${p}%)</span></div><div class="pbar-wrap mb10"><div class="pbar" style="width:${p}%;background:var(--gd)"></div></div>`;}).join(''):'<div class="text-sm text-muted">Aucun employé</div>';
+const cols={CDI:'var(--gn)',CDD:'var(--gd)',Stage:'var(--bl)',Interim:'var(--pu)',NC:'var(--t3)'};const ctr={};actifs.forEach(e=>{ctr[e.contrat||'NC']=(ctr[e.contrat||'NC']||0)+1;});const ctrEl=document.getElementById('rep-contrats');if(ctrEl)ctrEl.innerHTML=Object.entries(ctr).length?Object.entries(ctr).map(([c,n])=>{const p=actifs.length?Math.round(n/actifs.length*100):0;return`<div class="flex-between mb10"><span class="badge" style="background:${cols[c]||'var(--t3)'}22;color:${cols[c]||'var(--t3)'}">${c}</span><span class="fw6">${n} — ${p}%</span></div>`;}).join(''):'<div class="text-sm text-muted">Aucun employé</div>';
+const ranges=[{l:'< 4 000',min:0,max:4000},{l:'4 000–6 000',min:4000,max:6000},{l:'6 000–10 000',min:6000,max:10000},{l:'10 000–20 000',min:10000,max:20000},{l:'> 20 000',min:20000,max:Infinity}];const pyrEl=document.getElementById('rep-pyramide');if(pyrEl)pyrEl.innerHTML=ranges.map(t=>{const n=actifs.filter(e=>e.salaire>=t.min&&e.salaire<t.max).length;const p=actifs.length?Math.round(n/actifs.length*100):0;return`<div class="flex-between mb10" style="font-size:12px"><span>${t.l} MAD</span><span class="fw6">${n}</span></div><div class="pbar-wrap mb10"><div class="pbar" style="width:${p}%;background:var(--bl)"></div></div>`;}).join('');
+const buls=DB.bulletins;const chEl=document.getElementById('rep-charges');if(chEl&&buls.length){const tB=buls.reduce((x,b)=>x+b.brut,0),tC=buls.reduce((x,b)=>x+b.cnss_sal,0),tA=buls.reduce((x,b)=>x+b.amo_sal,0),tI=buls.reduce((x,b)=>x+b.ir,0),tP=buls.reduce((x,b)=>x+(b.totalPat||0),0);chEl.innerHTML=`<div class="flex-between mb10"><span class="text-sm">Bruts versés</span><span class="mono fw6">${fmtM(tB)}</span></div><div class="flex-between mb10"><span class="text-sm">CNSS salariale</span><span class="mono">${fmtM(tC)}</span></div><div class="flex-between mb10"><span class="text-sm">AMO salariale</span><span class="mono">${fmtM(tA)}</span></div><div class="flex-between mb10"><span class="text-sm">IR retenu</span><span class="mono">${fmtM(tI)}</span></div><div class="flex-between"><span class="fw6">Charges patronales</span><span class="mono fw6" style="color:var(--gd)">${fmtM(tP)}</span></div>`;}
+// Top 5
+const top5El=document.getElementById('rep-top5');if(top5El)top5El.innerHTML=actifs.length?[...actifs].sort((a,b)=>(b.salaire||0)-(a.salaire||0)).slice(0,5).map((e,i)=>`<div class="flex-between mb10"><span class="text-sm">${i+1}. ${e.nom}<div class="text-xs text-muted">${e.poste||''}</div></span><span class="mono fw6">${fmtM(e.salaire)}</span></div><div class="pbar-wrap mb10"><div class="pbar" style="width:${actifs.length?Math.round(e.salaire/actifs[0].salaire*100):0}%;background:var(--gd)"></div></div>`).join(''):'<div class="text-sm text-muted">Aucun employé</div>';}
+
+// ═══════════════════ DASHBOARD REFRESH ═══════════════════
+function refreshDashboard(){const actifs=DB.employes.filter(e=>e.statut==='Actif');const ms=actifs.reduce((s,e)=>s+(e.salaire||0),0);const ce=ms*1.2109;const cgAtt=DB.conges.filter(c=>c.statut==='En attente').length;const moisBul=(document.getElementById('bul-mois')||{}).value||'2025-05';const bulsMois=DB.bulletins.filter(b=>b.periode===moisBul).length;const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('kpi-eff',actifs.length);s('kpi-ms',fmt(ms));s('kpi-ce',fmt(ce));s('kpi-ca',cgAtt);s('kpi-bul',bulsMois);s('badge-alerte',cgAtt);s('badge-emp',actifs.length);s('badge-conge',cgAtt);
+const cddEx=DB.employes.filter(e=>e.contrat==='CDD'&&e.fin&&new Date(e.fin)<new Date(Date.now()+30*86400000));const alertes=[];if(cddEx.length)alertes.push(`⚠ ${cddEx.length} CDD expire(nt) dans les 30 jours`);if(cgAtt>0)alertes.push(`🏖 ${cgAtt} demande(s) de congé en attente`);const aEl=document.getElementById('dash-alertes');if(aEl)aEl.innerHTML=alertes.length?alertes.map(a=>`<div class="alert alert-warn" style="margin-bottom:6px;font-size:12px">${a}</div>`).join(''):'<div class="text-sm text-muted">✅ Aucune alerte active</div>';
+const depts={};actifs.forEach(e=>{depts[e.dept||'Non défini']=(depts[e.dept||'Non défini']||0)+1;});const rEl=document.getElementById('dash-repartition');if(rEl)rEl.innerHTML=Object.entries(depts).length?Object.entries(depts).map(([d,n])=>{const p=actifs.length?Math.round(n/actifs.length*100):0;return`<div class="flex-between mb10" style="font-size:12.5px"><span>${d}</span><span class="fw6">${n} (${p}%)</span></div><div class="pbar-wrap mb10"><div class="pbar" style="width:${p}%;background:var(--gd)"></div></div>`;}).join(''):'<div class="text-sm text-muted">Aucun employé</div>';}
+
+// ═══════════════════ REFRESH EMP SELECTS ═══════════════════
+function refreshEmpSelects(){const selects=['bul-emp','ev-emp','stc-emp','d-emp','cg-emp','mev-emp'];selects.forEach(id=>{const el=document.getElementById(id);if(!el)return;const cur=el.value;el.innerHTML='<option value="">-- Sélectionner --</option>'+DB.employes.map(e=>`<option value="${e.id}"${e.id==cur?' selected':''}>${e.nom} (${e.poste||''})</option>`).join('');});const pEl=document.getElementById('c-poste');if(pEl)pEl.innerHTML='<option value="">-- Sélectionner --</option>'+DB.postes.map(p=>`<option value="${p.id}">${p.titre}</option>`).join('');const fd=document.getElementById('filter-dept');if(fd){const depts=[...new Set(DB.employes.map(e=>e.dept).filter(Boolean))];fd.innerHTML='<option value="">Tous depts</option>'+depts.map(d=>`<option>${d}</option>`).join('');}}
+
+// ═══════════════════ CONGES REFRESH ═══════════════════
+function refreshConges(){const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('cg-att',DB.conges.filter(c=>c.statut==='En attente').length);s('cg-mois',DB.conges.filter(c=>c.statut==='Approuvé').reduce((x,c)=>x+c.jours,0));const actifs=DB.employes.filter(e=>e.statut==='Actif');s('cg-acquis',actifs.length?(actifs.reduce((x,e)=>x+congesLegaux(e.embauche),0)/actifs.length).toFixed(1):'0');s('cg-pris',actifs.length?(actifs.reduce((x,e)=>x+(e.congesPris||0),0)/actifs.length).toFixed(1):'0');
+const listEl=document.getElementById('list-conges');if(listEl){const en=DB.conges.filter(c=>c.statut==='En attente');listEl.innerHTML=en.length?en.map(c=>`<div class="conge-card"><div class="conge-avatar">${c.empNom.charAt(0)}</div><div class="conge-info"><div class="fw6" style="font-size:13px">${c.empNom}</div><div class="text-sm text-muted">${c.type} · Du ${c.debut} au ${c.fin} · <strong>${c.jours} j</strong></div></div><div class="conge-status"><span class="badge badge-gold">En attente</span><div class="flex"><button class="btn btn-green btn-xs" onclick="validerConge(${c.id})">✓</button><button class="btn btn-danger btn-xs" onclick="refuserConge(${c.id})">✕</button></div></div></div>`).join(''):'<div class="text-sm text-muted">Aucune demande en attente</div>';}
+const tbody=document.getElementById('tbody-soldes-conges');if(tbody)tbody.innerHTML=actifs.length?actifs.map(e=>{const l=congesLegaux(e.embauche),a=(new Date().getMonth()+1)*1.5,p=e.congesPris||0,sol=a-p;return`<tr><td class="fw6">${e.nom}</td><td>${ancYears(e.embauche)} an(s)</td><td class="num">${l} j</td><td class="num">${a.toFixed(1)}</td><td class="num">${p}</td><td class="num fw6" style="color:${sol>=0?'var(--gn)':'var(--rd)'}">${sol.toFixed(1)}</td><td>${sol>=0?'<span class="badge badge-green">OK</span>':'<span class="badge badge-red">Dépassé</span>'}</td></tr>`;}).join(''):'<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--t3)">Aucun employé</td></tr>';}
+
+// ═══════════════════ BULLETINS TABLE ═══════════════════
+function refreshBulletins(){const tbody=document.getElementById('tbody-bulletins');if(!tbody)return;if(!DB.bulletins.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:16px;color:var(--t3)">Aucun bulletin</td></tr>';return;}tbody.innerHTML=[...DB.bulletins].reverse().slice(0,50).map(b=>`<tr><td class="fw6">${b.empNom}</td><td class="mono" style="font-size:11.5px">${b.periode}</td><td class="num">${fmtM(b.brut)}</td><td class="num">${fmtM((b.cnss_sal||0)+(b.amo_sal||0))}</td><td class="num">${fmtM(b.ir)}</td><td class="num fw6">${fmtM(b.net)}</td><td class="num">${fmtM(b.coutTotal)}</td><td><button class="btn btn-danger btn-xs" onclick="deleteBul(${b.id})">✕</button></td></tr>`).join('');}
+
+// ═══════════════════ FORMATIONS REFRESH ═══════════════════
+function refreshFormations(){const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('f-total',DB.formations.length);s('f-encours',DB.formations.filter(f=>f.statut==='En cours').length);s('f-term',DB.formations.filter(f=>f.statut==='Terminée').length);const ms=DB.employes.filter(e=>e.statut==='Actif').reduce((x,e)=>x+(e.salaire||0),0);s('f-tfp',fmtM(ms*0.016*0.7));const tbody=document.getElementById('tbody-formations');if(tbody)tbody.innerHTML=DB.formations.length?DB.formations.map(f=>`<tr><td class="fw6">${f.titre}</td><td>${f.org||'—'}</td><td>${f.parts||'—'}</td><td class="text-sm">${f.debut||'—'}→${f.fin||'—'}</td><td class="num">${fmtM(f.cout)}</td><td><span class="badge ${f.statut==='Terminée'?'badge-green':f.statut==='En cours'?'badge-gold':'badge-blue'}">${f.statut}</span></td><td><button class="btn btn-secondary btn-xs" onclick="toggleFormationStatus(${f.id})">▶</button> <button class="btn btn-danger btn-xs" onclick="deleteFormation(${f.id})">✕</button></td></tr>`).join(''):'<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--t3)">Aucune formation</td></tr>';}
+
+// ═══════════════════ EVALUATIONS REFRESH ═══════════════════
+function refreshEvaluations(){const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('ev-total',DB.evaluations.length);s('ev-promo',DB.evaluations.filter(e=>e.decision==='Promotion'||e.decision==='Augmentation salariale').length);s('ev-retard',DB.employes.filter(e=>!DB.evaluations.find(ev=>ev.empId==e.id)).length);const avg=DB.evaluations.length?(DB.evaluations.reduce((x,e)=>x+e.score,0)/DB.evaluations.length).toFixed(2):'—';s('ev-score',avg==='—'?'—':avg+'/10');const tbody=document.getElementById('tbody-evals');if(tbody)tbody.innerHTML=DB.evaluations.length?DB.evaluations.map(e=>{const m=e.score>=9?'Excellent':e.score>=7.5?'Très Bien':e.score>=6?'Bien':e.score>=5?'Assez Bien':'Insuffisant';const cl=e.score>=7.5?'badge-green':e.score>=5?'badge-gold':'badge-red';return`<tr><td class="fw6">${e.empNom}</td><td>${e.periode||'—'}</td><td class="num">${e.score.toFixed(2)}</td><td><span class="badge ${cl}">${m}</span></td><td><span class="badge badge-blue" style="font-size:10px">${e.decision}</span></td></tr>`;}).join(''):'<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--t3)">Aucune évaluation</td></tr>';}
+
+// ═══════════════════ DISCIPLINAIRE REFRESH ═══════════════════
+function refreshDisciplinaire(){const tbody=document.getElementById('tbody-discip');if(!tbody)return;tbody.innerHTML=DB.disciplinaires.length?DB.disciplinaires.map(d=>`<tr><td class="fw6">${d.empNom}</td><td>${d.date||'—'}</td><td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px">${d.faits}</td><td><span class="badge badge-red">${d.sanction}</span></td><td><span class="badge badge-gold">${d.statut}</span></td><td><button class="btn btn-danger btn-xs" onclick="deleteDiscip(${d.id})">✕</button></td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--t3)">Aucune procédure</td></tr>';}
+
+// ═══════════════════ RECRUTEMENT REFRESH ═══════════════════
+function refreshRecrutement(){const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('r-postes',DB.postes.filter(p=>p.statut==='Ouvert').length);s('r-cands',DB.candidats.length);s('r-encours',DB.candidats.filter(c=>!['Accepté','Refusé'].includes(c.etape)).length);s('r-acc',DB.candidats.filter(c=>c.etape==='Accepté').length);const lp=document.getElementById('list-postes');if(lp)lp.innerHTML=DB.postes.length?DB.postes.map(p=>`<div class="flex-between mb10" style="padding:8px;background:var(--sf2);border-radius:var(--r)"><div><div class="fw6">${p.titre}</div><div class="text-xs text-muted">${p.dept||'—'} · ${p.contrat} · ${fmtM(p.salaire)}</div></div><div class="flex"><span class="badge badge-green">${DB.candidats.filter(c=>c.posteId==p.id).length} cand.</span><button class="btn btn-danger btn-xs" onclick="closePoste(${p.id})">Fermer</button></div></div>`).join(''):'<div class="text-sm text-muted">Aucun poste</div>';const EC={'CV Reçu':'badge-grey','Présélection':'badge-blue','Entretien RH':'badge-gold','Entretien Technique':'badge-gold','Offre Envoyée':'badge-cyan','Accepté':'badge-green','Refusé':'badge-red'};const lc=document.getElementById('list-candidats');if(lc)lc.innerHTML=DB.candidats.length?DB.candidats.map(c=>`<div class="flex-between mb10" style="padding:8px;background:var(--sf2);border-radius:var(--r)"><div><div class="fw6">${c.nom}</div><div class="text-xs text-muted">${c.date||''}</div></div><div class="flex"><span class="badge ${EC[c.etape]||'badge-grey'}">${c.etape}</span><button class="btn btn-danger btn-xs" onclick="deleteCand(${c.id})">✕</button></div></div>`).join(''):'<div class="text-sm text-muted">Aucun candidat</div>';}
+
+// ═══════════════════ ORGCHART ═══════════════════
+function renderOrgchart(){const actifs=DB.employes.filter(e=>e.statut==='Actif');if(!actifs.length)return;const c=document.getElementById('orgchart-render');if(!c)return;const roots=actifs.filter(e=>!e.manager||!actifs.find(x=>x.nom===e.manager));function renderNode(emp,lv){const ch=actifs.filter(e=>e.manager===emp.nom);return`<div style="display:flex;flex-direction:column;align-items:center"><div class="org-node ${lv===0?'root':lv===1?'manager':''}"><div class="on-name">${emp.nom.split(' ').slice(0,2).join(' ')}</div><div class="on-title">${emp.poste||''}</div>${emp.dept?`<div style="font-size:10px;margin-top:2px;opacity:.7">${emp.dept}</div>`:''}</div>${ch.length?`<div style="display:flex;justify-content:center;gap:16px;margin-top:16px;position:relative"><div style="position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:1px;height:16px;background:var(--bd)"></div>${ch.map(x=>renderNode(x,lv+1)).join('')}</div>`:''}</div>`;}c.innerHTML=`<div style="display:flex;justify-content:center;gap:24px">${roots.map(r=>renderNode(r,0)).join('')}</div>`;}
+
+// ═══════════════════ PLANNING ═══════════════════
+function renderPlanning(){const mois=(document.getElementById('plan-mois')||{}).value||'2025-05';const[y,m]=mois.split('-').map(Number);const days=new Date(y,m,0).getDate();const actifs=DB.employes.filter(e=>e.statut==='Actif');const grid=document.getElementById('planning-grid');if(!grid)return;if(!actifs.length){grid.innerHTML='<div class="text-sm text-muted" style="padding:20px">Aucun employé actif</div>';return;}const header=`<div style="display:grid;grid-template-columns:140px repeat(${days},22px);gap:1px;margin-bottom:4px"><div style="font-size:11px;color:var(--t2);font-weight:600;padding:4px 6px">Employé</div>${Array.from({length:days},(_,i)=>`<div style="font-size:10px;text-align:center;color:var(--t3);padding:2px">${i+1}</div>`).join('')}</div>`;const rows=actifs.map(emp=>{const cells=Array.from({length:days},(_,i)=>{const date=new Date(y,m-1,i+1);const dow=date.getDay();const isW=dow===0||dow===6;const hcg=DB.conges.find(c=>c.empId==emp.id&&new Date(c.debut)<=date&&new Date(c.fin)>=date&&c.statut==='Approuvé');const bg=hcg?'var(--bl-a)':isW?'var(--sf3)':'var(--gn-a)';const txt=hcg?'C':isW?'R':'T';const col=hcg?'var(--bl)':isW?'var(--t3)':'var(--gn)';return`<div style="width:22px;height:22px;border-radius:3px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:${col}">${txt}</div>`;}).join('');return`<div style="display:grid;grid-template-columns:140px repeat(${days},22px);gap:1px;margin-bottom:2px;align-items:center"><div style="font-size:12px;font-weight:600;padding:2px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${emp.nom}</div>${cells}</div>`;}).join('');grid.innerHTML=header+rows;}
+
+// ═══════════════════ CONTRATS REFRESH ═══════════════════
+function refreshContrats(){const tbody=document.getElementById('tbody-contrats');if(!tbody)return;const actifs=DB.employes.filter(e=>e.statut==='Actif');tbody.innerHTML=actifs.length?actifs.map(e=>{const ex=e.contrat==='CDD'&&e.fin&&new Date(e.fin)<new Date(Date.now()+30*86400000);return`<tr><td class="fw6">${e.nom}</td><td><span class="badge ${e.contrat==='CDI'?'badge-green':'badge-gold'}">${e.contrat}</span></td><td>${e.embauche||'—'}</td><td>${e.fin||'—'}</td><td>${ex?'<span class="badge badge-red">⚠ Expire bientôt</span>':'<span class="badge badge-green">Actif</span>'}</td></tr>`;}).join(''):'<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--t3)">Aucun contrat</td></tr>';}
+
+// ═══════════════════ EMPLOYES KPIs ═══════════════════
+function refreshEmpKpis(){const actifs=DB.employes.filter(e=>e.statut==='Actif');const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};s('e-total',actifs.length);s('e-cdi',actifs.filter(e=>e.contrat==='CDI').length);s('e-cdd',actifs.filter(e=>e.contrat==='CDD').length);s('e-ms',fmt(actifs.reduce((x,e)=>x+(e.salaire||0),0)));}
+
+// ═══════════════════ NB EN LETTRES ═══════════════════
+function nbEnLettres(n){if(n===0)return'zéro dirham';const u=['','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf'];const d=['','','vingt','trente','quarante','cinquante','soixante','soixante','quatre-vingt','quatre-vingt'];function cv(nb){if(nb<20)return u[nb];if(nb<100){const q=Math.floor(nb/10),r=nb%10;if(q===7||q===9)return d[q]+(r>0?'-'+u[10+r]:'');return d[q]+(r>0?'-'+u[r]:'');}if(nb<1000){const h=Math.floor(nb/100),r=nb%100;return(h>1?u[h]+' ':'')+' cent'+(r>0?' '+cv(r):'');}if(nb<1000000){const m=Math.floor(nb/1000),r=nb%1000;return(m>1?cv(m)+' ':'')+' mille'+(r>0?' '+cv(r):'');}return nb.toString();}return cv(n)+' dirham'+(n>1?'s':'');}
+
+// ═══════════════════ EXPORT/IMPORT ═══════════════════
+function exportDB(){const a=document.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(DB,null,2));a.download='comptama_rh_'+new Date().toISOString().slice(0,10)+'.json';a.click();}
+function importDB(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{try{DB=JSON.parse(ev.target.result);refreshAll();alert('✅ Données importées.');}catch{alert('❌ Fichier JSON invalide.');}};r.readAsText(file);}
+
+// ═══════════════════ MASTER REFRESH ═══════════════════
+function refreshAll(){refreshEmpSelects();refreshDashboard();filterEmployes();refreshEmpKpis();refreshConges();refreshBulletins();refreshFormations();refreshEvaluations();refreshDisciplinaire();refreshRecrutement();renderOrgchart();renderReporting();renderPointage();renderPlanning();renderClotureSteps();refreshContrats();calcBulletin();}
+
+document.addEventListener('DOMContentLoaded',()=>{refreshAll();});
+</script>
+</main>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

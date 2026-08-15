@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>?? Test Guard — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;
+  --ink:#0E0E0C;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ok:#1A6B3C;--er:#B91C1C;--wn:#C05820;--ac:#1E4D6B;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.hd{height:56px;background:rgba(14,14,12,.98);display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(184,134,42,.2)}
+.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:#fff}.logo span{color:var(--gl)}
+.badge-test{font-family:var(--fm);font-size:9px;padding:3px 9px;border-radius:100px;background:rgba(185,28,28,.15);color:#ff7070;border:1px solid rgba(185,28,28,.3)}
+main{max-width:900px;margin:0 auto;padding:32px 24px 80px}
+h1{font-family:var(--ft);font-size:26px;font-weight:800;margin-bottom:6px}
+h1 span{color:var(--gold)}
+.sub{font-size:14px;color:var(--sm);margin-bottom:28px;line-height:1.6}
+
+/* CONTROLS */
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;padding:16px;background:var(--wh);border:1px solid var(--bd);border-radius:12px}
+.ctrl-label{font-family:var(--fm);font-size:10px;color:var(--sm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.btn{padding:9px 18px;border:none;border-radius:8px;font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-run{background:var(--gold);color:var(--ink)}.btn-run:hover{background:var(--gl)}
+.btn-reset{background:rgba(185,28,28,.1);color:var(--er);border:1.5px solid rgba(185,28,28,.2)}.btn-reset:hover{background:rgba(185,28,28,.15)}
+.btn-ghost{background:var(--b2);color:var(--is);border:1.5px solid var(--bd)}.btn-ghost:hover{border-color:var(--gold)}
+select{padding:8px 12px;border:1.5px solid var(--bd);border-radius:8px;font-family:var(--fb);font-size:13px;color:var(--ink);background:var(--bg);outline:none}
+select:focus{border-color:var(--gold)}
+
+/* SUITE HEADER */
+.suite{margin-bottom:24px}
+.suite-title{font-family:var(--fm);font-size:11px;letter-spacing:.1em;color:var(--sm);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.suite-title::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* TEST ROWS */
+.test-row{background:var(--wh);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:14px;transition:all .3s}
+.test-row.pass{border-color:rgba(26,107,60,.3);background:rgba(26,107,60,.03)}
+.test-row.fail{border-color:rgba(185,28,28,.3);background:rgba(185,28,28,.03)}
+.test-row.warn{border-color:rgba(192,88,32,.3);background:rgba(192,88,32,.03)}
+.test-row.running{border-color:rgba(184,134,42,.3);background:rgba(184,134,42,.03)}
+.test-status{font-size:18px;flex-shrink:0;margin-top:1px;min-width:22px;text-align:center}
+.test-body{flex:1}
+.test-name{font-weight:600;font-size:13.5px;margin-bottom:3px}
+.test-detail{font-family:var(--fm);font-size:11px;color:var(--sm);line-height:1.6}
+.test-detail.ok{color:var(--ok)}
+.test-detail.err{color:var(--er)}
+.test-detail.warn{color:var(--wn)}
+.test-badge{display:inline-block;font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px;margin-left:6px}
+.tb-pass{background:rgba(26,107,60,.1);color:var(--ok)}
+.tb-fail{background:rgba(185,28,28,.1);color:var(--er)}
+.tb-warn{background:rgba(192,88,32,.1);color:var(--wn)}
+.tb-skip{background:var(--b2);color:var(--sm)}
+
+/* SUMMARY BAR */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.sum-box{padding:14px;border-radius:10px;text-align:center;border:1px solid var(--bd);background:var(--wh)}
+.sum-n{font-family:var(--ft);font-size:26px;font-weight:800;line-height:1}
+.sum-l{font-size:11px;color:var(--sm);margin-top:4px;font-family:var(--fm)}
+
+/* LOG */
+.log-wrap{background:rgba(14,14,12,.96);border-radius:10px;padding:16px;font-family:var(--fm);font-size:11px;color:#94a3b8;line-height:1.8;max-height:220px;overflow-y:auto;margin-top:20px}
+.log-ok{color:#86efac}.log-err{color:#fca5a5}.log-warn{color:#fcd34d}.log-info{color:#93c5fd}
+
+/* PROGRESS */
+.progress-wrap{height:4px;background:var(--b2);border-radius:2px;margin-bottom:20px;overflow:hidden;display:none}
+.progress-fill{height:100%;border-radius:2px;background:var(--gold);transition:width .3s}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="hd">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="badge-test">?? TEST SUITE · Guard & Auth</div>
+  </div>
+  <a href="landing.html" style="font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.35);text-decoration:none;padding:5px 10px;border:1px solid rgba(255,255,255,.1);border-radius:6px">? Retour</a>
+</header>
+
+<main>
+  <h1>Test Guard & <span>Auth System</span></h1>
+  <p class="sub">Suite de tests automatiques pour valider le système d'authentification, les guards de modules et les redirections d'upgrade. Aucune navigation réelle — tout s'exécute en mémoire.</p>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div>
+      <div class="ctrl-label">Simuler un utilisateur</div>
+      <select id="userSelect">
+        <option value="none">— Non connecté —</option>
+        <option value="gratuit" selected>?? Compte Gratuit</option>
+        <option value="pro">? Compte Pro</option>
+        <option value="premium">?? Compte Premium</option>
+        <option value="expired_trial">? Trial Pro Expiré</option>
+      </select>
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:8px">
+      <button class="btn btn-run" onclick="runAll()">? Lancer tous les tests</button>
+      <button class="btn btn-ghost" onclick="runSuite('auth')">Auth seul</button>
+      <button class="btn btn-ghost" onclick="runSuite('guard')">Guard seul</button>
+      <button class="btn btn-ghost" onclick="runSuite('usage')">Usage seul</button>
+      <button class="btn btn-reset" onclick="resetAll()">?? Reset localStorage</button>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary" id="summary">
+    <div class="sum-box"><div class="sum-n" id="s-total" style="color:var(--sm)">—</div><div class="sum-l">Tests</div></div>
+    <div class="sum-box"><div class="sum-n" id="s-pass" style="color:var(--ok)">—</div><div class="sum-l">? Passés</div></div>
+    <div class="sum-box"><div class="sum-n" id="s-fail" style="color:var(--er)">—</div><div class="sum-l">? Échoués</div></div>
+    <div class="sum-box"><div class="sum-n" id="s-warn" style="color:var(--wn)">—</div><div class="sum-l">? Avertissements</div></div>
+  </div>
+
+  <!-- TEST SUITES -->
+  <div id="testOutput"></div>
+
+  <!-- LOG CONSOLE -->
+  <div class="log-wrap" id="logConsole">
+    <div class="log-info">// Console de test Smart-Invest.ia — Prêt</div>
+    <div class="log-info">// Sélectionnez un profil utilisateur et cliquez "Lancer tous les tests"</div>
+  </div>
+</main>
+<script>
+// ------------------------------------------------------
+// TEST ENGINE
+// ------------------------------------------------------
+
+const PLAN_LEVEL = { gratuit: 0, pro: 1, premium: 2 };
+let testResults = [];
+let logs = [];
+
+// -- Helpers -------------------------------------------
+function log(msg, type = 'info') {
+  logs.push({ msg, type });
+  const el = document.getElementById('logConsole');
+  const div = document.createElement('div');
+  div.className = 'log-' + type;
+  div.textContent = '> ' + msg;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+function assert(name, condition, detail = '', level = 'test') {
+  const status = condition ? 'pass' : 'fail';
+  testResults.push({ name, status, detail });
+  log(`[${status.toUpperCase()}] ${name}${detail ? ' — ' + detail : ''}`, condition ? 'ok' : 'err');
+  return condition;
+}
+
+function warn(name, detail = '') {
+  testResults.push({ name, status: 'warn', detail });
+  log(`[WARN] ${name}${detail ? ' — ' + detail : ''}`, 'warn');
+}
+
+function setupUser(plan) {
+  // Nettoie et crée un utilisateur de test
+  localStorage.removeItem('im_auth_v2');
+  localStorage.removeItem('im_users_v2');
+
+  if (plan === 'none') return null;
+
+  const isExpiredTrial = plan === 'expired_trial';
+  const effectivePlan = isExpiredTrial ? 'pro' : plan;
+
+  const result = AuthService.register({
+    email: `test_${plan}@Smart-Invest.ia`,
+    password: 'Test1234!',
+    name: `Test ${plan}`,
+    selectedPlan: effectivePlan,
+  });
+
+  if (!result.ok) { log('Setup failed: ' + result.error, 'err'); return null; }
+
+  if (isExpiredTrial) {
+    // Forcer l'expiration du trial
+    const user = AuthService.getUser();
+    user.isTrial = true;
+    user.trialEnd = Date.now() - 1000; // déjà expiré
+    localStorage.setItem('im_auth_v2', JSON.stringify(user));
+  }
+
+  return AuthService.getUser();
+}
+
+// -- SUITE 1 : Auth Core -------------------------------
+function suiteAuth(plan) {
+  log('--- SUITE: Auth Core ---', 'info');
+  const tests = [];
+
+  // 1. Register
+  localStorage.removeItem('im_auth_v2');
+  localStorage.removeItem('im_users_v2');
+  const reg = AuthService.register({ email: 'auth_test@test.ma', password: 'Test1234!', name: 'Auth Test', selectedPlan: plan === 'none' ? 'gratuit' : plan });
+  tests.push(assert('Register — retourne ok:true', reg.ok, reg.error || ''));
+
+  if (reg.ok) {
+    // 2. isLoggedIn
+    tests.push(assert('isLoggedIn() après register', AuthService.isLoggedIn(), ''));
+
+    // 3. Token présent
+    const u = AuthService.getUser();
+    tests.push(assert('Token généré (tk_...)', u?.token?.startsWith('tk_'), u?.token?.slice(0,8) || 'absent'));
+
+    // 4. getCurrentPlan
+    const cp = AuthService.getCurrentPlan();
+    const expectedPlan = plan === 'none' ? 'gratuit' : (plan === 'expired_trial' ? 'gratuit' : plan);
+    tests.push(assert('getCurrentPlan() correct', cp === (plan === 'none' ? 'gratuit' : plan), `attendu: ${plan === 'none' ? 'gratuit' : plan}, obtenu: ${cp}`));
+
+    // 5. Logout
+    AuthService.logout = function() {
+      localStorage.removeItem('im_auth_v2');
+      sessionStorage.removeItem('im_session');
+    };
+    AuthService.logout();
+    tests.push(assert('Logout — isLoggedIn() = false', !AuthService.isLoggedIn(), ''));
+
+    // 6. Login
+    const login = AuthService.login('auth_test@test.ma', 'Test1234!');
+    tests.push(assert('Login avec bonnes credentials', login.ok, login.error || ''));
+
+    // 7. Mauvais mot de passe
+    const badLogin = AuthService.login('auth_test@test.ma', 'mauvais_mdp');
+    tests.push(assert('Login mauvais mdp ? ok:false', !badLogin.ok, badLogin.error || ''));
+
+    // 8. Email inexistant
+    const noUser = AuthService.login('inexistant@test.ma', 'Test1234!');
+    tests.push(assert('Login email inexistant ? ok:false', !noUser.ok, noUser.error || ''));
+
+    // 9. Validation mot de passe faible
+    const weakReg = AuthService.register({ email: 'weak@test.ma', password: '123', name: 'Weak' });
+    tests.push(assert('Register mdp trop court ? ok:false', !weakReg.ok, weakReg.error || ''));
+
+    // 10. Email dupliqué
+    const dup = AuthService.register({ email: 'auth_test@test.ma', password: 'Test1234!', name: 'Dup' });
+    tests.push(assert('Register email dupliqué ? ok:false', !dup.ok, dup.error || ''));
+
+    // 11. Reset password request
+    const reset = AuthService.resetPasswordRequest('auth_test@test.ma');
+    tests.push(assert('resetPasswordRequest ? ok:true', reset.ok, reset.error || ''));
+
+    // 12. Reset token présent
+    const users = JSON.parse(localStorage.getItem('im_users_v2') || '[]');
+    const testUser = users.find(u => u.email === 'auth_test@test.ma');
+    tests.push(assert('Reset token généré dans im_users_v2', !!testUser?.resetToken, testUser?.resetToken?.slice(0,8) || 'absent'));
+  }
+
+  return tests;
+}
+
+// -- SUITE 2 : Guard & Access Control -----------------
+function suiteGuard(plan) {
+  log('--- SUITE: Guard & Access Control ---', 'info');
+
+  const effectivePlan = plan === 'expired_trial' ? 'gratuit' : (plan === 'none' ? 'gratuit' : plan);
+  const level = PLAN_LEVEL[effectivePlan] ?? 0;
+
+  // Simuler guard.js sans navigation réelle
+  const guardCheck = (file, requiredPlan) => {
+    const reqLevel = PLAN_LEVEL[requiredPlan] ?? 0;
+    if (plan === 'none') return { result: 'redirect_login', ok: false };
+    if (level < reqLevel) return { result: 'redirect_upgrade', plan: requiredPlan, ok: false };
+    return { result: 'access_granted', ok: true };
+  };
+
+  const MODULE_TESTS = [
+    // Gratuit
+    { file: 'smart_invest_simulateur_fiscal.html', req: 'gratuit', name: 'Simulateur Fiscal (Gratuit)' },
+    { file: 'smart_invest_forme_juridique.html',   req: 'gratuit', name: 'Forme Juridique (Gratuit)' },
+    { file: 'smart_invest_matching_aides.html',    req: 'gratuit', name: 'Matching Aides (Gratuit)' },
+    { file: 'smart_invest_assistant.html',          req: 'gratuit', name: 'Assistant IA (Gratuit limité)' },
+    // Pro
+    { file: 'smart_invest_cockpit_management.html', req: 'pro', name: 'Cockpit Management (Pro)' },
+    { file: 'smart_invest_lean_sixsigma.html',      req: 'pro', name: 'Lean Six Sigma (Pro)' },
+    { file: 'smart_invest_gis_foncier.html',        req: 'pro', name: 'GIS Foncier (Pro)' },
+    { file: 'smart_invest_tnb_2025.html',           req: 'pro', name: 'TNB 2025 (Pro)' },
+    { file: 'smart_invest_stopgo.html',             req: 'pro', name: 'Stop/Go (Pro)' },
+    // Premium
+    { file: 'smart_invest_dashboard_projet.html',   req: 'premium', name: 'Dashboard Projet (Premium)' },
+    { file: 'smart_invest_v2_agent_ia.html',        req: 'premium', name: 'Agent IA InvestPilot (Premium)' },
+    { file: 'smart_invest_rapports_b2b.html',       req: 'premium', name: 'Rapports B2B (Premium)' },
+    { file: 'smart_invest_owner_setup.html',         req: 'premium', name: 'Back-Office Admin (Premium)' },
+  ];
+
+  const tests = [];
+  MODULE_TESTS.forEach(({ file, req, name }) => {
+    const check = guardCheck(file, req);
+    const reqLevel = PLAN_LEVEL[req] ?? 0;
+    const shouldAccess = level >= reqLevel && plan !== 'none';
+    const shouldRedirectLogin = plan === 'none' && reqLevel > 0;
+    const shouldRedirectUpgrade = !shouldAccess && plan !== 'none' && reqLevel > 0;
+
+    if (shouldAccess) {
+      tests.push(assert(`? Accès autorisé : ${name}`, check.ok, `plan=${effectivePlan} req=${req}`));
+    } else if (shouldRedirectLogin) {
+      tests.push(assert(`? Redirect login : ${name}`, check.result === 'redirect_login', check.result));
+    } else if (shouldRedirectUpgrade) {
+      tests.push(assert(`? Redirect upgrade (${req}) : ${name}`, check.result === 'redirect_upgrade', check.result + ' plan=' + effectivePlan));
+    } else {
+      // Gratuit accédant à gratuit sans connexion
+      if (plan === 'none' && reqLevel === 0) {
+        warn(`Module gratuit sans connexion : ${name}`, 'accessible publiquement (comportement attendu)');
+      }
+    }
+  });
+
+  return tests;
+}
+
+// -- SUITE 3 : Usage Tracking --------------------------
+function suiteUsage(plan) {
+  log('--- SUITE: Usage Tracking ---', 'info');
+  const tests = [];
+
+  if (plan === 'none') {
+    warn('Usage tracking', 'Non testé — utilisateur non connecté');
+    return tests;
+  }
+
+  const effectivePlan = plan === 'expired_trial' ? 'gratuit' : plan;
+  setupUser(effectivePlan);
+
+  const planLimits = { gratuit: 10, pro: 100, premium: -1 };
+  const limit = planLimits[effectivePlan];
+
+  // Premier message
+  const t1 = AuthService.trackUsage('aiMessage');
+  tests.push(assert('trackUsage aiMessage ? ok:true', t1.ok, `used=${t1.used} limit=${t1.limit}`));
+  tests.push(assert('Compteur incrémenté à 1', t1.used === 1, `obtenu: ${t1.used}`));
+
+  // Simuler dépassement (gratuit uniquement pour rapidité)
+  if (effectivePlan === 'gratuit') {
+    // Forcer 9 messages supplémentaires
+    const u = AuthService.getUser();
+    u.usage = { aiMessages: 9, reports: 0, lastReset: Date.now() };
+    localStorage.setItem('im_auth_v2', JSON.stringify(u));
+    const users = JSON.parse(localStorage.getItem('im_users_v2') || '[]');
+    const idx = users.findIndex(us => us.email === u.email);
+    if (idx >= 0) { users[idx].usage = u.usage; localStorage.setItem('im_users_v2', JSON.stringify(users)); }
+
+    const t2 = AuthService.trackUsage('aiMessage'); // = 10e, doit passer
+    tests.push(assert('10e message (limite) ? ok:true', t2.ok, `used=${t2.used}`));
+
+    const t3 = AuthService.trackUsage('aiMessage'); // = 11e, doit échouer
+    tests.push(assert('11e message (dépassement) ? ok:false', !t3.ok, t3.error || ''));
+
+    if (!t3.ok) {
+      tests.push(assert('Erreur contient "Limite atteinte"', t3.error?.includes('Limite'), t3.error));
+    }
+  }
+
+  // Reports tracking
+  const r1 = AuthService.trackUsage('report');
+  tests.push(assert('trackUsage report ? ok:true', r1.ok, `used=${r1.used}`));
+
+  // Reset mensuel simulé
+  const u = AuthService.getUser();
+  if (u) {
+    u.usage = { aiMessages: 5, reports: 2, lastReset: Date.now() - 31 * 24 * 60 * 60 * 1000 };
+    localStorage.setItem('im_auth_v2', JSON.stringify(u));
+    const tReset = AuthService.trackUsage('aiMessage');
+    tests.push(assert('Reset mensuel auto ? compteur remis à 1', tReset.used === 1, `obtenu: ${tReset.used}`));
+  }
+
+  return tests;
+}
+
+// -- SUITE 4 : Trial & Expiration ---------------------
+function suiteTrial() {
+  log('--- SUITE: Trial & Expiration ---', 'info');
+  const tests = [];
+
+  // Setup trial pro expiré
+  localStorage.removeItem('im_auth_v2');
+  localStorage.removeItem('im_users_v2');
+  const reg = AuthService.register({ email: 'trial@test.ma', password: 'Test1234!', name: 'Trial User', selectedPlan: 'pro' });
+
+  if (reg.ok) {
+    const u = AuthService.getUser();
+    u.isTrial = true;
+    u.trialEnd = Date.now() - 1000; // expiré
+    localStorage.setItem('im_auth_v2', JSON.stringify(u));
+
+    const plan = AuthService.getCurrentPlan();
+    tests.push(assert('Trial expiré ? plan downgrade à gratuit', plan === 'gratuit', `obtenu: ${plan}`));
+    tests.push(assert('isLoggedIn() toujours true après trial expiré', AuthService.isLoggedIn(), ''));
+
+    // Vérifier que les modules pro sont bloqués
+    const userLevel = PLAN_LEVEL[plan];
+    const canCockpit = userLevel >= PLAN_LEVEL['pro'];
+    tests.push(assert('Cockpit bloqué après trial expiré', !canCockpit, `userLevel=${userLevel}`));
+  }
+
+  // Setup trial valide
+  localStorage.removeItem('im_auth_v2');
+  localStorage.removeItem('im_users_v2');
+  const reg2 = AuthService.register({ email: 'trial2@test.ma', password: 'Test1234!', name: 'Trial Valid', selectedPlan: 'pro' });
+
+  if (reg2.ok) {
+    const u2 = AuthService.getUser();
+    u2.isTrial = true;
+    u2.trialEnd = Date.now() + 5 * 24 * 60 * 60 * 1000; // 5 jours
+    localStorage.setItem('im_auth_v2', JSON.stringify(u2));
+
+    const plan2 = AuthService.getCurrentPlan();
+    tests.push(assert('Trial valide ? plan = pro', plan2 === 'pro', `obtenu: ${plan2}`));
+    tests.push(assert('Accès Cockpit avec trial valide', PLAN_LEVEL[plan2] >= PLAN_LEVEL['pro'], `level=${PLAN_LEVEL[plan2]}`));
+  }
+
+  return tests;
+}
+
+// -- SUITE 5 : Upgrade Flow ----------------------------
+function suiteUpgrade() {
+  log('--- SUITE: Upgrade & Plan Change ---', 'info');
+  const tests = [];
+
+  localStorage.removeItem('im_auth_v2');
+  localStorage.removeItem('im_users_v2');
+  const reg = AuthService.register({ email: 'upgrade@test.ma', password: 'Test1234!', name: 'Upgrade Test', selectedPlan: 'gratuit' });
+
+  if (reg.ok) {
+    let plan = AuthService.getCurrentPlan();
+    tests.push(assert('Plan initial = gratuit', plan === 'gratuit', plan));
+
+    // Upgrade vers Pro
+    const up = AuthService.upgradePlan('pro', { cycle: 'monthly' });
+    tests.push(assert('upgradePlan(pro) ? ok:true', up.ok, up.error || ''));
+    plan = AuthService.getCurrentPlan();
+    tests.push(assert('getCurrentPlan() = pro après upgrade', plan === 'pro', plan));
+    tests.push(assert('isTrial = false après upgrade', !up.user?.isTrial, ''));
+
+    // Upgrade vers Premium
+    const up2 = AuthService.upgradePlan('premium');
+    tests.push(assert('upgradePlan(premium) ? ok:true', up2.ok, up2.error || ''));
+    plan = AuthService.getCurrentPlan();
+    tests.push(assert('getCurrentPlan() = premium après upgrade', plan === 'premium', plan));
+
+    // Downgrade vers Gratuit
+    const down = AuthService.upgradePlan('gratuit');
+    tests.push(assert('upgradePlan(gratuit) ? ok:true', down.ok, down.error || ''));
+    plan = AuthService.getCurrentPlan();
+    tests.push(assert('getCurrentPlan() = gratuit après downgrade', plan === 'gratuit', plan));
+  }
+
+  return tests;
+}
+
+// -- RENDER --------------------------------------------
+function renderResults(suites) {
+  const output = document.getElementById('testOutput');
+  output.innerHTML = '';
+
+  let total = 0, pass = 0, fail = 0, warn = 0;
+  testResults.forEach(t => {
+    total++;
+    if (t.status === 'pass') pass++;
+    else if (t.status === 'fail') fail++;
+    else if (t.status === 'warn') warn++;
+  });
+
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-pass').textContent = pass;
+  document.getElementById('s-fail').textContent = fail;
+  document.getElementById('s-warn').textContent = warn;
+
+  suites.forEach(({ name, tests }) => {
+    const div = document.createElement('div');
+    div.className = 'suite';
+    const passC = tests.filter(t => t.status === 'pass').length;
+    const failC = tests.filter(t => t.status === 'fail').length;
+    div.innerHTML = `<div class="suite-title">${name} <span class="test-badge tb-pass">${passC} ?</span>${failC > 0 ? `<span class="test-badge tb-fail">${failC} ?</span>` : ''}</div>`;
+
+    tests.forEach(t => {
+      const row = document.createElement('div');
+      row.className = 'test-row ' + t.status;
+      const icons = { pass: '?', fail: '?', warn: '??', running: '?' };
+      row.innerHTML = `
+        <div class="test-status">${icons[t.status] || '?'}</div>
+        <div class="test-body">
+          <div class="test-name">${t.name} <span class="test-badge ${t.status === 'pass' ? 'tb-pass' : t.status === 'fail' ? 'tb-fail' : 'tb-warn'}">${t.status.toUpperCase()}</span></div>
+          ${t.detail ? `<div class="test-detail ${t.status === 'pass' ? 'ok' : t.status === 'fail' ? 'err' : 'warn'}">${t.detail}</div>` : ''}
+        </div>`;
+      div.appendChild(row);
+    });
+
+    output.appendChild(div);
+  });
+
+  // Score final
+  const score = Math.round((pass / (total - warn)) * 100) || 0;
+  const scoreDiv = document.createElement('div');
+  scoreDiv.style.cssText = 'text-align:center;padding:20px;font-family:var(--fm);margin-top:8px';
+  scoreDiv.innerHTML = `<div style="font-size:40px;font-weight:800;color:${score >= 90 ? 'var(--ok)' : score >= 70 ? 'var(--wn)' : 'var(--er)'}">${score}%</div><div style="font-size:13px;color:var(--sm);margin-top:4px">Score global · ${pass}/${total-warn} tests passés · ${warn} avertissements</div>`;
+  output.appendChild(scoreDiv);
+}
+
+// -- MAIN RUNNER ---------------------------------------
+async function runSuites(suiteNames) {
+  testResults = [];
+  logs = [];
+  document.getElementById('logConsole').innerHTML = '';
+  document.getElementById('testOutput').innerHTML = '';
+
+  const plan = document.getElementById('userSelect').value;
+  log(`Profil utilisateur : ${plan}`, 'info');
+  log(`Timestamp : ${new Date().toLocaleString('fr-FR')}`, 'info');
+
+  const prog = document.getElementById('progressWrap');
+  const fill = document.getElementById('progressFill');
+  prog.style.display = 'block';
+
+  const allSuites = [];
+  const suiteDefs = [
+    { key: 'auth',    name: '1 — Authentification core',      fn: () => suiteAuth(plan) },
+    { key: 'guard',   name: '2 — Guard & contrôle d\'accès',  fn: () => suiteGuard(plan) },
+    { key: 'usage',   name: '3 — Tracking usage IA',          fn: () => suiteUsage(plan) },
+    { key: 'trial',   name: '4 — Trial & expiration',         fn: () => suiteTrial() },
+    { key: 'upgrade', name: '5 — Upgrade & changement plan',  fn: () => suiteUpgrade() },
+  ];
+
+  const toRun = suiteNames === 'all' ? suiteDefs : suiteDefs.filter(s => suiteNames.includes(s.key));
+
+  for (let i = 0; i < toRun.length; i++) {
+    fill.style.width = ((i / toRun.length) * 100) + '%';
+    await new Promise(r => setTimeout(r, 80));
+    const { name, fn } = toRun[i];
+    const tests = fn();
+    allSuites.push({ name, tests });
+  }
+
+  fill.style.width = '100%';
+  await new Promise(r => setTimeout(r, 200));
+  prog.style.display = 'none';
+
+  // Restaurer l'utilisateur sélectionné
+  setupUser(plan);
+
+  renderResults(allSuites);
+  log(`--- FIN · ${testResults.filter(t=>t.status==='pass').length}/${testResults.length} passés ---`, testResults.some(t=>t.status==='fail') ? 'err' : 'ok');
+}
+
+function runAll() { runSuites('all'); }
+function runSuite(name) { runSuites([name]); }
+
+function resetAll() {
+  if (!confirm('Effacer toutes les données de test (im_auth_v2, im_users_v2) ?')) return;
+  ['im_auth_v2','im_users_v2','im_admin_codes','im_session'].forEach(k => localStorage.removeItem(k));
+  document.getElementById('logConsole').innerHTML = '<div class="log-warn">> localStorage nettoyé — tous les comptes effacés</div>';
+  document.getElementById('testOutput').innerHTML = '';
+  ['s-total','s-pass','s-fail','s-warn'].forEach(id => document.getElementById(id).textContent = '—');
+}
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>
+

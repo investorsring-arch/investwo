@@ -1,0 +1,1255 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Back-Office — Smart-Invest.ia Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0F1117;--surface:#181C27;--surface2:#1E2335;--surface3:#252A3E;
+  --border:#2A3050;--border2:#3A4570;
+  --gold:#C49A3C;--gl:#E8BF72;--gd:#8A6A20;
+  --blue:#4A7FD4;--bl:#6BA3FF;--bd:#2A5090;
+  --green:#3DAF7A;--gl2:#5FCEA0;
+  --red:#D44A4A;--rl:#FF7070;
+  --amber:#D4884A;--al:#FFAA70;
+  --text:#E8EAF0;--text2:#9AA0C0;--text3:#5A6080;
+  --ft:'IBM Plex Mono',monospace;--fb:'DM Sans',sans-serif
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow:hidden}
+a{color:var(--bl);text-decoration:none}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:100vh;position:sticky;top:0}
+.sb-logo{padding:20px 16px;border-bottom:1px solid var(--border)}
+.sb-logo-name{font-family:var(--ft);font-size:13px;font-weight:600;color:var(--gold)}
+.sb-logo-sub{font-size:10px;color:var(--text3);margin-top:3px}
+.sb-section{padding:12px 8px 4px;font-family:var(--ft);font-size:9px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 12px;cursor:pointer;border-radius:7px;margin:2px 6px;transition:all .15s;font-size:13px;color:var(--text2);border:1px solid transparent}
+.sb-item:hover{background:var(--surface2);color:var(--text)}
+.sb-item.active{background:rgba(74,127,212,.12);border-color:rgba(74,127,212,.25);color:var(--bl)}
+.sb-item .ic{width:16px;text-align:center;font-size:14px}
+.sb-footer{margin-top:auto;padding:12px 16px;border-top:1px solid var(--border)}
+.sb-user{font-size:12px;color:var(--text3);font-family:var(--ft)}
+.sb-logout{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--red);cursor:pointer;margin-top:6px;font-family:var(--ft)}
+.sb-logout:hover{color:var(--rl)}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;height:100vh}
+.main::-webkit-scrollbar{width:4px}.main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.topbar{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar-title{font-family:var(--ft);font-size:14px;color:var(--text);font-weight:500}
+.topbar-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.topbar-actions{display:flex;gap:8px}
+
+/* ── PANELS ── */
+.panel{display:none;padding:24px}.panel.show{display:block}
+
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
+.card-title{font-family:var(--ft);font-size:12px;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title span{color:var(--text3);font-size:10px;text-transform:none;letter-spacing:0;font-family:var(--fb)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+
+/* ── KPI ── */
+.kpi{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:14px;text-align:center}
+.kpi-n{font-family:var(--ft);font-size:26px;font-weight:600;line-height:1;margin-bottom:4px}
+.kpi-l{font-size:11px;color:var(--text3)}
+.kpi-d{font-size:10px;margin-top:3px;font-family:var(--ft)}
+
+/* ── FORMS ── */
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;font-family:var(--ft);text-transform:uppercase;letter-spacing:.04em}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;font-family:var(--fb);font-size:13px;color:var(--text);outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);background:var(--surface3)}
+.fg input[type=password]{font-family:var(--ft);letter-spacing:.1em}
+.fg .hint{font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--ft)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── BUTTONS ── */
+.btn{padding:8px 16px;border-radius:7px;border:none;cursor:pointer;font-family:var(--fb);font-size:12.5px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.btn-primary{background:var(--blue);color:white}.btn-primary:hover{background:var(--bl);filter:brightness(1.1)}
+.btn-gold{background:var(--gold);color:#0F1117}.btn-gold:hover{background:var(--gl)}
+.btn-ghost{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--blue);color:var(--text)}
+.btn-danger{background:rgba(212,74,74,.15);color:var(--rl);border:1px solid rgba(212,74,74,.3)}.btn-danger:hover{background:rgba(212,74,74,.25)}
+.btn-sm{padding:5px 10px;font-size:11px;border-radius:5px}
+.btn-success{background:rgba(61,175,122,.15);color:var(--gl2);border:1px solid rgba(61,175,122,.3)}
+.act-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* ── TABLES ── */
+table.dt{width:100%;border-collapse:collapse;font-size:12.5px}
+table.dt th{background:var(--surface2);color:var(--text3);font-family:var(--ft);font-size:9px;padding:8px 12px;text-align:left;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+table.dt td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text2)}
+table.dt tbody tr:hover td{background:var(--surface2);color:var(--text)}
+table.dt tr:last-child td{border-bottom:none}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--ft);font-size:10px;padding:3px 8px;border-radius:100px}
+.badge-green{background:rgba(61,175,122,.15);color:var(--gl2)}
+.badge-gold{background:rgba(196,154,60,.15);color:var(--gl)}
+.badge-blue{background:rgba(74,127,212,.15);color:var(--bl)}
+.badge-red{background:rgba(212,74,74,.15);color:var(--rl)}
+.badge-gray{background:rgba(90,96,128,.15);color:var(--text3)}
+.badge-amber{background:rgba(212,136,74,.15);color:var(--al)}
+
+/* ── TOGGLE ── */
+.toggle{position:relative;width:40px;height:22px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.ts{position:absolute;inset:0;background:var(--border2);border-radius:11px;transition:.25s}
+.ts::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:var(--text3);border-radius:50%;transition:.25s}
+input:checked+.ts{background:var(--green)}
+input:checked+.ts::before{transform:translateX(18px);background:white}
+
+/* ── KEY INPUT MASKED ── */
+.key-wrap{position:relative}
+.key-wrap input{font-family:var(--ft);letter-spacing:.05em;padding-right:40px}
+.key-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px}
+.key-toggle:hover{color:var(--text)}
+.key-preview{font-family:var(--ft);font-size:11px;color:var(--text3);margin-top:4px}
+
+/* ── ANNOUNCE CARD ── */
+.ann-card{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px}
+.ann-color{width:4px;align-self:stretch;border-radius:2px;flex-shrink:0}
+.ann-body{flex:1}
+.ann-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.ann-meta{font-size:11px;color:var(--text3);font-family:var(--ft)}
+.ann-actions{display:flex;gap:6px;margin-top:8px}
+
+/* ── PLAN CARD ── */
+.plan-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;transition:all .2s}
+.plan-card.active-plan{border-color:var(--gold);background:rgba(196,154,60,.06)}
+.plan-name{font-family:var(--ft);font-size:13px;font-weight:600;margin-bottom:6px}
+.plan-price{font-family:var(--ft);font-size:24px;font-weight:600;color:var(--gold);margin-bottom:4px}
+.plan-period{font-size:11px;color:var(--text3)}
+.plan-features{list-style:none;margin-top:10px}
+.plan-features li{font-size:12px;color:var(--text2);padding:3px 0;display:flex;align-items:center;gap:6px}
+.plan-features li::before{content:'›';color:var(--gold)}
+
+/* ── MODULE TOGGLE ROW ── */
+.mod-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;margin-bottom:6px}
+.mod-name{flex:1;font-size:12.5px;color:var(--text)}
+.mod-plan{font-family:var(--ft);font-size:10px}
+.mod-plan.gratuit{color:var(--gl2)}.mod-plan.pro{color:var(--gl)}.mod-plan.enterprise{color:var(--bl)}
+
+/* ── STATS BAR ── */
+.stat-bar{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-top:6px}
+.stat-fill{height:100%;border-radius:3px;transition:width .5s}
+
+/* ── LOGIN SCREEN ── */
+#loginScreen{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px 32px;width:360px;text-align:center}
+.login-logo{font-family:var(--ft);font-size:18px;color:var(--gold);margin-bottom:6px}
+.login-sub{font-size:12px;color:var(--text3);margin-bottom:24px}
+.login-err{font-size:12px;color:var(--rl);margin-top:8px;min-height:18px;font-family:var(--ft)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 18px;font-size:13px;opacity:0;transition:all .3s;z-index:9999;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.toast.show{opacity:1}
+.toast.ok{border-color:rgba(61,175,122,.4);color:var(--gl2)}
+.toast.err{border-color:rgba(212,74,74,.4);color:var(--rl)}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">⚙ Smart-Invest.ia</div>
+    <div class="login-sub">Back-Office Administration — Accès restreint</div>
+    <div class="fg">
+      <label>Mot de passe administrateur</label>
+      <div class="key-wrap">
+        <input type="password" id="loginPwd" placeholder="Votre mot de passe admin..."
+               onkeydown="if(event.key==='Enter')doLogin()" autocomplete="current-password">
+        <button class="key-toggle" onclick="toggleVis('loginPwd',this)">👁</button>
+      </div>
+    </div>
+    <button class="btn btn-gold" onclick="doLogin()" style="width:100%;justify-content:center;margin-bottom:10px">
+      Accéder au Back-Office →
+    </button>
+    <div class="login-err" id="loginErr" style="display:none"></div>
+    <div id="loginHelp" style="display:none;margin-top:10px;padding:10px 12px;background:rgba(196,154,60,.1);border:1px solid rgba(196,154,60,.3);border-radius:8px;font-size:11px;color:#C49A3C;line-height:1.6">
+      <strong>Mot de passe oublié ?</strong><br>
+      Mot de passe par défaut : <code style="background:rgba(0,0,0,.2);padding:1px 5px;border-radius:3px">Admin@Smart-Invest2025</code>
+    </div>
+    <div style="text-align:center;margin-top:10px">
+      <button onclick="toggleResetSection()" style="background:none;border:none;cursor:pointer;font-size:11px;color:#5A6080;text-decoration:underline;font-family:var(--fb)">
+        Définir / réinitialiser le mot de passe
+      </button>
+    </div>
+    <div id="resetSection" style="display:none;margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
+      <div style="font-size:11px;color:#5A6080;margin-bottom:10px;line-height:1.6">
+        Définissez un nouveau mot de passe. Il sera stocké localement dans ce navigateur.
+      </div>
+      <div class="fg" style="margin-bottom:8px">
+        <label>Nouveau mot de passe</label>
+        <div class="key-wrap">
+          <input type="password" id="newPwd1" placeholder="Minimum 6 caractères..." autocomplete="new-password">
+          <button class="key-toggle" onclick="toggleVis('newPwd1',this)">👁</button>
+        </div>
+      </div>
+      <div class="fg" style="margin-bottom:10px">
+        <label>Confirmer le mot de passe</label>
+        <input type="password" id="newPwd2" placeholder="Répétez le mot de passe..." autocomplete="new-password"
+               onkeydown="if(event.key==='Enter')applyNewPassword()">
+      </div>
+      <button class="btn btn-gold" onclick="applyNewPassword()" style="width:100%;justify-content:center">
+        Enregistrer le nouveau mot de passe
+      </button>
+      <div id="resetMsg" style="font-size:12px;margin-top:8px;font-family:var(--ft);text-align:center;min-height:18px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-name">⚙ Smart-Invest.ia</div>
+    <div class="sb-logo-sub">Back-Office · Admin</div>
+  </div>
+  <div class="sb-section">Tableau de bord</div>
+  <div class="sb-item active" onclick="nav('dashboard',this)"><span class="ic">📊</span>Vue d'ensemble</div>
+  <div class="sb-section">Configuration</div>
+  <div class="sb-item" onclick="nav('apikeys',this)"><span class="ic">🔑</span>Clés API & Config</div>
+  <div class="sb-item" onclick="nav('modules',this)"><span class="ic">🧩</span>Modules & Accès</div>
+  <div class="sb-section">Abonnements</div>
+  <div class="sb-item" onclick="nav('plans',this)"><span class="ic">💳</span>Plans & Tarification</div>
+  <div class="sb-item" onclick="nav('users',this)"><span class="ic">👥</span>Utilisateurs</div>
+  <div class="sb-section">Communication</div>
+  <div class="sb-item" onclick="nav('announcements',this)"><span class="ic">📣</span>Annonces & Bandeaux</div>
+  <div class="sb-item" onclick="nav('content',this)"><span class="ic">✏️</span>Contenu éditorial</div>
+  <div class="sb-footer">
+    <div class="sb-user" id="sbUserInfo">Admin · Session active</div>
+    <a href="Smart-Invest_landing.html" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);text-decoration:none;margin-top:6px;font-family:var(--ft)">🏠 Retour à l'accueil</a>
+    <a href="Smart-Invest_portail.html" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);text-decoration:none;margin-top:4px;font-family:var(--ft)">🧩 Portail modules</a>
+    <div class="sb-logout" onclick="doLogout()">⏻ Déconnexion</div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- ══ DASHBOARD ══ -->
+  <div class="panel show" id="panel-dashboard">
+    <div class="topbar">
+      <div><div class="topbar-title">Vue d'ensemble</div><div class="topbar-sub">Métriques clés · Mis à jour : <span id="dashDate"></span></div></div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm" onclick="nav('apikeys',document.querySelector('[onclick*=apikeys]'))">⚙ Config API</button>
+      </div>
+    </div>
+    <div style="padding:24px">
+      <div class="g4" style="margin-bottom:20px">
+        <div class="kpi"><div class="kpi-n" style="color:var(--gl2)" id="d_users">—</div><div class="kpi-l">Utilisateurs actifs</div><div class="kpi-d" style="color:var(--gl2)" id="d_users_trend">Source: im_users_v2</div></div>
+        <div class="kpi"><div class="kpi-n" style="color:var(--gl)" id="d_pro">—</div><div class="kpi-l">Abonnés Pro+Premium</div><div class="kpi-d" style="color:var(--gl)" id="d_pro_trend">Comptes payants</div></div>
+        <div class="kpi"><div class="kpi-n" style="color:var(--bl)" id="d_msgs">—</div><div class="kpi-l">Messages IA total</div><div class="kpi-d" style="color:var(--bl)">Cumul mois en cours</div></div>
+        <div class="kpi"><div class="kpi-n" style="color:var(--al)" id="d_rev">—</div><div class="kpi-l">Revenus MAD/mois</div><div class="kpi-d" style="color:var(--al)">Plans actifs × prix</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-title">🔑 État de la configuration API</div>
+          <div id="apiStatus"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Répartition des plans <span id="planDistribLabel">— im_users_v2</span></div>
+          <div id="planDistrib"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🧩 État des modules <span>— Actif / Inactif</span></div>
+        <div id="moduleStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ API KEYS ══ -->
+  <div class="panel" id="panel-apikeys">
+    <div class="topbar"><div><div class="topbar-title">Clés API & Configuration</div><div class="topbar-sub">Gérez les accès aux services externes — visible uniquement ici</div></div></div>
+    <div style="padding:24px">
+      <div class="card" style="border-color:var(--gd)">
+        <div class="card-title">🔑 Clé API Anthropic (Claude) <span style="color:var(--rl)">⚠ Ne jamais exposer côté client</span></div>
+        <div class="fg">
+          <label>Clé API Anthropic</label>
+          <div class="key-wrap">
+            <input type="password" id="inp_anthropic_key" placeholder="sk-ant-api03-•••••••••••••••••••••••••••••••••••••••••••">
+            <button class="key-toggle" onclick="toggleVis('inp_anthropic_key',this)">👁</button>
+          </div>
+          <div class="key-preview" id="key_preview">Aucune clé enregistrée</div>
+          <div class="hint">Stockée dans localStorage admin — jamais exposée dans le code HTML public. Pour la production, utiliser un serveur proxy Node.js.</div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Modèle par défaut</label>
+            <select id="inp_model">
+              <option value="claude-sonnet-4-20250514" selected>Claude Sonnet 4 (recommandé)</option>
+              <option value="claude-opus-4-6">Claude Opus 4 (premium)</option>
+              <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (économique)</option>
+            </select>
+          </div>
+          <div class="fg"><label>Temperature (0.0 - 1.0)</label>
+            <input type="number" id="inp_temp" value="0.2" min="0" max="1" step="0.05">
+            <div class="hint">0.2 = précis (fiscal) · 0.7 = créatif</div>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Max tokens par réponse</label><input type="number" id="inp_tokens" value="2000" min="500" max="8000" step="500"></div>
+          <div class="fg"><label>Quota messages/jour (plan Gratuit)</label><input type="number" id="inp_quota" value="10" min="1" max="100"></div>
+        </div>
+        <div class="act-row">
+          <button class="btn btn-primary" onclick="saveApiConfig()">💾 Sauvegarder la configuration</button>
+          <button class="btn btn-ghost" onclick="testApiKey()">🧪 Tester la connexion</button>
+          <button class="btn btn-danger btn-sm" onclick="clearApiKey()">🗑 Effacer la clé</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🌐 Autres Services API <span>— Optionnels</span></div>
+        <div class="fg-row">
+          <div class="fg"><label>Office des Changes (taux de change)</label>
+            <input type="password" id="inp_forex_key" placeholder="(optionnel)">
+            <div class="hint">Si vide → taux BAM saisis manuellement</div>
+          </div>
+          <div class="fg"><label>Endpoint données live (BAM/HCP)</label>
+            <input type="text" id="inp_bam_url" placeholder="https://api.bam.ma/..." value="">
+          </div>
+        </div>
+        <div class="act-row"><button class="btn btn-ghost" onclick="saveOtherKeys()">💾 Sauvegarder</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODULES ══ -->
+  <div class="panel" id="panel-modules">
+    <div class="topbar"><div><div class="topbar-title">Modules & Accès</div><div class="topbar-sub">Activez / désactivez les modules et gérez les niveaux d'accès par plan</div></div></div>
+    <div style="padding:24px">
+      <div class="card">
+        <div class="card-title">🧩 Catalogue des modules</div>
+        <div id="modulesList"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚡ Feature Flags <span>— Fonctionnalités globales</span></div>
+        <div id="featureFlags"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PLANS ══ -->
+  <div class="panel" id="panel-plans">
+    <div class="topbar"><div><div class="topbar-title">Plans & Tarification</div><div class="topbar-sub">Modifiez les prix, features et conditions des plans d'abonnement</div></div></div>
+    <div style="padding:24px">
+      <div class="card">
+        <div class="card-title">💳 Plans actifs</div>
+        <div class="g3" id="plansGrid"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">✏️ Modifier un plan</div>
+        <div class="fg-row3">
+          <div class="fg"><label>Plan à modifier</label>
+            <select id="edit_plan_id">
+              <option value="gratuit">🌱 Gratuit</option>
+              <option value="pro">⚡ Pro</option>
+              <option value="premium">👑 Premium</option>
+            </select>
+          </div>
+          <div class="fg"><label>Prix MAD/mois</label><input type="number" id="edit_price_mad" value="490"></div>
+          <div class="fg"><label>Prix EUR/mois</label><input type="number" id="edit_price_eur" value="47"></div>
+        </div>
+        <div class="fg"><label>Features (une par ligne)</label>
+          <textarea id="edit_features" rows="6" placeholder="Tout le plan Gratuit&#10;Assistant IA illimité&#10;Cockpit de Management..."></textarea>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Quota messages/mois (-1 = illimité)</label><input type="number" id="edit_quota" value="-1"></div>
+          <div class="fg"><label>Code d'accès (optionnel)</label><input type="text" id="edit_code" placeholder="CODE2025"></div>
+        </div>
+        <div class="act-row">
+          <button class="btn btn-primary" onclick="savePlan()">💾 Sauvegarder le plan</button>
+          <button class="btn btn-ghost" onclick="loadPlanToEdit()">↺ Recharger</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ USERS ══ -->
+  <div class="panel" id="panel-users">
+    <div class="topbar">
+      <div><div class="topbar-title">Gestion Utilisateurs</div><div class="topbar-sub">Comptes réels · Source : localStorage im_users_v2</div></div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="addUserModal()">+ Ajouter</button>
+      </div>
+    </div>
+    <div style="padding:24px">
+      <div class="card">
+        <div class="card-title">👥 Utilisateurs enregistrés <span id="usersCountLabel"></span></div>
+        <table class="dt">
+          <thead><tr>
+            <th>Email</th><th>Plan</th><th>Créé le</th><th>Dernière connexion</th>
+            <th>Msgs IA</th><th>Statut</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="usersTable"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">🎟 Codes d'accès & Coupons</div>
+        <div class="fg-row3">
+          <div class="fg"><label>Nouveau code</label><input type="text" id="new_code" placeholder="PRO2025-MAROC" style="text-transform:uppercase"></div>
+          <div class="fg"><label>Plan associé</label>
+            <select id="new_code_plan">
+              <option value="pro">⚡ Pro</option>
+              <option value="premium">👑 Premium</option>
+            </select>
+          </div>
+          <div class="fg"><label>Durée (jours)</label><input type="number" id="new_code_days" value="30" min="1"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Max utilisations</label><input type="number" id="new_code_uses" value="1" min="1"></div>
+        </div>
+        <div class="act-row">
+          <button class="btn btn-primary" onclick="createCode()">Générer le code</button>
+        </div>
+        <div id="codesTable" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ANNONCES ══ -->
+  <div class="panel" id="panel-announcements">
+    <div class="topbar">
+      <div><div class="topbar-title">Annonces & Communication</div><div class="topbar-sub">Bandeaux, alertes, promotions affichées sur le site</div></div>
+      <button class="btn btn-primary" onclick="addAnnouncement()">+ Nouvelle annonce</button>
+    </div>
+    <div style="padding:24px">
+      <div class="card">
+        <div class="card-title">📣 Annonces actives</div>
+        <div id="announcementsList"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">✏️ Créer / Modifier une annonce</div>
+        <div class="fg-row">
+          <div class="fg"><label>Titre</label><input type="text" id="ann_title" placeholder="🎉 Nouveauté disponible !"></div>
+          <div class="fg"><label>Type</label>
+            <select id="ann_type">
+              <option value="banner">Bandeau haut de page</option>
+              <option value="sidebar">Sidebar</option>
+              <option value="toast">Toast notification</option>
+              <option value="modal">Popup modal</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Contenu</label><textarea id="ann_body" rows="3" placeholder="Description de l'annonce ou promotion..."></textarea></div>
+        <div class="fg-row3">
+          <div class="fg"><label>Cible</label>
+            <select id="ann_target">
+              <option value="all">Tous les utilisateurs</option>
+              <option value="gratuit">Plan Gratuit uniquement</option>
+              <option value="pro">Plan Pro uniquement</option>
+              <option value="premium">Plan Premium uniquement</option>
+            </select>
+          </div>
+          <div class="fg"><label>Couleur</label>
+            <select id="ann_color">
+              <option value="gold">Or (promotionnel)</option>
+              <option value="blue">Bleu (info)</option>
+              <option value="green">Vert (succès)</option>
+              <option value="red">Rouge (urgent)</option>
+            </select>
+          </div>
+          <div class="fg"><label>Dismissible</label>
+            <select id="ann_dismiss">
+              <option value="true">Oui — l'utilisateur peut fermer</option>
+              <option value="false">Non — permanent</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Date début</label><input type="date" id="ann_start"></div>
+          <div class="fg"><label>Date fin (vide = permanent)</label><input type="date" id="ann_end"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Texte du bouton CTA</label><input type="text" id="ann_cta_label" placeholder="Voir les nouveautés →"></div>
+          <div class="fg"><label>URL du bouton CTA</label><input type="text" id="ann_cta_url" placeholder="Smart-Invest_portail.html"></div>
+        </div>
+        <div class="act-row">
+          <button class="btn btn-primary" onclick="saveAnnouncement()">💾 Publier l'annonce</button>
+          <button class="btn btn-ghost" onclick="previewAnnouncement()">👁 Prévisualiser</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CONTENT ══ -->
+  <div class="panel" id="panel-content">
+    <div class="topbar"><div><div class="topbar-title">Contenu Éditorial</div><div class="topbar-sub">Textes, stats, disclaimers affichés sur le site</div></div></div>
+    <div style="padding:24px">
+      <div class="card">
+        <div class="card-title">🏠 Page d'accueil</div>
+        <div class="fg"><label>Titre principal (Hero)</label><input type="text" id="c_hero_title" value="Votre guide IA pour investir au Maroc — sans friction"></div>
+        <div class="fg"><label>Sous-titre</label><textarea id="c_hero_sub" rows="2">Simulateurs fiscaux, calculateurs de primes, pilotage de projet et assistant IA expert en droit des affaires marocain.</textarea></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Statistiques affichées (chiffres clés)</div>
+        <div class="g4">
+          <div class="fg"><label>Stat 1 — Valeur</label><input type="text" id="stat1_val" value="1 240+"><input type="text" id="stat1_label" value="Investisseurs accompagnés" style="margin-top:4px;font-size:11px"></div>
+          <div class="fg"><label>Stat 2 — Valeur</label><input type="text" id="stat2_val" value="26"><input type="text" id="stat2_label" value="Modules disponibles" style="margin-top:4px;font-size:11px"></div>
+          <div class="fg"><label>Stat 3 — Valeur</label><input type="text" id="stat3_val" value="28"><input type="text" id="stat3_label" value="Pays d'origine" style="margin-top:4px;font-size:11px"></div>
+          <div class="fg"><label>Stat 4 — Valeur</label><input type="text" id="stat4_val" value="340M+"><input type="text" id="stat4_label" value="Primes MAD calculées" style="margin-top:4px;font-size:11px"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚖️ Disclaimer légal</div>
+        <div class="fg"><textarea id="c_disclaimer" rows="3">Smart-Invest.ia est une plateforme d'information. Les simulations sont fournies à titre indicatif et ne constituent pas un conseil juridique ou fiscal opposable à l'administration.</textarea></div>
+        <div class="fg"><label>Disclaimer fiscal automatique</label>
+          <textarea id="c_fiscal_disclaimer" rows="2">⚖️ Simulation à titre informatif, non opposable à l'administration fiscale. Barèmes : CGI 2024 · Charte 03-22. Consultez un expert-comptable ou avocat inscrit au Barreau du Maroc.</textarea>
+        </div>
+      </div>
+      <div class="act-row"><button class="btn btn-primary" onclick="saveContent()">💾 Sauvegarder le contenu</button></div>
+    </div>
+  </div>
+
+</div><!-- end .main -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SCRIPTS — TOUS juste avant </body>
+     Ordre obligatoire : config → auth → patch → script principal
+══════════════════════════════════════════════════════════════ -->
+<script src="config.js"></script>
+<script src="auth.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// BACK-OFFICE — Script principal
+// ══════════════════════════════════════════════════════════
+
+const SESSION_KEY   = 'im_admin_session';
+const ADMIN_PWD_KEY = 'im_admin_password';
+
+function getAdminPwd() {
+  return localStorage.getItem(ADMIN_PWD_KEY)
+    || (typeof IMConfig !== 'undefined' && IMConfig.admin?.defaultPassword)
+    || 'Admin@Smart-Invest2025';
+}
+
+// Données de config depuis config.js
+let codes         = JSON.parse(localStorage.getItem('im_admin_codes') || '[]');
+let announcements = JSON.parse(localStorage.getItem('im_admin_announcements') || 'null') ||
+                    (typeof IMConfig !== 'undefined' ? IMConfig.announcements : []);
+const modules  = typeof IMConfig !== 'undefined' ? IMConfig.modules  : {};
+const plans    = typeof IMConfig !== 'undefined' ? IMConfig.plans    : {};
+const features = typeof IMConfig !== 'undefined' ? IMConfig.features : {};
+
+// ── HELPERS ──────────────────────────────────────────────
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem('im_users_v2') || '[]'); } catch { return []; }
+}
+function saveUsers(users) { localStorage.setItem('im_users_v2', JSON.stringify(users)); }
+function getAdminCodes() {
+  try { return JSON.parse(localStorage.getItem('im_admin_codes') || '[]'); } catch { return []; }
+}
+function saveAdminCodes(c) { localStorage.setItem('im_admin_codes', JSON.stringify(c)); }
+
+function getCurrentPlanForUser(u) {
+  if (u.plan === 'pro' && u.trialEnd && Date.now() > u.trialEnd) return 'gratuit';
+  return u.plan || 'gratuit';
+}
+function planBadge(plan) {
+  return { gratuit:'badge-green', pro:'badge-gold', premium:'badge-blue', owner:'badge-red' }[plan] || 'badge-gray';
+}
+function fmtDate(ts)  { return ts ? new Date(ts).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}) : '—'; }
+function fmtDT(ts)    { return ts ? new Date(ts).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—'; }
+function maskKey(k)   { return k.substring(0,12) + '•'.repeat(16) + k.slice(-4); }
+
+function getLiveStats() {
+  const users = getUsers();
+  const now   = Date.now();
+  const pl    = { gratuit:0, pro:0, premium:0 };
+  let aiTotal=0, active=0, trials=0, cancels=0, revenue=0;
+  users.forEach(u => {
+    const p = getCurrentPlanForUser(u);
+    pl[p] = (pl[p]||0)+1;
+    aiTotal += u.usage?.aiMessages || 0;
+    if (u.lastLogin && now - u.lastLogin < 30*24*3600*1000) active++;
+    if (u.isTrial && u.trialEnd && u.trialEnd > now) trials++;
+    if (u.cancelRequested) cancels++;
+    if (p==='pro') revenue+=490;
+    if (p==='premium') revenue+=990;
+  });
+  return {
+    total: users.length, gratuit: pl.gratuit||0, pro: pl.pro||0, premium: pl.premium||0,
+    aiTotal, active, trials, cancels, revenue,
+    conversion: users.length>0 ? Math.round(((pl.pro+pl.premium)/users.length)*100) : 0
+  };
+}
+
+// ── LOGIN ─────────────────────────────────────────────────
+function doLogin() {
+  const pwd = document.getElementById('loginPwd').value;
+  if (!pwd) { showLoginErr('⚠ Veuillez saisir le mot de passe'); return; }
+  if (pwd === getAdminPwd()) {
+    localStorage.setItem(SESSION_KEY, Date.now().toString());
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('resetSection').style.display = 'none';
+    initDashboard();
+  } else {
+    showLoginErr('⚠ Mot de passe incorrect');
+    document.getElementById('loginPwd').value = '';
+    document.getElementById('loginPwd').focus();
+    const att = parseInt(sessionStorage.getItem('login_attempts')||'0')+1;
+    sessionStorage.setItem('login_attempts', att);
+    if (att >= 2) document.getElementById('loginHelp').style.display = 'block';
+  }
+}
+
+function showLoginErr(msg) {
+  const el = document.getElementById('loginErr');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => { el.textContent=''; el.style.display='none'; }, 3500);
+}
+
+function toggleResetSection() {
+  const s = document.getElementById('resetSection');
+  s.style.display = s.style.display==='none' ? 'block' : 'none';
+}
+
+function applyNewPassword() {
+  const p1 = document.getElementById('newPwd1').value;
+  const p2 = document.getElementById('newPwd2').value;
+  const msg = document.getElementById('resetMsg');
+  if (!p1 || p1.length < 6) { msg.textContent='⚠ Minimum 6 caractères'; msg.style.color='#ef4444'; return; }
+  if (p1 !== p2) { msg.textContent='⚠ Les mots de passe ne correspondent pas'; msg.style.color='#ef4444'; return; }
+  localStorage.setItem(ADMIN_PWD_KEY, p1);
+  msg.textContent='✓ Mot de passe mis à jour'; msg.style.color='#22c55e';
+  document.getElementById('newPwd1').value=''; document.getElementById('newPwd2').value='';
+  sessionStorage.removeItem('login_attempts');
+  document.getElementById('loginHelp').style.display='none';
+  setTimeout(()=>{ document.getElementById('resetSection').style.display='none'; msg.textContent=''; }, 2500);
+}
+
+function doLogout() { localStorage.removeItem(SESSION_KEY); location.reload(); }
+
+function checkSession() {
+  const s = localStorage.getItem(SESSION_KEY);
+  if (s && Date.now()-parseInt(s) < 8*3600*1000) {
+    document.getElementById('loginScreen').style.display='none';
+    initDashboard();
+  }
+}
+
+// ── NAV ───────────────────────────────────────────────────
+function nav(id, el) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  const panel = document.getElementById('panel-'+id);
+  if (panel) panel.classList.add('show');
+  if (el) el.classList.add('active');
+  if (id==='dashboard')    renderDashboard();
+  if (id==='modules')      renderModules();
+  if (id==='plans')        renderPlans();
+  if (id==='users')        renderUsers();
+  if (id==='announcements') renderAnnouncements();
+  if (id==='apikeys')      loadApiConfig();
+}
+
+// ── TOAST ─────────────────────────────────────────────────
+let toastTimer;
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+function toggleVis(id, btn) {
+  const el = document.getElementById(id);
+  el.type = el.type==='password' ? 'text' : 'password';
+  btn.textContent = el.type==='password' ? '👁' : '🙈';
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────
+function initDashboard() {
+  document.getElementById('dashDate').textContent =
+    new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  // Afficher l'utilisateur admin connecté
+  if (window.AuthService) {
+    const u = AuthService.getUser();
+    if (u) document.getElementById('sbUserInfo').textContent = u.email + ' · ' + u.plan;
+  }
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const stats = getLiveStats();
+
+  document.getElementById('d_users').textContent = stats.total.toLocaleString('fr-FR');
+  document.getElementById('d_pro').textContent   = (stats.pro + stats.premium).toString();
+  document.getElementById('d_msgs').textContent  = stats.aiTotal.toString();
+  document.getElementById('d_rev').textContent   = stats.revenue.toLocaleString('fr-FR') + ' MAD';
+
+  // API Status
+  const key = localStorage.getItem('im_api_key_admin') || '';
+  document.getElementById('apiStatus').innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--surface2);border-radius:8px;margin-bottom:8px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${key?'var(--green)':'var(--red)'}"></div>
+      <div>
+        <div style="font-size:13px;color:var(--text)">${key?'Clé API configurée':'Clé API manquante'}</div>
+        <div style="font-size:11px;color:var(--text3);font-family:var(--ft)">${key?maskKey(key):'Aller dans Config API →'}</div>
+      </div>
+      ${key
+        ? `<button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="nav('apikeys',document.querySelector('[onclick*=apikeys]'))">Modifier</button>`
+        : `<button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="nav('apikeys',document.querySelector('[onclick*=apikeys]'))">Configurer →</button>`}
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--surface2);border-radius:8px">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>
+      <div>
+        <div style="font-size:13px;color:var(--text)">Utilisateurs chargés</div>
+        <div style="font-size:11px;color:var(--text3);font-family:var(--ft)">${stats.total} comptes dans im_users_v2</div>
+      </div>
+    </div>`;
+
+  // Plan distribution (données réelles)
+  const total = stats.total || 1;
+  document.getElementById('planDistrib').innerHTML = [
+    { plan:'👑 Premium', n:stats.premium, c:'var(--bl)' },
+    { plan:'⚡ Pro',     n:stats.pro,     c:'var(--gl)' },
+    { plan:'🌱 Gratuit', n:stats.gratuit, c:'var(--gl2)' },
+  ].map(d => {
+    const pct = Math.round((d.n/total)*100);
+    return `<div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:var(--text2)">${d.plan}</span>
+        <span style="font-family:var(--ft);color:${d.c}">${d.n} (${pct}%)</span>
+      </div>
+      <div class="stat-bar"><div class="stat-fill" style="width:${pct}%;background:${d.c}"></div></div>
+    </div>`;
+  }).join('') + `
+    <div style="margin-top:10px;padding:10px;background:var(--surface3);border-radius:7px;font-size:11px">
+      <span style="color:var(--gl)">Taux conversion : ${stats.conversion}%</span> ·
+      <span style="color:var(--blue)"> Actifs 30j : ${stats.active}</span> ·
+      <span style="color:var(--amber)"> Trials : ${stats.trials}</span>
+    </div>`;
+
+  // Module status
+  const modEntries = Object.entries(modules).slice(0,9);
+  document.getElementById('moduleStatus').innerHTML = modEntries.length === 0
+    ? '<div style="color:var(--text3);font-size:12px">Aucun module dans config.js</div>'
+    : `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">${
+        modEntries.map(([file,m])=>`
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface2);border-radius:6px;border:1px solid ${m.active?'var(--border)':'rgba(212,74,74,.2)'}">
+            <div style="width:6px;height:6px;border-radius:50%;background:${m.active?'var(--green)':'var(--red)'}"></div>
+            <div style="flex:1;min-width:0;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.name}</div>
+            <span class="badge badge-${m.plan==='gratuit'?'green':m.plan==='pro'?'gold':'blue'}" style="font-size:8px">${m.plan}</span>
+          </div>`).join('')
+      }</div>`;
+
+  // Stats live supplémentaires
+  const existingLive = document.getElementById('im-live-stats');
+  if (existingLive) existingLive.remove();
+  const dashPanel = document.getElementById('panel-dashboard');
+  if (dashPanel) {
+    const liveDiv = document.createElement('div');
+    liveDiv.id = 'im-live-stats';
+    liveDiv.innerHTML = `
+      <div class="card" style="margin-top:16px">
+        <div class="card-title">📊 Stats live <span style="color:var(--green)">● im_users_v2 — données réelles</span></div>
+        <div class="g4">
+          <div class="kpi"><div class="kpi-n" style="color:var(--gl)">${stats.conversion}%</div><div class="kpi-l">Taux conversion</div><div class="kpi-d" style="color:var(--text3)">Gratuit → Payant</div></div>
+          <div class="kpi"><div class="kpi-n" style="color:var(--blue)">${stats.active}</div><div class="kpi-l">Actifs (30j)</div><div class="kpi-d" style="color:var(--text3)">Dernière connexion</div></div>
+          <div class="kpi"><div class="kpi-n" style="color:var(--amber)">${stats.trials}</div><div class="kpi-l">Trials actifs</div><div class="kpi-d" style="color:var(--text3)">Pro essai en cours</div></div>
+          <div class="kpi"><div class="kpi-n" style="color:var(--red)">${stats.cancels}</div><div class="kpi-l">Résiliations</div><div class="kpi-d" style="color:var(--text3)">Fin période</div></div>
+        </div>
+        <div style="font-family:var(--ft);font-size:10px;color:var(--text3);text-align:right;margin-top:8px">
+          Mis à jour : ${new Date().toLocaleTimeString('fr-FR')} · Source : localStorage im_users_v2
+        </div>
+      </div>`;
+    const mainPad = dashPanel.querySelector('[style*="padding:24px"]');
+    if (mainPad) mainPad.appendChild(liveDiv);
+    else dashPanel.appendChild(liveDiv);
+  }
+}
+
+// ── API CONFIG ────────────────────────────────────────────
+function loadApiConfig() {
+  const key = localStorage.getItem('im_api_key_admin') || '';
+  document.getElementById('inp_anthropic_key').value = key;
+  document.getElementById('key_preview').textContent = key ? 'Clé enregistrée : ' + maskKey(key) : 'Aucune clé enregistrée';
+  const cfg = JSON.parse(localStorage.getItem('im_api_config') || '{}');
+  if (cfg.model)       document.getElementById('inp_model').value = cfg.model;
+  if (cfg.temperature !== undefined) document.getElementById('inp_temp').value = cfg.temperature;
+  if (cfg.maxTokens)   document.getElementById('inp_tokens').value = cfg.maxTokens;
+  if (cfg.quotaFreeDaily) document.getElementById('inp_quota').value = cfg.quotaFreeDaily;
+}
+
+function saveApiConfig() {
+  const key = document.getElementById('inp_anthropic_key').value.trim();
+  if (key && !key.startsWith('sk-ant-')) { toast('⚠ Clé invalide — doit commencer par sk-ant-','err'); return; }
+  if (key) { localStorage.setItem('im_api_key_admin', key); document.getElementById('key_preview').textContent = 'Clé enregistrée : ' + maskKey(key); }
+  const cfg = {
+    model: document.getElementById('inp_model').value,
+    temperature: parseFloat(document.getElementById('inp_temp').value),
+    maxTokens: parseInt(document.getElementById('inp_tokens').value),
+    quotaFreeDaily: parseInt(document.getElementById('inp_quota').value),
+  };
+  localStorage.setItem('im_api_config', JSON.stringify(cfg));
+  toast('✓ Configuration API sauvegardée');
+}
+
+async function testApiKey() {
+  const key = document.getElementById('inp_anthropic_key').value.trim() || localStorage.getItem('im_api_key_admin') || '';
+  if (!key) { toast('⚠ Entrez d\'abord une clé API','err'); return; }
+  toast('⏳ Test en cours...');
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:20,messages:[{role:'user',content:'Réponds juste OK'}]})
+    });
+    const d = await r.json();
+    if (r.ok) toast('✓ Connexion OK · ' + (d.content?.[0]?.text || 'OK'));
+    else toast('⚠ Erreur API : ' + (d.error?.message || r.status),'err');
+  } catch(e) { toast('⚠ Erreur réseau : ' + e.message,'err'); }
+}
+
+function clearApiKey() {
+  if (!confirm('Effacer la clé API ?')) return;
+  localStorage.removeItem('im_api_key_admin');
+  document.getElementById('inp_anthropic_key').value = '';
+  document.getElementById('key_preview').textContent = 'Aucune clé enregistrée';
+  toast('Clé API effacée');
+}
+function saveOtherKeys() { toast('✓ Autres clés sauvegardées'); }
+
+// ── MODULES ───────────────────────────────────────────────
+function renderModules() {
+  document.getElementById('modulesList').innerHTML = Object.keys(modules).length === 0
+    ? '<div style="color:var(--text3);font-size:12px">Aucun module dans config.js</div>'
+    : Object.entries(modules).map(([file,m])=>`
+      <div class="mod-row">
+        <span class="mod-plan ${m.plan}">${m.plan.toUpperCase()}</span>
+        <span class="mod-name">${m.name}</span>
+        <span style="font-family:var(--ft);font-size:10px;color:var(--text3);flex:1">${file}</span>
+        <select onchange="updateModulePlan('${file}',this.value)" style="padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;font-size:11px;color:var(--text2);outline:none">
+          ${['gratuit','pro','premium'].map(p=>`<option ${m.plan===p?'selected':''}>${p}</option>`).join('')}
+        </select>
+        <label class="toggle"><input type="checkbox" ${m.active?'checked':''} onchange="toggleModule('${file}',this.checked)"><span class="ts"></span></label>
+      </div>`).join('');
+
+  document.getElementById('featureFlags').innerHTML = Object.keys(features).length === 0
+    ? '<div style="color:var(--text3);font-size:12px">Aucun feature flag dans config.js</div>'
+    : Object.entries(features).map(([key,val])=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;margin-bottom:6px">
+        <label class="toggle"><input type="checkbox" ${val?'checked':''} onchange="toggleFeature('${key}',this.checked)"><span class="ts"></span></label>
+        <div style="flex:1"><div style="font-size:13px;font-weight:500">${key}</div><div style="font-size:11px;color:var(--text3);font-family:var(--ft)">${val?'Activé':'Désactivé'}</div></div>
+        <span class="badge ${val?'badge-green':'badge-gray'}">${val?'ON':'OFF'}</span>
+      </div>`).join('');
+}
+
+function updateModulePlan(file, plan) { if (modules[file]) { modules[file].plan = plan; toast('✓ Plan mis à jour : '+file); } }
+function toggleModule(file, active)   { if (modules[file]) { modules[file].active = active; toast((active?'✓ Activé : ':'⚠ Désactivé : ')+file); } }
+function toggleFeature(key, val)      { if (features[key]!==undefined) { features[key]=val; toast('Feature '+key+' : '+(val?'ON':'OFF')); } }
+
+// ── PLANS ─────────────────────────────────────────────────
+const PLANS_DEFAULT = {
+  gratuit: { label:'Gratuit',  price_mad:0,   price_eur:0,  billing:null,      features:['Simulateur fiscal','Matching aides','Zones économiques','Forme juridique','Coûts installation','IA 10 msg/j'], quotaMessages:10  },
+  pro:     { label:'Pro',      price_mad:490, price_eur:47, billing:'monthly', features:['Tout Gratuit','Cockpit EVM/Gantt','GIS Foncier','Lean Six Sigma','Charte Investissement','IA 100 msg/mois'],    quotaMessages:100 },
+  premium: { label:'Premium',  price_mad:990, price_eur:95, billing:'monthly', features:['Tout Pro','Dashboard Projet','Agent IA','Rapports B2B','Données live','IA illimitée'],                           quotaMessages:-1  },
+};
+const activePlans = Object.assign({}, PLANS_DEFAULT, JSON.parse(localStorage.getItem('im_plans_config')||'{}'));
+
+function renderPlans() {
+  document.getElementById('plansGrid').innerHTML = Object.entries(activePlans).map(([id,p])=>`
+    <div class="plan-card ${id==='pro'?'active-plan':''}">
+      <div class="plan-name">${id==='gratuit'?'🌱':id==='pro'?'⚡':'👑'} ${p.label}</div>
+      <div class="plan-price">${p.price_mad===0?'Gratuit':p.price_mad+' MAD'}</div>
+      <div class="plan-period">${p.billing?'/mois':''}</div>
+      <ul class="plan-features">${p.features.slice(0,4).map(f=>`<li>${f}</li>`).join('')}</ul>
+      <button class="btn btn-ghost btn-sm" style="margin-top:10px;width:100%" onclick="loadPlanEdit('${id}')">✏ Modifier</button>
+    </div>`).join('');
+}
+
+function loadPlanEdit(id) {
+  const p = activePlans[id]; if (!p) return;
+  document.getElementById('edit_plan_id').value    = id;
+  document.getElementById('edit_price_mad').value  = p.price_mad;
+  document.getElementById('edit_price_eur').value  = p.price_eur;
+  document.getElementById('edit_features').value   = p.features.join('\n');
+  document.getElementById('edit_quota').value      = p.quotaMessages;
+  document.getElementById('edit_code').value       = p.accessCode||'';
+}
+function loadPlanToEdit() { loadPlanEdit(document.getElementById('edit_plan_id').value); }
+function savePlan() {
+  const id = document.getElementById('edit_plan_id').value;
+  const p  = activePlans[id]; if (!p) return;
+  p.price_mad      = parseInt(document.getElementById('edit_price_mad').value);
+  p.price_eur      = parseInt(document.getElementById('edit_price_eur').value);
+  p.features       = document.getElementById('edit_features').value.split('\n').filter(f=>f.trim());
+  p.quotaMessages  = parseInt(document.getElementById('edit_quota').value);
+  p.accessCode     = document.getElementById('edit_code').value||null;
+  localStorage.setItem('im_plans_config', JSON.stringify(activePlans));
+  renderPlans();
+  toast('✓ Plan "'+id+'" mis à jour');
+}
+
+// ── USERS (données réelles im_users_v2) ───────────────────
+function renderUsers() {
+  const users = getUsers();
+  const stats = getLiveStats();
+
+  // Label avec count
+  const countEl = document.getElementById('usersCountLabel');
+  if (countEl) countEl.textContent = `— ${users.length} compte${users.length!==1?'s':''} · ${stats.conversion}% conversion`;
+
+  const tableEl = document.getElementById('usersTable');
+  if (!tableEl) return;
+
+  if (users.length === 0) {
+    tableEl.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:24px;font-family:var(--ft)">
+      Aucun utilisateur — Les comptes créés via Smart-Invest_login.html apparaîtront ici automatiquement.
+    </td></tr>`;
+  } else {
+    tableEl.innerHTML = users.map((u,i) => {
+      const plan     = getCurrentPlanForUser(u);
+      const isLocked = u.lockedUntil && Date.now() < u.lockedUntil;
+      const isTrial  = u.isTrial && u.trialEnd && Date.now() < u.trialEnd;
+      const trialDay = isTrial ? Math.ceil((u.trialEnd-Date.now())/86400000) : null;
+      const aiUsed   = u.usage?.aiMessages||0;
+      const aiLimit  = plan==='gratuit'?10:plan==='pro'?100:'∞';
+      const aiPct    = aiLimit==='∞'?0:Math.min(100,Math.round((aiUsed/aiLimit)*100));
+      return `<tr>
+        <td style="font-family:var(--ft);font-size:11px">
+          ${u.email}
+          ${isLocked?'<span style="color:var(--rl);font-size:9px;display:block">🔒 Verrouillé</span>':''}
+        </td>
+        <td>
+          <span class="badge ${planBadge(plan)}">${plan}</span>
+          ${isTrial?`<span class="badge badge-amber" style="margin-left:3px;font-size:8px">Trial ${trialDay}j</span>`:''}
+          ${u.cancelRequested?'<span class="badge badge-red" style="margin-left:3px;font-size:8px">Résil.</span>':''}
+        </td>
+        <td style="font-family:var(--ft);font-size:11px;color:var(--text3)">${fmtDate(u.createdAt)}</td>
+        <td style="font-family:var(--ft);font-size:11px;color:var(--text3)">${fmtDT(u.lastLogin)}</td>
+        <td style="font-family:var(--ft);font-size:11px;text-align:center">
+          ${aiUsed}/${aiLimit}
+          <div style="width:40px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;margin:3px auto 0">
+            <div style="width:${aiPct}%;height:100%;background:${aiPct>80?'var(--rl)':'var(--gl)'};border-radius:2px"></div>
+          </div>
+        </td>
+        <td><span class="badge ${u.token?'badge-green':'badge-gray'}">${u.token?'Actif':'Inactif'}</span></td>
+        <td style="display:flex;gap:4px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" onclick="openUserEdit(${i})" title="Modifier">✏</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleUserLock(${i})" title="${isLocked?'Déverrouiller':'Verrouiller'}">${isLocked?'🔓':'🔒'}</button>
+          <button class="btn btn-danger btn-sm" onclick="resetUserPwd(${i})" title="Reset MDP">🔑</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteUser(${i})" title="Supprimer">🗑</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+  renderCodes();
+}
+
+function openUserEdit(idx) {
+  const users = getUsers();
+  const u = users[idx]; if (!u) return;
+  let modal = document.getElementById('im-user-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'im-user-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;width:100%;max-width:440px;position:relative">
+      <button onclick="document.getElementById('im-user-modal').style.display='none'" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px">✕</button>
+      <div style="font-family:var(--ft);font-size:12px;color:var(--gold);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em">Modifier — ${u.email}</div>
+      <div class="fg"><label>Nom complet</label><input type="text" id="ue_name" value="${u.name||''}"></div>
+      <div class="fg"><label>Plan</label>
+        <select id="ue_plan">
+          <option value="gratuit" ${u.plan==='gratuit'?'selected':''}>🌱 Gratuit</option>
+          <option value="pro"     ${u.plan==='pro'?'selected':''}>⚡ Pro</option>
+          <option value="premium" ${u.plan==='premium'?'selected':''}>👑 Premium</option>
+        </select>
+      </div>
+      <div class="fg"><label>Entreprise</label><input type="text" id="ue_company" value="${u.company||''}"></div>
+      <div class="fg">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-size:12px">
+          <input type="checkbox" id="ue_reset_usage"> Réinitialiser l'usage IA (compteurs à zéro)
+        </label>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:18px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveUserEdit(${idx})">✓ Sauvegarder</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('im-user-modal').style.display='none'">Annuler</button>
+      </div>
+    </div>`;
+  modal.style.display = 'flex';
+}
+
+function saveUserEdit(idx) {
+  const users = getUsers();
+  const u = users[idx]; if (!u) return;
+  u.name    = document.getElementById('ue_name').value;
+  u.plan    = document.getElementById('ue_plan').value;
+  u.company = document.getElementById('ue_company').value;
+  if (document.getElementById('ue_reset_usage').checked) u.usage = { aiMessages:0, reports:0, lastReset:Date.now() };
+  u.isTrial = false; u.trialEnd = null;
+  saveUsers(users);
+  document.getElementById('im-user-modal').style.display = 'none';
+  renderUsers();
+  toast(`✓ Utilisateur mis à jour : ${u.email}`);
+}
+
+function toggleUserLock(idx) {
+  const users = getUsers();
+  const u = users[idx]; if (!u) return;
+  const locked = u.lockedUntil && Date.now() < u.lockedUntil;
+  if (locked) { u.lockedUntil=null; u.failedAttempts=0; }
+  else { u.lockedUntil = Date.now()+24*3600*1000; }
+  saveUsers(users);
+  renderUsers();
+  toast(locked ? `✓ Compte déverrouillé : ${u.email}` : `⚠ Compte verrouillé 24h : ${u.email}`);
+}
+
+function resetUserPwd(idx) {
+  const users = getUsers();
+  const u = users[idx];
+  if (!u || !confirm(`Réinitialiser le mot de passe de ${u.email} ?`)) return;
+  const token = 'tk_' + Math.random().toString(36).slice(2,18);
+  u.resetToken=token; u.resetExpiry=Date.now()+3600*1000;
+  u.failedAttempts=0; u.lockedUntil=null;
+  saveUsers(users);
+  toast(`✓ Token généré — Lien : Smart-Invest_reset_password.html?token=${token}`);
+  console.info('[Admin] Reset link:', `Smart-Invest_reset_password.html?token=${token}`);
+}
+
+function deleteUser(idx) {
+  const users = getUsers();
+  const u = users[idx];
+  if (!u || !confirm(`Supprimer définitivement ${u.email} ? Irréversible.`)) return;
+  users.splice(idx,1);
+  saveUsers(users);
+  renderUsers();
+  toast(`Utilisateur supprimé : ${u.email}`);
+}
+
+function addUserModal() {
+  let modal = document.getElementById('im-user-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'im-user-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;width:100%;max-width:440px;position:relative">
+      <button onclick="document.getElementById('im-user-modal').style.display='none'" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px">✕</button>
+      <div style="font-family:var(--ft);font-size:12px;color:var(--gold);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em">Ajouter un utilisateur</div>
+      <div class="fg"><label>Email</label><input type="email" id="ua_email" placeholder="user@exemple.ma"></div>
+      <div class="fg"><label>Nom complet</label><input type="text" id="ua_name" placeholder="Prénom Nom"></div>
+      <div class="fg"><label>Mot de passe temporaire</label><input type="text" id="ua_pwd" value="Invest${new Date().getFullYear()}!"></div>
+      <div class="fg"><label>Plan</label>
+        <select id="ua_plan">
+          <option value="gratuit">🌱 Gratuit</option>
+          <option value="pro" selected>⚡ Pro</option>
+          <option value="premium">👑 Premium</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:18px">
+        <button class="btn btn-primary" style="flex:1" onclick="saveNewUser()">✓ Créer le compte</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('im-user-modal').style.display='none'">Annuler</button>
+      </div>
+    </div>`;
+  modal.style.display='flex';
+}
+
+function saveNewUser() {
+  const email = document.getElementById('ua_email').value.trim();
+  const name  = document.getElementById('ua_name').value.trim();
+  const pwd   = document.getElementById('ua_pwd').value;
+  const plan  = document.getElementById('ua_plan').value;
+  if (!email||!name) { toast('⚠ Email et nom requis','err'); return; }
+  if (window.AuthService) {
+    const r = AuthService.register({ email, password:pwd||'Invest2025!', name, selectedPlan:plan });
+    if (r.ok) { document.getElementById('im-user-modal').style.display='none'; renderUsers(); toast(`✓ Compte créé : ${email} · ${plan}`); }
+    else toast(`⚠ ${r.error}`,'err');
+  } else {
+    toast('⚠ AuthService non chargé','err');
+  }
+}
+
+// ── CODES ─────────────────────────────────────────────────
+function createCode() {
+  const code = document.getElementById('new_code')?.value?.toUpperCase();
+  const plan = document.getElementById('new_code_plan')?.value||'pro';
+  const days = parseInt(document.getElementById('new_code_days')?.value||'30');
+  const maxU = parseInt(document.getElementById('new_code_uses')?.value||'1')||1;
+  if (!code) { toast('⚠ Entrez un code','err'); return; }
+  const allCodes = getAdminCodes();
+  allCodes.push({ code, plan, days, uses:0, maxUses:maxU, created:new Date().toISOString().split('T')[0], createdTs:Date.now(), expiresTs:Date.now()+days*24*3600*1000 });
+  saveAdminCodes(allCodes);
+  codes = allCodes;
+  renderCodes();
+  if (document.getElementById('new_code')) document.getElementById('new_code').value='';
+  toast(`✓ Code créé : ${code} → ${plan} · ${days}j · max ${maxU} utilisation${maxU>1?'s':''}`);
+}
+
+function renderCodes() {
+  const allCodes = getAdminCodes();
+  codes = allCodes;
+  const el = document.getElementById('codesTable');
+  if (!el) return;
+  el.innerHTML = allCodes.length===0
+    ? '<div style="color:var(--text3);font-size:12px">Aucun code créé</div>'
+    : `<table class="dt"><thead><tr><th>Code</th><th>Plan</th><th>Durée</th><th>Utilisations</th><th>Expire</th><th></th></tr></thead><tbody>
+      ${allCodes.map((c,i)=>`<tr>
+        <td style="font-family:var(--ft);color:var(--gl)">${c.code}</td>
+        <td><span class="badge badge-gold">${c.plan}</span></td>
+        <td style="font-family:var(--ft)">${c.days}j</td>
+        <td style="font-family:var(--ft);text-align:center">${c.uses}/${c.maxUses||1}</td>
+        <td style="font-family:var(--ft);font-size:10px;color:${c.expiresTs&&Date.now()>c.expiresTs?'var(--rl)':'var(--text3)'}">${c.expiresTs?fmtDate(c.expiresTs):'—'}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="removeCode(${i})">✕</button></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+function removeCode(i) {
+  const allCodes = getAdminCodes();
+  allCodes.splice(i,1);
+  saveAdminCodes(allCodes);
+  codes = allCodes;
+  renderCodes();
+  toast('Code supprimé');
+}
+
+// ── ANNOUNCEMENTS ─────────────────────────────────────────
+function renderAnnouncements() {
+  const colors = { gold:'var(--gl)', blue:'var(--bl)', green:'var(--gl2)', red:'var(--rl)' };
+  document.getElementById('announcementsList').innerHTML = announcements.length===0
+    ? '<div style="color:var(--text3);font-size:12px;padding:12px">Aucune annonce active</div>'
+    : announcements.map((a,i)=>`
+      <div class="ann-card">
+        <div class="ann-color" style="background:${colors[a.color]||'var(--gl)'}"></div>
+        <div class="ann-body">
+          <div class="ann-title">${a.title}</div>
+          <div style="font-size:12.5px;color:var(--text2);margin-bottom:6px">${a.body}</div>
+          <div class="ann-meta">Cible: ${a.target} · ${a.start_date||'—'} → ${a.end_date||'Permanent'}</div>
+          <div class="ann-actions">
+            <span class="badge ${a.active?'badge-green':'badge-gray'}">${a.active?'Actif':'Inactif'}</span>
+            <button class="btn btn-ghost btn-sm" onclick="toggleAnn(${i})">Basculer</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteAnn(${i})">Supprimer</button>
+          </div>
+        </div>
+      </div>`).join('');
+}
+
+function toggleAnn(i) { announcements[i].active=!announcements[i].active; saveAnnouncementsStore(); renderAnnouncements(); toast('Annonce '+(announcements[i].active?'activée':'désactivée')); }
+function deleteAnn(i)  { if (!confirm('Supprimer ?')) return; announcements.splice(i,1); saveAnnouncementsStore(); renderAnnouncements(); toast('Annonce supprimée'); }
+function saveAnnouncementsStore() { localStorage.setItem('im_admin_announcements', JSON.stringify(announcements)); }
+
+function addAnnouncement() {
+  ['ann_title','ann_body','ann_cta_label','ann_cta_url'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+function saveAnnouncement() {
+  const ann = {
+    id:'ann_'+Date.now(), active:true,
+    type:   document.getElementById('ann_type').value,
+    target: document.getElementById('ann_target').value,
+    title:  document.getElementById('ann_title').value,
+    body:   document.getElementById('ann_body').value,
+    cta_label: document.getElementById('ann_cta_label').value,
+    cta_url:   document.getElementById('ann_cta_url').value,
+    color:  document.getElementById('ann_color').value,
+    start_date: document.getElementById('ann_start').value,
+    end_date:   document.getElementById('ann_end').value||null,
+    dismissible: document.getElementById('ann_dismiss').value==='true',
+  };
+  if (!ann.title) { toast('⚠ Titre requis','err'); return; }
+  announcements.push(ann);
+  saveAnnouncementsStore();
+  renderAnnouncements();
+  toast('✓ Annonce publiée : '+ann.title);
+}
+
+function previewAnnouncement() {
+  toast('Prévisualisation : "'+document.getElementById('ann_title').value+'"');
+}
+
+// ── CONTENT ───────────────────────────────────────────────
+function saveContent() {
+  const content = {
+    hero_title:  document.getElementById('c_hero_title').value,
+    hero_subtitle: document.getElementById('c_hero_sub').value,
+    disclaimer:  document.getElementById('c_disclaimer').value,
+    fiscal_disclaimer: document.getElementById('c_fiscal_disclaimer').value,
+    stats: [
+      { value:document.getElementById('stat1_val').value, label:document.getElementById('stat1_label').value },
+      { value:document.getElementById('stat2_val').value, label:document.getElementById('stat2_label').value },
+      { value:document.getElementById('stat3_val').value, label:document.getElementById('stat3_label').value },
+      { value:document.getElementById('stat4_val').value, label:document.getElementById('stat4_label').value },
+    ]
+  };
+  localStorage.setItem('im_site_content', JSON.stringify(content));
+  toast('✓ Contenu éditorial sauvegardé');
+}
+
+// ── EXPORT CSV ────────────────────────────────────────────
+function exportUsers() {
+  const users = getUsers();
+  const h = ['email','nom','plan','entreprise','créé le','dernière connexion','msgs IA','trial'];
+  const rows = users.map(u=>[
+    u.email, u.name||'', getCurrentPlanForUser(u), u.company||'',
+    fmtDate(u.createdAt), fmtDate(u.lastLogin), u.usage?.aiMessages||0, u.isTrial?'oui':'non'
+  ]);
+  const csv = [h,...rows].map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  a.download = `Smart-Invest_users_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  toast('✓ Export CSV téléchargé');
+}
+
+// ── PROMO CODE (compatible abonnements) ───────────────────
+window.applyPromoCode = function(code) {
+  const allCodes = getAdminCodes();
+  const entry = allCodes.find(c=>c.code===code.toUpperCase());
+  if (!entry) return { ok:false, error:'Code invalide.' };
+  if (entry.expiresTs && Date.now()>entry.expiresTs) return { ok:false, error:'Code expiré.' };
+  if (entry.maxUses && entry.uses>=entry.maxUses) return { ok:false, error:'Code épuisé.' };
+  entry.uses++;
+  saveAdminCodes(allCodes);
+  return { ok:true, plan:entry.plan, days:entry.days };
+};
+window.IM_applyPromoCode = window.applyPromoCode;
+
+// ── INIT ──────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialiser la date d'annonce par défaut
+  const annStart = document.getElementById('ann_start');
+  if (annStart) annStart.value = new Date().toISOString().split('T')[0];
+
+  // Ajouter bouton export dans panel users
+  setTimeout(() => {
+    const ta = document.querySelector('#panel-users .topbar-actions');
+    if (ta && !document.getElementById('exportBtn')) {
+      const btn = document.createElement('button');
+      btn.id='exportBtn'; btn.className='btn btn-ghost btn-sm';
+      btn.textContent='⬇ Export CSV'; btn.onclick=exportUsers;
+      ta.appendChild(btn);
+    }
+  }, 300);
+
+  // Afficher info admin connecté
+  if (window.AuthService) {
+    const u = AuthService.getUser();
+    const sbUser = document.getElementById('sbUserInfo');
+    if (u && sbUser) sbUser.textContent = u.email + ' · ' + u.plan;
+  }
+
+  checkSession();
+});
+</script>
+
+<script src="upgrade-modal.js"></script>
+<script src="notifications.js"></script>
+<script src="analytics.js"></script>
+</body>
+</html>

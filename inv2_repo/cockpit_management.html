@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cockpit de Management — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#1A1A18;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--wn:#C05820;--er:#B91C1C;
+  --bd:rgba(0,0,0,0.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── HEADER ── */
+.hd{position:sticky;top:0;z-index:200;height:62px;background:rgba(14,14,12,.98);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid rgba(184,134,42,.2)}
+.hl{display:flex;align-items:center;gap:10px}
+.back{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;padding:4px 8px;border:1px solid rgba(255,255,255,.08);border-radius:5px;transition:all .2s}.back:hover{color:var(--gl);border-color:rgba(184,134,42,.3)}
+.logo{font-family:var(--ft);font-size:15px;font-weight:800;color:var(--wh)}.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:9px;padding:3px 9px;border-radius:100px;color:var(--gl);background:rgba(184,134,42,.12);border:1px solid rgba(184,134,42,.25)}
+.hnav{display:flex;gap:4px}
+.hnav a{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.35);text-decoration:none;padding:4px 9px;border:1px solid rgba(255,255,255,.07);border-radius:5px;transition:all .2s}
+.hnav a:hover,.hnav a.cur{color:var(--gl);border-color:rgba(184,134,42,.3);background:rgba(184,134,42,.07)}
+
+/* ── HEALTH HERO ── */
+.hero{background:var(--ink);padding:18px 28px;display:flex;align-items:center;gap:20px;border-bottom:1px solid rgba(255,255,255,.04)}
+.hero-info{flex:1}
+.hero-proj{font-family:var(--ft);font-size:18px;font-weight:800;color:var(--wh);outline:none;background:none;border:none;cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.2);width:100%}
+.hero-proj:focus{border-bottom-color:var(--gl)}
+.hero-proj::placeholder{color:rgba(255,255,255,.25);font-weight:400;font-style:italic}
+.hero-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:3px}
+.hero-status{display:flex;align-items:center;gap:5px;margin-top:6px}
+.sdot{width:7px;height:7px;border-radius:50%;animation:pp 2s infinite}
+@keyframes pp{0%,100%{opacity:1}50%{opacity:.35}}
+.hero-kpis{display:flex;gap:10px;flex-wrap:wrap}
+.hkpi{text-align:center;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid rgba(255,255,255,.05);min-width:72px}
+.hkpi-n{font-family:var(--ft);font-size:18px;font-weight:800;line-height:1}
+.hkpi-l{font-size:9px;color:rgba(255,255,255,.3);margin-top:3px;font-family:var(--fm)}
+.gauge-mini{display:flex;flex-direction:column;align-items:center;gap:4px}
+.gauge-n{font-family:var(--ft);font-size:32px;font-weight:800;color:var(--gl);line-height:1}
+.gauge-l{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.3);text-align:center}
+.gauge-pct{font-family:var(--fm);font-size:10px;color:#4ADE80;margin-top:1px}
+
+/* ── NAV TABS ── */
+.tabbar{display:flex;background:var(--im);border-bottom:1px solid rgba(255,255,255,.05);position:sticky;top:62px;z-index:150;overflow-x:auto}
+.tabbar::-webkit-scrollbar{height:2px}.tabbar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1)}
+.tb{padding:11px 18px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;background:none;color:rgba(255,255,255,.4);font-family:var(--fb);border-bottom:2.5px solid transparent;white-space:nowrap;transition:all .25s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;gap:5px}
+
+/* Couleur par onglet — état inactif */
+.tb-evm{color:rgba(59,130,246,.55)}
+.tb-evm:hover{color:#3B82F6;background:rgba(59,130,246,.09);border-bottom-color:#3B82F6}
+.tb-evm.on{color:#3B82F6;border-bottom-color:#3B82F6;background:rgba(59,130,246,.07)}
+
+.tb-wbs{color:rgba(34,197,94,.55)}
+.tb-wbs:hover{color:#22C55E;background:rgba(34,197,94,.09);border-bottom-color:#22C55E}
+.tb-wbs.on{color:#22C55E;border-bottom-color:#22C55E;background:rgba(34,197,94,.07)}
+
+.tb-gantt{color:rgba(251,191,36,.55)}
+.tb-gantt:hover{color:#FBBF24;background:rgba(251,191,36,.09);border-bottom-color:#FBBF24}
+.tb-gantt.on{color:#FBBF24;border-bottom-color:#FBBF24;background:rgba(251,191,36,.07)}
+
+.tb-pert{color:rgba(168,85,247,.55)}
+.tb-pert:hover{color:#A855F7;background:rgba(168,85,247,.09);border-bottom-color:#A855F7}
+.tb-pert.on{color:#A855F7;border-bottom-color:#A855F7;background:rgba(168,85,247,.07)}
+
+.tb-risks{color:rgba(239,68,68,.55)}
+.tb-risks:hover{color:#EF4444;background:rgba(239,68,68,.09);border-bottom-color:#EF4444}
+.tb-risks.on{color:#EF4444;border-bottom-color:#EF4444;background:rgba(239,68,68,.07)}
+
+.tb-burn{color:rgba(249,115,22,.55)}
+.tb-burn:hover{color:#F97316;background:rgba(249,115,22,.09);border-bottom-color:#F97316}
+.tb-burn.on{color:#F97316;border-bottom-color:#F97316;background:rgba(249,115,22,.07)}
+
+.tb-stopgo{color:rgba(20,184,166,.55)}
+.tb-stopgo:hover{color:#14B8A6;background:rgba(20,184,166,.09);border-bottom-color:#14B8A6}
+.tb-stopgo.on{color:#14B8A6;border-bottom-color:#14B8A6;background:rgba(20,184,166,.07)}
+
+/* ── PANELS ── */
+.panel{display:none;max-width:1240px;margin:0 auto;padding:24px 20px 80px}
+.panel.on{display:block}
+
+/* ── CARDS ── */
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:13px;padding:18px}
+.card + .card{margin-top:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.ct{font-family:var(--ft);font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ct-left{display:flex;align-items:center;gap:8px}
+.cs{font-size:11px;color:var(--sm);font-family:var(--fm);margin-bottom:10px}
+
+/* ── FORM ── */
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:11.5px;font-weight:600;color:var(--is);margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:7px 10px;border:1.5px solid var(--bd);border-radius:7px;font-family:var(--fb);font-size:12.5px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);background:var(--wh)}
+.fg .hint{font-size:10px;color:var(--sm);margin-top:3px;font-family:var(--fm)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.fr4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+
+/* ── BUTTONS ── */
+.btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-family:var(--fb);font-size:12.5px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.btn-g{background:var(--gold);color:var(--ink)}.btn-g:hover{background:var(--gl)}
+.btn-h{background:var(--b2);color:var(--is);border:1px solid var(--bd)}.btn-h:hover{border-color:var(--gold);color:var(--gold)}
+.btn-ink{background:var(--ink);color:var(--gl)}.btn-ink:hover{background:#1A1A18}
+.btn-er{background:rgba(185,28,28,.08);color:var(--er);border:1px solid rgba(185,28,28,.18)}.btn-er:hover{background:rgba(185,28,28,.15)}
+.btn-sm{padding:5px 10px;font-size:11px;border-radius:6px}
+.act-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* ── KPI CARDS ── */
+.kpis4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kpis3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.kc{background:var(--wh);border:1px solid var(--bd);border-radius:11px;padding:14px;text-align:center;transition:all .2s}
+.kc:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.kc-n{font-family:var(--ft);font-size:22px;font-weight:800;line-height:1;margin-bottom:3px}
+.kc-l{font-size:10.5px;color:var(--sm);font-family:var(--fm)}
+.kc-n.g{color:var(--ok)}.kc-n.r{color:var(--er)}.kc-n.gold{color:var(--gold)}.kc-n.b{color:var(--ac)}.kc-n.w{color:var(--wn)}
+
+/* ── METRIC ROWS ── */
+.mr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12.5px}
+.mr:last-child{border-bottom:none}
+.mk{color:var(--is)}.mv{font-family:var(--fm);font-weight:700}
+.mv.g{color:var(--ok)}.mv.r{color:var(--er)}.mv.gold{color:var(--gold)}.mv.w{color:var(--wn)}.mv.b{color:var(--ac)}
+
+/* ── CHIPS / PILLS ── */
+.chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--fm);font-size:10.5px;padding:3px 9px;border-radius:100px}
+.chip-ok{background:rgba(26,107,60,.1);color:var(--ok)}.chip-warn{background:rgba(192,88,32,.1);color:var(--wn)}.chip-bad{background:rgba(185,28,28,.1);color:var(--er)}.chip-b{background:rgba(30,77,107,.1);color:var(--ac)}
+.pill{display:inline-block;font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px}
+.pill-g{background:rgba(26,107,60,.1);color:var(--ok)}.pill-y{background:rgba(184,134,42,.1);color:var(--gold)}.pill-r{background:rgba(185,28,28,.1);color:var(--er)}.pill-b{background:rgba(30,77,107,.1);color:var(--ac)}.pill-gr{background:rgba(0,0,0,.06);color:var(--sm)}
+
+/* ── TABLES ── */
+table.dt{width:100%;border-collapse:collapse;font-size:12px}
+table.dt th{background:var(--ink);color:var(--gl);font-family:var(--fm);font-size:9.5px;padding:8px 10px;text-align:left;white-space:nowrap}
+table.dt td{padding:7px 10px;border-bottom:1px solid var(--bd);vertical-align:middle}
+table.dt tbody tr:hover td{background:var(--gp)}
+table.dt tr:last-child td{border-bottom:none}
+.td-input{width:100%;padding:4px 6px;border:1px solid transparent;border-radius:5px;font-family:inherit;font-size:12px;color:var(--ink);background:transparent;outline:none;transition:all .2s}
+.td-input:hover{border-color:var(--bd);background:var(--bg)}
+.td-input:focus{border-color:var(--gold);background:var(--wh)}
+.td-num{font-family:var(--fm);font-size:11px;text-align:center}
+.del-btn{background:none;border:none;cursor:pointer;color:rgba(0,0,0,.2);font-size:14px;padding:2px 5px;border-radius:4px;transition:all .2s}
+.del-btn:hover{color:var(--er);background:rgba(185,28,28,.08)}
+
+/* ── WBS ── */
+.wbs-tree{max-height:600px;overflow-y:auto}
+.wbs-tree::-webkit-scrollbar{width:4px}.wbs-tree::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+.wbs-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;margin-bottom:3px;transition:all .2s;cursor:default}
+.wbs-row:hover{background:var(--gp)}
+.wbs-row.l0{background:var(--ink);color:var(--wh);border-radius:10px;cursor:pointer}
+.wbs-row.l1{background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.12);margin-left:0}
+.wbs-row.l2{background:var(--bg);border:1px solid var(--bd);margin-left:16px;font-size:12.5px}
+.wbs-row.l3{background:var(--b2);border:1px solid rgba(0,0,0,.06);margin-left:32px;font-size:12px}
+.wbs-code{font-family:var(--fm);font-size:9px;color:var(--gold);width:36px;flex-shrink:0}
+.wbs-name-input{flex:1;background:none;border:none;outline:none;font-family:inherit;font-size:inherit;color:inherit;cursor:text;padding:2px 4px;border-radius:4px;transition:all .2s}
+.wbs-name-input:hover{background:rgba(255,255,255,.1)}
+.wbs-name-input:focus{background:var(--wh);color:var(--ink);padding:2px 6px;box-shadow:0 0 0 2px rgba(184,134,42,.3)}
+.wbs-name-input.dark{color:rgba(255,255,255,.9)}
+.wbs-name-input.dark:hover{background:rgba(255,255,255,.08)}
+.wbs-pct{font-family:var(--fm);font-size:10px;color:var(--gold);width:44px;text-align:right}
+.wbs-pct-input{width:50px;background:none;border:none;outline:none;font-family:var(--fm);font-size:10px;color:var(--gold);text-align:right;cursor:text;padding:2px 3px;border-radius:3px}
+.wbs-pct-input:focus{background:var(--wh);color:var(--ink);box-shadow:0 0 0 2px rgba(184,134,42,.3)}
+.wbs-done-bar{width:60px;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;flex-shrink:0}
+.wbs-done-fill{height:100%;border-radius:3px;transition:width .4s}
+.wbs-actions{display:flex;gap:3px;opacity:0;transition:opacity .2s}
+.wbs-row:hover .wbs-actions{opacity:1}
+.wbs-row.l0:hover .wbs-actions{opacity:1}
+.wbs-act-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;transition:all .2s}
+.wbs-act-btn:hover{background:rgba(255,255,255,.15)}
+.add-phase-btn{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1.5px dashed var(--bd);border-radius:8px;background:none;cursor:pointer;color:var(--sm);font-size:12.5px;font-family:var(--fb);width:100%;transition:all .2s;margin-top:6px}
+.add-phase-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gp)}
+
+/* ── GANTT ── */
+.gantt-wrap{overflow-x:auto;margin-top:8px}
+.gantt-wrap::-webkit-scrollbar{height:4px}.gantt-wrap::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+.gantt-table{border-collapse:collapse;font-size:12px;min-width:900px}
+.gantt-table th{background:var(--ink);color:var(--gl);font-family:var(--fm);font-size:9px;padding:8px 8px;text-align:left;white-space:nowrap;position:sticky;top:0}
+.gantt-table td{padding:5px 8px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.gantt-table tbody tr:hover td{background:var(--gp)}
+.gantt-bar-cell{width:44%;min-width:280px}
+.gb-wrap{height:16px;background:var(--b2);border-radius:4px;overflow:hidden;position:relative;cursor:pointer}
+.gb{height:100%;border-radius:4px;position:absolute;top:0;transition:all .3s}
+.gb.cr{background:linear-gradient(90deg,#EF4444,#B91C1C)}
+.gb.nr{background:linear-gradient(90deg,#3B82F6,#1E4D6B)}
+.gb.dn{background:linear-gradient(90deg,#4ADE80,#1A6B3C)}
+.gb.sg{background:linear-gradient(90deg,#F97316,#C05820)}
+.gb-float{height:100%;border-radius:4px;position:absolute;top:0;background:rgba(0,0,0,.06)}
+.gantt-add-row{display:flex;align-items:center;gap:6px;padding:7px 10px;border-top:1px solid var(--bd);background:var(--bg)}
+.gantt-add-row input,.gantt-add-row select{padding:5px 8px;border:1.5px solid var(--bd);border-radius:6px;font-family:var(--fb);font-size:11.5px;background:var(--wh);color:var(--ink);outline:none}
+.gantt-add-row input:focus,.gantt-add-row select:focus{border-color:var(--gold)}
+.toggle{position:relative;width:38px;height:20px;cursor:pointer;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.tslider{position:absolute;inset:0;background:#CCC;border-radius:10px;transition:.25s}
+.tslider::before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+input:checked+.tslider{background:var(--ok)}
+input:checked+.tslider::before{transform:translateX(18px)}
+
+/* ── PERT ── */
+.pert-table-wrap{overflow-x:auto;margin-bottom:16px}
+.pert-svg-wrap{background:var(--bg);border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+
+/* ── RISK ── */
+.risk-matrix-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin:8px 0}
+.rc{aspect-ratio:1;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--fm);font-size:10px;font-weight:700;cursor:pointer;transition:transform .15s;padding:3px;position:relative}
+.rc:hover{transform:scale(1.08);z-index:2}
+.rc-score{font-size:11px;font-weight:800}
+.rc-risks{font-size:7px;text-align:center;line-height:1.2;opacity:.8;overflow:hidden;max-height:20px}
+
+/* ── STOP/GO ── */
+.sg-item{background:var(--wh);border:1px solid var(--bd);border-radius:10px;padding:13px 15px;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;transition:all .2s}
+.sg-item.critical{border-color:rgba(185,28,28,.3);background:rgba(185,28,28,.02)}
+.sg-item.passed{border-color:rgba(26,107,60,.3);background:rgba(26,107,60,.02)}
+.sg-item.overruled{border-color:rgba(192,88,32,.4);background:rgba(192,88,32,.03)}
+.sg-name{font-weight:600;font-size:13px}
+.sg-impact{font-size:11px;color:var(--sm);margin-top:2px}
+.ovr-btn{font-family:var(--fm);font-size:9px;padding:3px 9px;border-radius:5px;border:1px solid rgba(185,28,28,.3);background:rgba(185,28,28,.06);color:var(--er);cursor:pointer;transition:all .2s;white-space:nowrap}
+.ovr-btn:hover{background:rgba(185,28,28,.14)}
+
+/* ── SCENARIO CARDS ── */
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.sc{border:1.5px solid var(--bd);border-radius:11px;padding:15px;transition:all .2s}
+.sc:hover{transform:translateY(-2px)}
+.sc-label{font-family:var(--fm);font-size:9px;color:var(--sm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.sc-num{font-family:var(--ft);font-size:20px;font-weight:800;margin-bottom:4px}
+.sc-desc{font-size:11.5px;color:var(--sm);line-height:1.5}
+
+/* ── BURN ── */
+.burn-alert{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:9px;margin-top:10px}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);z-index:500;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:var(--wh);border-radius:16px;padding:24px;max-width:520px;width:calc(100% - 32px);box-shadow:0 20px 60px rgba(0,0,0,.2);animation:mfade .2s ease}
+@keyframes mfade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.modal-title{font-family:var(--ft);font-size:17px;font-weight:800;margin-bottom:16px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+
+/* ── TOOLTIP ── */
+.tooltip{position:relative;display:inline-flex}
+.tooltip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--wh);font-family:var(--fm);font-size:10px;padding:4px 8px;border-radius:5px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:99}
+.tooltip:hover::after{opacity:1}
+
+/* ── EVM CHART ── */
+.evm-chart-wrap{background:var(--bg);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-top:10px}
+
+@media(max-width:900px){
+  .g2,.g3,.kpis4,.kpis3,.sc-grid,.fr3,.fr4{grid-template-columns:1fr}
+  .hero{flex-wrap:wrap}
+  .panel{padding:16px 12px 60px}
+}
+@media print{.hd,.tabbar,.act-row,.btn,.del-btn,.wbs-actions,.gantt-add-row{display:none!important}.panel{display:block!important;padding:0}}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="hd" style="justify-content:space-between;position:relative">
+  <div class="hl">
+    <a href="landing.html" class="back">← Hub</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+  </div>
+  <div style="position:absolute;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;white-space:nowrap">
+    <div style="font-family:var(--ft);font-size:15px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.015em;line-height:1.2">
+      Votre Cockpit de Management
+    </div>
+    <div style="font-family:var(--ft);font-size:14px;font-weight:800;color:#FFAA00;letter-spacing:.04em;line-height:1.2">
+      Pilotez votre projet.
+    </div>
+  </div>
+  <div style="width:80px"></div>
+</header>
+
+<!-- ── HEALTH HERO ── -->
+<div class="hero">
+  <div class="hero-info">
+    <input class="hero-proj" id="projName" value="" placeholder="Intitulé du projet" oninput="saveState()" title="Cliquez pour modifier le nom du projet">
+    <div class="hero-sub">Tableau de bord de pilotage · Mis à jour : <span id="lastUpdate">—</span></div>
+    <div class="hero-status">
+      <div class="sdot" id="sDot" style="background:#4ADE80"></div>
+      <span id="sLabel" style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.5)">Chargement...</span>
+    </div>
+  </div>
+  <div class="hero-kpis" id="heroKpis"></div>
+  <div class="gauge-mini">
+    <div class="gauge-n" id="gScore">—</div>
+    <div class="gauge-l">Health Score / 100</div>
+    <div class="gauge-pct" id="gProb">Calcul en cours...</div>
+  </div>
+</div>
+
+<!-- ── TAB BAR ── -->
+<div class="tabbar" id="tabbar">
+  <button class="tb tb-evm on" onclick="showTab('evm',this)">📊 EVM & KPIs</button>
+  <button class="tb tb-wbs" onclick="showTab('wbs',this)">🌳 WBS Détaillé</button>
+  <button class="tb tb-gantt" onclick="showTab('gantt',this)">📅 Gantt</button>
+  <button class="tb tb-pert" onclick="showTab('pert',this)">🔗 PERT</button>
+  <button class="tb tb-risks" onclick="showTab('risks',this)">⚠️ Risques</button>
+  <button class="tb tb-burn" onclick="showTab('burn',this)">🔥 Burn Rate</button>
+  <button class="tb tb-stopgo" onclick="showTab('stopgo',this)">🔀 Stop/Go</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL 1 — EVM
+══════════════════════════════════════ -->
+<div class="panel on" id="panel-evm">
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><div class="ct-left">📥 Données du projet</div>
+        <span class="chip chip-b tooltip" data-tip="Entrez vos données réelles — les indicateurs se calculent en temps réel">💡 Aide</span>
+      </div>
+      <div class="fr3">
+        <div class="fg"><label>BAC — Budget total (MAD)</label><input type="number" id="e_bac" value="25000000" oninput="calcEVM()"><div class="hint">Budget approuvé par le commanditaire</div></div>
+        <div class="fg"><label>PV — Valeur planifiée (MAD)</label><input type="number" id="e_pv" value="12000000" oninput="calcEVM()"><div class="hint">Travail prévu à date selon planning</div></div>
+        <div class="fg"><label>EV — Valeur acquise (MAD)</label><input type="number" id="e_ev" value="10200000" oninput="calcEVM()"><div class="hint">Valeur du travail réellement réalisé</div></div>
+      </div>
+      <div class="fr3">
+        <div class="fg"><label>AC — Coût réel (MAD)</label><input type="number" id="e_ac" value="12100000" oninput="calcEVM()"><div class="hint">Coût engagé à ce jour</div></div>
+        <div class="fg"><label>Durée prévue (mois)</label><input type="number" id="e_dur" value="24" oninput="calcEVM()"></div>
+        <div class="fg"><label>Mois écoulés</label><input type="number" id="e_mois" value="10" oninput="calcEVM()"></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>Trésorerie disponible (MAD)</label><input type="number" id="e_cash" value="3500000" oninput="calcEVM()"></div>
+        <div class="fg"><label>Dépenses mensuelles réelles</label><input type="number" id="e_monthly" value="1210000" oninput="calcEVM()"></div>
+      </div>
+      <div style="background:rgba(184,134,42,.06);border:1px solid rgba(184,134,42,.15);border-radius:8px;padding:9px 12px;font-size:11.5px;color:var(--is);margin-top:6px">
+        ℹ️ Si vos données Min/Max ne sont pas connues, une marge d'incertitude de <strong>±10%</strong> est appliquée automatiquement sur les projections.
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ct-left">📈 Indicateurs temps réel</div></div>
+      <div id="evmMetrics">
+        <div style="text-align:center;padding:20px;color:var(--sm)">Entrez vos données →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis4" id="kpisRow"></div>
+
+  <!-- 3 scénarios -->
+  <div class="card">
+    <div class="ct"><div class="ct-left">🔮 Trois projections du coût final (EAC)</div>
+      <span class="cs">Chaque scénario utilise une méthode de calcul différente</span>
+    </div>
+    <div class="sc-grid" id="scenarioGrid"></div>
+  </div>
+
+  <!-- Courbe S -->
+  <div class="card" style="margin-top:14px">
+    <div class="ct"><div class="ct-left">📉 Courbe S — Évolution PV · EV · AC dans le temps</div></div>
+    <div style="display:flex;gap:14px;margin-bottom:8px;font-family:var(--fm);font-size:10px">
+      <span style="color:var(--ac)">── PV planifié</span>
+      <span style="color:var(--ok)">── EV acquis</span>
+      <span style="color:var(--er)">── AC réel</span>
+      <span style="color:var(--gold)">- - BAC</span>
+      <span style="color:rgba(26,107,60,.35)">▒ Zone ±10%</span>
+    </div>
+    <svg id="evmSvg" width="100%" height="230" viewBox="0 0 900 210" style="background:var(--bg);border-radius:9px;border:1px solid var(--bd)"></svg>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL 2 — WBS
+══════════════════════════════════════ -->
+<div class="panel" id="panel-wbs">
+  <div class="g2" style="margin-bottom:14px">
+    <div class="card">
+      <div class="ct"><div class="ct-left">⚙️ Paramètres WBS</div></div>
+      <div class="fr2">
+        <div class="fg"><label>Secteur / Type de projet</label>
+          <select id="wbs_sector" onchange="loadWBSSector()">
+            <option value="hotel">🏨 Hôtel / Tourisme</option>
+            <option value="usine">🏭 Usine industrielle (ZAI)</option>
+            <option value="immo">🏗️ Promotion immobilière</option>
+            <option value="agro">🌾 Agroalimentaire</option>
+            <option value="pharma">💊 Pharmacie / Santé</option>
+            <option value="tic">💻 TIC / Offshoring</option>
+            <option value="energie">⚡ Énergie renouvelable</option>
+          </select>
+        </div>
+        <div class="fg"><label>Budget total du projet (MAD)</label>
+          <input type="number" id="wbs_budget" value="25000000" oninput="renderWBS()">
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:var(--sm);margin-top:4px">✏️ <strong>Cliquez sur n'importe quel nom ou pourcentage</strong> pour le modifier directement dans le tableau.</div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ct-left">📊 Récapitulatif des phases</div></div>
+      <div id="wbsRecap"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">
+      <div class="ct-left">🌳 Structure de découpage du projet</div>
+      <div class="act-row" style="margin:0">
+        <button class="btn btn-h btn-sm" onclick="addWBSPhase()">+ Phase</button>
+        <button class="btn btn-h btn-sm" onclick="exportWBS()">📋 Export</button>
+      </div>
+    </div>
+    <div class="cs">Règle des 100% — la somme des pourcentages doit = 100% du budget total</div>
+    <div class="wbs-tree" id="wbsTree"></div>
+    <div id="wbs100check" style="margin-top:10px;font-family:var(--fm);font-size:11px"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL 3 — GANTT
+══════════════════════════════════════ -->
+<div class="panel" id="panel-gantt">
+  <div class="card" style="margin-bottom:12px">
+    <div class="ct"><div class="ct-left">⚙️ Paramètres Gantt</div></div>
+    <div class="fr3">
+      <div class="fg"><label>Nom du projet</label><input type="text" id="g_proj" value="Hôtel 4★ Agadir" oninput="renderGantt()"></div>
+      <div class="fg"><label>Date de début</label><input type="date" id="g_start" value="2025-01-15" onchange="renderGantt()"></div>
+      <div class="fg"><label>Unité de temps</label>
+        <select id="g_unit" onchange="renderGantt()"><option value="sem">Semaines</option><option value="mois" selected>Mois</option></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">
+      <div class="ct-left">📅 Diagramme de Gantt interactif</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-family:var(--fm)"><span style="width:12px;height:7px;background:var(--er);border-radius:2px;display:inline-block"></span>Critique</span>
+        <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-family:var(--fm)"><span style="width:12px;height:7px;background:#3B82F6;border-radius:2px;display:inline-block"></span>Normal</span>
+        <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-family:var(--fm)"><span style="width:12px;height:7px;background:var(--ok);border-radius:2px;display:inline-block"></span>Terminé</span>
+        <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-family:var(--fm)"><span style="width:12px;height:7px;background:var(--wn);border-radius:2px;display:inline-block"></span>Stop/Go</span>
+      </div>
+    </div>
+    <div class="gantt-wrap">
+      <table class="gantt-table" id="ganttTable"></table>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--sm);font-family:var(--fm)">✏️ Modifiez directement dans le tableau · Glissez les barres pour ajuster les durées</div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="ct"><div class="ct-left">📊 Analyse du chemin critique</div></div>
+    <div id="ganttAnalysis"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL 4 — PERT
+══════════════════════════════════════ -->
+<div class="panel" id="panel-pert">
+  <div class="card" style="margin-bottom:14px">
+    <div class="ct">
+      <div class="ct-left">🔗 Activités PERT — Estimation à 3 durées</div>
+      <button class="btn btn-g btn-sm" onclick="addPERTRow()">+ Activité</button>
+    </div>
+    <div class="cs">Formule : TE = (a + 4m + b) ÷ 6 · Variance = ((b−a)/6)² · La durée espérée et l'incertitude sont calculées automatiquement</div>
+    <div class="pert-table-wrap">
+      <table class="dt" id="pertTable">
+        <thead><tr>
+          <th>ID</th><th style="min-width:180px">Activité</th>
+          <th class="tooltip" data-tip="Durée optimiste">a (opt.)</th>
+          <th class="tooltip" data-tip="Durée la plus probable">m (prob.)</th>
+          <th class="tooltip" data-tip="Durée pessimiste">b (pess.)</th>
+          <th class="tooltip" data-tip="TE = (a+4m+b)/6">TE (mois)</th>
+          <th class="tooltip" data-tip="σ² = ((b-a)/6)²">Variance σ²</th>
+          <th>Prédécesseurs</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="pertBody"></tbody>
+      </table>
+    </div>
+    <div class="act-row">
+      <button class="btn btn-g btn-sm" onclick="addPERTRow()">+ Activité</button>
+      <button class="btn btn-h btn-sm" onclick="renderPERTNetwork()">🔄 Actualiser le réseau</button>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><div class="ct-left">📊 Analyse probabiliste</div></div>
+      <div id="pertAnalysis"></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ct-left">🔗 Réseau PERT — visualisation</div></div>
+      <div class="pert-svg-wrap">
+        <svg id="pertSvg" width="100%" height="260" viewBox="0 0 860 240"></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL 5 — RISKS
+══════════════════════════════════════ -->
+<div class="panel" id="panel-risks">
+  <div class="g2" style="margin-bottom:14px">
+    <div class="card">
+      <div class="ct"><div class="ct-left">➕ Ajouter un risque</div></div>
+      <div class="fg"><label>Description du risque</label><input type="text" id="r_desc" placeholder="Ex: Retard raccordement ONEE..." onkeydown="if(event.key==='Enter')addRisk()"></div>
+      <div class="fr3">
+        <div class="fg"><label>Probabilité (1-5)</label>
+          <select id="r_prob">
+            <option value="1">1 — Très faible (&lt;10%)</option>
+            <option value="2">2 — Faible (10-30%)</option>
+            <option value="3" selected>3 — Moyen (30-50%)</option>
+            <option value="4">4 — Élevé (50-70%)</option>
+            <option value="5">5 — Quasi-certain (&gt;70%)</option>
+          </select>
+        </div>
+        <div class="fg"><label>Impact (1-5)</label>
+          <select id="r_impact">
+            <option value="1">1 — Négligeable</option>
+            <option value="2">2 — Mineur</option>
+            <option value="3" selected>3 — Modéré</option>
+            <option value="4">4 — Majeur</option>
+            <option value="5">5 — Catastrophique</option>
+          </select>
+        </div>
+        <div class="fg"><label>Impact financier (MAD)</label><input type="number" id="r_fin" value="300000"></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>Catégorie</label>
+          <select id="r_cat"><option>Financier</option><option>Technique</option><option>Administratif</option><option>RH & Social</option><option>Environnemental</option><option>Marché</option></select>
+        </div>
+        <div class="fg"><label>Réponse PMBOK®</label>
+          <select id="r_resp"><option>Éviter</option><option>Transférer</option><option>Atténuer</option><option>Accepter (réserve)</option></select>
+        </div>
+      </div>
+      <div class="fg"><label>Responsable du risque</label><input type="text" id="r_owner" placeholder="PM, DAF, Architecte..."></div>
+      <button class="btn btn-g" onclick="addRisk()" style="width:100%;margin-top:4px">+ Ajouter au registre</button>
+      <div style="font-size:11px;color:var(--sm);margin-top:6px;font-family:var(--fm)">💡 Appuyez Entrée ou cliquez Ajouter · Cliquez sur une cellule du registre pour la modifier</div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ct-left">Matrice P × I (5×5)</div></div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:6px;align-items:center">
+        <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--fm);font-size:9px;color:var(--sm);text-align:center;letter-spacing:.06em">PROBABILITÉ ↑</div>
+        <div class="risk-matrix-grid" id="riskMatrix"></div>
+      </div>
+      <div style="text-align:center;font-family:var(--fm);font-size:9px;color:var(--sm);margin-top:4px">IMPACT →</div>
+      <div style="display:flex;gap:10px;margin-top:10px;font-size:10.5px;font-family:var(--fm)">
+        <span><span style="display:inline-block;width:10px;height:10px;background:#86EFAC;border-radius:2px;margin-right:3px"></span>Faible (1-4)</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:#FBBF24;border-radius:2px;margin-right:3px"></span>Modéré (5-12)</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:#F87171;border-radius:2px;margin-right:3px"></span>Élevé (15-25)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">
+      <div class="ct-left">📋 Registre des risques — EMV calculée automatiquement</div>
+      <button class="btn btn-h btn-sm" onclick="exportRisks()">📤 Exporter</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="dt">
+        <thead><tr><th>#</th><th style="min-width:200px">Risque</th><th>P</th><th>I</th><th>Score</th><th>Criticité</th><th>EMV estimée</th><th>Catégorie</th><th>Réponse</th><th>Responsable</th><th>Provision +20%</th><th></th></tr></thead>
+        <tbody id="riskTable"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:10px;padding:10px 14px;background:rgba(192,88,32,.06);border:1px solid rgba(192,88,32,.15);border-radius:8px;font-size:12px;color:var(--is)" id="riskSummary">
+      EMV Totale : — · Provision recommandée : —
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL 6 — BURN RATE
+══════════════════════════════════════ -->
+<div class="panel" id="panel-burn">
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><div class="ct-left">🔥 Paramètres Burn Rate & Trésorerie</div></div>
+      <div class="fg"><label>Trésorerie disponible (MAD)</label><input type="number" id="b_cash" value="3500000" oninput="calcBurn()"></div>
+      <div class="fg"><label>Dépenses réelles moyennes par mois (AC mensuel)</label><input type="number" id="b_spend" value="1210000" oninput="calcBurn()"></div>
+      <div class="fg"><label>Budget mensuel prévu (PV mensuel)</label><input type="number" id="b_planned" value="1041667" oninput="calcBurn()"></div>
+      <div class="fg"><label>Ressources complémentaires prévues (MAD, si refinancement)</label><input type="number" id="b_extra" value="0" oninput="calcBurn()"><div class="hint">Ligne de crédit, apport actionnaire, etc.</div></div>
+      <div id="burnMetrics"></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ct-left">📊 Projection trésorerie</div></div>
+      <svg id="burnSvg" width="100%" height="230" viewBox="0 0 500 200" style="background:var(--bg);border-radius:9px;border:1px solid var(--bd)"></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PANEL 7 — STOP/GO
+══════════════════════════════════════ -->
+<div class="panel" id="panel-stopgo">
+  <div class="card" style="margin-bottom:12px">
+    <div class="ct">
+      <div class="ct-left">🔀 Jalons Stop/Go — Verrous de gouvernance du projet</div>
+      <button class="btn btn-g btn-sm" onclick="openSGModal()">+ Nouveau jalon</button>
+    </div>
+    <div class="cs">Un jalon non validé bloque automatiquement les phases dépendantes · Overrule possible avec marquage "Dette Technique"</div>
+    <div id="sgList"></div>
+    <div style="margin-top:12px;padding:11px 14px;background:rgba(184,134,42,.06);border:1px solid rgba(184,134,42,.15);border-radius:8px;font-size:12px;color:var(--is)">
+      ⚙️ <strong>Mode Admin :</strong> Les jalons Stop/Go peuvent être configurés par l'administrateur du site ou par l'utilisateur. Les switches permettent de valider ou invalider un jalon. Le bouton Overrule force le passage et enregistre une "Dette Technique".
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL STOP/GO ── -->
+<div class="modal-bg" id="sgModal" onclick="if(event.target===this)closeSGModal()">
+  <div class="modal">
+    <div class="modal-title">🔀 Nouveau jalon Stop/Go</div>
+    <div class="fg"><label>Nom du jalon</label><input type="text" id="sg_name" placeholder="Ex: Obtention permis de construire..."></div>
+    <div class="fg"><label>Phase du projet</label><input type="text" id="sg_phase" placeholder="Ex: Phase 1 — Études"></div>
+    <div class="fg"><label>Impact si non validé</label><input type="text" id="sg_impact" placeholder="Ex: Bloque le début des fondations (+30 jours)"></div>
+    <div class="fg"><label>Délai administratif estimé (semaines)</label><input type="number" id="sg_delay" value="4" min="1"></div>
+    <div class="modal-actions">
+      <button class="btn btn-h" onclick="closeSGModal()">Annuler</button>
+      <button class="btn btn-g" onclick="addSGFromModal()">Créer le jalon</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// COCKPIT DE MANAGEMENT v2 — Smart-Invest.ia
+// WBS / Gantt / PERT / Risques 100% personnalisables
+// ══════════════════════════════════════════════════════════
+
+// ── UTILS ──
+const fmtMAD = n => Number(n).toLocaleString('fr-FR',{maximumFractionDigits:0})+' MAD';
+const fmtN = (n,d=2) => Number(n).toFixed(d);
+const col = (n,rev=false) => rev?(n>=1?'g':n>=0.9?'w':'r'):(n>=0?'g':'r');
+
+// ── TAB ROUTER ──
+function showTab(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-'+id).classList.add('on');
+  el.classList.add('on');
+  const fns={wbs:renderWBS,gantt:renderGantt,pert:renderPERT,risks:()=>{renderRiskMatrix();renderRiskTable();},burn:calcBurn,stopgo:renderStopGo};
+  if(fns[id]) fns[id]();
+}
+
+// ══════════════════════════════════════
+// EVM
+// ══════════════════════════════════════
+function calcEVM(){
+  const bac=+document.getElementById('e_bac').value||25000000;
+  const pv=+document.getElementById('e_pv').value||12000000;
+  const ev=+document.getElementById('e_ev').value||10200000;
+  const ac=+document.getElementById('e_ac').value||12100000;
+  const dur=+document.getElementById('e_dur').value||24;
+  const cash=+document.getElementById('e_cash').value||3500000;
+  const monthly=+document.getElementById('e_monthly').value||1210000;
+
+  const cv=ev-ac,sv=ev-pv,cpi=ev/ac,spi=ev/pv;
+  const eac_n=bac, eac_a=bac/cpi, eac_c=ac+(bac-ev)/(cpi*spi);
+  const vac=bac-eac_a, tcpi=(bac-ev)/(bac-ac);
+  const runway=cash/monthly;
+
+  const cc=(v,r=false)=>r?(v>=1?'var(--ok)':v>=0.9?'var(--wn)':'var(--er)'):(v>=0?'var(--ok)':'var(--er)');
+
+  document.getElementById('evmMetrics').innerHTML=`
+    ${[
+      ['Écart de Coût',fmtMAD(cv),cc(cv)],
+      ['Écart de Délai',fmtMAD(sv),cc(sv)],
+      ['Indice de Performance des Coûts',fmtN(cpi),cc(cpi,true)],
+      ['Indice de Performance des Délais',fmtN(spi),cc(spi,true)],
+      ['Estimation à l\'Achèvement',fmtMAD(eac_a),'var(--gold)'],
+      ['Écart à l\'Achèvement',fmtMAD(vac),cc(vac)],
+      ['Indice de Perf. à Terminer (TCPI)',fmtN(tcpi),tcpi<=1?'var(--ok)':'var(--wn)'],
+      ['Consommation Budgétaire / Mois',fmtMAD(monthly),'var(--is)'],
+      ['Autonomie de Trésorerie',fmtN(runway,1)+' mois',runway<3?'var(--er)':runway<6?'var(--wn)':'var(--ok)'],
+    ].map(([k,v,c])=>`<div class="mr"><span class="mk">${k}</span><span class="mv" style="color:${c}">${v}</span></div>`).join('')}
+    <div style="margin-top:10px">
+      <span class="chip ${cpi>=0.95&&spi>=0.95?'chip-ok':cpi>=0.85?'chip-warn':'chip-bad'}">
+        ${cpi>=0.95&&spi>=0.95?'✅ Projet sain — dans les normes':cpi>=0.85?'⚠ Dépassement modéré — action corrective':'🚨 Difficulté critique — escalade requise'}
+      </span>
+    </div>`;
+
+  document.getElementById('kpisRow').innerHTML=[
+    {n:fmtN(cpi),l:'CPI — Indice coût',cls:cpi>=1?'g':cpi>=0.9?'gold':'r'},
+    {n:fmtN(spi),l:'SPI — Indice délai',cls:spi>=1?'g':spi>=0.9?'gold':'r'},
+    {n:fmtMAD(eac_a),l:'EAC (scénario actuel)',cls:'gold'},
+    {n:fmtN(runway,1)+' mois',l:'Runway trésorerie',cls:runway<3?'r':runway<6?'w':'g'},
+  ].map(k=>`<div class="kc"><div class="kc-n ${k.cls}">${k.n}</div><div class="kc-l">${k.l}</div></div>`).join('');
+
+  document.getElementById('scenarioGrid').innerHTML=`
+    <div class="sc" style="border-color:rgba(30,77,107,.3);background:rgba(30,77,107,.04)">
+      <div class="sc-label">Scénario Nominal</div>
+      <div class="sc-num" style="color:var(--ac)">${fmtMAD(eac_n)}</div>
+      <div class="sc-desc">On respecte le budget initial — hypothèse optimiste. <strong>EAC = BAC</strong></div>
+    </div>
+    <div class="sc" style="border-color:rgba(192,88,32,.3);background:rgba(192,88,32,.04)">
+      <div class="sc-label">Scénario Actuel (CPI)</div>
+      <div class="sc-num" style="color:var(--wn)">${fmtMAD(eac_a)}</div>
+      <div class="sc-desc">En prolongeant la dérive actuelle. <strong>EAC = BAC / CPI (${fmtN(cpi)})</strong></div>
+    </div>
+    <div class="sc" style="border-color:rgba(185,28,28,.3);background:rgba(185,28,28,.04)">
+      <div class="sc-label">Scénario Critique (CPI × SPI)</div>
+      <div class="sc-num" style="color:var(--er)">${fmtMAD(Math.round(eac_c))}</div>
+      <div class="sc-desc">Cumul retard (SPI ${fmtN(spi)}) et surcoût. Pire cas.</div>
+    </div>`;
+
+  const score=Math.round(Math.max(0,Math.min(100,(cpi*40+spi*20+Math.max(0,1-(eac_a-bac)/bac)*40)*100/100)));
+  document.getElementById('gScore').textContent=score;
+  document.getElementById('gScore').style.color=score>=70?'#4ADE80':score>=50?'#FBBF24':'#F87171';
+  document.getElementById('gProb').textContent=`Succès estimé : ${Math.round(score*0.85+(cpi>=1?10:0)+(spi>=1?5:0))}%`;
+  document.getElementById('sLabel').textContent=cpi>=0.95&&spi>=0.95?'Projet sain':cpi>=0.85?'Dépassement modéré':'Difficulté critique';
+  document.getElementById('sDot').style.background=cpi>=0.95&&spi>=0.95?'#4ADE80':cpi>=0.85?'#FBBF24':'#F87171';
+  document.getElementById('heroKpis').innerHTML=`
+    <div class="hkpi"><div class="hkpi-n" style="color:${cpi>=1?'#4ADE80':cpi>=0.85?'#FBBF24':'#F87171'}">${fmtN(cpi)}</div><div class="hkpi-l">CPI</div></div>
+    <div class="hkpi"><div class="hkpi-n" style="color:${spi>=1?'#4ADE80':spi>=0.9?'#FBBF24':'#F87171'}">${fmtN(spi)}</div><div class="hkpi-l">SPI</div></div>
+    <div class="hkpi"><div class="hkpi-n" style="color:var(--gl)">${fmtMAD(eac_a).replace(' MAD','')}</div><div class="hkpi-l">EAC</div></div>
+    <div class="hkpi"><div class="hkpi-n" style="color:${runway<3?'#F87171':runway<6?'#FBBF24':'#4ADE80'}">${fmtN(runway,0)}M</div><div class="hkpi-l">Runway</div></div>`;
+
+  drawEVMChart(bac,pv,ev,ac,dur);
+}
+
+function drawEVMChart(bac,pv,ev,ac,dur){
+  const svg=document.getElementById('evmSvg'); if(!svg)return;
+  const W=900,H=190,PL=55,PR=22,PT=16,PB=28,maxV=Math.max(bac,ac)*1.12;
+  const tx=t=>(t/dur)*(W-PL-PR)+PL, ty=val=>PT+(H-PT-PB)*(1-val/maxV);
+  const pts=Array.from({length:13},(_,i)=>({t:i*dur/12,pv:bac*(i/12)**0.7,ev:ev*(i/12)*0.87,ac:ac*(i/12)*1.09}));
+  const line=(pts,k,c,dash='')=>`<path d="${pts.map((p,i)=>`${i?'L':'M'}${tx(p.t).toFixed(1)},${ty(p[k]).toFixed(1)}`).join(' ')}" fill="none" stroke="${c}" stroke-width="2.5" ${dash}/>`;
+  const band=pts.map(p=>({t:p.t,lo:p.ev*.9,hi:p.ev*1.1}));
+  const bp=`${band.map((p,i)=>`${i?'L':'M'}${tx(p.t).toFixed(1)},${ty(p.hi).toFixed(1)}`).join(' ')} ${[...band].reverse().map(p=>`L${tx(p.t).toFixed(1)},${ty(p.lo).toFixed(1)}`).join(' ')} Z`;
+  const yLabels=[0,.25,.5,.75,1].map(f=>`<line x1="${PL}" y1="${ty(maxV*f)}" x2="${W-PR}" y2="${ty(maxV*f)}" stroke="rgba(0,0,0,.04)" stroke-width="1"/><text x="${PL-5}" y="${ty(maxV*f)+4}" text-anchor="end" font-family="'JetBrains Mono'" font-size="8" fill="#999">${(maxV*f/1e6).toFixed(0)}M</text>`).join('');
+  const xLabels=Array.from({length:7},(_,i)=>`<text x="${tx(i*dur/6).toFixed(0)}" y="${H-PB+14}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="8" fill="#999">M${Math.round(i*dur/6)}</text>`).join('');
+  svg.innerHTML=`${yLabels}
+    <path d="${bp}" fill="rgba(26,107,60,.07)"/>
+    <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#DDD" stroke-width="1.5"/>
+    <line x1="${PL}" y1="${H-PB}" x2="${W-PR}" y2="${H-PB}" stroke="#DDD" stroke-width="1.5"/>
+    <line x1="${PL}" y1="${ty(bac)}" x2="${W-PR}" y2="${ty(bac)}" stroke="var(--gold)" stroke-width="1" stroke-dasharray="5,3"/>
+    <text x="${W-PR+4}" y="${ty(bac)+4}" font-family="'JetBrains Mono'" font-size="8" fill="var(--gold)">BAC</text>
+    ${line(pts,'pv','#1E4D6B','stroke-dasharray="6,3"')}${line(pts,'ev','#1A6B3C','')}${line(pts,'ac','#B91C1C','')}${xLabels}`;
+}
+
+// ══════════════════════════════════════
+// WBS — DONNÉES DÉTAILLÉES PAR SECTEUR
+// ══════════════════════════════════════
+const WBS_SECTORS = {
+  hotel:{
+    name:'Hôtel / Tourisme',
+    phases:[
+      {id:'p1',name:'PHASE 1 — Études, Permis & Financement',pct:5,color:'#1E4D6B',tasks:[
+        {id:'t1',name:'Mission de maîtrise d\'œuvre (architecte + BET)',pct:1.5,done:100,prev:'—'},
+        {id:'t2',name:'Études géotechniques et sondages',pct:0.5,done:100,prev:'t1'},
+        {id:'t3',name:'Permis de construire (CRI + Commune)',pct:0.3,done:80,prev:'t1'},
+        {id:'t4',name:'Classement touristique (Ministère)',pct:0.2,done:30,prev:'t3'},
+        {id:'t5',name:'Montage financier — dossier bancaire',pct:1.0,done:70,prev:'t1'},
+        {id:'t6',name:'Assurance Tous Risques Chantier (TRC)',pct:0.3,done:100,prev:'t5'},
+        {id:'t7',name:'Plan marketing & étude de marché',pct:1.2,done:50,prev:'t1'},
+      ]},
+      {id:'p2',name:'PHASE 2 — Terrassement & Fondations',pct:12,color:'#B8862A',tasks:[
+        {id:'t8',name:'Installation chantier et clôture',pct:0.5,done:100,prev:'t3'},
+        {id:'t9',name:'Terrassement et excavation générale',pct:3.0,done:100,prev:'t8'},
+        {id:'t10',name:'Remblais et compactage',pct:1.5,done:90,prev:'t9'},
+        {id:'t11',name:'Radier général ou semelles isolées',pct:4.0,done:60,prev:'t10'},
+        {id:'t12',name:'Voiles de sous-sol (cave / parking)',pct:2.0,done:30,prev:'t11'},
+        {id:'t13',name:'Étanchéité sous-sol',pct:1.0,done:10,prev:'t12'},
+      ]},
+      {id:'p3',name:'PHASE 3 — Structure & Gros Œuvre',pct:25,color:'#1A6B3C',tasks:[
+        {id:'t14',name:'Poteaux et voiles du RDC',pct:3.0,done:20,prev:'t12'},
+        {id:'t15',name:'Planchers R+1 à R+7 (béton armé)',pct:12.0,done:0,prev:'t14'},
+        {id:'t16',name:'Escaliers et circulations verticales',pct:2.0,done:0,prev:'t15'},
+        {id:'t17',name:'Cage ascenseurs (structure)',pct:1.5,done:0,prev:'t15'},
+        {id:'t18',name:'Terrasse accessible étanche',pct:3.5,done:0,prev:'t15'},
+        {id:'t19',name:'Réservations (gaines, trémies)',pct:1.0,done:0,prev:'t15'},
+        {id:'t20',name:'Charpente couverture restaurant rooftop',pct:2.0,done:0,prev:'t15'},
+      ]},
+      {id:'p4',name:'PHASE 4 — Corps d\'État Secondaires (CES)',pct:22,color:'#7A3560',tasks:[
+        {id:'t21',name:'Maçonnerie — cloisons, doublages',pct:3.5,done:0,prev:'t16'},
+        {id:'t22',name:'Plomberie sanitaire — réseau EF/EC/EU',pct:4.0,done:0,prev:'t21'},
+        {id:'t23',name:'Climatisation CVC (4 tubes toutes chambres)',pct:5.0,done:0,prev:'t22'},
+        {id:'t24',name:'Électricité courants forts + GTL',pct:3.5,done:0,prev:'t23'},
+        {id:'t25',name:'Courants faibles (téléphone, TV, data, sécurité)',pct:2.0,done:0,prev:'t24'},
+        {id:'t26',name:'Ascenseurs (pose et mise en service)',pct:2.5,done:0,prev:'t24'},
+        {id:'t27',name:'Détection incendie et sprinklers',pct:1.5,done:0,prev:'t24'},
+      ]},
+      {id:'p5',name:'PHASE 5 — Finitions & Aménagements',pct:18,color:'#0E4D4D',tasks:[
+        {id:'t28',name:'Enduits façades + isolation thermique',pct:2.5,done:0,prev:'t23'},
+        {id:'t29',name:'Revêtements sols chambres (parquet, moquette)',pct:2.0,done:0,prev:'t23'},
+        {id:'t30',name:'Carrelages et faïences salles de bains',pct:2.0,done:0,prev:'t23'},
+        {id:'t31',name:'Faux plafonds et peintures',pct:2.5,done:0,prev:'t29'},
+        {id:'t32',name:'Menuiseries intérieures bois',pct:1.5,done:0,prev:'t31'},
+        {id:'t33',name:'Menuiseries extérieures alu + vitrages',pct:2.5,done:0,prev:'t31'},
+        {id:'t34',name:'Façades rideaux et habillages',pct:2.0,done:0,prev:'t33'},
+        {id:'t35',name:'Signalétique intérieure et extérieure',pct:1.0,done:0,prev:'t34'},
+        {id:'t36',name:'VRD extérieur (voiries, parking, clôtures)',pct:2.0,done:0,prev:'t33'},
+      ]},
+      {id:'p6',name:'PHASE 6 — Équipements Hôteliers',pct:10,color:'#4D3500',tasks:[
+        {id:'t37',name:'Mobilier chambres (lits, armoires, bureaux)',pct:3.0,done:0,prev:'t31'},
+        {id:'t38',name:'Literie haut de gamme (4★)',pct:1.0,done:0,prev:'t37'},
+        {id:'t39',name:'Cuisine professionnelle (froid, cuisson, laverie)',pct:2.5,done:0,prev:'t37'},
+        {id:'t40',name:'Piscine, jacuzzi et équipements spa',pct:2.0,done:0,prev:'t36'},
+        {id:'t41',name:'Équipements salle de conférence',pct:0.8,done:0,prev:'t37'},
+        {id:'t42',name:'Déco, art et plantes intérieures',pct:0.7,done:0,prev:'t37'},
+      ]},
+      {id:'p7',name:'PHASE 7 — Mise en service & Ouverture',pct:4,color:'#2D6A4F',tasks:[
+        {id:'t43',name:'Réception des travaux (levée de réserves)',pct:0.5,done:0,prev:'t42'},
+        {id:'t44',name:'Tests et commissioning systèmes techniques',pct:0.8,done:0,prev:'t43'},
+        {id:'t45',name:'Inspection CRI + obtention classement 4★',pct:0.3,done:0,prev:'t44'},
+        {id:'t46',name:'Formation du personnel (technique + accueil)',pct:0.8,done:0,prev:'t43'},
+        {id:'t47',name:'Marketing de lancement + inauguration',pct:0.6,done:0,prev:'t46'},
+        {id:'t48',name:'Démarrage opérationnel et période de rodage',pct:1.0,done:0,prev:'t47'},
+      ]},
+      {id:'p8',name:'RÉSERVES & ALÉAS',pct:4,color:'#555',tasks:[
+        {id:'t49',name:'Réserve de contingence (risques identifiés)',pct:2.5,done:0,prev:'—'},
+        {id:'t50',name:'Réserve de management (imprévus)',pct:1.5,done:0,prev:'—'},
+      ]},
+    ]
+  },
+  usine:{
+    name:'Usine industrielle (ZAI)',
+    phases:[
+      {id:'p1',name:'PHASE 1 — Études, Admin & Implantation ZAI',pct:4,color:'#1E4D6B',tasks:[
+        {id:'t1',name:'Études de faisabilité technico-économique',pct:0.5,done:100,prev:'—'},
+        {id:'t2',name:'Convention CRI — ZAI (IS 0%→15%)',pct:0.3,done:100,prev:'t1'},
+        {id:'t3',name:'Permis de construire industriel',pct:0.3,done:80,prev:'t2'},
+        {id:'t4',name:'Études d\'impact environnemental (EIE)',pct:0.4,done:60,prev:'t1'},
+        {id:'t5',name:'Plans architecturaux + BET structure',pct:0.8,done:70,prev:'t1'},
+        {id:'t6',name:'Dossier aides FDII / Fonds Hassan II',pct:0.5,done:40,prev:'t1'},
+        {id:'t7',name:'Assurance TRC + responsabilité civile',pct:0.2,done:100,prev:'t5'},
+        {id:'t8',name:'Montage financier et convention bancaire',pct:1.0,done:60,prev:'t1'},
+      ]},
+      {id:'p2',name:'PHASE 2 — Foncier, VRD & Viabilisation',pct:18,color:'#B8862A',tasks:[
+        {id:'t9',name:'Acquisition / bail terrain ZAI',pct:10.0,done:100,prev:'t2'},
+        {id:'t10',name:'Terrassement général et nivellement',pct:2.5,done:90,prev:'t9'},
+        {id:'t11',name:'Raccordement ONEE (électricité MT/BT)',pct:2.0,done:40,prev:'t10'},
+        {id:'t12',name:'Raccordement ONEP / réseau eau industrielle',pct:1.0,done:20,prev:'t10'},
+        {id:'t13',name:'Réseau assainissement et eaux pluviales',pct:1.0,done:30,prev:'t10'},
+        {id:'t14',name:'Voiries internes et parkings',pct:1.5,done:0,prev:'t13'},
+      ]},
+      {id:'p3',name:'PHASE 3 — Construction Bâtiment Industriel',pct:30,color:'#1A6B3C',tasks:[
+        {id:'t15',name:'Fondations spéciales (poteaux/radier industriel)',pct:6.0,done:30,prev:'t10'},
+        {id:'t16',name:'Ossature métallique principale (charpente)',pct:8.0,done:10,prev:'t15'},
+        {id:'t17',name:'Couverture et bardage (isolation sandwich)',pct:4.0,done:0,prev:'t16'},
+        {id:'t18',name:'Dalle béton anti-chocs (atelier production)',pct:3.0,done:0,prev:'t16'},
+        {id:'t19',name:'Bloc administratif (bureaux + salle réunion)',pct:3.0,done:0,prev:'t16'},
+        {id:'t20',name:'Vestiaires, sanitaires et réfectoire',pct:1.5,done:0,prev:'t19'},
+        {id:'t21',name:'Portail et guérite sécurité',pct:0.8,done:0,prev:'t14'},
+        {id:'t22',name:'Clôture périmétrique',pct:1.5,done:0,prev:'t14'},
+        {id:'t23',name:'Réservations trémies équipements lourds',pct:0.7,done:0,prev:'t18'},
+        {id:'t24',name:'Station épuration eaux usées industrielles',pct:1.5,done:0,prev:'t17'},
+      ]},
+      {id:'p4',name:'PHASE 4 — Équipements de Production',pct:28,color:'#7A3560',tasks:[
+        {id:'t25',name:'Commande équipements (importation USD/EUR)',pct:20.0,done:0,prev:'t16'},
+        {id:'t26',name:'Transport international et dédouanement',pct:2.5,done:0,prev:'t25'},
+        {id:'t27',name:'Installation et génie industriel',pct:3.0,done:0,prev:'t26'},
+        {id:'t28',name:'Utilités process (air comprimé, vapeur, froid)',pct:2.5,done:0,prev:'t26'},
+      ]},
+      {id:'p5',name:'PHASE 5 — Installations Techniques',pct:10,color:'#0E4D4D',tasks:[
+        {id:'t29',name:'Armoire générale TGBT + câblage',pct:2.5,done:0,prev:'t17'},
+        {id:'t30',name:'Éclairage LED industriel + toiture',pct:1.0,done:0,prev:'t29'},
+        {id:'t31',name:'Chauffage / ventilation ateliers (CTA)',pct:1.5,done:0,prev:'t29'},
+        {id:'t32',name:'Réseau incendie (sprinklers, extincteurs, RIA)',pct:1.5,done:0,prev:'t29'},
+        {id:'t33',name:'Vidéosurveillance et contrôle d\'accès',pct:0.8,done:0,prev:'t29'},
+        {id:'t34',name:'Pont roulant ou chariot élévateur',pct:2.7,done:0,prev:'t27'},
+      ]},
+      {id:'p6',name:'PHASE 6 — Certifications & Mise en service',pct:5,color:'#2D6A4F',tasks:[
+        {id:'t35',name:'Qualification & validation ligne de prod.',pct:1.0,done:0,prev:'t27'},
+        {id:'t36',name:'Audit ISO 9001 / IATF 16949 (si auto.)',pct:0.8,done:0,prev:'t35'},
+        {id:'t37',name:'Formation opérateurs et techniciens',pct:1.2,done:0,prev:'t35'},
+        {id:'t38',name:'Essais de performance (FAT / SAT)',pct:0.8,done:0,prev:'t36'},
+        {id:'t39',name:'Recrutement + affiliation CNSS / ANAPEC',pct:0.5,done:0,prev:'t37'},
+        {id:'t40',name:'Démarrage production pilote',pct:0.7,done:0,prev:'t38'},
+      ]},
+      {id:'p7',name:'RÉSERVES & ALÉAS',pct:5,color:'#555',tasks:[
+        {id:'t41',name:'Réserve contingence risques identifiés (12%)',pct:3.0,done:0,prev:'—'},
+        {id:'t42',name:'Réserve management (imprévus — 5%)',pct:2.0,done:0,prev:'—'},
+      ]},
+    ]
+  },
+  agro:{
+    name:'Agroalimentaire',
+    phases:[
+      {id:'p1',name:'PHASE 1 — Études & Autorisations',pct:4,color:'#1E4D6B',tasks:[
+        {id:'t1',name:'Étude de marché et analyse concurrentielle',pct:0.8,done:100,prev:'—'},
+        {id:'t2',name:'Conception unité de transformation',pct:0.7,done:80,prev:'t1'},
+        {id:'t3',name:'Agrément ONSSA (autorisation sanitaire)',pct:0.5,done:50,prev:'t1'},
+        {id:'t4',name:'Étude d\'impact environnemental',pct:0.4,done:40,prev:'t1'},
+        {id:'t5',name:'Permis de construire',pct:0.3,done:30,prev:'t2'},
+        {id:'t6',name:'Montage financier CCG / Maroc PME',pct:1.3,done:60,prev:'t1'},
+      ]},
+      {id:'p2',name:'PHASE 2 — Génie Civil Alimentaire',pct:22,color:'#B8862A',tasks:[
+        {id:'t7',name:'Fondations et dallage industriel',pct:5.0,done:40,prev:'t5'},
+        {id:'t8',name:'Bâtiment production (norme hygiène)',pct:8.0,done:10,prev:'t7'},
+        {id:'t9',name:'Chambre froide positive (0-4°C)',pct:3.0,done:0,prev:'t8'},
+        {id:'t10',name:'Chambre froide négative (−18°C)',pct:2.5,done:0,prev:'t8'},
+        {id:'t11',name:'Vestiaires, sanitaires dédiés production',pct:1.0,done:0,prev:'t8'},
+        {id:'t12',name:'Réseaux eau potable certifiée + EPI',pct:1.5,done:0,prev:'t8'},
+        {id:'t13',name:'Station prétraitement effluents (ONAS)',pct:1.0,done:0,prev:'t8'},
+      ]},
+      {id:'p3',name:'PHASE 3 — Équipements Process',pct:38,color:'#1A6B3C',tasks:[
+        {id:'t14',name:'Lignes de réception et tri matière première',pct:4.0,done:0,prev:'t8'},
+        {id:'t15',name:'Équipements de transformation principale',pct:18.0,done:0,prev:'t14'},
+        {id:'t16',name:'Conditionnement et emballage automatique',pct:7.0,done:0,prev:'t15'},
+        {id:'t17',name:'Laboratoire contrôle qualité ONSSA',pct:3.0,done:0,prev:'t15'},
+        {id:'t18',name:'Nettoyage CIP (Cleaning In Place)',pct:3.0,done:0,prev:'t15'},
+        {id:'t19',name:'Manutention interne (convoyeurs, chariots)',pct:3.0,done:0,prev:'t15'},
+      ]},
+      {id:'p4',name:'PHASE 4 — Certifications & Démarrage',pct:7,color:'#2D6A4F',tasks:[
+        {id:'t20',name:'Certification ISO 22000 / HACCP',pct:2.0,done:0,prev:'t17'},
+        {id:'t21',name:'Agrément export UE (si nécessaire)',pct:1.5,done:0,prev:'t20'},
+        {id:'t22',name:'Formation GMP + bonnes pratiques hygiène',pct:1.5,done:0,prev:'t20'},
+        {id:'t23',name:'Production pilote et ajustements',pct:2.0,done:0,prev:'t22'},
+      ]},
+      {id:'p5',name:'RÉSERVES',pct:4,color:'#555',tasks:[
+        {id:'t24',name:'Contingence (12%)',pct:2.5,done:0,prev:'—'},
+        {id:'t25',name:'Réserve management (5%)',pct:1.5,done:0,prev:'—'},
+      ]},
+    ]
+  },
+  immo:{
+    name:'Promotion immobilière',
+    phases:[
+      {id:'p1',name:'PHASE 1 — Montage juridique & commercial',pct:5,color:'#1E4D6B',tasks:[
+        {id:'t1',name:'Acquisition foncière et purge hypothèques',pct:2.0,done:100,prev:'—'},
+        {id:'t2',name:'Autorisation de lotir / permis de construire',pct:0.5,done:80,prev:'t1'},
+        {id:'t3',name:'Études architecturales (plans vente)',pct:0.8,done:70,prev:'t1'},
+        {id:'t4',name:'Maquette commerciale et showroom',pct:0.5,done:40,prev:'t3'},
+        {id:'t5',name:'Contrats VEFA et commercialisation',pct:0.8,done:30,prev:'t4'},
+        {id:'t6',name:'Financement promoteur (crédit bancaire)',pct:0.4,done:60,prev:'t1'},
+      ]},
+      {id:'p2',name:'PHASE 2 — Infrastructure & VRD',pct:15,color:'#B8862A',tasks:[
+        {id:'t7',name:'Terrassement et voirie principale',pct:4.0,done:60,prev:'t2'},
+        {id:'t8',name:'Réseaux AEP, assainissement, électricité',pct:5.0,done:30,prev:'t7'},
+        {id:'t9',name:'Espaces verts et paysagisme',pct:2.0,done:0,prev:'t8'},
+        {id:'t10',name:'Éclairage public et signalétique',pct:1.5,done:0,prev:'t8'},
+        {id:'t11',name:'Parkings communs et clôtures',pct:2.5,done:0,prev:'t8'},
+      ]},
+      {id:'p3',name:'PHASE 3 — Construction (structure)',pct:38,color:'#1A6B3C',tasks:[
+        {id:'t12',name:'Fondations et sous-sol (caves)',pct:8.0,done:20,prev:'t7'},
+        {id:'t13',name:'Structure béton RDC + étages',pct:18.0,done:5,prev:'t12'},
+        {id:'t14',name:'Toiture terrasse + étanchéité',pct:5.0,done:0,prev:'t13'},
+        {id:'t15',name:'Escaliers, balcons et loggias',pct:3.0,done:0,prev:'t13'},
+        {id:'t16',name:'Cages ascenseurs (structure)',pct:2.0,done:0,prev:'t13'},
+        {id:'t17',name:'Locaux communs (hall, locaux vélos)',pct:2.0,done:0,prev:'t13'},
+      ]},
+      {id:'p4',name:'PHASE 4 — Corps d\'état secondaires',pct:22,color:'#7A3560',tasks:[
+        {id:'t18',name:'Maçonnerie, cloisons et doublage',pct:4.0,done:0,prev:'t13'},
+        {id:'t19',name:'Plomberie sanitaire (EF/EC/EU)',pct:3.5,done:0,prev:'t18'},
+        {id:'t20',name:'Électricité + tableau TGBT commun',pct:3.0,done:0,prev:'t19'},
+        {id:'t21',name:'CVC (climatisation, VMC)',pct:2.5,done:0,prev:'t20'},
+        {id:'t22',name:'Menuiseries alu + vitrages',pct:3.5,done:0,prev:'t20'},
+        {id:'t23',name:'Enduits + carrelages + peintures',pct:4.0,done:0,prev:'t21'},
+        {id:'t24',name:'Ascenseurs (fourniture et pose)',pct:1.5,done:0,prev:'t20'},
+      ]},
+      {id:'p5',name:'RÉSERVES',pct:5,color:'#555',tasks:[
+        {id:'t25',name:'Contingence aléas (10%)',pct:3.0,done:0,prev:'—'},
+        {id:'t26',name:'Réserve promoteur',pct:2.0,done:0,prev:'—'},
+      ]},
+    ]
+  },
+  pharma:{
+    name:'Pharmacie / Santé',
+    phases:[
+      {id:'p1',name:'PHASE 1 — Études réglementaires & Autorisations',pct:8,color:'#1E4D6B',tasks:[
+        {id:'t1',name:'Dépôt dossier AMM (autorisation mise sur marché)',pct:2.0,done:90,prev:'—'},
+        {id:'t2',name:'Études BPF (Bonnes Pratiques de Fabrication)',pct:1.5,done:80,prev:'t1'},
+        {id:'t3',name:'Validation du site de production (DPPM)',pct:1.5,done:50,prev:'t2'},
+        {id:'t4',name:'Études bioéquivalence (si générique)',pct:2.0,done:30,prev:'t1'},
+        {id:'t5',name:'Montage financier et partenariats',pct:1.0,done:60,prev:'t1'},
+      ]},
+      {id:'p2',name:'PHASE 2 — Construction Salle Blanche',pct:30,color:'#B8862A',tasks:[
+        {id:'t6',name:'Fondations et structure bâtiment GMP',pct:5.0,done:40,prev:'t3'},
+        {id:'t7',name:'Salles blanches ISO 7 et 8',pct:10.0,done:10,prev:'t6'},
+        {id:'t8',name:'Centrale traitement d\'air CTA qualifiée',pct:5.0,done:0,prev:'t7'},
+        {id:'t9',name:'Eau purifiée et eau injectable (WFI)',pct:4.0,done:0,prev:'t7'},
+        {id:'t10',name:'Vestiaires décontamination et sas',pct:2.0,done:0,prev:'t7'},
+        {id:'t11',name:'Laboratoire contrôle qualité IPC',pct:4.0,done:0,prev:'t7'},
+      ]},
+      {id:'p3',name:'PHASE 3 — Équipements Production',pct:35,color:'#1A6B3C',tasks:[
+        {id:'t12',name:'Équipements fabrication (granulateurs, mélangeurs)',pct:15.0,done:0,prev:'t8'},
+        {id:'t13',name:'Équipements compression / gélulage',pct:8.0,done:0,prev:'t12'},
+        {id:'t14',name:'Ligne d\'emballage primaire et secondaire',pct:7.0,done:0,prev:'t13'},
+        {id:'t15',name:'Système MES et traçabilité numérique',pct:5.0,done:0,prev:'t13'},
+      ]},
+      {id:'p4',name:'PHASE 4 — Qualifications & Certifications',pct:12,color:'#2D6A4F',tasks:[
+        {id:'t16',name:'Qualification installation (IQ) tous équipements',pct:2.0,done:0,prev:'t13'},
+        {id:'t17',name:'Qualification opération (OQ)',pct:2.0,done:0,prev:'t16'},
+        {id:'t18',name:'Qualification performance (PQ)',pct:2.0,done:0,prev:'t17'},
+        {id:'t19',name:'Audit BPF DPPM et obtention agrément',pct:3.0,done:0,prev:'t18'},
+        {id:'t20',name:'Formation personnel BPF + HSE',pct:3.0,done:0,prev:'t17'},
+      ]},
+      {id:'p5',name:'RÉSERVES',pct:5,color:'#555',tasks:[
+        {id:'t21',name:'Contingence (15% — secteur très contrôlé)',pct:3.5,done:0,prev:'—'},
+        {id:'t22',name:'Réserve management (5%)',pct:1.5,done:0,prev:'—'},
+      ]},
+    ]
+  },
+  tic:{
+    name:'TIC / Offshoring',
+    phases:[
+      {id:'p1',name:'PHASE 1 — Setup & Infrastructure',pct:15,color:'#1E4D6B',tasks:[
+        {id:'t1',name:'Aménagement bureaux (open-space, salles)',pct:4.0,done:80,prev:'—'},
+        {id:'t2',name:'Infrastructure réseau (fibre, LAN, WiFi)',pct:3.0,done:60,prev:'t1'},
+        {id:'t3',name:'Serveurs et cloud privé / hybride',pct:4.0,done:40,prev:'t2'},
+        {id:'t4',name:'Téléphonie VoIP et centre d\'appels',pct:2.0,done:20,prev:'t3'},
+        {id:'t5',name:'Sécurité physique et logique (RGPD)',pct:2.0,done:30,prev:'t3'},
+      ]},
+      {id:'p2',name:'PHASE 2 — Recrutement & Formation',pct:20,color:'#B8862A',tasks:[
+        {id:'t6',name:'Recrutement profils techniques (développeurs)',pct:6.0,done:40,prev:'t1'},
+        {id:'t7',name:'Recrutement chefs de projet et managers',pct:3.0,done:60,prev:'t6'},
+        {id:'t8',name:'Formation langues et compétences métier',pct:5.0,done:20,prev:'t6'},
+        {id:'t9',name:'Formation outils (ERP, CRM, BI)',pct:4.0,done:10,prev:'t7'},
+        {id:'t10',name:'Certifications professionnelles (ITIL, PMP)',pct:2.0,done:0,prev:'t8'},
+      ]},
+      {id:'p3',name:'PHASE 3 — Développement & Déploiement',pct:40,color:'#1A6B3C',tasks:[
+        {id:'t11',name:'Sprint 1-3 — Architecture et backend',pct:12.0,done:0,prev:'t8'},
+        {id:'t12',name:'Sprint 4-6 — Frontend et UX/UI',pct:10.0,done:0,prev:'t11'},
+        {id:'t13',name:'Sprint 7-9 — Intégrations et API',pct:8.0,done:0,prev:'t12'},
+        {id:'t14',name:'Tests QA, sécurité et performance',pct:5.0,done:0,prev:'t13'},
+        {id:'t15',name:'Déploiement production et go-live',pct:5.0,done:0,prev:'t14'},
+      ]},
+      {id:'p4',name:'PHASE 4 — Certifications CFC',pct:10,color:'#7A3560',tasks:[
+        {id:'t16',name:'Dossier CFC (Casablanca Finance City)',pct:3.0,done:0,prev:'t15'},
+        {id:'t17',name:'Certification ISO 27001 sécurité info',pct:4.0,done:0,prev:'t15'},
+        {id:'t18',name:'Audit CMMI ou équivalent qualité',pct:3.0,done:0,prev:'t17'},
+      ]},
+      {id:'p5',name:'RÉSERVES',pct:5,color:'#555',tasks:[
+        {id:'t19',name:'Contingence et aléas (10%)',pct:3.0,done:0,prev:'—'},
+        {id:'t20',name:'Réserve management',pct:2.0,done:0,prev:'—'},
+      ]},
+    ]
+  },
+  energie:{
+    name:'Énergie renouvelable',
+    phases:[
+      {id:'p1',name:'PHASE 1 — Études & Concessions',pct:6,color:'#1E4D6B',tasks:[
+        {id:'t1',name:'Étude vent / irradiation solaire (12 mois)',pct:1.5,done:100,prev:'—'},
+        {id:'t2',name:'Appel d\'offres MASEN ou ONEE',pct:0.5,done:100,prev:'t1'},
+        {id:'t3',name:'Contrat PPA (Power Purchase Agreement)',pct:0.8,done:80,prev:'t2'},
+        {id:'t4',name:'Étude d\'impact environnemental et social',pct:1.0,done:60,prev:'t1'},
+        {id:'t5',name:'Permis de construire et autorisation ANRE',pct:0.7,done:40,prev:'t4'},
+        {id:'t6',name:'Financement projet (dette + fonds propres)',pct:1.5,done:50,prev:'t2'},
+      ]},
+      {id:'p2',name:'PHASE 2 — Génie Civil & Infrastructure',pct:20,color:'#B8862A',tasks:[
+        {id:'t7',name:'Voiries d\'accès au site',pct:3.0,done:30,prev:'t5'},
+        {id:'t8',name:'Fondations massifs (éolien) ou châssis (PV)',pct:7.0,done:10,prev:'t7'},
+        {id:'t9',name:'Réseau câblage inter-panneaux / éolien',pct:3.0,done:0,prev:'t8'},
+        {id:'t10',name:'Poste de livraison HTA',pct:3.5,done:0,prev:'t8'},
+        {id:'t11',name:'Local onduleurs et batteries (si stockage)',pct:3.5,done:0,prev:'t8'},
+      ]},
+      {id:'p3',name:'PHASE 3 — Équipements Électromécaniques',pct:45,color:'#1A6B3C',tasks:[
+        {id:'t12',name:'Éoliennes (tour + nacelle + pales) — import',pct:30.0,done:0,prev:'t8'},
+        {id:'t13',name:'Onduleurs string et centraux',pct:5.0,done:0,prev:'t12'},
+        {id:'t14',name:'Transformateurs HTA/HTB',pct:5.0,done:0,prev:'t12'},
+        {id:'t15',name:'Système SCADA et télésurveillance',pct:3.0,done:0,prev:'t13'},
+        {id:'t16',name:'Câbles HTA et BT + grounding',pct:2.0,done:0,prev:'t13'},
+      ]},
+      {id:'p4',name:'PHASE 4 — Raccordement & Commissioning',pct:14,color:'#2D6A4F',tasks:[
+        {id:'t17',name:'Raccordement réseau ONEE (GTL)',pct:5.0,done:0,prev:'t14'},
+        {id:'t18',name:'Tests et commissioning équipements',pct:4.0,done:0,prev:'t17'},
+        {id:'t19',name:'Qualification ONEE et mise en service',pct:3.0,done:0,prev:'t18'},
+        {id:'t20',name:'Formation équipe O&M',pct:2.0,done:0,prev:'t18'},
+      ]},
+      {id:'p5',name:'RÉSERVES',pct:5,color:'#555',tasks:[
+        {id:'t21',name:'Contingence risques (15%)',pct:3.0,done:0,prev:'—'},
+        {id:'t22',name:'Réserve management (5%)',pct:2.0,done:0,prev:'—'},
+      ]},
+    ]
+  }
+};
+
+let currentWBS = JSON.parse(JSON.stringify(WBS_SECTORS.hotel.phases));
+
+function loadWBSSector(){
+  const sector=document.getElementById('wbs_sector').value;
+  currentWBS=JSON.parse(JSON.stringify(WBS_SECTORS[sector]?.phases||WBS_SECTORS.hotel.phases));
+  renderWBS();
+}
+
+function renderWBS(){
+  const bgt=+document.getElementById('wbs_budget').value||25000000;
+  const tree=document.getElementById('wbsTree');
+  let html='';
+
+  currentWBS.forEach((phase,pi)=>{
+    const phaseBgt=Math.round(bgt*phase.pct/100);
+    const avgDone=phase.tasks.length?Math.round(phase.tasks.reduce((s,t)=>s+t.done,0)/phase.tasks.length):0;
+    html+=`<div class="wbs-row l0" style="margin-bottom:6px">
+      <span class="wbs-code" style="color:rgba(255,255,255,.5)">${String(pi+1).padStart(2,'0')}</span>
+      <input class="wbs-name-input dark" value="${esc(phase.name)}" onchange="currentWBS[${pi}].name=this.value" title="Modifier le nom de la phase">
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <input class="wbs-pct-input" type="number" value="${phase.pct}" min="0" max="100" step="0.5" onchange="currentWBS[${pi}].pct=+this.value;renderWBS()" title="Modifier le %">%
+        <span style="font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.4)">${fmtMAD(phaseBgt).replace(' MAD','')}</span>
+        <span style="font-size:10px;color:${avgDone>=100?'#4ADE80':avgDone>0?'#FBBF24':'rgba(255,255,255,.3)'};font-family:var(--fm)">${avgDone}%</span>
+      </div>
+      <div class="wbs-actions">
+        <button class="wbs-act-btn" title="Ajouter une tâche" onclick="addWBSTask(${pi})">＋</button>
+        <button class="wbs-act-btn" title="Supprimer cette phase" onclick="removeWBSPhase(${pi})" style="color:#F87171">✕</button>
+      </div>
+    </div>`;
+
+    phase.tasks.forEach((task,ti)=>{
+      const taskBgt=Math.round(bgt*task.pct/100);
+      html+=`<div class="wbs-row l2">
+        <span class="wbs-code">${String(pi+1).padStart(2,'0')}.${String(ti+1).padStart(2,'0')}</span>
+        <input class="wbs-name-input" value="${esc(task.name)}" onchange="currentWBS[${pi}].tasks[${ti}].name=this.value" title="Cliquez pour modifier">
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <input class="wbs-pct-input" type="number" value="${task.pct}" min="0" max="100" step="0.1" onchange="currentWBS[${pi}].tasks[${ti}].pct=+this.value;renderWBS()" title="Modifier le %">%
+          <span style="font-family:var(--fm);font-size:9.5px;color:var(--sm)">${(taskBgt/1000).toFixed(0)}K</span>
+          <input type="number" value="${task.done}" min="0" max="100" onchange="currentWBS[${pi}].tasks[${ti}].done=+this.value;renderWBS()" title="Avancement %" style="width:42px;padding:2px 5px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:10px;text-align:right;background:var(--bg);outline:none;color:${task.done>=100?'var(--ok)':task.done>0?'var(--wn)':'var(--sm)'}">%
+          <div class="wbs-done-bar"><div class="wbs-done-fill" style="width:${task.done}%;background:${task.done>=100?'var(--ok)':task.done>0?'var(--gold)':'var(--b2)'}"></div></div>
+        </div>
+        <div class="wbs-actions">
+          <button class="del-btn" onclick="removeWBSTask(${pi},${ti})" title="Supprimer">🗑</button>
+        </div>
+      </div>`;
+    });
+
+    html+=`<button class="add-phase-btn" onclick="addWBSTask(${pi})" style="margin-left:16px;margin-bottom:8px">
+      <span>＋</span> Ajouter une tâche à "${phase.name.split('—')[0].trim()}"
+    </button>`;
+  });
+
+  tree.innerHTML=html+`<button class="add-phase-btn" onclick="addWBSPhase()"><span>＋</span> Ajouter une nouvelle phase</button>`;
+
+  // Recap
+  const totalPct=currentWBS.reduce((s,p)=>s+p.pct+p.tasks.reduce((ts,t)=>ts+t.pct,0),0);
+  // Check 100% rule
+  const phPct=currentWBS.reduce((s,p)=>s+p.pct,0);
+  const taskPct=currentWBS.reduce((s,p)=>s+p.tasks.reduce((ts,t)=>ts+t.pct,0),0);
+  const chk=document.getElementById('wbs100check');
+  if(Math.abs(taskPct-100)>1){
+    chk.innerHTML=`<span class="chip chip-warn">⚠ Total lots de travaux : ${taskPct.toFixed(1)}% — devrait être 100%</span>`;
+  }else{
+    chk.innerHTML=`<span class="chip chip-ok">✅ Total : ${taskPct.toFixed(1)}% — Règle des 100% respectée</span>`;
+  }
+
+  // Recap
+  document.getElementById('wbsRecap').innerHTML=currentWBS.map((p,i)=>{
+    const avgDone=p.tasks.length?Math.round(p.tasks.reduce((s,t)=>s+t.done,0)/p.tasks.length):0;
+    const phasePctTasks=p.tasks.reduce((s,t)=>s+t.pct,0);
+    return `<div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="font-weight:600;color:${p.color}">${i+1}. ${p.name.split('—')[1]?.trim()||p.name.split('PHASE')[1]?.trim().split('—')[1]?.trim()||p.name}</span>
+        <span style="font-family:var(--fm);font-size:11px;color:${avgDone>=100?'var(--ok)':avgDone>0?'var(--gold)':'var(--sm)'}">${avgDone}%</span>
+      </div>
+      <div style="height:7px;background:var(--b2);border-radius:4px;overflow:hidden"><div style="height:100%;width:${avgDone}%;background:${avgDone>=100?'var(--ok)':avgDone>0?p.color:'var(--b2)'};transition:width .5s;border-radius:4px"></div></div>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--sm);margin-top:3px">${p.tasks.length} tâches · ${fmtMAD(Math.round(bgt*phasePctTasks/100))}</div>
+    </div>`;
+  }).join('');
+}
+
+function addWBSPhase(){
+  currentWBS.push({id:'p'+Date.now(),name:'NOUVELLE PHASE — À définir',pct:5,color:'#555',tasks:[]});
+  renderWBS();
+  setTimeout(()=>{const inputs=document.querySelectorAll('.wbs-row.l0 .wbs-name-input');const last=inputs[inputs.length-1];if(last){last.focus();last.select();}},100);
+}
+
+function removeWBSPhase(pi){
+  if(currentWBS[pi].tasks.length>0&&!confirm(`Supprimer la phase "${currentWBS[pi].name}" et ses ${currentWBS[pi].tasks.length} tâches ?`))return;
+  currentWBS.splice(pi,1);
+  renderWBS();
+}
+
+function addWBSTask(pi){
+  currentWBS[pi].tasks.push({id:'t'+Date.now(),name:'Nouvelle tâche — à définir',pct:1,done:0,prev:'—'});
+  renderWBS();
+  setTimeout(()=>{const rows=document.querySelectorAll('.wbs-row.l2');const last=rows[rows.length-1];if(last){const inp=last.querySelector('.wbs-name-input');if(inp){inp.focus();inp.select();}}},100);
+}
+
+function removeWBSTask(pi,ti){
+  currentWBS[pi].tasks.splice(ti,1);
+  renderWBS();
+}
+
+function exportWBS(){
+  const bgt=+document.getElementById('wbs_budget').value||25000000;
+  let txt=`WBS — ${document.getElementById('wbs_sector').options[document.getElementById('wbs_sector').selectedIndex].text}\nBudget : ${fmtMAD(bgt)}\n${'='.repeat(60)}\n`;
+  currentWBS.forEach((p,pi)=>{
+    txt+=`\n${String(pi+1).padStart(2,'0')} ${p.name} (${p.tasks.reduce((s,t)=>s+t.pct,0).toFixed(1)}% — ${fmtMAD(Math.round(bgt*p.tasks.reduce((s,t)=>s+t.pct,0)/100))})\n`;
+    p.tasks.forEach((t,ti)=>txt+=`   ${String(pi+1).padStart(2,'0')}.${String(ti+1).padStart(2,'0')} ${t.name} — ${t.pct}% — ${fmtMAD(Math.round(bgt*t.pct/100))} — Avancement: ${t.done}%\n`);
+  });
+  const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='WBS_Smart-Invest.txt';a.click();URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════
+// GANTT — ENTIÈREMENT ÉDITABLE
+// ══════════════════════════════════════
+let ganttTasks=[
+  {id:1,name:'Études & Architecture',dur:2,start:0,cr:false,done:true,type:'nr',cost:800000,sg:false,sg_val:false,pred:''},
+  {id:2,name:'🔀 Permis de construire',dur:3,start:2,cr:true,done:false,type:'sg',cost:200000,sg:true,sg_val:false,pred:'1'},
+  {id:3,name:'Terrassement & Fondations',dur:4,start:5,cr:true,done:false,type:'cr',cost:3200000,sg:false,sg_val:false,pred:'2'},
+  {id:4,name:'Structure béton R+7',dur:8,start:9,cr:true,done:false,type:'cr',cost:9000000,sg:false,sg_val:false,pred:'3'},
+  {id:5,name:'🔀 Raccordement ONEE',dur:1,start:9,cr:false,done:false,type:'sg',cost:300000,sg:true,sg_val:false,pred:'2'},
+  {id:6,name:'Corps d\'état secondaires',dur:6,start:17,cr:true,done:false,type:'nr',cost:6000000,sg:false,sg_val:false,pred:'4'},
+  {id:7,name:'Équipements & Mobilier',dur:4,start:20,cr:false,done:false,type:'nr',cost:5500000,sg:false,sg_val:false,pred:'4'},
+  {id:8,name:'🔀 Classement CRI',dur:1,start:23,cr:true,done:false,type:'sg',cost:0,sg:true,sg_val:false,pred:'6'},
+  {id:9,name:'Réception & Ouverture',dur:1,start:24,cr:true,done:false,type:'nr',cost:0,sg:false,sg_val:false,pred:'8'},
+];
+
+function renderGantt(){
+  const maxEnd=Math.max(...ganttTasks.map(t=>t.start+t.dur),12);
+  const head=`<tr>
+    <th style="width:32px">#</th>
+    <th style="min-width:190px">Tâche</th>
+    <th style="width:50px">Dur.</th>
+    <th style="width:50px">Déb.</th>
+    <th style="width:50px">Fin</th>
+    <th class="gantt-bar-cell">Gantt (${maxEnd} mois)</th>
+    <th style="width:90px">Coût MAD</th>
+    <th style="width:60px">Critique</th>
+    <th style="width:55px">Fait</th>
+    <th style="width:35px"></th>
+  </tr>`;
+
+  const rows=ganttTasks.map((t,i)=>{
+    const ps=(t.start/maxEnd)*100, pd=(t.dur/maxEnd)*100;
+    const bc=t.done?'dn':t.sg?'sg':t.cr?'cr':'nr';
+    return `<tr style="${i%2?'background:var(--bg)':''}${t.sg&&!t.sg_val?';background:rgba(249,115,22,.03)':''}">
+      <td style="font-family:var(--fm);font-size:10px;text-align:center;color:var(--sm)">${t.id}</td>
+      <td><input class="td-input" value="${esc(t.name)}" onchange="ganttTasks[${i}].name=this.value;renderGantt()" style="${t.sg?'font-weight:600;color:var(--wn)':t.cr?'color:var(--er)':''}"></td>
+      <td><input class="td-num td-input" type="number" value="${t.dur}" min="1" onchange="ganttTasks[${i}].dur=+this.value;renderGantt()" style="width:40px"></td>
+      <td><input class="td-num td-input" type="number" value="${t.start}" min="0" onchange="ganttTasks[${i}].start=+this.value;renderGantt()" style="width:40px"></td>
+      <td class="td-num" style="color:var(--sm)">${t.start+t.dur}</td>
+      <td class="gantt-bar-cell">
+        <div class="gb-wrap" title="Début M${t.start+1} — Fin M${t.start+t.dur}">
+          <div class="gb ${bc}" style="left:${ps}%;width:${pd}%"></div>
+        </div>
+      </td>
+      <td><input class="td-input" type="number" value="${t.cost}" onchange="ganttTasks[${i}].cost=+this.value" style="font-family:var(--fm);font-size:11px;text-align:right;color:var(--gold)"></td>
+      <td style="text-align:center">
+        <label class="toggle" title="Chemin critique">
+          <input type="checkbox" ${t.cr?'checked':''} onchange="ganttTasks[${i}].cr=this.checked;renderGantt()">
+          <span class="tslider" style="${t.cr?'background:var(--er)':''}"></span>
+        </label>
+      </td>
+      <td style="text-align:center">
+        <label class="toggle">
+          <input type="checkbox" ${t.done?'checked':''} onchange="ganttTasks[${i}].done=this.checked;renderGantt()">
+          <span class="tslider"></span>
+        </label>
+      </td>
+      <td><button class="del-btn" onclick="ganttTasks.splice(${i},1);renderGantt()" title="Supprimer">🗑</button></td>
+    </tr>`;
+  }).join('');
+
+  const addRow=`<tr class="gantt-add-row">
+    <td colspan="10" style="background:var(--bg);padding:8px 10px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <input id="ga_name" placeholder="Nom de la nouvelle tâche..." style="flex:2;min-width:160px">
+        <input id="ga_dur" type="number" value="2" min="1" placeholder="Durée" style="width:65px">
+        <input id="ga_start" type="number" value="0" min="0" placeholder="Déb." style="width:65px">
+        <input id="ga_cost" type="number" value="0" placeholder="Coût MAD" style="width:100px">
+        <select id="ga_type" style="padding:5px 8px;border:1.5px solid var(--bd);border-radius:6px;font-family:var(--fb);font-size:11.5px;background:var(--wh);outline:none">
+          <option value="nr">Normal</option>
+          <option value="cr">Critique</option>
+          <option value="sg">Stop/Go</option>
+        </select>
+        <button class="btn btn-g btn-sm" onclick="addGanttRow()">+ Ajouter</button>
+      </div>
+    </td>
+  </tr>`;
+
+  const tbl=document.getElementById('ganttTable');
+  tbl.innerHTML=`<thead>${head}</thead><tbody>${rows}${addRow}</tbody>`;
+
+  // Analysis
+  const crits=ganttTasks.filter(t=>t.cr);
+  const critEnd=crits.length?Math.max(...crits.map(t=>t.start+t.dur)):0;
+  const totalCost=ganttTasks.reduce((s,t)=>s+t.cost,0);
+  document.getElementById('ganttAnalysis').innerHTML=`
+    <div class="kpis3">
+      <div class="kc"><div class="kc-n gold">${critEnd}</div><div class="kc-l">Durée chemin critique (mois)</div></div>
+      <div class="kc"><div class="kc-n r">${crits.length}</div><div class="kc-l">Activités sur chemin critique</div></div>
+      <div class="kc"><div class="kc-n b">${fmtMAD(totalCost)}</div><div class="kc-l">Budget total planifié</div></div>
+    </div>
+    <div style="padding:10px 14px;background:rgba(30,77,107,.05);border:1px solid rgba(30,77,107,.12);border-radius:8px;font-size:12.5px;color:var(--is)">
+      Chemin critique : ${crits.map(t=>t.name.replace('🔀','')).join(' → ')}
+    </div>`;
+}
+
+function addGanttRow(){
+  const name=document.getElementById('ga_name').value;if(!name)return;
+  const type=document.getElementById('ga_type').value;
+  const id=Math.max(...ganttTasks.map(t=>t.id),0)+1;
+  ganttTasks.push({id,name,dur:+document.getElementById('ga_dur').value||2,start:+document.getElementById('ga_start').value||0,cr:type==='cr',done:false,type:type==='sg'?'sg':type,cost:+document.getElementById('ga_cost').value||0,sg:type==='sg',sg_val:false,pred:''});
+  renderGantt();
+  document.getElementById('ga_name').value='';
+}
+
+// ══════════════════════════════════════
+// PERT — ÉDITABLE
+// ══════════════════════════════════════
+let pertTasks=[
+  {id:'A',name:'Études préalables',a:2,m:3,b:6,pred:''},
+  {id:'B',name:'Permis & Formalités',a:4,m:6,b:10,pred:'A'},
+  {id:'C',name:'Financement bancaire',a:3,m:5,b:9,pred:'A'},
+  {id:'D',name:'Gros Œuvre (fondations + structure)',a:8,m:11,b:16,pred:'B,C'},
+  {id:'E',name:'Corps d\'état secondaires',a:5,m:7,b:11,pred:'D'},
+  {id:'F',name:'Équipements & Finitions',a:3,m:4,b:7,pred:'E'},
+  {id:'G',name:'Réception & Ouverture',a:1,m:2,b:3,pred:'F'},
+];
+
+const teOf=t=>(t.a+4*t.m+t.b)/6;
+const varOf=t=>((t.b-t.a)/6)**2;
+
+function renderPERT(){
+  document.getElementById('pertBody').innerHTML=pertTasks.map((t,i)=>`<tr>
+    <td style="font-family:var(--fm);font-weight:700;color:var(--gold)">
+      <input class="td-input" value="${esc(t.id)}" onchange="pertTasks[${i}].id=this.value.toUpperCase();renderPERTAnalysis()" style="width:32px;font-family:var(--fm);font-weight:700;color:var(--gold);text-align:center">
+    </td>
+    <td><input class="td-input" value="${esc(t.name)}" onchange="pertTasks[${i}].name=this.value;renderPERTAnalysis()" style="min-width:160px"></td>
+    <td><input class="td-num td-input" type="number" value="${t.a}" min="0.5" step="0.5" onchange="pertTasks[${i}].a=+this.value;refreshPERT(${i})" style="width:55px;background:rgba(26,107,60,.04)"></td>
+    <td><input class="td-num td-input" type="number" value="${t.m}" min="0.5" step="0.5" onchange="pertTasks[${i}].m=+this.value;refreshPERT(${i})" style="width:55px;background:rgba(184,134,42,.04)"></td>
+    <td><input class="td-num td-input" type="number" value="${t.b}" min="0.5" step="0.5" onchange="pertTasks[${i}].b=+this.value;refreshPERT(${i})" style="width:55px;background:rgba(185,28,28,.04)"></td>
+    <td class="td-num" id="pte_${i}" style="color:var(--ac);font-weight:700">${teOf(t).toFixed(2)}</td>
+    <td class="td-num" id="pvar_${i}" style="color:var(--sm)">${varOf(t).toFixed(2)}</td>
+    <td><input class="td-input" value="${esc(t.pred)}" onchange="pertTasks[${i}].pred=this.value;renderPERTAnalysis()" placeholder="A,B" style="width:65px;font-family:var(--fm);font-size:11px"></td>
+    <td><button class="del-btn" onclick="pertTasks.splice(${i},1);renderPERT()">🗑</button></td>
+  </tr>`).join('');
+  renderPERTAnalysis();
+  renderPERTNetwork();
+}
+
+function refreshPERT(i){
+  const t=pertTasks[i];
+  const teEl=document.getElementById('pte_'+i),varEl=document.getElementById('pvar_'+i);
+  if(teEl)teEl.textContent=teOf(t).toFixed(2);
+  if(varEl)varEl.textContent=varOf(t).toFixed(2);
+  renderPERTAnalysis();
+}
+
+function addPERTRow(){
+  const ids='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const used=pertTasks.map(t=>t.id);
+  const next=ids.split('').find(c=>!used.includes(c))||'Z'+pertTasks.length;
+  pertTasks.push({id:next,name:'Nouvelle activité',a:2,m:4,b:8,pred:''});
+  renderPERT();
+  setTimeout(()=>{const rows=document.querySelectorAll('#pertBody tr');const last=rows[rows.length-1];if(last){const inp=last.querySelectorAll('input')[1];if(inp){inp.focus();inp.select();}}},100);
+}
+
+function renderPERTAnalysis(){
+  const total_te=pertTasks.reduce((s,t)=>s+teOf(t),0)*0.52;
+  const total_var=pertTasks.reduce((s,t)=>s+varOf(t),0)*0.52;
+  const sd=Math.sqrt(total_var);
+  document.getElementById('pertAnalysis').innerHTML=`
+    <div class="kpis3">
+      <div class="kc"><div class="kc-n gold">${total_te.toFixed(1)}</div><div class="kc-l">Durée espérée (mois)</div></div>
+      <div class="kc"><div class="kc-n b">${sd.toFixed(2)}</div><div class="kc-l">Écart-type σ</div></div>
+      <div class="kc"><div class="kc-n r">${(total_te+2*sd).toFixed(0)}</div><div class="kc-l">Durée max. (95% confiance)</div></div>
+    </div>
+    <div style="padding:11px 14px;background:var(--gp);border:1px solid rgba(184,134,42,.2);border-radius:9px;font-size:12.5px;color:var(--is);margin-top:10px">
+      <div style="margin-bottom:5px">📊 <strong>Fourchette 68% (±1σ) :</strong> ${(total_te-sd).toFixed(0)} → ${(total_te+sd).toFixed(0)} mois</div>
+      <div style="margin-bottom:5px">📊 <strong>Fourchette 95% (±2σ) :</strong> ${(total_te-2*sd).toFixed(0)} → ${(total_te+2*sd).toFixed(0)} mois</div>
+      <div style="color:var(--er);font-weight:600">⚠ Durée prudente à retenir : <strong>${(total_te+2*sd).toFixed(0)} mois</strong></div>
+    </div>
+    <div style="margin-top:10px;padding:9px 12px;background:rgba(30,77,107,.05);border:1px solid rgba(30,77,107,.12);border-radius:8px;font-size:11.5px;color:var(--is)">
+      <strong>Formules :</strong> TE = (a + 4m + b) / 6 &nbsp;·&nbsp; σ² = ((b−a)/6)² &nbsp;·&nbsp; Durée totale = Σ TE chemin critique
+    </div>`;
+}
+
+function renderPERTNetwork(){
+  const acts=pertTasks;
+  const levs={};acts.forEach(a=>{const pr=a.pred?a.pred.split(',').map(p=>p.trim()).filter(p=>p):[];let lv=0;pr.forEach(p=>{if(levs[p]!==undefined)lv=Math.max(lv,levs[p]+1);});levs[a.id]=lv;});
+  const maxLv=Math.max(...Object.values(levs),0);
+  const lvCnt={};acts.forEach(a=>{const l=levs[a.id]||0;lvCnt[l]=(lvCnt[l]||0)+1;});
+  const lvIdx={};acts.forEach(a=>{const l=levs[a.id]||0;const arr=acts.filter(x=>levs[x.id]===l);lvIdx[a.id]=arr.indexOf(a);});
+  const W=860,H=220;
+  const xP=id=>((levs[id]||0)/(maxLv||1))*780+40;
+  const yP=id=>{const l=levs[id]||0,cnt=lvCnt[l]||1,idx=lvIdx[id]||0;return (idx+1)/(cnt+1)*200+20;};
+  const cols=['#1E4D6B','#1A6B3C','#B8862A','#7A3560','#C05820','#0E4D4D','#4D3500','#3D1A6B','#6B1A1A','#1A506B'];
+  let s=`<defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 Z" fill="var(--sm)"/></marker></defs>`;
+  acts.forEach(a=>{(a.pred?a.pred.split(',').map(p=>p.trim()).filter(p=>p):[]).forEach(pid=>{if(levs[pid]===undefined)return;const x1=xP(pid),y1=yP(pid),x2=xP(a.id),y2=yP(a.id);s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(0,0,0,.12)" stroke-width="1.8" marker-end="url(#arr)"/>`;});});
+  acts.forEach((a,i)=>{const x=xP(a.id),y=yP(a.id),r=24,col=cols[i%cols.length];
+    s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="${col}" stroke="white" stroke-width="2"/>
+    <text x="${x}" y="${y-5}" text-anchor="middle" font-family="'Syne'" font-size="12" font-weight="800" fill="white">${a.id}</text>
+    <text x="${x}" y="${y+8}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="8" fill="rgba(255,255,255,.8)">TE=${teOf(a).toFixed(1)}</text>
+    <text x="${x}" y="${y+r+13}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="7" fill="var(--sm)">${a.name.substring(0,18)}</text>`;
+  });
+  document.getElementById('pertSvg').innerHTML=s;
+}
+
+// ══════════════════════════════════════
+// RISKS — ÉDITABLE EN CELLULE
+// ══════════════════════════════════════
+let risks=[
+  {id:1,d:'Retard raccordement ONEE (ZAI)',p:4,i:4,fin:800000,cat:'Technique',resp:'Atténuer',owner:'PM'},
+  {id:2,d:'Hausse prix matériaux >15%',p:3,i:5,fin:2500000,cat:'Financier',resp:'Accepter',owner:'DAF'},
+  {id:3,d:'Délai permis de construire',p:3,i:4,fin:600000,cat:'Administratif',resp:'Éviter',owner:'PM'},
+  {id:4,d:'Instabilité taux MAD/EUR',p:4,i:3,fin:400000,cat:'Financier',resp:'Transférer',owner:'DAF'},
+  {id:5,d:'Défaillance entrepreneur principal',p:2,i:5,fin:3000000,cat:'Technique',resp:'Transférer',owner:'PM'},
+  {id:6,d:'Retard recrutement personnel qualifié',p:3,i:3,fin:200000,cat:'RH & Social',resp:'Atténuer',owner:'DRH'},
+];
+
+const RISK_COLS=[
+  ['#86EFAC','#86EFAC','#FBBF24','#F87171','#F87171'],
+  ['#86EFAC','#FBBF24','#FBBF24','#F87171','#F87171'],
+  ['#86EFAC','#FBBF24','#FBBF24','#FBBF24','#F87171'],
+  ['#86EFAC','#86EFAC','#FBBF24','#FBBF24','#F87171'],
+  ['#86EFAC','#86EFAC','#86EFAC','#FBBF24','#FBBF24'],
+];
+
+function renderRiskMatrix(){
+  let cells='';
+  for(let p=5;p>=1;p--){
+    for(let i=1;i<=5;i++){
+      const s=p*i,rs=risks.filter(r=>r.p===p&&r.i===i);
+      cells+=`<div class="rc" style="background:${RISK_COLS[p-1][i-1]}" title="P${p}×I${i} — Score ${s}" onclick="document.getElementById('r_prob').value=${p};document.getElementById('r_impact').value=${i}">
+        <div class="rc-score">${s}</div>
+        <div class="rc-risks">${rs.map(r=>r.d.substring(0,10)).join('\n')}</div>
+        ${rs.length?`<div style="font-size:8px;font-weight:700;background:rgba(0,0,0,.15);border-radius:2px;padding:1px 3px;margin-top:2px">${rs.length}▲</div>`:''}
+      </div>`;
+    }
+  }
+  document.getElementById('riskMatrix').innerHTML=cells;
+}
+
+function addRisk(){
+  const d=document.getElementById('r_desc').value;if(!d)return;
+  const id=Math.max(...risks.map(r=>r.id),0)+1;
+  risks.push({id,d,p:+document.getElementById('r_prob').value,i:+document.getElementById('r_impact').value,fin:+document.getElementById('r_fin').value||0,cat:document.getElementById('r_cat').value,resp:document.getElementById('r_resp').value,owner:document.getElementById('r_owner').value||'PM'});
+  document.getElementById('r_desc').value='';
+  renderRiskMatrix();renderRiskTable();
+}
+
+function renderRiskTable(){
+  const sorted=[...risks].sort((a,b)=>b.p*b.i-a.p*a.i);
+  const pri=s=>s>=15?'<span class="pill pill-r">CRITIQUE</span>':s>=8?'<span class="pill pill-y">MODÉRÉ</span>':'<span class="pill pill-g">FAIBLE</span>';
+  const emvTotal=risks.reduce((s,r)=>s+(r.p/5)*r.fin,0);
+  document.getElementById('riskTable').innerHTML=sorted.map((r,idx)=>{
+    const score=r.p*r.i, emv=Math.round((r.p/5)*r.fin), prov=Math.round(emv*1.2);
+    const ri=risks.findIndex(x=>x.id===r.id);
+    return `<tr style="${idx%2?'background:var(--bg)':''}">
+      <td class="td-num">${r.id}</td>
+      <td><input class="td-input" value="${esc(r.d)}" onchange="risks[${ri}].d=this.value" style="min-width:200px"></td>
+      <td class="td-num"><select style="padding:2px 4px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:10px;background:var(--bg);outline:none" onchange="risks[${ri}].p=+this.value;renderRiskMatrix();renderRiskTable()">${[1,2,3,4,5].map(n=>`<option ${r.p===n?'selected':''}>${n}</option>`).join('')}</select></td>
+      <td class="td-num"><select style="padding:2px 4px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:10px;background:var(--bg);outline:none" onchange="risks[${ri}].i=+this.value;renderRiskMatrix();renderRiskTable()">${[1,2,3,4,5].map(n=>`<option ${r.i===n?'selected':''}>${n}</option>`).join('')}</select></td>
+      <td style="text-align:center;font-family:var(--fm);font-weight:800;color:${score>=15?'var(--er)':score>=8?'var(--wn)':'var(--ok)'}">${score}</td>
+      <td>${pri(score)}</td>
+      <td style="font-family:var(--fm);font-size:10.5px;color:var(--er)">${emv.toLocaleString('fr-FR')}</td>
+      <td><select style="padding:2px 4px;border:1px solid var(--bd);border-radius:5px;font-size:10px;background:var(--bg);outline:none" onchange="risks[${ri}].cat=this.value">${['Financier','Technique','Administratif','RH & Social','Environnemental','Marché'].map(c=>`<option ${r.cat===c?'selected':''}>${c}</option>`).join('')}</select></td>
+      <td><select style="padding:2px 4px;border:1px solid var(--bd);border-radius:5px;font-size:10px;background:var(--bg);outline:none" onchange="risks[${ri}].resp=this.value">${['Éviter','Transférer','Atténuer','Accepter'].map(c=>`<option ${r.resp===c?'selected':''}>${c}</option>`).join('')}</select></td>
+      <td><input class="td-input" value="${esc(r.owner)}" onchange="risks[${ri}].owner=this.value" style="width:70px;font-family:var(--fm);font-size:10.5px"></td>
+      <td style="font-family:var(--fm);font-size:10.5px;color:var(--wn)">${prov.toLocaleString('fr-FR')}</td>
+      <td><button class="del-btn" onclick="risks=risks.filter(x=>x.id!==${r.id});renderRiskMatrix();renderRiskTable()">🗑</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('riskSummary').innerHTML=`<strong>EMV Totale :</strong> ${fmtMAD(Math.round(emvTotal))} · <strong>Provision contingence recommandée (×1.2) :</strong> ${fmtMAD(Math.round(emvTotal*1.2))} · <strong>Risques critiques :</strong> ${risks.filter(r=>r.p*r.i>=15).length} / ${risks.length}`;
+}
+
+function exportRisks(){
+  let txt=`REGISTRE DES RISQUES — ${document.getElementById('projName').value}\n${'='.repeat(60)}\n`;
+  [...risks].sort((a,b)=>b.p*b.i-a.p*a.i).forEach(r=>txt+=`[${r.p*r.i}] ${r.d} — P:${r.p} I:${r.i} — EMV: ${fmtMAD(Math.round((r.p/5)*r.fin))} — ${r.resp} — ${r.owner}\n`);
+  const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Risques_Smart-Invest.txt';a.click();URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════
+// BURN RATE
+// ══════════════════════════════════════
+function calcBurn(){
+  const cash=+document.getElementById('b_cash').value||3500000;
+  const spend=+document.getElementById('b_spend').value||1210000;
+  const planned=+document.getElementById('b_planned').value||1041667;
+  const extra=+document.getElementById('b_extra').value||0;
+  const runway=cash/spend;
+  const runwayExtra=(cash+extra)/spend;
+  const overrun=spend-planned;
+  document.getElementById('burnMetrics').innerHTML=`
+    <div class="kpis4" style="margin-top:12px">
+      <div class="kc"><div class="kc-n ${runway<3?'r':runway<6?'w':'g'}">${runway.toFixed(1)}</div><div class="kc-l">Mois de tréso. restants</div></div>
+      <div class="kc"><div class="kc-n ${overrun>0?'r':'g'}">${overrun>0?'+':''}${(overrun/1000).toFixed(0)}K</div><div class="kc-l">Dépassement mensuel MAD</div></div>
+      <div class="kc"><div class="kc-n gold">${fmtMAD(spend)}</div><div class="kc-l">Dépenses réelles / mois</div></div>
+      <div class="kc"><div class="kc-n b">${fmtMAD(planned)}</div><div class="kc-l">Budget prévu / mois</div></div>
+    </div>
+    ${runway<3?`<div class="burn-alert" style="background:rgba(185,28,28,.07);border:1px solid rgba(185,28,28,.2)"><span style="font-size:22px">🚨</span><div style="font-size:13px;color:var(--er)"><strong>ALERTE CRITIQUE :</strong> Trésorerie pour seulement ${runway.toFixed(1)} mois — Action immédiate requise.</div></div>`:''}
+    ${runway>=3&&runway<6?`<div class="burn-alert" style="background:rgba(192,88,32,.07);border:1px solid rgba(192,88,32,.2)"><span style="font-size:22px">⚠️</span><div style="font-size:13px;color:var(--wn)"><strong>ATTENTION :</strong> Runway de ${runway.toFixed(1)} mois — Prévoyez un financement complémentaire.</div></div>`:''}`;
+  drawBurn(cash,spend,extra);
+}
+
+function drawBurn(cash,spend,extra){
+  const svg=document.getElementById('burnSvg');if(!svg)return;
+  const W=500,H=180,PL=40,PB=22,PT=10;
+  const maxM=Math.ceil((cash+extra)/spend)+2;
+  const pts1=Array.from({length:maxM+1},(_,i)=>Math.max(0,cash-spend*i));
+  const pts2=extra>0?Array.from({length:maxM+1},(_,i)=>Math.max(0,cash+extra-spend*i)):null;
+  const maxV=Math.max(cash,cash+extra);
+  const tx=i=>i/maxM*(W-PL-10)+PL, ty=v=>PT+(H-PT-PB)*(1-v/maxV);
+  const cashout=Math.ceil(cash/spend),cashout2=extra?Math.ceil((cash+extra)/spend):null;
+  const col=cash/spend<3?'#B91C1C':cash/spend<6?'#F97316':'#1A6B3C';
+  let s=`<line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#DDD" stroke-width="1.5"/>
+    <line x1="${PL}" y1="${H-PB}" x2="${W-10}" y2="${H-PB}" stroke="#DDD" stroke-width="1.5"/>`;
+  if(pts2){
+    const gp2=`${pts2.map((v,i)=>`${i?'L':'M'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ')} L${tx(maxM)},${ty(0)} L${tx(0)},${ty(0)} Z`;
+    s+=`<path d="${gp2}" fill="rgba(30,77,107,.08)"/>`;
+    s+=`<path d="${pts2.map((v,i)=>`${i?'L':'M'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ')}" fill="none" stroke="#1E4D6B" stroke-width="2" stroke-dasharray="6,3" opacity=".7"/>`;
+  }
+  const gp=`${pts1.map((v,i)=>`${i?'L':'M'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ')} L${tx(maxM)},${ty(0)} L${tx(0)},${ty(0)} Z`;
+  s+=`<defs><linearGradient id="bGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="${col}" stop-opacity=".25"/><stop offset="100%" stop-color="${col}" stop-opacity=".03"/></linearGradient></defs>
+    <path d="${gp}" fill="url(#bGrad)"/>
+    <path d="${pts1.map((v,i)=>`${i?'L':'M'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${col}" stroke-width="2.5"/>`;
+  if(cashout<=maxM) s+=`<line x1="${tx(cashout)}" y1="${PT}" x2="${tx(cashout)}" y2="${H-PB}" stroke="#B91C1C" stroke-width="1.5" stroke-dasharray="4,3"/><text x="${tx(cashout)}" y="${PT+10}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="8" fill="#B91C1C">M${cashout} — Cash Out</text>`;
+  if(cashout2&&cashout2<=maxM) s+=`<line x1="${tx(cashout2)}" y1="${PT}" x2="${tx(cashout2)}" y2="${H-PB}" stroke="#1E4D6B" stroke-width="1.5" stroke-dasharray="4,3"/><text x="${tx(cashout2)}" y="${PT+20}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="8" fill="#1E4D6B">M${cashout2} — avec refinanc.</text>`;
+  Array.from({length:Math.min(maxM,8)},(_,i)=>s+=`<text x="${tx(Math.floor(i*maxM/7)).toFixed(0)}" y="${H-PB+14}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="7" fill="#999">M${Math.floor(i*maxM/7)}</text>`);
+  svg.innerHTML=s;
+}
+
+// ══════════════════════════════════════
+// STOP/GO
+// ══════════════════════════════════════
+let sgItems=[
+  {id:1,name:'Obtention Permis de Construire',phase:'Phase 1',impact:'Bloque fondations et gros œuvre (+22 jours minimum si retard)',delay:3,validated:false,overruled:false},
+  {id:2,name:'Raccordement ONEE validé',phase:'Phase 2',impact:'Bloque mise en route équipements électriques et salles techniques',delay:4,validated:false,overruled:false},
+  {id:3,name:'Convention CRI / Classement touristique',phase:'Phase 2',impact:'Condition pour prime territoriale et avantages fiscaux ZAI',delay:6,validated:false,overruled:false},
+  {id:4,name:'Accord bancaire — Déblocage Tranche 2',phase:'Phase 2',impact:'Bloque commande équipements importés (EUR)',delay:2,validated:true,overruled:false},
+  {id:5,name:'Réception travaux & levée réserves',phase:'Phase 6',impact:'Condition sine qua non pour ouverture commerciale',delay:1,validated:false,overruled:false},
+];
+
+function renderStopGo(){
+  document.getElementById('sgList').innerHTML=sgItems.map((sg,i)=>`
+    <div class="sg-item ${sg.overruled?'overruled':sg.validated?'passed':''}">
+      <div style="font-size:22px;flex-shrink:0">${sg.overruled?'⚠️':sg.validated?'✅':'🔒'}</div>
+      <div style="flex:1;min-width:0">
+        <div class="sg-name">${sg.name}</div>
+        <div class="sg-impact">📍 ${sg.phase} &nbsp;·&nbsp; ⏱ Délai administratif estimé : ${sg.delay} semaines</div>
+        <div class="sg-impact" style="margin-top:3px">⚡ Impact si non validé : ${sg.impact}</div>
+        ${sg.overruled?`<div style="font-size:11px;color:var(--er);font-family:var(--fm);margin-top:4px;font-weight:600">⚠ OVERRULE ACTIVÉ — Décision forcée — Dette Technique enregistrée (-10 pts Health Score)</div>`:''}
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0">
+        <label class="toggle" title="${sg.validated?'Validé — cliquer pour invalider':'Non validé — cliquer pour valider'}">
+          <input type="checkbox" ${sg.validated?'checked':''} onchange="sgItems[${i}].validated=this.checked;sgItems[${i}].overruled=false;renderStopGo()">
+          <span class="tslider"></span>
+        </label>
+        ${!sg.validated?`<button class="ovr-btn" onclick="if(confirm('⚠ Forcer ce jalon ? Le projet sera marqué en risque critique. Continuer ?')){sgItems[${i}].overruled=true;sgItems[${i}].validated=true;renderStopGo()}">Overrule</button>`:''}
+        <button class="del-btn" onclick="sgItems.splice(${i},1);renderStopGo()" title="Supprimer ce jalon">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function openSGModal(){document.getElementById('sgModal').classList.add('show');}
+function closeSGModal(){document.getElementById('sgModal').classList.remove('show');}
+function addSGFromModal(){
+  const name=document.getElementById('sg_name').value;if(!name)return;
+  sgItems.push({id:Date.now(),name,phase:document.getElementById('sg_phase').value||'—',impact:document.getElementById('sg_impact').value||'À définir',delay:+document.getElementById('sg_delay').value||4,validated:false,overruled:false});
+  closeSGModal();renderStopGo();
+  ['sg_name','sg_phase','sg_impact'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sg_delay').value='4';
+}
+
+// ── HELPERS ──
+const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function saveState(){localStorage.setItem('IM_projName',document.getElementById('projName').value);}
+
+// ── INIT ──
+document.getElementById('lastUpdate').textContent=new Date().toLocaleString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+const savedName=localStorage.getItem('IM_projName');
+if(savedName)document.getElementById('projName').value=savedName;
+calcEVM();
+renderWBS();
+</script>
+
+<!-- ═══ Scripts Smart-Invest.ia ═══ -->
+<script src='lib/auth.js'></script>
+<script src='lib/guard.js' data-plan="pro"></script>
+<script src='lib/upgrade-modal.js'></script>
+<script src='lib/notifications.js'></script>
+<script src='lib/analytics.js'></script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

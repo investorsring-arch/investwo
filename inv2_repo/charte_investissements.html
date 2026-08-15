@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Levier Financier & Charte d'Investissement — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesp:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+
+<style>
+:root{--gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;--ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;--bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;--ac:#1E4D6B;--ok:#1A6B3C;--wn:#C05820;--er:#B91C1C;--bd:rgba(0,0,0,.09);--ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.hd{position:sticky;top:0;z-index:100;height:56px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid rgba(184,134,42,.2)}
+.hl{display:flex;align-items:center;gap:12px}
+.back{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none}.back:hover{color:var(--gl)}
+.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:var(--wh)}.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:10px;padding:3px 9px;border-radius:100px;color:var(--gl);background:rgba(184,134,42,.12);border:1px solid rgba(184,134,42,.25)}
+.hnav{display:flex;gap:6px}
+.hnav a{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.4);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.08);border-radius:6px;transition:all .2s}
+.hnav a:hover,.hnav a.active{color:var(--gl);border-color:rgba(184,134,42,.3);background:rgba(184,134,42,.08)}
+.tabs{display:flex;gap:3px;background:var(--im);border-bottom:1px solid rgba(255,255,255,.05);position:sticky;top:56px;z-index:90;overflow-x:auto}
+.tab{padding:12px 20px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:none;color:rgba(255,255,255,.45);transition:all .2s;font-family:var(--fb);border-bottom:3px solid transparent;white-space:nowrap}
+.tab:hover{color:rgba(255,255,255,.8)}.tab.active{color:var(--gl);border-bottom-color:var(--gold)}
+.tab-body{display:none;padding:28px 24px 80px;max-width:1200px;margin:0 auto}.tab-body.show{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:20px}
+.card-title{font-family:var(--ft);font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-sub{font-size:11px;color:var(--sm);font-family:var(--fm);margin-bottom:12px}
+.fg{margin-bottom:12px}.fg label{display:block;font-size:12px;font-weight:600;color:var(--is);margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:8px 10px;border:1.5px solid var(--bd);border-radius:8px;font-family:var(--fb);font-size:13px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus{border-color:var(--gold)}.fg .hn{font-size:10px;color:var(--sm);margin-top:3px;font-family:var(--fm)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fg-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.btn{padding:9px 18px;border-radius:9px;border:none;cursor:pointer;font-family:var(--fb);font-size:13px;font-weight:600;transition:all .2s}
+.btn-g{background:var(--gold);color:var(--ink)}.btn-g:hover{background:var(--gl)}
+.btn-h{background:var(--b2);color:var(--is);border:1px solid var(--bd)}.btn-h:hover{border-color:var(--gold)}
+.btn-ink{background:var(--ink);color:var(--gl)}.btn-ink:hover{background:var(--im)}
+table.dt{width:100%;border-collapse:collapse;font-size:12.5px}
+table.dt th{background:var(--ink);color:var(--gl);font-family:var(--fm);font-size:10px;padding:9px 12px;text-align:left}
+table.dt td{padding:8px 12px;border-bottom:1px solid var(--bd);vertical-align:middle}
+table.dt tr:hover td{background:var(--gp)}
+.kpi{background:var(--wh);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center;transition:all .2s}
+.kpi:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.kpi-num{font-family:var(--ft);font-size:22px;font-weight:800;line-height:1;margin-bottom:4px}
+.kpi-label{font-size:11px;color:var(--sm);font-family:var(--fm)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--fm);font-size:11px;padding:4px 10px;border-radius:100px}
+.chip-ok{background:rgba(26,107,60,.1);color:var(--ok)}.chip-warn{background:rgba(192,88,32,.1);color:var(--wn)}.chip-bad{background:rgba(185,28,28,.1);color:var(--er)}
+.pill{display:inline-block;font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px}
+.pill-g{background:rgba(26,107,60,.1);color:var(--ok)}.pill-y{background:rgba(184,134,42,.1);color:var(--gold)}.pill-r{background:rgba(185,28,28,.1);color:var(--er)}.pill-b{background:rgba(30,77,107,.1);color:var(--ac)}
+/* PRIME ITEMS */
+.prime-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:9px;border:1px solid var(--bd);margin-bottom:8px;transition:all .2s}
+.prime-item.active{border-color:rgba(184,134,42,.3);background:var(--gp)}
+.prime-item.inactive{opacity:.5}
+.pi-label{font-size:13px;font-weight:600;flex:1}
+.pi-rate{font-family:var(--fm);font-size:12px;color:var(--gold);margin:0 12px}
+.pi-amount{font-family:var(--fm);font-size:13px;font-weight:700;color:var(--ok)}
+.toggle{position:relative;width:42px;height:22px;cursor:pointer;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:#DDD;border-radius:11px;transition:.3s}
+.toggle-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+input:checked+.toggle-slider{background:var(--ok)}
+input:checked+.toggle-slider::before{transform:translateX(20px)}
+/* TRANCHE BAR */
+.tranche-bar{display:flex;gap:4px;margin-bottom:4px}
+.tranche{border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:10px;font-weight:700;color:white;padding:8px 4px;transition:all .3s}
+/* FOREX */
+.forex-row{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--bd);border-radius:9px;margin-bottom:8px}
+.forex-flag{font-size:20px}
+.forex-pair{font-family:var(--fm);font-size:12px;font-weight:700;color:var(--ac);width:90px}
+.forex-rate{font-family:var(--fm);font-size:14px;font-weight:800;width:70px;text-align:right}
+.forex-var{font-family:var(--fm);font-size:11px;width:60px;text-align:right}
+.forex-input{width:100px!important;padding:5px 8px!important;font-size:12px!important}
+/* ROI */
+.roi-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.roi-row:last-child{border-bottom:none}
+.roi-key{color:var(--is)}.roi-val{font-family:var(--fm);font-weight:700}
+/* CHECKLIST */
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd);font-size:12.5px}
+.check-item:last-child{border-bottom:none}
+.check-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+/* DISCLAIMER */
+.disclaimer{background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.15);border-radius:10px;padding:14px;font-size:12px;color:var(--sm);line-height:1.7;margin-top:20px}
+@media print{.hd,.tabs,.hnav,.btn{display:none!important}.tab-body{display:block!important;padding:0}}
+</style>
+
+
+
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+<header class="hd">
+  <div class="hl">
+    <a href="landing.html" class="back">← Retour</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <div class="badge">Levier Financier · Charte 03-22</div>
+  </div>
+  <div class="hnav">
+    <a href="smart_invest_cockpit_management.html">🎛 Management</a>
+    <a href="smart_invest_charte_investissement.html" class="active">💰 Charte & Primes</a>
+    <a href="smart_invest_contrats.html">📋 Contrats</a>
+    <a href="smart_invest_lean_sixsigma.html">📐 Lean Six Sigma</a>
+    <a href="smart_invest_stopgo.html">🔀 Stop/Go</a>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('primes',this)">🏆 Calculateur de Primes MIP</button>
+  <button class="tab" onclick="showTab('forex',this)">💱 Risque de Change Forex</button>
+  <button class="tab" onclick="showTab('roi',this)">📈 ROI & Break-even</button>
+  <button class="tab" onclick="showTab('tranches',this)">📅 Déblocage en 3 tranches</button>
+  <button class="tab" onclick="showTab('dossier',this)">📁 Dossier CRI / Commission</button>
+</div>
+
+<!-- ══ PRIMES MIP ══ -->
+<div class="tab-body show" id="tab-primes">
+  <div class="grid2">
+    <!-- SAISIE -->
+    <div class="card">
+      <div class="card-title">📥 Données du projet (Assiette primable)</div>
+      <div class="card-sub">Source : Charte de l'Investissement — Loi-Cadre 03-22 · Décrets d'application 2023</div>
+      <div class="fg"><label>Secteur d'activité</label>
+        <select id="secteur" onchange="calcPrimes()">
+          <option value="industrie">Industrie manufacturière</option>
+          <option value="tourisme">Tourisme / Hôtellerie</option>
+          <option value="agro">Agroalimentaire</option>
+          <option value="automobile">Automobile</option>
+          <option value="aeronautique">Aéronautique</option>
+          <option value="pharma">Pharmacie / Santé</option>
+          <option value="tic">TIC / Offshoring</option>
+          <option value="energie">Énergies renouvelables</option>
+        </select>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Investissement total HT (MAD)</label><input type="number" id="inv_total" value="25000000" oninput="calcPrimes()"><div class="hn">Inclut foncier + constructions + équipements</div></div>
+        <div class="fg"><label>dont : Foncier (MAD)</label><input type="number" id="inv_foncier" value="5000000" oninput="calcPrimes()"><div class="hn">Terrain + VRD</div></div>
+      </div>
+      <div class="fg"><label>dont : Foncier privé apporté (MAD)</label><input type="number" id="inv_foncier_prive" value="3000000" oninput="calcPrimes()"><div class="hn">Terrain en propriété (non acquis pour le projet)</div></div>
+      <div class="fg-row">
+        <div class="fg"><label>Emplois stables créés</label><input type="number" id="emplois" value="75" oninput="calcPrimes()"></div>
+        <div class="fg"><label>dont femmes (%)</label><input type="number" id="pct_femmes" value="35" min="0" max="100" oninput="calcPrimes()"><div class="hn">≥30% → Prime genre +3%</div></div>
+      </div>
+      <div class="fg"><label>Province / Région d'implantation</label>
+        <select id="province" onchange="calcPrimes()">
+          <option value="casablanca_a">Casa-Settat · Rabat-SK (Catégorie A)</option>
+          <option value="marrakech_a">Marrakech-Safi · Tanger (Catégorie A)</option>
+          <option value="fes_b" selected>Fès-Meknès · Oriental (Catégorie B)</option>
+          <option value="souss_b">Souss-Massa · Agadir (Catégorie B)</option>
+          <option value="laayoune_b">Provinces Sud · Laâyoune (Catégorie B)</option>
+        </select>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Métiers d'avenir</label>
+          <select id="metiers_avenir" onchange="calcPrimes()"><option value="0">Non</option><option value="1">Oui (+3%)</option></select>
+        </div>
+        <div class="fg"><label>Engagement développement durable</label>
+          <select id="durabilite" onchange="calcPrimes()"><option value="0">Non</option><option value="1">Oui (+3%)</option></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- RÉSULTATS PRIMES -->
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">📊 Assiette Primable (MIP)</div>
+        <div id="mipCalc" style="font-size:13px;line-height:2;color:var(--is)"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🏆 Détail des primes applicables</div>
+        <div id="primesList"></div>
+        <div style="margin-top:14px;padding:14px;background:var(--ink);border-radius:10px">
+          <div style="font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Prime totale estimée</div>
+          <div style="font-family:var(--ft);font-size:28px;font-weight:800;color:var(--gl)" id="primeTotal">—</div>
+          <div style="font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.4);margin-top:4px" id="primePct">Soit — % du MIP</div>
+        </div>
+        <button class="btn btn-ink" onclick="window.print()" style="width:100%;margin-top:12px">📄 Exporter simulation PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANCHES RAPIDES -->
+  <div class="card">
+    <div class="card-title">📅 Calendrier de déblocage prévisionnel (3 tranches)</div>
+    <div id="tranchesViz"></div>
+    <div class="disclaimer">⚖️ <strong>Simulation basée sur les données fournies par l'utilisateur.</strong> Valeur non contractuelle, sous réserve d'approbation par les commissions nationales ou régionales compétentes. Sources : Loi-Cadre n°03-22 · Décrets d'application · Arrêtés 03-12-2023.
+    <br>Mode Admin : Les taux de primes et la liste des provinces sont configurables.
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOREX ══ -->
+<div class="tab-body" id="tab-forex">
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">💱 Risque de Change — Lots importés</div>
+      <div class="card-sub">Saisissez les montants en devises étrangères pour calculer l'impact sur votre budget</div>
+      <div id="forexInputs">
+        <div class="forex-row">
+          <div class="forex-flag">🇪🇺</div>
+          <div class="forex-pair">EUR / MAD</div>
+          <div class="fg" style="flex:1;margin:0;margin-right:8px"><input type="number" class="forex-input" id="fx_eur_ref" value="10.90" placeholder="Taux référence" oninput="calcForex()" style="width:100%;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none"></div>
+          <div class="fg" style="flex:1;margin:0;margin-right:8px"><input type="number" class="forex-input" id="fx_eur_act" value="11.05" placeholder="Taux actuel" oninput="calcForex()" style="width:100%;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none"></div>
+          <div class="fg" style="flex:1;margin:0"><input type="number" class="forex-input" id="fx_eur_amt" value="800000" placeholder="Montant EUR" oninput="calcForex()" style="width:100%;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none"></div>
+        </div>
+        <div class="forex-row">
+          <div class="forex-flag">🇺🇸</div>
+          <div class="forex-pair">USD / MAD</div>
+          <input type="number" id="fx_usd_ref" value="9.95" placeholder="Taux référence" oninput="calcForex()" style="flex:1;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none">
+          <input type="number" id="fx_usd_act" value="10.12" placeholder="Taux actuel" oninput="calcForex()" style="flex:1;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none">
+          <input type="number" id="fx_usd_amt" value="300000" placeholder="Montant USD" oninput="calcForex()" style="flex:1;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none">
+        </div>
+        <div class="forex-row">
+          <div class="forex-flag">🇨🇳</div>
+          <div class="forex-pair">CNY / MAD</div>
+          <input type="number" id="fx_cny_ref" value="1.38" placeholder="Taux référence" oninput="calcForex()" style="flex:1;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none">
+          <input type="number" id="fx_cny_act" value="1.41" placeholder="Taux actuel" oninput="calcForex()" style="flex:1;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none">
+          <input type="number" id="fx_cny_amt" value="500000" placeholder="Montant CNY" oninput="calcForex()" style="flex:1;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;font-family:var(--fm);font-size:12px;background:var(--bg);outline:none">
+        </div>
+        <div style="font-size:11px;color:var(--sm);font-family:var(--fm);margin-top:6px">Taux référence = taux du Business Plan initial · Taux actuel = taux de marché au jour du calcul (Office des Changes)</div>
+      </div>
+      <div class="fg" style="margin-top:14px"><label>Taux de couverture / Hedging (%)</label>
+        <input type="number" id="fx_hedge" value="0" min="0" max="100" oninput="calcForex()">
+        <div class="hn">Si couverture partielle ou totale négociée avec votre banque</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Impact change sur budget (MAD)</div>
+      <div id="forexResult"></div>
+      <div class="card" style="margin-top:14px;background:var(--bg)">
+        <svg id="forexSvg" width="100%" height="180" viewBox="0 0 420 160" style="background:var(--wh);border-radius:8px;border:1px solid var(--bd)"></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ROI ══ -->
+<div class="tab-body" id="tab-roi">
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">📈 Paramètres de rentabilité</div>
+      <div class="fg-row">
+        <div class="fg"><label>Chiffre d'affaires annuel estimé (MAD)</label><input type="number" id="r_ca" value="12000000" oninput="calcROI()"></div>
+        <div class="fg"><label>Charges d'exploitation annuelles</label><input type="number" id="r_charges" value="7500000" oninput="calcROI()"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Investissement total (MAD)</label><input type="number" id="r_inv" value="25000000" oninput="calcROI()"></div>
+        <div class="fg"><label>Prime d'État estimée (MAD)</label><input type="number" id="r_prime" value="4500000" oninput="calcROI()"><div class="hn">Calculée dans l'onglet Primes</div></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Taux IS applicable (%)</label>
+          <select id="r_is" onchange="calcROI()">
+            <option value="0">0% — ZAI (5 premières années)</option>
+            <option value="15">15% — ZAI (à partir an 6) / CFC</option>
+            <option value="20" selected>20% — Barème progressif PME</option>
+            <option value="31">31% — Taux normal (>100M MAD)</option>
+          </select>
+        </div>
+        <div class="fg"><label>Durée d'amortissement (années)</label><input type="number" id="r_amort" value="20" min="5" max="40" oninput="calcROI()"></div>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Taux d'intérêt emprunt (%)</label><input type="number" id="r_rate" value="4.5" min="0" max="20" step="0.1" oninput="calcROI()"></div>
+        <div class="fg"><label>Part empruntée (%)</label><input type="number" id="r_leverage" value="60" min="0" max="100" oninput="calcROI()"></div>
+      </div>
+      <button class="btn btn-g" onclick="calcROI()" style="width:100%;margin-top:8px">Calculer la rentabilité</button>
+    </div>
+    <div class="card">
+      <div class="card-title">💹 Indicateurs de rentabilité</div>
+      <div id="roiResult"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Graphique Break-even — Seuil de rentabilité</div>
+    <svg id="beSvg" width="100%" height="250" viewBox="0 0 900 220" style="background:var(--bg);border-radius:10px;border:1px solid var(--bd)"></svg>
+    <div style="display:flex;gap:14px;margin-top:8px;font-family:var(--fm);font-size:10px">
+      <span style="color:var(--ac)">── Revenus cumulés</span>
+      <span style="color:var(--er)">── Coûts totaux</span>
+      <span style="color:var(--ok)">⬆ Break-even</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TRANCHES ══ -->
+<div class="tab-body" id="tab-tranches">
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">📅 Simulation de déblocage — 3 tranches</div>
+    <div class="card-sub">Source : Loi-Cadre 03-22 · Décrets d'application 2023 · Versement conditionné à l'atteinte des jalons</div>
+    <div class="fg-row3">
+      <div class="fg"><label>Prime totale estimée (MAD)</label><input type="number" id="t_prime" value="4500000" oninput="renderTranches()"></div>
+      <div class="fg"><label>Délai administratif moyen (semaines/tranche)</label><input type="number" id="t_delay" value="8" oninput="renderTranches()"></div>
+      <div class="fg"><label>Date de signature convention (CRI)</label><input type="date" id="t_start" value="2025-03-01" onchange="renderTranches()"></div>
+    </div>
+  </div>
+  <div id="tranchesDetail"></div>
+</div>
+
+<!-- ══ DOSSIER CRI ══ -->
+<div class="tab-body" id="tab-dossier">
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">📁 Checklist — Dossier CRI / Commission</div>
+      <div class="fg"><label>Montant du projet (MAD)</label>
+        <select id="d_montant" onchange="renderChecklist()">
+          <option value="small">&lt; 50 M MAD — CRI uniquement</option>
+          <option value="medium" selected>50 M – 250 M MAD — Commission Régionale</option>
+          <option value="large">&gt; 250 M MAD — Commission Nationale</option>
+        </select>
+      </div>
+      <div id="checklist"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏛️ Circuit d'approbation</div>
+      <div id="circuitDossier"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// LEVIER FINANCIER — Charte Investissement
+// Conforme Loi-Cadre 03-22 / Décrets 2023
+// ══════════════════════════════════════════
+
+const fmtMAD = n => Number(n).toLocaleString('fr-FR',{maximumFractionDigits:0})+' MAD';
+const fmtPct = n => Number(n).toFixed(1)+'%';
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-body').forEach(t => t.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('show');
+  btn.classList.add('active');
+  if(id==='forex') calcForex();
+  if(id==='roi') calcROI();
+  if(id==='tranches') renderTranches();
+  if(id==='dossier') renderChecklist();
+}
+
+// ══ PRIMES MIP ══
+const SECTEURS_PRIORITAIRES = ['industrie','automobile','aeronautique','agro','energie','tic'];
+const PROVINCES_CAT = {
+  casablanca_a: {cat:'A',rate:0.10,label:'Catégorie A (10%)'},
+  marrakech_a: {cat:'A',rate:0.10,label:'Catégorie A (10%)'},
+  fes_b: {cat:'B',rate:0.15,label:'Catégorie B (15%)'},
+  souss_b: {cat:'B',rate:0.15,label:'Catégorie B (15%)'},
+  laayoune_b: {cat:'B',rate:0.15,label:'Catégorie B (15%)'},
+};
+
+function calcPrimes() {
+  const invTotal = +document.getElementById('inv_total').value||25000000;
+  const invFoncier = +document.getElementById('inv_foncier').value||5000000;
+  const invFoncierPrive = +document.getElementById('inv_foncier_prive').value||3000000;
+  const emplois = +document.getElementById('emplois').value||75;
+  const pctFemmes = +document.getElementById('pct_femmes').value||35;
+  const province = document.getElementById('province').value;
+  const secteur = document.getElementById('secteur').value;
+  const metiersAvenir = +document.getElementById('metiers_avenir').value||0;
+  const durabilite = +document.getElementById('durabilite').value||0;
+
+  // ── CALCUL MIP ──
+  // MIP = (Investissement Total HT - Foncier) + Min(Foncier Privé, 20% Total)
+  const hors_foncier = invTotal - invFoncier;
+  const plafond_foncier = Math.min(invFoncierPrive, invTotal*0.20);
+  const MIP = hors_foncier + plafond_foncier;
+
+  document.getElementById('mipCalc').innerHTML=`
+    <div style="font-size:12px;background:var(--bg);padding:12px;border-radius:8px;border:1px solid var(--bd)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>Investissement total HT :</span><span style="font-family:var(--fm);color:var(--ac)">${fmtMAD(invTotal)}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>— Foncier (déduction) :</span><span style="font-family:var(--fm);color:var(--er)">−${fmtMAD(invFoncier)}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>+ Foncier privé plafonné à 20% :</span><span style="font-family:var(--fm);color:var(--ok)">+${fmtMAD(plafond_foncier)}</span></div>
+      <div style="display:flex;justify-content:space-between;font-weight:700;border-top:1px solid var(--bd);padding-top:6px;margin-top:4px"><span style="font-family:var(--ft)">MIP — Montant Investissement Primable :</span><span style="font-family:var(--fm);font-size:15px;color:var(--gold)">${fmtMAD(MIP)}</span></div>
+    </div>`;
+
+  // ── PRIMES ──
+  const emploisRatio = emplois / (MIP/1000000);
+  const emploiRate = emploisRatio >= 10 ? 0.10 : emploisRatio >= 5 ? 0.07 : 0.05;
+  const emploiLabel = emploisRatio >= 10 ? '10%' : emploisRatio >= 5 ? '7%' : '5%';
+
+  const provinceData = PROVINCES_CAT[province] || PROVINCES_CAT.fes_b;
+  const isSecteurPrio = SECTEURS_PRIORITAIRES.includes(secteur);
+
+  const primes = [
+    {label:'Prime Emplois', sublabel:`Ratio ${emploisRatio.toFixed(1)} emplois/M MAD → taux ${emploiLabel}`, rate:emploiRate, active:true},
+    {label:'Prime Genre', sublabel:`${pctFemmes}% de femmes${pctFemmes>=30?' — éligible':' — seuil 30% non atteint'}`, rate:0.03, active:pctFemmes>=30},
+    {label:'Prime Métiers d\'avenir', sublabel:'Secteurs numériques, green tech, industrie 4.0', rate:0.03, active:!!metiersAvenir},
+    {label:'Prime Développement Durable', sublabel:'Certification ISO 14001 ou engagements RSE', rate:0.03, active:!!durabilite},
+    {label:`Prime Territoriale — ${provinceData.label}`, sublabel:`Province ${province.replace('_',' ')}`, rate:provinceData.rate, active:true},
+    {label:'Prime Sectorielle — Secteur prioritaire +5%', sublabel:isSecteurPrio?`Secteur "${secteur}" inclus dans la liste`:'"'+secteur+'" non prioritaire — pas de prime', rate:0.05, active:isSecteurPrio},
+  ];
+
+  const totalRate = primes.filter(p=>p.active).reduce((s,p)=>s+p.rate,0);
+  const totalPrime = MIP * totalRate;
+
+  document.getElementById('primesList').innerHTML = primes.map(p=>`
+    <div class="prime-item ${p.active?'active':'inactive'}">
+      <div style="flex:1">
+        <div class="pi-label">${p.label}</div>
+        <div style="font-size:11px;color:var(--sm)">${p.sublabel}</div>
+      </div>
+      <div class="pi-rate">×${(p.rate*100).toFixed(0)}%</div>
+      <div class="pi-amount" style="color:${p.active?'var(--ok)':'var(--sm)'}">
+        ${p.active?fmtMAD(Math.round(MIP*p.rate)):'Non éligible'}
+      </div>
+      <span style="margin-left:8px;font-size:16px">${p.active?'✅':'⭕'}</span>
+    </div>`).join('');
+
+  document.getElementById('primeTotal').textContent = fmtMAD(totalPrime);
+  document.getElementById('primePct').textContent = `Soit ${(totalRate*100).toFixed(1)}% du MIP · Versé en 3 tranches`;
+
+  // Update prime in ROI tab
+  document.getElementById('r_prime').value = Math.round(totalPrime);
+
+  // Tranches rapides
+  const t30 = Math.round(totalPrime*0.30);
+  const t40 = Math.round(totalPrime*0.40);
+  const t30b = Math.round(totalPrime*0.30);
+  document.getElementById('tranchesViz').innerHTML=`
+    <div style="margin-bottom:12px;font-size:12.5px;color:var(--is)">Prime totale de <strong>${fmtMAD(totalPrime)}</strong> versée en 3 tranches conditionnelles :</div>
+    <div class="tranche-bar">
+      <div class="tranche" style="flex:3;background:var(--ac)">1ère tranche<br>30% — ${fmtMAD(t30)}</div>
+      <div style="width:3px;background:var(--bg)"></div>
+      <div class="tranche" style="flex:4;background:var(--gold)">2ème tranche<br>40% — ${fmtMAD(t40)}</div>
+      <div style="width:3px;background:var(--bg)"></div>
+      <div class="tranche" style="flex:3;background:var(--ok)">3ème tranche<br>30% — ${fmtMAD(t30b)}</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;font-size:11px;color:var(--sm);font-family:var(--fm)">
+      <span>Tranche 1 : Début réalisation</span><span>·</span>
+      <span>Tranche 2 : 50% investissement réalisé</span><span>·</span>
+      <span>Tranche 3 : Fin de réalisation</span>
+    </div>`;
+}
+
+// ══ FOREX ══
+function calcForex() {
+  const currencies=[
+    {name:'EUR',flag:'🇪🇺',ref:+document.getElementById('fx_eur_ref').value||10.90,act:+document.getElementById('fx_eur_act').value||11.05,amt:+document.getElementById('fx_eur_amt').value||800000},
+    {name:'USD',flag:'🇺🇸',ref:+document.getElementById('fx_usd_ref').value||9.95,act:+document.getElementById('fx_usd_act').value||10.12,amt:+document.getElementById('fx_usd_amt').value||300000},
+    {name:'CNY',flag:'🇨🇳',ref:+document.getElementById('fx_cny_ref').value||1.38,act:+document.getElementById('fx_cny_act').value||1.41,amt:+document.getElementById('fx_cny_amt').value||500000},
+  ];
+  const hedge=+document.getElementById('fx_hedge').value||0;
+  let totalImpact=0;
+  const rows=currencies.map(c=>{
+    const madRef=c.amt*c.ref, madAct=c.amt*c.act, impact=(madAct-madRef)*(1-hedge/100);
+    totalImpact+=impact;
+    return {c,madRef,madAct,impact};
+  });
+  const el=document.getElementById('forexResult');
+  el.innerHTML=`
+    <table class="dt"><thead><tr><th>Devise</th><th>Montant</th><th>Taux réf</th><th>Taux act</th><th>Budget MAD réf</th><th>Budget MAD act</th><th>Impact</th></tr></thead>
+    <tbody>${rows.map(({c,madRef,madAct,impact})=>`<tr>
+      <td>${c.flag} ${c.name}</td>
+      <td style="font-family:var(--fm)">${c.amt.toLocaleString('fr-FR')}</td>
+      <td style="font-family:var(--fm)">${c.ref}</td>
+      <td style="font-family:var(--fm)">${c.act}</td>
+      <td style="font-family:var(--fm)">${madRef.toLocaleString('fr-FR')}</td>
+      <td style="font-family:var(--fm)">${madAct.toLocaleString('fr-FR')}</td>
+      <td style="font-family:var(--fm);font-weight:700;color:${impact>0?'var(--er)':'var(--ok)'}">${impact>0?'+':''}${impact.toLocaleString('fr-FR',{maximumFractionDigits:0})}</td>
+    </tr>`).join('')}</tbody></table>
+    <div style="margin-top:12px;padding:12px;background:${totalImpact>0?'rgba(185,28,28,.06)':'rgba(26,107,60,.06)'};border:1px solid ${totalImpact>0?'rgba(185,28,28,.2)':'rgba(26,107,60,.2)'};border-radius:8px">
+      <div style="font-size:13px;font-weight:600;color:${totalImpact>0?'var(--er)':'var(--ok)'}">
+        Impact net de change (après couverture ${hedge}%) : ${totalImpact>0?'+':''}${fmtMAD(Math.round(totalImpact))}
+      </div>
+      <div style="font-size:11px;color:var(--sm);margin-top:4px;font-family:var(--fm)">
+        ${totalImpact>0?`⚠ Surcoût de ${fmtMAD(Math.abs(totalImpact))} à provisionner dans l'EAC (Page 1)`:`✅ Gain de change de ${fmtMAD(Math.abs(totalImpact))} — économie sur budget`}
+      </div>
+    </div>`;
+  drawForexChart(rows);
+}
+
+function drawForexChart(rows) {
+  const svg=document.getElementById('forexSvg'),W=420,H=140,PL=30,PB=20,PT=10;
+  const max=Math.max(...rows.map(r=>Math.max(r.madRef,r.madAct)));
+  const barW=50,gap=30;
+  let s='';
+  rows.forEach(({c,madRef,madAct},i)=>{
+    const x=PL+i*(2*barW+gap+20);
+    const h1=(madRef/max)*(H-PT-PB), h2=(madAct/max)*(H-PT-PB);
+    s+=`<rect x="${x}" y="${PT+H-PB-h1}" width="${barW}" height="${h1}" rx="3" fill="#1E4D6B" opacity=".8"/>
+    <rect x="${x+barW+5}" y="${PT+H-PB-h2}" width="${barW}" height="${h2}" rx="3" fill="${madAct>madRef?'#B91C1C':'#1A6B3C'}" opacity=".8"/>
+    <text x="${x+barW}" y="${H-PB+14}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" fill="#7A7A70">${c.flag} ${c.name}</text>
+    <text x="${x+barW/2}" y="${PT+H-PB-h1-4}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="7" fill="#1E4D6B">Réf</text>
+    <text x="${x+barW+5+barW/2}" y="${PT+H-PB-h2-4}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="7" fill="${madAct>madRef?'#B91C1C':'#1A6B3C'}">Act.</text>`;
+  });
+  svg.innerHTML=`<line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#DDD" stroke-width="1"/><line x1="${PL}" y1="${H-PB}" x2="${W}" y2="${H-PB}" stroke="#DDD" stroke-width="1"/>${s}`;
+}
+
+// ══ ROI ══
+function calcROI() {
+  const ca=+document.getElementById('r_ca').value||12000000;
+  const charges=+document.getElementById('r_charges').value||7500000;
+  const inv=+document.getElementById('r_inv').value||25000000;
+  const prime=+document.getElementById('r_prime').value||4500000;
+  const isRate=+document.getElementById('r_is').value/100||0.20;
+  const amort=+document.getElementById('r_amort').value||20;
+  const rate=+document.getElementById('r_rate').value/100||0.045;
+  const leverage=+document.getElementById('r_leverage').value/100||0.60;
+
+  const rba=inv-prime;
+  const ebitda=ca-charges;
+  const ebit=ebitda-inv/amort;
+  const emprunte=rba*leverage;
+  const annuites=emprunte*rate*(1+rate)**amort/((1+rate)**amort-1);
+  const ebt=ebit-annuites;
+  const is=Math.max(0,ebt*isRate);
+  const net=ebt-is;
+  const roi=((ca-charges-inv/amort-annuites-is)/rba)*100;
+  const roiWithPrime=((ca-charges-inv/amort-annuites-is)/(inv-prime))*100;
+  const payback=inv/Math.max(1,net);
+  const breakeven=charges/(1-(charges/ca));
+
+  document.getElementById('roiResult').innerHTML=`
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="kpi gold" style="text-align:center;padding:14px;border:1px solid var(--bd);border-radius:10px"><div class="kpi-num" style="color:var(--gold);font-family:var(--ft);font-size:22px;font-weight:800">${roi.toFixed(1)}%</div><div class="kpi-label">ROI sans primes</div></div>
+      <div class="kpi ok" style="text-align:center;padding:14px;border:1px solid rgba(26,107,60,.2);border-radius:10px;background:rgba(26,107,60,.04)"><div class="kpi-num" style="color:var(--ok);font-family:var(--ft);font-size:22px;font-weight:800">${roiWithPrime.toFixed(1)}%</div><div class="kpi-label">ROI net des primes d'État</div></div>
+    </div>
+    ${[
+      ['EBITDA (Résultat brut)',fmtMAD(ebitda),ebitda>=0?'var(--ok)':'var(--er)'],
+      ['Amortissement annuel',fmtMAD(Math.round(inv/amort)),'var(--sm)'],
+      ['EBIT (Résultat opérationnel)',fmtMAD(Math.round(ebit)),ebit>=0?'var(--ok)':'var(--er)'],
+      ['Annuités emprunt',fmtMAD(Math.round(annuites)),'var(--sm)'],
+      ['EBT (Avant IS)',fmtMAD(Math.round(ebt)),ebt>=0?'var(--ok)':'var(--er)'],
+      ['IS ('+((isRate)*100).toFixed(0)+'%)',fmtMAD(Math.round(is)),'var(--sm)'],
+      ['Bénéfice net',fmtMAD(Math.round(net)),net>=0?'var(--ok)':'var(--er)'],
+      ['Payback (retour investissement)',payback.toFixed(1)+' ans',payback<=10?'var(--ok)':'var(--wn)'],
+      ['Break-even (CA seuil)',fmtMAD(Math.round(breakeven)),'var(--ac)'],
+    ].map(([k,v,c])=>`<div class="roi-row"><span class="roi-key">${k}</span><span class="roi-val" style="color:${c}">${v}</span></div>`).join('')}`;
+
+  drawBEChart(ca, charges, inv, amort, breakeven);
+}
+
+function drawBEChart(ca, charges, inv, amort, breakeven) {
+  const svg=document.getElementById('beSvg'),W=900,H=200,PL=55,PR=20,PT=16,PB=28;
+  const years=Math.min(+document.getElementById('r_amort').value||20, 30);
+  const maxV=ca*years*1.1;
+  const tx=y=>(y/years)*(W-PL-PR)+PL, ty=val=>PT+(H-PT-PB)*(1-val/maxV);
+  const revsLine=Array.from({length:years+1},(_,y)=>({y,v:ca*y}));
+  const costLine=Array.from({length:years+1},(_,y)=>({y,v:charges*y+inv}));
+  const revPts=revsLine.map((p,i)=>`${i?'L':'M'}${tx(p.y).toFixed(1)},${ty(p.v).toFixed(1)}`).join(' ');
+  const costPts=costLine.map((p,i)=>`${i?'L':'M'}${tx(p.y).toFixed(1)},${ty(p.v).toFixed(1)}`).join(' ');
+  const beYear=inv/(ca-charges);
+  const beX=tx(beYear), beY=ty(ca*beYear);
+  svg.innerHTML=`
+    ${[0,.25,.5,.75,1].map(f=>`<line x1="${PL}" y1="${ty(maxV*f)}" x2="${W-PR}" y2="${ty(maxV*f)}" stroke="rgba(0,0,0,.04)" stroke-width="1"/><text x="${PL-5}" y="${ty(maxV*f)+4}" text-anchor="end" font-family="'JetBrains Mono'" font-size="8" fill="#999">${(maxV*f/1000000).toFixed(0)}M</text>`).join('')}
+    <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#DDD" stroke-width="1.5"/>
+    <line x1="${PL}" y1="${H-PB}" x2="${W-PR}" y2="${H-PB}" stroke="#DDD" stroke-width="1.5"/>
+    <path d="${revPts}" fill="none" stroke="#1E4D6B" stroke-width="2.5"/>
+    <path d="${costPts}" fill="none" stroke="#B91C1C" stroke-width="2.5" stroke-dasharray="6,3"/>
+    <circle cx="${beX}" cy="${beY}" r="7" fill="#1A6B3C" stroke="white" stroke-width="2"/>
+    <text x="${beX+12}" y="${beY-8}" font-family="'JetBrains Mono'" font-size="9" fill="#1A6B3C" font-weight="700">Break-even : An ${beYear.toFixed(1)}</text>
+    ${Array.from({length:Math.min(years,10)},(_,i)=>`<text x="${tx(i*Math.floor(years/10))}" y="${H-PB+14}" text-anchor="middle" font-family="'JetBrains Mono'" font-size="8" fill="#999">A${i*Math.floor(years/10)}</text>`).join('')}`;
+}
+
+// ══ TRANCHES DÉTAIL ══
+function renderTranches() {
+  const prime=+document.getElementById('t_prime').value||4500000;
+  const delay=+document.getElementById('t_delay').value||8;
+  const start=new Date(document.getElementById('t_start').value||'2025-03-01');
+  const tranches=[
+    {n:1,pct:0.30,label:'1ère Tranche',cond:'Début de réalisation du projet (attestation CRI)',docs:['Attestation de début de travaux','Relevé bancaire de blocage de fonds propres','Attestation situation fiscale'],color:'var(--ac)'},
+    {n:2,pct:0.40,label:'2ème Tranche',cond:'50% de l\'investissement réalisé et certifié',docs:['Rapport d\'audit d\'avancement (50%)','Pièces justificatives de dépenses','Attestation emplois créés à mi-parcours'],color:'var(--gold)'},
+    {n:3,pct:0.30,label:'3ème Tranche',cond:'Fin de réalisation et mise en service',docs:['Certificat de conformité / Réception définitive','Bilan emplois créés final','Attestation CNSS des salariés','Audit fiscal de clôture'],color:'var(--ok)'},
+  ];
+  let el=document.getElementById('tranchesDetail');
+  el.innerHTML=tranches.map((t,i)=>{
+    const dt=new Date(start);dt.setDate(dt.getDate()+(i*delay*7));
+    const amt=Math.round(prime*t.pct);
+    return `<div class="card" style="margin-bottom:14px;border-left:4px solid ${t.color}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+        <div>
+          <div style="font-family:var(--ft);font-size:17px;font-weight:800;color:${t.color};margin-bottom:4px">${t.label} — ${(t.pct*100).toFixed(0)}%</div>
+          <div style="font-family:var(--fm);font-size:11px;color:var(--sm);margin-bottom:8px">📅 Date estimée : ${dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})}</div>
+          <div style="font-size:13px;color:var(--is)"><strong>Condition :</strong> ${t.cond}</div>
+          <div style="margin-top:10px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Documents requis :</div>
+            ${t.docs.map(d=>`<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--is);margin-bottom:4px">📄 ${d}</div>`).join('')}
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-family:var(--ft);font-size:26px;font-weight:800;color:${t.color}">${fmtMAD(amt)}</div>
+          <div style="font-size:11px;color:var(--sm);font-family:var(--fm);margin-top:3px">${(t.pct*100).toFixed(0)}% de ${fmtMAD(prime)}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══ CHECKLIST ══
+const CHECKLISTS={
+  small:{
+    title:'CRI uniquement (< 50M MAD)',
+    circuit:['Dépôt dossier CRI','Accusé de réception (5 jours)','Instruction (15 jours)','Décision CRI','Signature convention'],
+    delai:'30-45 jours ouvrables',
+    docs:['Formulaire de demande CRI','Statuts de la société + RC','Plan d\'affaires (Business Plan)','Devis et plans architecturaux','Titre foncier ou promesse d\'achat','Situation fiscale et CNSS','CV des dirigeants','Déclaration de conformité environnementale']
+  },
+  medium:{
+    title:'Commission Régionale (50-250M MAD)',
+    circuit:['Dépôt CRI','Accusé (5j)','Instruction technique (30j)','Commission Régionale','Avis Commission','Signature convention','Arrêté d\'approbation'],
+    delai:'60-90 jours ouvrables',
+    docs:['Dossier CRI complet','Étude de faisabilité économique','Étude d\'impact environnemental','Plan de financement détaillé','Conventions bancaires préliminaires','Plan de création d\'emplois','Audits techniques (structure, géotechnique)','Justificatifs fonds propres']
+  },
+  large:{
+    title:'Commission Nationale (> 250M MAD)',
+    circuit:['Dépôt AMDIE','Instruction (45j)','Commission Régionale','Commission Nationale','Conseil de Gouvernement si >2Mds MAD','Signature convention État'],
+    delai:'90-180 jours ouvrables',
+    docs:['Dossier Commission Nationale complet','Étude d\'impact socio-économique','Plan RSE et développement durable','Engagements emploi et formation','Étude d\'impact sur le tissu local','Certificats techniques internationaux','Plan de communication institutionnelle']
+  }
+};
+
+function renderChecklist() {
+  const type=document.getElementById('d_montant').value;
+  const data=CHECKLISTS[type]||CHECKLISTS.medium;
+  document.getElementById('checklist').innerHTML=`
+    <div style="margin-bottom:12px;font-size:13px;color:var(--ac);font-weight:600">${data.title}</div>
+    <div style="font-family:var(--fm);font-size:11px;color:var(--sm);margin-bottom:12px">⏱ Délai moyen : ${data.delai}</div>
+    ${data.docs.map((d,i)=>`<div class="check-item">
+      <input type="checkbox" id="chk${i}" style="accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;margin-top:2px">
+      <label for="chk${i}" style="cursor:pointer">${d}</label>
+    </div>`).join('')}`;
+
+  document.getElementById('circuitDossier').innerHTML=`
+    <div style="font-family:var(--ft);font-size:15px;font-weight:700;margin-bottom:14px">Circuit d'instruction</div>
+    ${data.circuit.map((step,i)=>`<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+      <div style="width:28px;height:28px;border-radius:50%;background:${i===0?'var(--gold)':i===data.circuit.length-1?'var(--ok)':'var(--ac)'};color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:11px;font-weight:700;flex-shrink:0">${i+1}</div>
+      <div style="flex:1;padding-top:4px">
+        <div style="font-size:13px;font-weight:600">${step}</div>
+        ${i<data.circuit.length-1?`<div style="width:2px;height:12px;background:var(--bd);margin:4px 0 0 0;margin-left:-22px;margin-top:6px"></div>`:''}
+      </div>
+    </div>`).join('')}`;
+}
+
+// ── INIT ──
+calcPrimes();
+calcForex();
+calcROI();
+renderTranches();
+renderChecklist();
+</script>
+
+
+
+
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

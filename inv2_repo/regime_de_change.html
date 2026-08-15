@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IGOC 2026 — Instruction Générale des Opérations de Change · Office des Changes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #F4F2EB;
+    --parchment-dark: #EAE6D9;
+    --gold: #B8862A;
+    --gold-light: #D4A847;
+    --gold-pale: #F5EDD3;
+    --ink: #1C1C1C;
+    --ink-soft: #3D3D3D;
+    --ink-muted: #6B6B6B;
+    --forest: #1A4A2A;
+    --forest-light: #2D6B3F;
+    --forest-pale: #E8F5ED;
+    --red-soft: #C0392B;
+    --red-pale: #FDECEA;
+    --blue: #1A3A5C;
+    --blue-pale: #E8F0F8;
+    --border: #D8D2BE;
+    --shadow: rgba(28,28,28,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    background: var(--ink);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--gold);
+  }
+  .site-header .brand {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .site-header .badge {
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, var(--ink) 0%, #2A2418 60%, var(--forest) 100%);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid rgba(184,134,42,0.25);
+  }
+  .hero-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .hero-sep {
+    color: var(--gold);
+    font-size: 1rem;
+    opacity: 0.6;
+  }
+  .hero-sub {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+  }
+
+  /* ─── TAB NAVIGATION ─── */
+  .tab-nav-wrap {
+    background: var(--ink);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-nav-wrap::-webkit-scrollbar { display: none; }
+  .tab-nav {
+    display: flex;
+    min-width: max-content;
+    padding: 0 1.5rem;
+  }
+  .tab-btn {
+    padding: 0.9rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    background: none;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+    position: relative;
+  }
+  .tab-btn .tab-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    margin-right: 5px;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+  .tab-btn:hover { color: rgba(255,255,255,0.8); }
+  .tab-btn.active {
+    color: #fff;
+    border-bottom-color: var(--gold);
+  }
+  .tab-btn.active .tab-num { opacity: 1; }
+
+  /* ─── CONTENT AREA ─── */
+  .content-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 5rem;
+  }
+  .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 52px;
+    height: 52px;
+    background: var(--ink);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.5rem;
+  }
+  .section-header-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 0.3rem;
+  }
+  .section-header-text .chapter-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ─── GRID LAYOUTS ─── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; margin: 1.5rem 0; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0; }
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.4rem;
+  }
+  .card-gold {
+    background: var(--gold-pale);
+    border: 1px solid rgba(184,134,42,0.3);
+    border-radius: 8px;
+    padding: 1.4rem;
+  }
+  .card-forest {
+    background: var(--forest-pale);
+    border: 1px solid rgba(26,74,42,0.2);
+    border-radius: 8px;
+    padding: 1.4rem;
+  }
+  .card-blue {
+    background: var(--blue-pale);
+    border: 1px solid rgba(26,58,92,0.15);
+    border-radius: 8px;
+    padding: 1.4rem;
+  }
+  .card-dark {
+    background: var(--ink);
+    border-radius: 8px;
+    padding: 1.4rem;
+    color: #fff;
+  }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+    color: var(--ink);
+  }
+  .card-gold h3 { color: var(--forest); }
+  .card-forest h3 { color: var(--forest); }
+  .card-blue h3 { color: var(--blue); }
+  .card-dark h3 { color: var(--gold); }
+  .card p, .card ul { font-size: 0.9rem; color: var(--ink-soft); }
+  .card-dark p { color: rgba(255,255,255,0.75); }
+  .card ul { padding-left: 1.2rem; }
+  .card ul li { margin-bottom: 0.35rem; }
+
+  /* ─── KPI BLOCKS ─── */
+  .kpi {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+    text-align: center;
+    border-top: 3px solid var(--gold);
+  }
+  .kpi .kpi-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1.1;
+  }
+  .kpi .kpi-label {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .kpi .kpi-note {
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    margin-top: 4px;
+  }
+  .kpi.forest { border-top-color: var(--forest); }
+  .kpi.forest .kpi-val { color: var(--forest); }
+  .kpi.blue { border-top-color: var(--blue); }
+  .kpi.blue .kpi-val { color: var(--blue); }
+
+  /* ─── ALERT BOXES ─── */
+  .alert {
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    font-size: 0.88rem;
+  }
+  .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .alert-gold { background: var(--gold-pale); border-left: 3px solid var(--gold); }
+  .alert-forest { background: var(--forest-pale); border-left: 3px solid var(--forest); }
+  .alert-red { background: var(--red-pale); border-left: 3px solid var(--red-soft); color: var(--red-soft); }
+  .alert-blue { background: var(--blue-pale); border-left: 3px solid var(--blue); }
+  .alert strong { display: block; margin-bottom: 3px; font-weight: 600; }
+
+  /* ─── PROSE ─── */
+  .prose h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 2rem 0 0.7rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--parchment-dark);
+  }
+  .prose h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--forest);
+    margin: 1.2rem 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .prose p {
+    font-size: 0.93rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.9rem;
+    line-height: 1.75;
+  }
+  .prose ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .prose ul li { margin-bottom: 0.4rem; }
+
+  /* ─── TABLE ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    margin: 1.2rem 0;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .data-table thead tr {
+    background: var(--ink);
+    color: #fff;
+  }
+  .data-table th {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+  .data-table th.gold { color: var(--gold); }
+  .data-table td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--parchment-dark);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:nth-child(even) td { background: var(--parchment); }
+  .data-table .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .tag-green { background: var(--forest-pale); color: var(--forest); }
+  .tag-gold { background: var(--gold-pale); color: #7A5A1A; }
+  .tag-red { background: var(--red-pale); color: var(--red-soft); }
+  .tag-blue { background: var(--blue-pale); color: var(--blue); }
+
+  /* ─── STEP FLOW ─── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .step {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .step:first-child { border-radius: 8px 8px 0 0; }
+  .step:last-child { border-radius: 0 0 8px 8px; }
+  .step:not(:last-child) { border-bottom: none; }
+  .step-num {
+    width: 28px;
+    height: 28px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+  .step-content p {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    margin: 0;
+  }
+
+  /* ─── ACCORDION ─── */
+  .accordion { margin: 1rem 0; }
+  .acc-item {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .acc-header {
+    width: 100%;
+    padding: 0.85rem 1.1rem;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: left;
+    transition: background 0.15s;
+  }
+  .acc-header:hover { background: var(--parchment); }
+  .acc-header.open { background: var(--parchment); }
+  .acc-header .acc-arrow {
+    font-size: 0.75rem;
+    transition: transform 0.2s;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-left: 0.8rem;
+  }
+  .acc-header.open .acc-arrow { transform: rotate(180deg); }
+  .acc-body {
+    display: none;
+    padding: 1rem 1.2rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    background: var(--parchment);
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+  }
+  .acc-body.open { display: block; }
+  .acc-body ul { padding-left: 1.3rem; margin-top: 0.4rem; }
+  .acc-body ul li { margin-bottom: 0.3rem; }
+
+  /* ─── PILL TAGS ─── */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 0.6rem 0; }
+  .pill {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+  .pill-gold { background: var(--gold-pale); color: #7A5A1A; border: 1px solid rgba(184,134,42,0.3); }
+  .pill-forest { background: var(--forest-pale); color: var(--forest); border: 1px solid rgba(26,74,42,0.2); }
+  .pill-dark { background: var(--ink); color: rgba(255,255,255,0.85); }
+
+  /* ─── HIGHLIGHT BOX ─── */
+  .highlight-box {
+    background: var(--ink);
+    border-radius: 10px;
+    padding: 1.8rem 2rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .highlight-box::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(184,134,42,0.15) 0%, transparent 70%);
+  }
+  .highlight-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+  .highlight-box p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+  .highlight-box .hl-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    position: relative;
+  }
+  .highlight-box .hl-list li {
+    font-size: 0.86rem;
+    color: rgba(255,255,255,0.8);
+    padding-left: 1.3rem;
+    position: relative;
+  }
+  .highlight-box .hl-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.8rem;
+  }
+  @media (max-width: 600px) {
+    .highlight-box .hl-list { grid-template-columns: 1fr; }
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+
+  /* ─── FOOTER ─── */
+  .page-footer {
+    background: var(--ink);
+    border-top: 2px solid var(--gold);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+  }
+  .page-footer span { color: var(--gold); }
+
+  /* ─── MONOSPACE ─── */
+  .mono {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    background: var(--parchment-dark);
+    padding: 2px 7px;
+    border-radius: 3px;
+    color: var(--forest);
+  }
+
+  /* ─── SIMULATOR TAB BUTTON ─── */
+  .sim-tab { background: var(--gold) !important; color: #fff !important; border-radius: 0; }
+  .sim-tab:hover { background: var(--gold-light) !important; color: #fff !important; }
+  .sim-tab.active { background: var(--gold-light) !important; color: #fff !important; border-bottom-color: #fff !important; }
+  .sim-tab .tab-num { color: #fff !important; opacity: 1 !important; font-size: 0.9rem !important; }
+
+  /* ─── SIMULATOR LAYOUT ─── */
+  .sim-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 860px) { .sim-wrap { grid-template-columns: 1fr; } }
+
+  .sim-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sim-card-header {
+    background: var(--ink);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .sim-card-header .sim-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+  .sim-card-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1px;
+  }
+  .sim-card-header p {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+  }
+  .sim-body { padding: 1.5rem; }
+
+  /* Form fields */
+  .sim-field { margin-bottom: 1.1rem; }
+  .sim-field label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.4rem;
+  }
+  .sim-field select,
+  .sim-field input[type="number"] {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--parchment);
+    appearance: none;
+    transition: border-color 0.15s;
+    outline: none;
+  }
+  .sim-field select:focus,
+  .sim-field input:focus { border-color: var(--gold); }
+  .sim-field .hint {
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    margin-top: 3px;
+  }
+  .sim-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+
+  /* Conditional fields */
+  .sim-conditional { display: none; }
+  .sim-conditional.visible { display: block; }
+
+  /* Calculate button */
+  .sim-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    letter-spacing: 0.02em;
+    margin-top: 0.5rem;
+  }
+  .sim-btn:hover { background: var(--gold-light); }
+  .sim-btn.forest { background: var(--forest); }
+  .sim-btn.forest:hover { background: var(--forest-light); }
+
+  /* Results panel */
+  .sim-result {
+    margin-top: 1.2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: none;
+  }
+  .sim-result.visible { display: block; }
+  .sim-result-header {
+    background: var(--parchment-dark);
+    padding: 0.6rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+  }
+  .sim-result-body { padding: 1rem; background: #fff; }
+  .sim-result-main {
+    text-align: center;
+    padding: 1rem 0 0.5rem;
+  }
+  .sim-result-main .amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--forest);
+    line-height: 1;
+  }
+  .sim-result-main .currency {
+    font-size: 1rem;
+    color: var(--gold);
+    font-weight: 600;
+    margin-left: 4px;
+  }
+  .sim-result-main .period {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    margin-top: 4px;
+  }
+  .sim-breakdown {
+    margin-top: 1rem;
+    border-top: 1px solid var(--parchment-dark);
+    padding-top: 0.8rem;
+  }
+  .sim-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px dashed var(--parchment-dark);
+  }
+  .sim-breakdown-row:last-child { border-bottom: none; font-weight: 600; }
+  .sim-breakdown-row .lbl { color: var(--ink-muted); }
+  .sim-breakdown-row .val { color: var(--ink); font-family: 'DM Mono', monospace; }
+  .sim-breakdown-row .val.highlight { color: var(--forest); }
+  .sim-note {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    background: var(--parchment);
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    margin-top: 0.8rem;
+    line-height: 1.5;
+  }
+  .sim-note strong { color: var(--gold); }
+  .sim-alert-red {
+    font-size: 0.8rem;
+    background: var(--red-pale);
+    color: var(--red-soft);
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    margin-top: 0.8rem;
+    border-left: 3px solid var(--red-soft);
+  }
+
+  /* Sub-tabs inside simulator */
+  .sim-subtabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--parchment);
+    gap: 0;
+  }
+  .sim-subtab {
+    padding: 0.65rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .sim-subtab:hover { color: var(--ink); }
+  .sim-subtab.active { color: var(--ink); border-bottom-color: var(--gold); background: #fff; }
+  .sim-subpanel { display: none; padding: 1.2rem 1.5rem; }
+  .sim-subpanel.active { display: block; }
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="brand">Smart-Invest.IA</div>
+  <div class="badge">Guide Réglementaire 2026</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inline">
+    <span class="hero-title">Guide des Opérations de Change</span>
+    <span class="hero-sep">·</span>
+    <span class="hero-sub">réglementation des transferts et opérations en devises</span>
+  </div>
+</div>
+
+<!-- TAB NAVIGATION -->
+<div class="tab-nav-wrap">
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab(0)"><span class="tab-num">00</span>Réglementation</button>
+    <button class="tab-btn" onclick="switchTab(1)"><span class="tab-num">I</span>Contexte</button>
+    <button class="tab-btn sim-tab" onclick="switchTab(2)"><span class="tab-num">⚡</span>Simulateurs</button>
+    <button class="tab-btn" onclick="switchTab(3)"><span class="tab-num">II</span>Marché des Changes</button>
+    <button class="tab-btn" onclick="switchTab(4)"><span class="tab-num">III</span>Opérations Courantes</button>
+    <button class="tab-btn" onclick="switchTab(5)"><span class="tab-num">IV</span>Opérations en Capital</button>
+    <button class="tab-btn" onclick="switchTab(6)"><span class="tab-num">V</span>Couverture & Cautions</button>
+    <button class="tab-btn" onclick="switchTab(7)"><span class="tab-num">VI</span>Régime des Comptes</button>
+  </nav>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 0 — PRÉAMBULE & NOUVEAUTÉS 2026
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-0">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div class="section-header-text">
+        <div class="chapter-label">Contexte & Principales Innovations</div>
+        <h2>Instruction Generale des Operations de Change</h2>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Publiée pour la première fois en 2011 et révisée à plusieurs reprises, l'<strong>Instruction Générale des Opérations de Change (IGOC)</strong> constitue le texte de référence unique régissant l'ensemble des opérations de change au Maroc. La version 2026, fruit d'une large concertation avec les milieux professionnels et institutionnels, marque une refonte profonde tant dans l'architecture du texte que dans son contenu réglementaire.</p>
+      <p>Cette édition 2026 est structurée en <strong>6 chapitres et 256 articles</strong>, selon une logique thématique claire qui distingue les dispositions générales, les opérations courantes, les opérations en capital et le régime des comptes. L'objectif central : offrir aux opérateurs économiques un cadre plus lisible, plus accessible et mieux aligné sur les standards internationaux de libéralisation des changes.</p>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Vision stratégique de l'IGOC 2026</h3>
+      <p>Cette révision s'inscrit dans la politique de libéralisation graduelle et irréversible du régime des changes, visant à renforcer la compétitivité des entreprises marocaines et à attirer davantage d'investissements étrangers.</p>
+      <ul class="hl-list">
+        <li>Alléger la charge documentaire des opérateurs</li>
+        <li>Simplifier les régimes et procédures</li>
+        <li>Encourager l'investissement étranger et local</li>
+        <li>Promouvoir les exportations de biens et services</li>
+        <li>Soutenir le développement du commerce électronique</li>
+        <li>Consolider les facilités pour les voyages et MRE</li>
+      </ul>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin:2rem 0 1rem;color:var(--ink);">Les grandes innovations de la version 2026</h3>
+
+    <div class="grid-2">
+      <div class="card-gold">
+        <h3>🚀 Encourager l'investissement & Start-ups</h3>
+        <p>Les start-ups labellisées par l'<strong>Agence de Développement du Digital (ADD)</strong> peuvent désormais investir à l'étranger à hauteur de <strong>10 millions MAD/an</strong>, sans obligation de justifier 3 années d'activité ni de certification de commissaire aux comptes.</p>
+        <p style="margin-top:0.6rem;font-size:0.88rem;">Les résidents peuvent désormais octroyer des <strong>garanties d'actif et de passif</strong> aux investisseurs non-résidents lors de cessions d'actions.</p>
+      </div>
+      <div class="card-forest">
+        <h3>🌍 Facilité pour investisseurs étrangers résidents</h3>
+        <p>Les étrangers résidents ayant investi au Maroc depuis au moins <strong>10 ans</strong> et ne disposant plus de justificatifs de financement en devises peuvent transférer leurs revenus d'investissement dans la limite de <strong>2 millions MAD/an</strong>.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>✈️ Voyages d'affaires — Dotations revalorisées</h3>
+        <ul>
+          <li>Sociétés sans compte devises : plafond porté à <strong>1 000 000 MAD</strong> (vs 500 000 MAD)</li>
+          <li>Opérateurs catégorisés : <strong>1 500 000 MAD</strong> (vs 1 000 000 MAD)</li>
+          <li>Base de calcul : 100% de l'impôt payé en année n-1</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🛒 Commerce Électronique — Dotations élargies</h3>
+        <ul>
+          <li>Start-ups ADD labellisées : <strong>2 000 000 MAD</strong> (vs 1 000 000 MAD)</li>
+          <li>Sociétés nouvelles ou exonérées : dotation minimale de <strong>50 000 MAD</strong></li>
+          <li>Personnes physiques : plafond relevé à <strong>20 000 MAD</strong> (vs 15 000 MAD)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>📤 Exportation de services — Nouvelles facilités</h3>
+        <p>Le titulaire d'un marché à l'étranger peut alimenter son compte en devises à hauteur du montant rapatrié, dans la limite de <strong>15% du montant total du marché</strong>. Cette facilité est non-cumulable avec la règle des 70% de la marge.</p>
+      </div>
+      <div class="card">
+        <h3>🔄 Instruments de Couverture — Extension</h3>
+        <p>La compensation des positions est étendue à <strong>l'ensemble des opérations de couverture</strong> : risques de change, taux d'intérêt, fluctuation des prix des produits de base et risques inhérents à tout actif.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🏖️ Voyages personnels — Dotation supplémentaire</h3>
+        <p>Le plafond de la dotation supplémentaire pour voyages personnels est relevé à <strong>400 000 MAD</strong> (contre 200 000 MAD précédemment), sur la base de 100% de l'impôt payé.</p>
+      </div>
+      <div class="card">
+        <h3>📋 Importation de Services — Simplification</h3>
+        <ul>
+          <li>Définition élargie avec suppression de la liste limitative</li>
+          <li>Simplification des procédures de règlement</li>
+          <li>Associations de microfinance désormais habilitées</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert alert-forest">
+      <div class="alert-icon">ℹ️</div>
+      <div><strong>Architecture de l'IGOC 2026</strong>
+      L'instruction est organisée en deux blocs : (1) Dispositions générales — Chapitres I et II couvrant le champ d'application, les définitions, les modes de règlement et le marché des changes ; (2) Opérations spécifiques — Chapitres III à VI couvrant les opérations courantes, en capital, les instruments de couverture et le régime des comptes.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 1 — CHAPITRE I : GÉNÉRALITÉS
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-1">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <div class="section-header-text">
+        <div class="chapter-label">Chapitre I</div>
+        <h2>Généralités — Champ d'application, Principes & Obligations</h2>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Le Chapitre I pose les fondements du cadre réglementaire des changes : il définit qui est concerné, quels sont les principes directeurs applicables à toute opération, les modes de règlement autorisés, les règles d'immatriculation des opérateurs et les obligations déclaratives.</p>
+    </div>
+
+    <div class="accordion">
+
+      <div class="acc-item">
+        <button class="acc-header open" onclick="toggleAcc(this)">
+          1. Champ d'application & Définitions clés
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body open">
+          <p>L'IGOC s'applique à <strong>l'ensemble des opérations de change</strong> réalisées par les résidents et non-résidents au Maroc. Les définitions fondamentales structurant tout le texte :</p>
+          <table class="data-table" style="margin-top:0.8rem;">
+            <thead><tr><th>Terme</th><th class="gold">Définition réglementaire</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Résident</strong></td><td>Toute personne physique ou morale ayant le centre de ses intérêts économiques au Maroc — indépendamment de la nationalité</td></tr>
+              <tr><td><strong>Non-résident</strong></td><td>Toute personne dont le centre d'intérêts économiques est situé hors du Maroc</td></tr>
+              <tr><td><strong>MRE</strong></td><td>Marocains résidant à l'étranger — régime hybride avec droits spécifiques</td></tr>
+              <tr><td><strong>Devises</strong></td><td>Toute monnaie étrangère ayant cours légal dans son pays d'émission</td></tr>
+              <tr><td><strong>Dirhams convertibles</strong></td><td>Dirhams détenus sur des comptes à régime de convertibilité reconnu par l'Office des Changes</td></tr>
+              <tr><td><strong>Banque domiciliataire</strong></td><td>Banque chargée de la domiciliation et du suivi des opérations de change pour le compte d'un opérateur</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          2. Principes de base applicables à toutes les opérations
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="grid-2">
+            <div class="card">
+              <h3>Monnaie des contrats</h3>
+              <p>Les contrats commerciaux internationaux peuvent être libellés en devises étrangères. Le règlement s'effectue dans la devise du contrat ou, avec accord des parties, en dirhams.</p>
+            </div>
+            <div class="card">
+              <h3>Délégation aux banques</h3>
+              <p>Les banques marocaines agréées sont habilitées à réaliser la majorité des opérations de change sans accord préalable de l'Office des Changes, dans les limites fixées par l'IGOC.</p>
+            </div>
+            <div class="card">
+              <h3>Effectivité des transactions</h3>
+              <p>Toute opération de change doit correspondre à une transaction économique réelle et justifiée. Les opérations spéculatives sans sous-jacent économique sont exclues.</p>
+            </div>
+            <div class="card">
+              <h3>Changement de banque domiciliataire</h3>
+              <p>Possible sous conditions de régularité des opérations en cours. L'opérateur doit s'assurer du transfert complet du dossier et des engagements en suspens.</p>
+            </div>
+          </div>
+          <div class="alert alert-gold" style="margin-top:1rem;">
+            <div class="alert-icon">💡</div>
+            <div><strong>Impôts et taxes :</strong> L'IGOC ne s'applique pas aux obligations fiscales marocaines. Les taxes et impôts dus au titre des opérations de change restent régis par le Code Général des Impôts et les textes fiscaux en vigueur.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          3. Modes de règlement autorisés
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="data-table">
+            <thead><tr><th>Mode de règlement</th><th class="gold">Description</th><th class="gold">Usage typique</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Virement bancaire</strong></td><td>Transfert direct entre comptes bancaires — mode le plus courant</td><td>Import/Export de biens et services</td></tr>
+              <tr><td><strong>Carte de paiement internationale</strong></td><td>Utilisation de cartes débit/crédit en devises pour paiements à l'étranger</td><td>Achats en ligne, voyages, services</td></tr>
+              <tr><td><strong>Crédit documentaire (L/C)</strong></td><td>Garantie bancaire conditionnelle pour sécuriser les transactions</td><td>Importation de biens de valeur</td></tr>
+              <tr><td><strong>Remise documentaire</strong></td><td>Documents commerciaux remis via la banque contre paiement ou acceptation</td><td>Relations commerciales établies</td></tr>
+              <tr><td><strong>Chèque en devises</strong></td><td>Instrument de paiement libellé en monnaie étrangère</td><td>Règlements ponctuels</td></tr>
+              <tr><td><strong>Convention UMA</strong></td><td>Paiements bilatéraux dans le cadre de l'Union du Maghreb Arabe</td><td>Échanges régionaux Maghreb</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.85rem;color:var(--ink-muted);margin-top:0.8rem;">Les annulations de règlements font l'objet de procédures spécifiques selon qu'il s'agit de transferts vers l'étranger ou de rapatriements depuis l'étranger — délais et justificatifs stricts à respecter.</p>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          4. Immatriculation & Catégorisation des opérateurs économiques
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>L'Office des Changes a mis en place un système de <strong>catégorisation des opérateurs économiques</strong> qui conditionne l'accès à certaines facilités de change :</p>
+          <div class="grid-2" style="margin-top:1rem;">
+            <div class="card-gold">
+              <h3>Immatriculation</h3>
+              <p>Tout opérateur économique réalisant des opérations de change doit s'immatriculer auprès de l'Office des Changes. Cette démarche est préalable à l'accès aux facilités spécifiques aux opérateurs catégorisés.</p>
+            </div>
+            <div class="card-forest">
+              <h3>Avantages de la catégorisation</h3>
+              <ul>
+                <li>Dotations voyages d'affaires majorées (1 500 000 MAD)</li>
+                <li>Simplification documentaire</li>
+                <li>Accès facilité à certains régimes</li>
+                <li>Relations privilégiées avec l'Office des Changes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          5. Déclarations & Conservation des documents
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="grid-3">
+            <div class="card">
+              <h3>Déclaration des avoirs à l'étranger</h3>
+              <p>Obligation de déclarer les avoirs et liquidités détenus à l'étranger auprès de l'Office des Changes selon les modalités et seuils définis.</p>
+            </div>
+            <div class="card">
+              <h3>Déclarations bancaires</h3>
+              <p>Les banques sont tenues de transmettre régulièrement à l'Office des Changes les formules bancaires relatives aux opérations de change réalisées pour leurs clients.</p>
+            </div>
+            <div class="card">
+              <h3>Conservation des documents</h3>
+              <p>Les justificatifs de chaque opération de change doivent être conservés pendant une durée déterminée (généralement 10 ans) pour permettre tout contrôle ultérieur.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 7 — SIMULATEURS DOTATIONS DE CHANGE
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-7">
+    <div class="section-header">
+      <div class="section-icon">⚡</div>
+      <div class="section-header-text">
+        <div class="chapter-label">Outils de calcul — IGOC 2026</div>
+        <h2>Simulateurs de Dotations de Change</h2>
+      </div>
+    </div>
+
+    <div class="alert alert-gold">
+      <div class="alert-icon">⚠️</div>
+      <div><strong>Usage indicatif :</strong> Ces simulateurs sont basés sur les règles de l'IGOC 2026 (Office des Changes). Les résultats sont des estimations maximales — la dotation définitive est arrêtée par votre banque domiciliataire sur présentation des justificatifs réglementaires.</div>
+    </div>
+
+    <div class="sim-wrap" style="margin-top:1.5rem;">
+
+      <!-- ── SIMULATEUR 1 : DOTATION VOYAGES ── -->
+      <div class="sim-card">
+        <div class="sim-card-header">
+          <div class="sim-icon">✈️</div>
+          <div>
+            <h3>Simulateur — Dotation de Change Voyages</h3>
+            <p>Voyages d'affaires · Personnels · Études · Secteur public</p>
+          </div>
+        </div>
+
+        <!-- Sub-tabs -->
+        <div class="sim-subtabs">
+          <button class="sim-subtab active" onclick="switchSimTab(this,'sub-affaires')">Affaires</button>
+          <button class="sim-subtab" onclick="switchSimTab(this,'sub-personnels')">Personnels</button>
+          <button class="sim-subtab" onclick="switchSimTab(this,'sub-etudes')">Études</button>
+        </div>
+
+        <!-- Sub-panel : Voyages d'affaires -->
+        <div class="sim-subpanel active" id="sub-affaires">
+          <div class="sim-field">
+            <label>Profil de l'entité bénéficiaire</label>
+            <select id="aff-profil" onchange="toggleAffairesFields()">
+              <option value="">— Sélectionner —</option>
+              <option value="societe_standard">Société de droit marocain (IS ou IR)</option>
+              <option value="operateur_categorise">Opérateur catégorisé par l'Office des Changes</option>
+              <option value="credit_impot">Société avec crédit d'impôt</option>
+              <option value="profession_liberale">Personne physique — Profession libérale</option>
+              <option value="forfait_100k">Société nouvelle / exonérée / microfinance / fédération</option>
+              <option value="secteur_public">Personnel du secteur public</option>
+            </select>
+          </div>
+          <div class="sim-field sim-conditional" id="aff-impot-wrap">
+            <label>Montant IS ou IR payé — exercice clos n-1 (MAD)</label>
+            <input type="number" id="aff-impot" placeholder="Ex : 480 000" min="0" step="1000">
+            <div class="hint">Figurant sur la quittance DGI de paiement d'impôt</div>
+          </div>
+          <button class="sim-btn" onclick="calcAffaires()">Calculer ma dotation voyages d'affaires</button>
+          <div class="sim-result" id="aff-result">
+            <div class="sim-result-header">Résultat — Dotation annuelle maximale</div>
+            <div class="sim-result-body">
+              <div class="sim-result-main">
+                <div><span class="amount" id="aff-amount"></span><span class="currency" id="aff-currency"></span></div>
+                <div class="period" id="aff-period"></div>
+              </div>
+              <div class="sim-breakdown" id="aff-breakdown"></div>
+              <div class="sim-note" id="aff-note"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-panel : Voyages personnels -->
+        <div class="sim-subpanel" id="sub-personnels">
+          <div class="alert alert-blue" style="margin-bottom:1rem;font-size:0.82rem;">
+            <div class="alert-icon">ℹ️</div>
+            <div>Applicable aux <strong>personnes physiques marocaines résidentes, MRE et étrangers résidents</strong>. Formule : 100 000 MAD (base) + 30% de l'IR payé, plafonné à 500 000 MAD/an.</div>
+          </div>
+          <div class="sim-field">
+            <label>Impôt sur le Revenu (IR) payé — année précédente (MAD)</label>
+            <input type="number" id="per-ir" placeholder="Ex : 35 000" min="0" step="500">
+            <div class="hint">Si IR = 0 (exonéré ou non imposable) : saisir 0 — la dotation de base reste acquise</div>
+          </div>
+          <button class="sim-btn" onclick="calcPersonnels()">Calculer ma dotation voyages personnels</button>
+          <div class="sim-result" id="per-result">
+            <div class="sim-result-header">Résultat — Dotation annuelle maximale</div>
+            <div class="sim-result-body">
+              <div class="sim-result-main">
+                <div><span class="amount" id="per-amount"></span><span class="currency" id="per-currency"></span></div>
+                <div class="period" id="per-period"></div>
+              </div>
+              <div class="sim-breakdown" id="per-breakdown"></div>
+              <div class="sim-note" id="per-note"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-panel : Études à l'étranger -->
+        <div class="sim-subpanel" id="sub-etudes">
+          <div class="alert alert-blue" style="margin-bottom:1rem;font-size:0.82rem;">
+            <div class="alert-icon">🎓</div>
+            <div>Frais de séjour plafonnés à <strong>15 000 MAD/mois</strong>. Scolarité et loyer remboursés à leur montant réel sur justificatifs.</div>
+          </div>
+          <div class="sim-field-row">
+            <div class="sim-field">
+              <label>Frais de scolarité annuels (MAD)</label>
+              <input type="number" id="etu-scol" placeholder="Ex : 120 000" min="0" step="1000">
+              <div class="hint">Montant réel selon facture établissement</div>
+            </div>
+            <div class="sim-field">
+              <label>Durée du séjour (mois)</label>
+              <input type="number" id="etu-duree" placeholder="Ex : 10" min="1" max="36" step="1">
+            </div>
+          </div>
+          <div class="sim-field">
+            <label>Loyer mensuel (MAD)</label>
+            <input type="number" id="etu-loyer" placeholder="Ex : 8 000" min="0" step="500">
+            <div class="hint">Montant réel selon contrat de bail</div>
+          </div>
+          <div class="sim-field" style="display:flex;align-items:center;gap:0.5rem;">
+            <input type="checkbox" id="etu-depot" style="width:auto;accent-color:var(--gold);">
+            <label for="etu-depot" style="text-transform:none;letter-spacing:0;font-size:0.88rem;color:var(--ink-soft);cursor:pointer;">Inclure le dépôt de garantie (max 3 mois de loyer)</label>
+          </div>
+          <div class="sim-field" style="display:none;">
+            <input type="checkbox" id="etu-sejour-supp">
+          </div>
+          <button class="sim-btn" onclick="calcEtudes()">Calculer la dotation études</button>
+          <div class="sim-result" id="etu-result">
+            <div class="sim-result-header">Résultat — Dotation estimée sur la période</div>
+            <div class="sim-result-body">
+              <div class="sim-result-main">
+                <div><span class="amount" id="etu-amount"></span><span class="currency" id="etu-currency"></span></div>
+                <div class="period" id="etu-period"></div>
+              </div>
+              <div class="sim-breakdown" id="etu-breakdown"></div>
+              <div class="sim-note" id="etu-note"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /sim-card voyages -->
+
+      <!-- ── SIMULATEUR 2 : DOTATION E-COMMERCE ── -->
+      <div class="sim-card">
+        <div class="sim-card-header">
+          <div class="sim-icon">🛒</div>
+          <div>
+            <h3>Simulateur — Dotation E-Commerce</h3>
+            <p>Achats en ligne à l'international · Cartes de paiement</p>
+          </div>
+        </div>
+
+        <div class="sim-subpanel active" style="display:block;">
+          <div class="alert alert-forest" style="margin-bottom:1.2rem;font-size:0.82rem;">
+            <div class="alert-icon">📱</div>
+            <div>Dotation utilisée via <strong>carte de paiement internationale</strong> exclusivement. Non cumulable d'une année civile à l'autre. Non reportable.</div>
+          </div>
+
+          <div class="sim-field">
+            <label>Profil du bénéficiaire</label>
+            <select id="eco-profil" onchange="toggleEcomFields()">
+              <option value="">— Sélectionner —</option>
+              <option value="pp_mre">Personne physique résidente ou MRE</option>
+              <option value="startup_add">Jeune entreprise innovante labellisée ADD</option>
+              <option value="operateur_cat">Opérateur économique catégorisé OC</option>
+              <option value="pm_standard">Personne morale sans compte devises</option>
+              <option value="forfait_50k">Société nouvelle / exonérée d'impôt</option>
+              <option value="compte_devises">Titulaire d'un compte en devises ou dirhams convertibles</option>
+            </select>
+          </div>
+
+          <div class="sim-field sim-conditional" id="eco-impot-wrap">
+            <label>IS ou IR payé — dernier exercice clos (MAD)</label>
+            <input type="number" id="eco-impot" placeholder="Ex : 95 000" min="0" step="1000">
+            <div class="hint">Cotisation minimale également acceptée comme base de calcul</div>
+          </div>
+
+          <button class="sim-btn forest" onclick="calcEcommerce()">Calculer ma dotation e-commerce</button>
+
+          <div class="sim-result" id="eco-result">
+            <div class="sim-result-header">Résultat — Dotation e-commerce annuelle</div>
+            <div class="sim-result-body">
+              <div class="sim-result-main">
+                <div><span class="amount" id="eco-amount"></span><span class="currency" id="eco-currency"></span></div>
+                <div class="period" id="eco-period"></div>
+              </div>
+              <div class="sim-breakdown" id="eco-breakdown"></div>
+              <div class="sim-note" id="eco-note"></div>
+            </div>
+          </div>
+
+          <div class="divider" style="margin:1.5rem 0 1rem;"></div>
+          <p style="font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-muted);margin-bottom:0.8rem;">Récapitulatif des plafonds 2026</p>
+          <table class="data-table" style="margin:0;font-size:0.8rem;">
+            <thead><tr><th>Profil</th><th class="gold">Plafond annuel</th></tr></thead>
+            <tbody>
+              <tr><td>Personne physique / MRE</td><td><strong>20 000 MAD</strong></td></tr>
+              <tr><td>Start-up labellisée ADD</td><td><strong>2 000 000 MAD</strong></td></tr>
+              <tr><td>Opérateur catégorisé OC</td><td><strong>min(IS/IR, 1 000 000 MAD)</strong></td></tr>
+              <tr><td>PM sans compte devises</td><td><strong>min(IS/IR, 200 000 MAD)</strong></td></tr>
+              <tr><td>Société nouvelle / exonérée</td><td><strong>50 000 MAD</strong></td></tr>
+              <tr><td>Titulaire compte devises</td><td><strong>Disponibilités du compte</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div><!-- /sim-card ecommerce -->
+
+    </div><!-- /sim-wrap -->
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 2 — CHAPITRE II : MARCHÉ DES CHANGES
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-2">
+    <div class="section-header">
+      <div class="section-icon">💱</div>
+      <div class="section-header-text">
+        <div class="chapter-label">Chapitre II</div>
+        <h2>Marché des Changes & Opérations sur Moyens de Paiement</h2>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Le marché des changes marocain fonctionne selon un régime administré, où Bank Al-Maghrib intervient pour encadrer les cours et assurer la stabilité du dirham. Les banques commerciales sont les acteurs principaux de ce marché interbancaire.</p>
+    </div>
+
+    <div class="grid-4">
+      <div class="kpi"><div class="kpi-val">MAD</div><div class="kpi-label">Monnaie nationale</div><div class="kpi-note">Dirham marocain</div></div>
+      <div class="kpi forest"><div class="kpi-val">15+</div><div class="kpi-label">Devises cotées</div><div class="kpi-note">EUR, USD, GBP…</div></div>
+      <div class="kpi blue"><div class="kpi-val">T+2</div><div class="kpi-label">Délai de valeur standard</div><div class="kpi-note">Change au comptant</div></div>
+      <div class="kpi"><div class="kpi-val">BAM</div><div class="kpi-label">Autorité de régulation</div><div class="kpi-note">Bank Al-Maghrib</div></div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-item">
+        <button class="acc-header open" onclick="toggleAcc(this)">
+          1. Marché des changes — Opérations autorisées
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body open">
+          <table class="data-table">
+            <thead><tr><th>Type d'opération</th><th class="gold">Description</th><th class="gold">Acteurs habilités</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag tag-green">Change au comptant</span></td><td>Achat/vente de devises avec livraison immédiate ou à J+2</td><td>Banques, bureaux de change agréés</td></tr>
+              <tr><td><span class="tag tag-blue">Couverture à terme</span></td><td>Contrats à terme pour se couvrir contre les fluctuations de cours</td><td>Banques (pour le compte de clients)</td></tr>
+              <tr><td><span class="tag tag-gold">Prêts/Emprunts devises</span></td><td>Opérations interbancaires de prêts et emprunts en monnaies étrangères</td><td>Banques entre elles</td></tr>
+              <tr><td><span class="tag tag-green">Placements en devises</span></td><td>Placement des disponibilités des comptes en devises des résidents</td><td>Banques, selon conditions IGOC</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-red" style="margin-top:1rem;">
+            <div class="alert-icon">⛔</div>
+            <div><strong>Opérations exclues du marché des changes :</strong> Les opérations de change entre résidents (sauf dérogation), les opérations spéculatives sans sous-jacent économique réel, et certaines opérations en capital non autorisées par l'IGOC.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          2. Opérations de change de devises (espèces & billets)
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="grid-2">
+            <div>
+              <h4 style="color:var(--forest);font-size:0.85rem;font-weight:600;margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:0.05em;">Achat de devises (par les banques)</h4>
+              <ul style="font-size:0.88rem;color:var(--ink-soft);padding-left:1.3rem;">
+                <li>Cédées par des non-résidents ou résidents rapatriant</li>
+                <li>Issues de recettes d'exportation obligatoirement cédées</li>
+                <li>Provenant de revenus de travail transférés depuis l'étranger</li>
+                <li>Issues de dotations de voyage restituées</li>
+              </ul>
+            </div>
+            <div>
+              <h4 style="color:var(--forest);font-size:0.85rem;font-weight:600;margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:0.05em;">Vente de devises (aux résidents)</h4>
+              <ul style="font-size:0.88rem;color:var(--ink-soft);padding-left:1.3rem;">
+                <li>Dotations pour voyages personnels et d'affaires</li>
+                <li>Règlement des importations de biens et services</li>
+                <li>Transferts au titre des opérations courantes autorisées</li>
+                <li>Investissements à l'étranger (selon conditions chapitre IV)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="alert alert-gold" style="margin-top:1.2rem;">
+            <div class="alert-icon">📌</div>
+            <div><strong>Cession des billets non utilisés :</strong> Les devises billets achetées et non utilisées doivent être recédées à la banque dans un délai déterminé, ou conservées dans les limites autorisées. Au-delà, la cession est obligatoire.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          3. Importation & Exportation de moyens de paiement
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p><strong>Pour les personnes physiques (résidentes et non-résidentes) :</strong></p>
+          <table class="data-table" style="margin:0.8rem 0;">
+            <thead><tr><th>Situation</th><th class="gold">Obligations</th><th class="gold">Seuil de déclaration douanière</th></tr></thead>
+            <tbody>
+              <tr><td>Entrée au Maroc avec devises</td><td>Libre importation — déclaration obligatoire si montant élevé</td><td>À déclarer aux douanes si dépassement du seuil réglementaire</td></tr>
+              <tr><td>Sortie du Maroc avec devises</td><td>Limitée aux billets achetés ou aux dotations autorisées</td><td>Déclaration douanière obligatoire au-delà du seuil</td></tr>
+              <tr><td>MRE — rapatriement de devises</td><td>Modalités spécifiques de rachat et d'exportation</td><td>Justificatifs d'origine requis</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.86rem;color:var(--ink-soft);"><strong>Règlement au Maroc en devises :</strong> Les non-résidents peuvent régler certaines dépenses locales en devises dans les établissements agréés (hôtels, aéroports, zones touristiques). Les résidents ne peuvent pas effectuer de paiements en devises entre eux.</p>
+          <div class="alert alert-blue" style="margin-top:1rem;">
+            <div class="alert-icon">🚢</div>
+            <div><strong>Ferries Maroc-Étranger :</strong> Des dispositions spéciales régissent l'exportation et l'importation de dirhams via les guichets de change à bord des ferries assurant la liaison avec l'étranger, notamment pour les flux des MRE.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 3 — CHAPITRE III : OPÉRATIONS COURANTES
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-3">
+    <div class="section-header">
+      <div class="section-icon">🔄</div>
+      <div class="section-header-text">
+        <div class="chapter-label">Chapitre III</div>
+        <h2>Opérations Courantes — Import, Export, Services & Voyages</h2>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Le Chapitre III est le plus volumineux de l'IGOC. Il couvre <strong>12 catégories d'opérations courantes</strong> : importation et exportation de biens, importation et exportation de services, négoce international, transport, commerce électronique, assurances, voyages, revenus du travail, revenus des investissements et opérations diverses. Chaque catégorie fait l'objet de règles précises en termes de domiciliation, règlement, délais et documentation.</p>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:2rem;">
+      <div class="kpi"><div class="kpi-val">12</div><div class="kpi-label">Catégories d'opérations</div></div>
+      <div class="kpi forest"><div class="kpi-val">90j</div><div class="kpi-label">Délai rapatriement exports</div></div>
+      <div class="kpi blue"><div class="kpi-val">120j</div><div class="kpi-label">Délai max avant importation</div></div>
+    </div>
+
+    <div class="accordion">
+
+      <div class="acc-item">
+        <button class="acc-header open" onclick="toggleAcc(this)">
+          1. Importation de Biens
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body open">
+          <div class="grid-2">
+            <div class="prose">
+              <h4>Domiciliation du titre d'importation</h4>
+              <p>Toute importation de biens doit faire l'objet d'une domiciliation bancaire préalable. La banque domiciliataire est responsable du suivi de l'opération jusqu'au règlement final et à l'apurement du dossier.</p>
+              <h4>Règlement des importations</h4>
+              <ul>
+                <li><strong>Règlement normal :</strong> après imputation douanière, dans les délais contractuels</li>
+                <li><strong>Règlement anticipé :</strong> avant livraison pour certains types d'achats, sous conditions</li>
+                <li><strong>Crédit documentaire :</strong> ouverture de L/C avant expédition</li>
+                <li><strong>Acomptes :</strong> versements partiels avant expédition, sous justificatifs</li>
+              </ul>
+            </div>
+            <div>
+              <div class="alert alert-gold">
+                <div class="alert-icon">⚠️</div>
+                <div><strong>Dépassements CAPEX importation :</strong> En cas de dépassement du montant imputation douanière (différence prix réel vs prix déclaré), un règlement complémentaire est possible sous conditions documentaires strictes.</div>
+              </div>
+              <div class="card" style="margin-top:1rem;">
+                <h3>Importations dispensées de domiciliation</h3>
+                <ul>
+                  <li>Importations en franchise de droits de douane</li>
+                  <li>Échantillons commerciaux sans valeur marchande</li>
+                  <li>Dons et aides humanitaires</li>
+                  <li>Certaines importations temporaires</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          2. Importation de Services
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>L'IGOC 2026 adopte une <strong>définition élargie</strong> des importations de services, en supprimant la liste limitative des opérations déléguées aux banques. Sont désormais couverts de manière plus ouverte :</p>
+          <div class="pill-row">
+            <span class="pill pill-gold">Redevances & licences</span>
+            <span class="pill pill-gold">Honoraires professionnels</span>
+            <span class="pill pill-gold">Services informatiques</span>
+            <span class="pill pill-gold">Services de conseil</span>
+            <span class="pill pill-gold">Formations à l'étranger</span>
+            <span class="pill pill-gold">Publicité internationale</span>
+            <span class="pill pill-gold">Frais de sièges sociaux</span>
+            <span class="pill pill-gold">Microfinance (nouveau)</span>
+          </div>
+          <div class="alert alert-forest" style="margin-top:1rem;">
+            <div class="alert-icon">✅</div>
+            <div><strong>Nouveauté 2026 :</strong> Les associations de microfinance et certaines charges liées à leur fonctionnement sont désormais habilitées à réaliser des importations de services — une avancée significative pour l'écosystème de la finance inclusive au Maroc.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          3. Exportation de Biens — Rapatriement des recettes
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>L'exportation de biens génère une obligation de <strong>rapatriement des recettes</strong> dans les délais réglementaires. C'est une des obligations fondamentales de la réglementation des changes marocaine.</p>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h4>Domiciliation bancaire de l'exportation</h4>
+                <p>Avant expédition, l'exportateur doit domicilier son titre d'exportation auprès d'une banque agréée.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h4>Expédition des marchandises</h4>
+                <p>Réalisation de l'exportation avec établissement des documents douaniers et commerciaux.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h4>Rapatriement des recettes</h4>
+                <p>Les devises issues de l'exportation doivent être rapatriées dans un délai de 90 jours à compter de la date d'expédition.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <h4>Cession ou versement en compte devises</h4>
+                <p>Les recettes sont soit cédées à la banque (conversion en MAD), soit conservées sur compte en devises (si l'entreprise en est titulaire).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          4. Exportation de Services — Nouvelles facilités 2026
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="grid-2">
+            <div class="card-gold">
+              <h3>Titulaires de marchés à l'étranger</h3>
+              <p>Nouvelle facilité : possibilité d'alimenter le compte en devises à hauteur du montant rapatrié, dans la limite de <strong>15% du montant total du marché</strong>. Non cumulable avec la règle des 70% de marge.</p>
+            </div>
+            <div class="card">
+              <h3>Exportateurs de services classiques</h3>
+              <p>Les entreprises exportatrices de services peuvent conserver une partie de leurs recettes en devises sur leurs comptes pour financer leurs dépenses courantes à l'étranger (voyages, achats, sous-traitance).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          5. Négoce International
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Le négoce international (achat de marchandises étrangères pour revente à l'étranger, sans transit physique par le Maroc) est soumis à des règles spécifiques :</p>
+          <ul style="font-size:0.88rem;color:var(--ink-soft);padding-left:1.3rem;margin-top:0.6rem;">
+            <li>Opération réalisée par des résidents marocains avec des non-résidents</li>
+            <li>Les règlements se font en devises, entre compte étranger et compte étranger</li>
+            <li>La marge bénéficiaire dégagée doit être rapatriée au Maroc</li>
+            <li>Documentation : contrats d'achat et de vente, relevés bancaires justifiant les flux</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          7. Commerce Électronique International
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="grid-3">
+            <div class="kpi"><div class="kpi-val">20K</div><div class="kpi-label">MAD — Personnes physiques</div><div class="kpi-note">Dotation e-commerce annuelle</div></div>
+            <div class="kpi forest"><div class="kpi-val">50K</div><div class="kpi-label">MAD — Sociétés nouvelles</div><div class="kpi-note">Dotation minimale garantie</div></div>
+            <div class="kpi blue"><div class="kpi-val">2M</div><div class="kpi-label">MAD — Start-ups ADD</div><div class="kpi-note">Dotation e-commerce majorée</div></div>
+          </div>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin-top:1rem;">Le commerce électronique bénéficie d'un régime de dotation spécifique pour financer les achats en ligne sur des plateformes étrangères (Amazon, AliExpress, SaaS, abonnements...). Les montants accordés sont calculés sur la base de l'impôt payé, avec désormais un plancher minimal garanti pour les entreprises nouvellement créées.</p>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          9. Opérations de Voyages — Dotations 2026
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="data-table">
+            <thead><tr><th>Catégorie</th><th class="gold">Plafond annuel 2026</th><th class="gold">Base de calcul</th><th class="gold">Évolution</th></tr></thead>
+            <tbody>
+              <tr><td>Voyages personnels — Dotation de base</td><td><strong>Variable</strong></td><td>Impôt payé n-1</td><td>—</td></tr>
+              <tr><td>Voyages personnels — Dotation supplémentaire</td><td><strong>400 000 MAD</strong></td><td>100% impôt payé n-1</td><td><span class="tag tag-green">+100% vs 200 000</span></td></tr>
+              <tr><td>Voyages d'affaires — Sociétés standard</td><td><strong>1 000 000 MAD</strong></td><td>100% impôt payé n-1</td><td><span class="tag tag-green">+100% vs 500 000</span></td></tr>
+              <tr><td>Voyages d'affaires — Opérateurs catégorisés</td><td><strong>1 500 000 MAD</strong></td><td>100% impôt payé n-1</td><td><span class="tag tag-green">+50% vs 1 000 000</span></td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-gold" style="margin-top:0.8rem;">
+            <div class="alert-icon">✈️</div>
+            <div><strong>Cartes de paiement international :</strong> Les dotations pour voyages peuvent être utilisées via les cartes bancaires internationales émises par les banques marocaines. Les plafonds s'appliquent au cumul de toutes les utilisations (espèces + cartes).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          11. Revenus des Investissements
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Les revenus générés par les investissements (dividendes, intérêts, loyers) font l'objet de règles de transfert spécifiques selon la nature de l'investissement et son financement initial :</p>
+          <div class="grid-2">
+            <div class="card-forest">
+              <h3>Investissements financés en devises</h3>
+              <p>Libre transfert des dividendes et revenus — couvert par la <strong>garantie de convertibilité</strong> (voir Chapitre IV). Aucune restriction sous réserve de la justification fiscale.</p>
+            </div>
+            <div class="card">
+              <h3>Investissements en dirhams</h3>
+              <p>Les transferts de revenus sont possibles mais soumis à des conditions documentaires plus strictes. Un accord de l'Office des Changes peut être requis dans certains cas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 4 — CHAPITRE IV : OPÉRATIONS EN CAPITAL
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-4">
+    <div class="section-header">
+      <div class="section-icon">💼</div>
+      <div class="section-header-text">
+        <div class="chapter-label">Chapitre IV — Section Prioritaire Investisseurs</div>
+        <h2>Régime des Opérations en Capital — Investissements & Financement</h2>
+      </div>
+    </div>
+
+    <div class="alert alert-forest">
+      <div class="alert-icon">⭐</div>
+      <div><strong>Chapitre stratégique pour les investisseurs :</strong> Ce chapitre régit l'ensemble des opérations en capital — investissements étrangers au Maroc, investissements marocains à l'étranger, placements, financements extérieurs et prêts aux non-résidents. C'est le cadre réglementaire clé pour tout projet d'investissement à dimension internationale.</div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin:2rem 0 1rem;color:var(--ink);">1. Investissements Étrangers au Maroc (IEM)</h3>
+
+    <div class="highlight-box">
+      <h3>🛡️ Garantie de Convertibilité — L'atout majeur du régime marocain</h3>
+      <p>Les investissements étrangers financés en devises bénéficient d'un <strong>régime de convertibilité total et irréversible</strong>. Cette garantie couvre :</p>
+      <ul class="hl-list">
+        <li>Libre transfert des revenus (dividendes, intérêts)</li>
+        <li>Libre transfert du produit de cession ou liquidation</li>
+        <li>Remboursement des comptes courants d'associés en devises</li>
+        <li>Produit de liquidation en cas de succession</li>
+      </ul>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <h4 style="color:var(--forest);font-size:0.85rem;font-weight:600;margin-bottom:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Formes d'investissement étranger au Maroc</h4>
+        <div class="card">
+          <ul style="font-size:0.88rem;color:var(--ink-soft);">
+            <li style="padding:0.3rem 0;border-bottom:1px solid var(--parchment-dark);">🏢 Création de sociétés</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid var(--parchment-dark);">📈 Prise de participation & augmentation de capital</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid var(--parchment-dark);">🏗️ Création de succursale ou bureau de représentation</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid var(--parchment-dark);">📊 Acquisition d'instruments financiers</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid var(--parchment-dark);">💰 Comptes courants d'associés (numéraire ou créances)</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid var(--parchment-dark);">🤝 Prêts apparentés</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid var(--parchment-dark);">🏘️ Acquisition de biens immeubles</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid var(--parchment-dark);">🔨 Travaux de construction & aménagement</li>
+            <li style="padding:0.3rem 0;">🏦 Dépôts à terme auprès d'une banque</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h4 style="color:var(--forest);font-size:0.85rem;font-weight:600;margin-bottom:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Modalités de financement autorisées</h4>
+        <div class="card-gold">
+          <ul style="font-size:0.88rem;color:var(--ink-soft);">
+            <li style="padding:0.3rem 0;border-bottom:1px solid rgba(184,134,42,0.15);">✅ Virement en devises depuis l'étranger</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid rgba(184,134,42,0.15);">✅ Consolidation de comptes courants d'associés (+ intérêts)</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid rgba(184,134,42,0.15);">✅ Incorporation de réserves et reports à nouveau</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid rgba(184,134,42,0.15);">✅ Consolidation de créances commerciales</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid rgba(184,134,42,0.15);">✅ Consolidation de créances sur brevets & licences</li>
+            <li style="padding:0.3rem 0;border-bottom:1px solid rgba(184,134,42,0.15);">✅ Apport en nature financé en devises</li>
+            <li style="padding:0.3rem 0;">✅ Utilisation de comptes convertibles à terme</li>
+          </ul>
+        </div>
+        <div class="alert alert-gold" style="margin-top:1rem;">
+          <div class="alert-icon">💡</div>
+          <div><strong>Délai de 2 ans :</strong> Les investissements financés via des comptes convertibles à terme bénéficient du régime de convertibilité dans un délai de 2 années après leur réalisation.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin:0 0 1rem;color:var(--ink);">2. Investissements Marocains à l'Étranger (IME)</h3>
+
+    <div class="grid-2">
+      <div class="card-blue">
+        <h3>Personnes Morales (Entreprises)</h3>
+        <ul>
+          <li>Investissement direct à l'étranger : création de filiales, prises de participation</li>
+          <li>Conditions : respect de la réglementation des changes, justificatifs d'activité</li>
+          <li>Règlement via les banques agréées dans les montants autorisés</li>
+          <li>Obligation de rapatrier les revenus générés par ces investissements</li>
+          <li>Rapport annuel à remettre à l'Office des Changes sur la situation des investissements</li>
+        </ul>
+      </div>
+      <div class="card-gold">
+        <h3>🚀 Jeunes Entreprises Innovantes (Start-ups ADD)</h3>
+        <p><strong>Dérogation majeure IGOC 2026 :</strong></p>
+        <ul>
+          <li>Montant : jusqu'à <strong>10 000 000 MAD/an</strong></li>
+          <li>Dispensées de justifier 3 années d'activité</li>
+          <li>Dispensées de la certification commissaire aux comptes</li>
+          <li>Labellisation ADD (Agence Développement du Digital) requise</li>
+          <li>En rapport avec leur activité numérique/technologique</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:1rem;">
+      <div class="card">
+        <h3>Personnes Physiques (résidents)</h3>
+        <ul style="font-size:0.88rem;">
+          <li>Investissements à l'étranger autorisés dans les limites réglementaires</li>
+          <li>Montants définis par les dispositions en vigueur</li>
+          <li>Documentation : justificatifs de l'opération et de son financement</li>
+          <li>Les revenus générés à l'étranger doivent être rapatriés</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Cession ou liquidation d'IME</h3>
+        <ul style="font-size:0.88rem;">
+          <li>Produit de cession : rapatrié dans les 30 jours de la cession</li>
+          <li>Documents requis : acte de cession, attestation fiscale étrangère</li>
+          <li>Rapport sur la situation finale de l'investissement</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin:0 0 1rem;color:var(--ink);">3. Placements à l'Étranger</h3>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>📊 Valeurs mobilières étrangères</h3>
+        <p>Possibilité d'acquérir des valeurs mobilières cotées sur des bourses étrangères dans les conditions et limites définies par l'IGOC — sous conditions de statut et de seuils.</p>
+      </div>
+      <div class="card">
+        <h3>💳 Comptes à l'étranger</h3>
+        <p>L'ouverture de comptes bancaires à l'étranger est encadrée. Les résidents ne peuvent ouvrir de comptes hors Maroc que dans les cas expressément prévus par la réglementation.</p>
+      </div>
+      <div class="card">
+        <h3>🏠 Immobilier à l'étranger</h3>
+        <p>L'acquisition de biens immobiliers à l'étranger par des résidents est possible sous conditions spécifiques, dans les montants autorisés par l'IGOC.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin:0 0 1rem;color:var(--ink);">4. Financements Extérieurs</h3>
+
+    <table class="data-table">
+      <thead><tr><th>Type de financement</th><th class="gold">Conditions</th><th class="gold">Remboursement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Crédits extérieurs moyen/long terme</strong></td><td>Déclaration à l'Office des Changes — délégation aux banques pour les crédits standards</td><td>Libre remboursement selon le contrat. Transfert des intérêts autorisé</td></tr>
+        <tr><td><strong>Prêts intragroupes (emprunts)</strong></td><td>Entre société marocaine et maison mère/filiale étrangère — encadré par l'IGOC</td><td>Conditions contractuelles respectant les règles de prix de transfert</td></tr>
+        <tr><td><strong>Lignes de crédit confirmées</strong></td><td>Montage bancaire entre banque marocaine et banque étrangère</td><td>Selon conditions du crédit</td></tr>
+        <tr><td><strong>Émissions obligataires à l'étranger</strong></td><td>Soumis à autorisation préalable de l'Office des Changes</td><td>Service de la dette en devises autorisé</td></tr>
+      </tbody>
+    </table>
+
+    <div class="divider"></div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin:0 0 1rem;color:var(--ink);">5. Prêts aux Non-Résidents</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Prêts consentis par des résidents</h3>
+        <p>Les résidents peuvent octroyer des prêts en devises à des non-résidents dans le cadre d'opérations commerciales ou d'investissement, sous conditions de l'IGOC. Ces prêts doivent être déclarés et le remboursement rapatrié.</p>
+      </div>
+      <div class="card">
+        <h3>Comptes courants d'associés (sens sortant)</h3>
+        <p>Les avances en compte courant d'associés consenties par une société marocaine à une filiale étrangère sont encadrées — montants, taux d'intérêt et délais de remboursement doivent respecter les règles de l'IGOC.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 5 — CHAPITRE V : COUVERTURE & CAUTIONS
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-5">
+    <div class="section-header">
+      <div class="section-icon">🛡️</div>
+      <div class="section-header-text">
+        <div class="chapter-label">Chapitre V</div>
+        <h2>Opérations de Couverture & Régime des Cautions Bancaires</h2>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Le Chapitre V traite des instruments permettant aux opérateurs économiques de se protéger contre les risques financiers inhérents aux transactions internationales : risque de change, risque de taux d'intérêt, risque de variation des prix des matières premières. Il couvre également les garanties et cautions bancaires internationales.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;margin:0 0 1rem;color:var(--ink);">1. Opérations de Couverture — Innovations 2026</h3>
+
+    <div class="alert alert-forest">
+      <div class="alert-icon">🆕</div>
+      <div><strong>Nouveauté majeure IGOC 2026 :</strong> Extension de la possibilité de compensation des positions à <strong>l'ensemble des opérations de couverture</strong> contre les risques de change, de taux d'intérêt, de fluctuation des prix des produits de base et des risques inhérents à tout actif. Une avancée significative pour la gestion des risques des entreprises exportatrices et importatrices.</div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>📉 Couverture de change</h3>
+        <p>Instruments : contrats à terme, options de change, swaps. Permettent de fixer un taux de change futur pour sécuriser les marges sur les transactions internationales.</p>
+        <div class="pill-row">
+          <span class="pill pill-forest">Forward</span>
+          <span class="pill pill-forest">Options change</span>
+          <span class="pill pill-forest">Swaps devises</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>📊 Couverture de taux</h3>
+        <p>Instruments : swaps de taux d'intérêt (IRS), caps, floors. Utilisés pour transformer des taux variables en taux fixes sur des financements extérieurs.</p>
+        <div class="pill-row">
+          <span class="pill pill-gold">IRS</span>
+          <span class="pill pill-gold">Cap/Floor</span>
+          <span class="pill pill-gold">Collar</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>🛢️ Couverture matières premières</h3>
+        <p>Couverture contre les fluctuations des prix des intrants importés (pétrole, métaux, céréales). Désormais étendue à l'ensemble des actifs — nouveauté 2026.</p>
+        <div class="pill-row">
+          <span class="pill pill-dark">Énergie</span>
+          <span class="pill pill-dark">Métaux</span>
+          <span class="pill pill-dark">Agri</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;margin:0 0 1rem;color:var(--ink);">2. Garanties & Cautions Bancaires Internationales</h3>
+
+    <table class="data-table">
+      <thead><tr><th>Type de garantie</th><th class="gold">Définition</th><th class="gold">Usage typique</th><th class="gold">Autorisation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Garantie de soumission</strong><br>(Bid Bond)</td><td>Garantit le sérieux d'une offre commerciale ou d'un appel d'offres</td><td>Marchés publics internationaux, appels d'offres</td><td><span class="tag tag-green">Déléguée aux banques</span></td></tr>
+        <tr><td><strong>Garantie de bonne exécution</strong><br>(Performance Bond)</td><td>Couvre le risque de non-exécution d'un contrat</td><td>Marchés de travaux, contrats de fourniture</td><td><span class="tag tag-green">Déléguée aux banques</span></td></tr>
+        <tr><td><strong>Garantie de restitution d'acompte</strong></td><td>Garantit le remboursement des acomptes versés si le fournisseur défaille</td><td>Import de matériel industriel, projets clé en main</td><td><span class="tag tag-green">Déléguée aux banques</span></td></tr>
+        <tr><td><strong>Garantie de paiement</strong></td><td>Engagement de paiement en faveur d'un fournisseur étranger</td><td>Import de biens ou services à crédit</td><td><span class="tag tag-gold">Conditions IGOC</span></td></tr>
+        <tr><td><strong>Garanties d'actif et de passif</strong><br>(Nouveauté 2026)</td><td>Garantie accordée par un résident à un investisseur étranger lors de cessions de parts</td><td>Cessions d'actions, M&A</td><td><span class="tag tag-blue">Accord OC si mise en jeu</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-blue" style="margin-top:1.2rem;">
+      <div class="alert-icon">🔍</div>
+      <div><strong>Contre-garanties :</strong> Les banques marocaines peuvent émettre des contre-garanties au profit de banques étrangères leur permettant d'émettre des garanties en faveur de donneurs d'ordre marocains. Ce mécanisme est courant dans les opérations de grands travaux et contrats internationaux.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 6 — CHAPITRE VI : RÉGIME DES COMPTES
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-6">
+    <div class="section-header">
+      <div class="section-icon">🏦</div>
+      <div class="section-header-text">
+        <div class="chapter-label">Chapitre VI</div>
+        <h2>Régime des Comptes — Comptes Devises, Convertibles & Spéciaux</h2>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Le Chapitre VI définit les règles d'ouverture, de fonctionnement et d'alimentation des différentes catégories de comptes prévues par la réglementation des changes. C'est un chapitre opérationnel essentiel : le type de compte détenu par un opérateur détermine directement les opérations qu'il peut réaliser et les facilités dont il bénéficie.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-dark">
+        <h3>Structure des comptes IGOC</h3>
+        <p>L'IGOC distingue 5 grandes catégories de comptes, chacune avec ses propres règles d'éligibilité, d'alimentation et d'utilisation :</p>
+        <ol style="padding-left:1.3rem;font-size:0.88rem;color:rgba(255,255,255,0.7);margin-top:0.5rem;">
+          <li style="margin-bottom:0.4rem;">Comptes des correspondants bancaires</li>
+          <li style="margin-bottom:0.4rem;">Comptes en devises ou dirhams convertibles des non-résidents & MRE</li>
+          <li style="margin-bottom:0.4rem;">Comptes en devises des personnes morales résidentes</li>
+          <li style="margin-bottom:0.4rem;">Comptes en dirhams des non-résidents</li>
+          <li>Dispositions communes</li>
+        </ol>
+      </div>
+      <div>
+        <div class="alert alert-gold">
+          <div class="alert-icon">🎯</div>
+          <div><strong>Quel compte pour quel opérateur ?</strong> Le type de compte adapté dépend du profil (résident/non-résident, personne physique/morale, exportateur, ZAI…) et du type d'opération envisagé. Cette section vous guide selon votre profil.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion" style="margin-top:1.5rem;">
+
+      <div class="acc-item">
+        <button class="acc-header open" onclick="toggleAcc(this)">
+          1. Comptes des Correspondants Bancaires
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body open">
+          <p>Les comptes de correspondants bancaires (aussi appelés comptes nostro/vostro) sont les comptes tenus entre banques pour faciliter les règlements internationaux. Ils permettent aux banques marocaines d'effectuer des paiements internationaux pour le compte de leurs clients sans avoir à détenir physiquement les devises.</p>
+          <div class="grid-2" style="margin-top:0.8rem;">
+            <div class="card"><h3>Compte Nostro</h3><p>Compte tenu par une banque marocaine dans les livres d'une banque étrangère. Libellé en devises étrangères.</p></div>
+            <div class="card"><h3>Compte Vostro</h3><p>Compte tenu par une banque étrangère dans les livres d'une banque marocaine. Libellé en dirhams ou en devises.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          2. Comptes en Devises & Dirhams Convertibles — Non-Résidents & MRE
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Les non-résidents et les MRE peuvent ouvrir des comptes en devises ou en dirhams convertibles au Maroc. Ces comptes offrent un régime de convertibilité leur permettant des mouvements libres :</p>
+          <table class="data-table">
+            <thead><tr><th>Type de compte</th><th class="gold">Éligibles</th><th class="gold">Alimentation</th><th class="gold">Utilisation</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Compte devises</strong></td><td>Non-résidents, MRE</td><td>Virements de l'étranger, cession de devises</td><td>Libre — virements, retraits, investissements</td></tr>
+              <tr><td><strong>Compte dirhams convertibles</strong></td><td>Non-résidents, MRE</td><td>Même sources que comptes devises</td><td>Dépenses locales + virements vers l'étranger</td></tr>
+              <tr><td><strong>Compte convertible à terme</strong></td><td>Non-résidents n'ayant pas de justificatif d'investissement en devises</td><td>Produit de cession d'investissement au Maroc</td><td>Réinvestissement ou virement vers l'étranger après conditions</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-gold" style="margin-top:0.8rem;">
+            <div class="alert-icon">🏡</div>
+            <div><strong>MRE — Cas particulier :</strong> Les Marocains résidant à l'étranger peuvent rapatrier librement leurs économies et bénéficient de conditions avantageuses pour l'investissement au Maroc via leurs comptes en devises ou dirhams convertibles.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          3. Comptes en Devises — Personnes Morales Résidentes (Entreprises)
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Les entreprises résidentes peuvent être titulaires de comptes en devises dans les conditions définies par l'IGOC. Ces comptes sont un outil fondamental de gestion des flux internationaux :</p>
+          <div class="grid-2">
+            <div>
+              <h4 style="color:var(--forest);font-size:0.84rem;font-weight:600;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Entreprises éligibles</h4>
+              <ul style="font-size:0.88rem;color:var(--ink-soft);padding-left:1.3rem;">
+                <li>Exportateurs de biens et services</li>
+                <li>Entreprises importatrices régulières</li>
+                <li>Entreprises implantées en ZAI (Zones d'Accélération Industrielle)</li>
+                <li>Titulaires de marchés à l'étranger</li>
+                <li>Entreprises bénéficiant de financement en devises</li>
+              </ul>
+            </div>
+            <div>
+              <h4 style="color:var(--forest);font-size:0.84rem;font-weight:600;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Alimentation du compte devises</h4>
+              <ul style="font-size:0.88rem;color:var(--ink-soft);padding-left:1.3rem;">
+                <li>Recettes d'exportation (pourcentage réglementaire)</li>
+                <li>Virements de l'étranger au titre des opérations autorisées</li>
+                <li>Avances en devises reçues</li>
+                <li>Remboursements de dépenses à l'étranger</li>
+              </ul>
+            </div>
+          </div>
+          <div class="alert alert-blue" style="margin-top:1rem;">
+            <div class="alert-icon">🏭</div>
+            <div><strong>Zones d'Accélération Industrielle (ZAI) :</strong> Les entreprises installées en ZAI bénéficient d'un régime spécial — leur compte en devises peut être alimenté et utilisé sans les restrictions applicables aux entreprises hors zone. Les transactions avec le reste du Maroc sont considérées comme des opérations de commerce extérieur.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          4. Comptes en Dirhams des Non-Résidents — Comptes Spéciaux
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>L'IGOC prévoit plusieurs types de comptes spéciaux en dirhams pour des profils spécifiques de non-résidents :</p>
+          <table class="data-table">
+            <thead><tr><th>Type de compte</th><th class="gold">Titulaires concernés</th></tr></thead>
+            <tbody>
+              <tr><td>Compte convertible à terme</td><td>Non-résidents ayant des dirhams issus de cession d'investissement sans convertibilité</td></tr>
+              <tr><td>Compte spécial — Marchés au Maroc</td><td>Personnes morales étrangères attributaires de marchés au Maroc non immatriculées auprès de l'OC</td></tr>
+              <tr><td>Compte « Groupement »</td><td>Groupements d'entreprises étrangères pour l'exécution de marchés au Maroc</td></tr>
+              <tr><td>Compte spécial — Crédits dirhams</td><td>Personnes physiques étrangères non-résidentes ayant souscrit des crédits en dirhams</td></tr>
+              <tr><td>Compte spécial — ZAI & offshore</td><td>Sociétés installées dans une ZAI ou place financière offshore</td></tr>
+              <tr><td>Compte — Représentations diplomatiques</td><td>Ambassades et représentations étrangères accréditées au Maroc</td></tr>
+              <tr><td>Compte — Organisations internationales</td><td>OI siégeant ou représentées au Maroc (ONU, BM, FMI…)</td></tr>
+              <tr><td>Compte provisoire — Salariés étrangers</td><td>Salariés étrangers nouvellement recrutés au Maroc</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          5. Dispositions Communes & Entrée en vigueur
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="grid-3">
+            <div class="card">
+              <h3>Changement de banque</h3>
+              <p>L'IGOC 2026 prévoit des modalités précises de changement de banque domiciliataire, garantissant la continuité des opérations et la traçabilité des engagements en cours.</p>
+            </div>
+            <div class="card">
+              <h3>Dispositions transitoires</h3>
+              <p>Les opérations initiées sous l'ancienne réglementation et en cours d'apurement restent soumises aux textes qui les régissaient — aucune rétroactivité des nouvelles dispositions.</p>
+            </div>
+            <div class="card">
+              <h3>Abrogations</h3>
+              <p>L'IGOC 2026 abroge les versions précédentes et les circulaires spécifiques intégrées dans ce nouveau texte consolidé. Les textes non intégrés restent en vigueur.</p>
+            </div>
+          </div>
+          <div class="alert alert-forest" style="margin-top:1rem;">
+            <div class="alert-icon">📅</div>
+            <div><strong>Entrée en vigueur :</strong> Les nouvelles dispositions de l'IGOC 2026 sont applicables dès la date de publication. Pour les opérateurs en cours d'apurement de dossiers, les dispositions transitoires prévoient un délai d'adaptation raisonnable.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK REFERENCE -->
+    <div class="divider"></div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;margin:0 0 1rem;color:var(--ink);">Guide de sélection du compte adapté à votre profil</h3>
+    <table class="data-table">
+      <thead><tr><th>Votre profil</th><th class="gold">Compte recommandé</th><th class="gold">Avantages clés</th></tr></thead>
+      <tbody>
+        <tr><td>Entreprise exportatrice de biens/services</td><td>Compte en devises (PM résidente)</td><td>Conservation d'une fraction des recettes, gestion du risque de change</td></tr>
+        <tr><td>Investisseur étranger au Maroc</td><td>Compte devises ou convertible à terme</td><td>Garantie de transfert des revenus et du produit de cession</td></tr>
+        <tr><td>MRE — Marocain résidant à l'étranger</td><td>Compte devises ou dirhams convertibles</td><td>Libre rapatriement des économies, investissement facilité</td></tr>
+        <tr><td>Société implantée en ZAI</td><td>Compte spécial ZAI</td><td>Régime d'extraterritorialité, transactions libres avec l'étranger</td></tr>
+        <tr><td>Start-up labellisée ADD</td><td>Compte devises + dotation e-commerce</td><td>Plafonds majorés, dispenses documentaires spécifiques</td></tr>
+        <tr><td>Représentation étrangère au Maroc</td><td>Compte spécial dirhams — Représentations</td><td>Fonctionnement adapté aux besoins des missions diplomatiques</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /content-wrap -->
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  Source : <span>IGOC 2026</span> — Office des Changes du Maroc &nbsp;·&nbsp; Informations à titre documentaire &nbsp;·&nbsp; <span>Smart-Invest.IA</span> — Usage exclusif aux abonnés
+</footer>
+
+<script>
+  // Tab switching
+  function switchTab(index) {
+    document.querySelectorAll('.tab-panel').forEach((p,i) => {
+      p.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.tab-btn').forEach((b,i) => {
+      b.classList.toggle('active', i === index);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Accordion
+  function toggleAcc(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    const parent = header.closest('.accordion');
+    parent.querySelectorAll('.acc-header.open').forEach(h => {
+      h.classList.remove('open');
+      h.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+      header.classList.add('open');
+      body.classList.add('open');
+    }
+  }
+
+  // ─── SIMULATOR 1 : DOTATION DE CHANGE ───────────────────────────────
+
+  function fmt(n) {
+    return new Intl.NumberFormat('fr-MA', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(n));
+  }
+
+  // Sub-tab switching for sim1
+  function switchSimTab(btn, panelId) {
+    const wrap = btn.closest('.sim-card');
+    wrap.querySelectorAll('.sim-subtab').forEach(b => b.classList.remove('active'));
+    wrap.querySelectorAll('.sim-subpanel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+    // Reset result
+    document.querySelectorAll('.sim-result').forEach(r => r.classList.remove('visible'));
+  }
+
+  // Voyages d'affaires
+  function toggleAffairesFields() {
+    const profil = document.getElementById('aff-profil').value;
+    const impotField = document.getElementById('aff-impot-wrap');
+    if (['forfait_100k', 'secteur_public'].includes(profil)) {
+      impotField.classList.remove('visible');
+    } else {
+      impotField.classList.add('visible');
+    }
+    document.getElementById('aff-result').classList.remove('visible');
+  }
+
+  function calcAffaires() {
+    const profil = document.getElementById('aff-profil').value;
+    const impot = parseFloat(document.getElementById('aff-impot').value) || 0;
+    let dotation = 0, plafond = 0, base = 0, label = '';
+
+    switch(profil) {
+      case 'societe_standard':
+        plafond = 1000000; base = impot; dotation = Math.min(base, plafond); label = 'Société — plafond 1 000 000 MAD'; break;
+      case 'operateur_categorise':
+        plafond = 1500000; base = impot; dotation = Math.min(base, plafond); label = 'Opérateur catégorisé OC — plafond 1 500 000 MAD'; break;
+      case 'credit_impot':
+        plafond = 1000000; base = impot; dotation = Math.min(base, plafond); label = 'Société avec crédit d\'impôt — plafond 1 000 000 MAD'; break;
+      case 'profession_liberale':
+        plafond = 100000; base = impot; dotation = Math.min(base, plafond); label = 'Profession libérale — plafond 100 000 MAD'; break;
+      case 'forfait_100k':
+        dotation = 100000; plafond = 100000; base = 100000; label = 'Forfait (société nouvelle, exonérée, microfinance)'; break;
+      case 'secteur_public':
+        dotation = 0; label = 'Secteur public — dotation par ordre de mission (2 000 MAD/j, max 20 000 MAD/voyage)'; break;
+    }
+
+    const res = document.getElementById('aff-result');
+    res.classList.add('visible');
+    if (profil === 'secteur_public') {
+      document.getElementById('aff-amount').textContent = '–';
+      document.getElementById('aff-currency').textContent = '';
+      document.getElementById('aff-period').textContent = 'Calculé par ordre de mission';
+      document.getElementById('aff-breakdown').innerHTML = `
+        <div class="sim-breakdown-row"><span class="lbl">Régime</span><span class="val">Secteur public</span></div>
+        <div class="sim-breakdown-row"><span class="lbl">Montant par défaut</span><span class="val">2 000 MAD/jour</span></div>
+        <div class="sim-breakdown-row"><span class="lbl">Plafond par voyage</span><span class="val highlight">20 000 MAD</span></div>`;
+      document.getElementById('aff-note').innerHTML = '<strong>📋 Document requis :</strong> Ordre de mission ou décision de stage de l\'entité employeuse précisant identité, objet, durée et montant prévisible.';
+    } else {
+      document.getElementById('aff-amount').textContent = fmt(dotation);
+      document.getElementById('aff-currency').textContent = 'MAD';
+      document.getElementById('aff-period').textContent = 'dotation annuelle maximale';
+      const per_voyage = Math.min(dotation, 100000);
+      document.getElementById('aff-breakdown').innerHTML = `
+        <div class="sim-breakdown-row"><span class="lbl">Profil</span><span class="val">${label}</span></div>
+        <div class="sim-breakdown-row"><span class="lbl">Base de calcul (IS/IR payé)</span><span class="val">${profil === 'forfait_100k' ? 'N/A — forfait' : fmt(impot) + ' MAD'}</span></div>
+        <div class="sim-breakdown-row"><span class="lbl">Plafond annuel applicable</span><span class="val">${fmt(plafond)} MAD</span></div>
+        <div class="sim-breakdown-row"><span class="lbl">Dotation annuelle calculée</span><span class="val highlight">${fmt(dotation)} MAD</span></div>
+        <div class="sim-breakdown-row"><span class="lbl">Max en billets/voyage</span><span class="val">100 000 MAD/déplacement</span></div>`;
+      document.getElementById('aff-note').innerHTML = `<strong>📋 Document requis :</strong> Quittance de paiement IS/IR au titre du dernier exercice clos, délivrée par la DGI.${dotation === plafond && impot > plafond ? ' <span style="color:var(--red-soft)">⚠️ Impôt déclaré dépasse le plafond — dotation plafonnée.</span>' : ''}`;
+    }
+  }
+
+  // Voyages personnels
+  function calcPersonnels() {
+    const ir = parseFloat(document.getElementById('per-ir').value) || 0;
+    const base = 100000;
+    const supp_brut = ir * 0.30;
+    const supp = Math.min(supp_brut, 400000);
+    const total_brut = base + supp;
+    const total = Math.min(total_brut, 500000);
+
+    const res = document.getElementById('per-result');
+    res.classList.add('visible');
+    document.getElementById('per-amount').textContent = fmt(total);
+    document.getElementById('per-currency').textContent = 'MAD';
+    document.getElementById('per-period').textContent = 'dotation annuelle maximale';
+    document.getElementById('per-breakdown').innerHTML = `
+      <div class="sim-breakdown-row"><span class="lbl">Dotation de base (forfait)</span><span class="val">100 000 MAD</span></div>
+      <div class="sim-breakdown-row"><span class="lbl">IR payé l'année précédente</span><span class="val">${fmt(ir)} MAD</span></div>
+      <div class="sim-breakdown-row"><span class="lbl">Supplément calculé (30% × IR)</span><span class="val">${fmt(supp_brut)} MAD</span></div>
+      <div class="sim-breakdown-row"><span class="lbl">Supplément plafonné à 400 000</span><span class="val">${fmt(supp)} MAD</span></div>
+      <div class="sim-breakdown-row"><span class="lbl">Total avant plafond global</span><span class="val">${fmt(total_brut)} MAD</span></div>
+      <div class="sim-breakdown-row"><span class="lbl">Dotation totale (max 500 000)</span><span class="val highlight">${fmt(total)} MAD</span></div>
+      <div class="sim-breakdown-row"><span class="lbl">Max en billets/voyage</span><span class="val">100 000 MAD/déplacement</span></div>`;
+    document.getElementById('per-note').innerHTML = '<strong>📋 Documents requis :</strong> CNI ou passeport en cours de validité. Pour le supplément : tout document DGI justifiant le paiement de l\'IR au cours de l\'année précédente.';
+    if (total === 500000 && total_brut > 500000) {
+      document.getElementById('per-note').innerHTML += ' <span style="color:var(--red-soft)">⚠️ Plafond global de 500 000 MAD/an atteint.</span>';
+    }
+  }
+
+  // Études à l'étranger
+  function calcEtudes() {
+    const frais_scol = parseFloat(document.getElementById('etu-scol').value) || 0;
+    const duree = parseFloat(document.getElementById('etu-duree').value) || 0;
+    const sejour_supp = document.getElementById('etu-sejour-supp').checked;
+    const loyer = parseFloat(document.getElementById('etu-loyer').value) || 0;
+    const depot = document.getElementById('etu-depot').checked;
+
+    const sejour_base = duree * 15000;
+    const loyer_total = loyer * duree;
+    const depot_montant = depot ? Math.min(loyer * 3, loyer * 3) : 0;
+    const total = frais_scol + sejour_base + loyer_total + depot_montant;
+
+    const res = document.getElementById('etu-result');
+    res.classList.add('visible');
+    document.getElementById('etu-amount').textContent = fmt(total);
+    document.getElementById('etu-currency').textContent = 'MAD';
+    document.getElementById('etu-period').textContent = `sur ${duree} mois de scolarité`;
+    document.getElementById('etu-breakdown').innerHTML = `
+      <div class="sim-breakdown-row"><span class="lbl">Frais de scolarité (réels)</span><span class="val">${fmt(frais_scol)} MAD</span></div>
+      <div class="sim-breakdown-row"><span class="lbl">Frais de séjour (${fmt(duree)}m × 15 000 MAD)</span><span class="val">${fmt(sejour_base)} MAD</span></div>
+      <div class="sim-breakdown-row"><span class="lbl">Loyer + charges (${fmt(loyer)} MAD × ${duree} mois)</span><span class="val">${fmt(loyer_total)} MAD</span></div>
+      ${depot ? `<div class="sim-breakdown-row"><span class="lbl">Dépôt de garantie (max 3 mois loyer)</span><span class="val">${fmt(depot_montant)} MAD</span></div>` : ''}
+      <div class="sim-breakdown-row"><span class="lbl">Total autorisé estimé</span><span class="val highlight">${fmt(total)} MAD</span></div>`;
+    document.getElementById('etu-note').innerHTML = '<strong>📋 Documents requis :</strong> Attestation d\'inscription (ou préinscription) de l\'établissement étranger, contrat de bail pour le loyer, factures pour les frais de scolarité. Le compte ouvert à l\'étranger doit être clôturé et le solde rapatrié dans les 60 jours du retour au Maroc.';
+  }
+
+  // ─── SIMULATOR 2 : DOTATION E-COMMERCE ───────────────────────────────
+
+  function toggleEcomFields() {
+    const profil = document.getElementById('eco-profil').value;
+    const impotWrap = document.getElementById('eco-impot-wrap');
+    if (['pp_mre', 'startup_add', 'forfait_50k'].includes(profil)) {
+      impotWrap.classList.remove('visible');
+    } else {
+      impotWrap.classList.add('visible');
+    }
+    document.getElementById('eco-result').classList.remove('visible');
+  }
+
+  function calcEcommerce() {
+    const profil = document.getElementById('eco-profil').value;
+    const impot = parseFloat(document.getElementById('eco-impot').value) || 0;
+    let dotation = 0, plafond = 0, base = 0, label = '', detail = '';
+
+    switch(profil) {
+      case 'pp_mre':
+        dotation = 20000; plafond = 20000; label = 'Personne physique / MRE — forfait annuel'; detail = 'Carte de paiement internationale — usage en ligne uniquement'; break;
+      case 'startup_add':
+        dotation = 2000000; plafond = 2000000; label = 'Start-up labellisée ADD — plafond majoré'; detail = 'Services en lien direct avec l\'activité numérique uniquement'; break;
+      case 'operateur_cat':
+        plafond = 1000000; base = impot; dotation = Math.min(base, plafond); label = 'Opérateur catégorisé OC — max 1 000 000 MAD'; detail = 'Base : 100% IS/IR payé au titre du dernier exercice clos'; break;
+      case 'pm_standard':
+        plafond = 200000; base = impot;
+        if (impot < 50000) { dotation = 50000; label = 'PM — IS/IR < 50 000 MAD → forfait plancher'; detail = 'IS payé inférieur au seuil — application du plancher de 50 000 MAD'; }
+        else { dotation = Math.min(base, plafond); label = 'PM sans compte devises — max 200 000 MAD'; detail = 'Base : 100% IS/IR payé au titre du dernier exercice clos'; }
+        break;
+      case 'forfait_50k':
+        dotation = 50000; plafond = 50000; label = 'Société nouvelle / exonérée — forfait'; detail = 'Montant garanti indépendamment de l\'impôt payé'; break;
+      case 'compte_devises':
+        dotation = -1; label = 'Titulaire d\'un compte devises ou dirhams convertibles'; detail = 'Dotation = disponibilités du compte — aucun plafond IGOC supplémentaire'; break;
+    }
+
+    const res = document.getElementById('eco-result');
+    res.classList.add('visible');
+
+    if (dotation === -1) {
+      document.getElementById('eco-amount').textContent = '∞';
+      document.getElementById('eco-currency').textContent = '';
+      document.getElementById('eco-period').textContent = 'à hauteur des disponibilités du compte';
+      document.getElementById('eco-breakdown').innerHTML = `
+        <div class="sim-breakdown-row"><span class="lbl">Régime</span><span class="val">${label}</span></div>
+        <div class="sim-breakdown-row"><span class="lbl">Plafond</span><span class="val highlight">Disponibilités du compte en devises</span></div>`;
+    } else {
+      document.getElementById('eco-amount').textContent = fmt(dotation);
+      document.getElementById('eco-currency').textContent = 'MAD';
+      document.getElementById('eco-period').textContent = 'dotation annuelle maximale';
+      document.getElementById('eco-breakdown').innerHTML = `
+        <div class="sim-breakdown-row"><span class="lbl">Profil</span><span class="val">${label}</span></div>
+        ${!['pp_mre','startup_add','forfait_50k'].includes(profil) ? `<div class="sim-breakdown-row"><span class="lbl">IS/IR payé déclaré</span><span class="val">${fmt(impot)} MAD</span></div>` : ''}
+        <div class="sim-breakdown-row"><span class="lbl">Plafond applicable</span><span class="val">${fmt(plafond)} MAD</span></div>
+        <div class="sim-breakdown-row"><span class="lbl">Dotation e-commerce annuelle</span><span class="val highlight">${fmt(dotation)} MAD</span></div>`;
+    }
+    document.getElementById('eco-note').innerHTML = `<strong>ℹ️ Note :</strong> ${detail}. La dotation est utilisée via carte de paiement internationale. Toute utilisation est décomptée en temps réel. Non reportable d'une année civile à l'autre.`;
+    if (profil === 'pm_standard' && impot < 50000 && impot > 0) {
+      document.getElementById('eco-note').innerHTML += ' <span style="color:var(--forest)"><strong>📌 Plancher activé :</strong> IS payé inférieur à 50 000 MAD — la dotation minimale de 50 000 MAD s\'applique automatiquement.</span>';
+    }
+  }
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

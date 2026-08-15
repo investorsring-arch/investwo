@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lean Six Sigma — Control Cockpit · Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   LEAN SIX SIGMA — CONTROL COCKPIT
+   Smart-Invest.ia · Design System v2
+════════════════════════════════════════ */
+:root{
+  --gold:#96690F; --gold-l:#B8862A; --gold-p:#FBF3DE;
+  --ink:#1A1A16; --ink-mid:#2E2E28; --ink-soft:#4A4A40; --smoke:#6A6A60;
+  --bg:#F4F2EB; --bg2:#EAE7DE; --bg3:#EEEBE2;
+  --wh:#FFFFFE; --acc:#1E4D6B; --ok:#1A6B3C; --er:#9A2A2A;
+  --bd:rgba(0,0,0,.10); --bd-g:rgba(184,134,42,.20); --bd-g2:rgba(184,134,42,.35);
+  --go:#1A6B3C; --warn:#96690F; --stop:#9A2A2A;
+  --go-bg:rgba(26,107,60,.08); --warn-bg:rgba(150,105,15,.08); --stop-bg:rgba(154,42,42,.08);
+  --ft:'Syne',sans-serif; --fb:'Space Grotesk',sans-serif; --fm:'JetBrains Mono',monospace;
+  --r:.3s cubic-bezier(.23,1,.32,1); --sw:230px;
+  /* SVG color constants (used in JS) */
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ════ SIDEBAR (dark — ink) ════ */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--ink);display:flex;flex-direction:column;z-index:100;border-right:1px solid rgba(184,134,42,.15)}
+.sb-head{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-logo{font-family:var(--ft);font-size:19px;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1;margin-bottom:2px}
+.sb-logo em{color:var(--gold-l);font-style:normal}
+.sb-sub{font-family:var(--fm);font-size:8px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.16em}
+
+/* verdict pill */
+.sb-cockpit{margin:10px 10px 0;padding:14px;border-radius:8px;border:1px solid rgba(184,134,42,.2);background:rgba(184,134,42,.06);cursor:pointer;transition:all .2s}
+.sb-cockpit:hover{border-color:rgba(184,134,42,.4);background:rgba(184,134,42,.1)}
+.svp-lbl{font-family:var(--fm);font-size:7px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.3);margin-bottom:3px}
+.svp-score{font-family:var(--ft);font-size:42px;line-height:.9;color:var(--gold-l);transition:color .5s}
+.svp-txt{font-family:var(--ft);font-size:12px;letter-spacing:.06em;color:rgba(255,255,255,.5);margin-top:3px;transition:color .5s}
+.svp-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.1);margin-top:8px;overflow:hidden}
+.svp-fill{height:100%;border-radius:2px;transition:width 1s var(--r),background .5s;background:var(--gold-l)}
+
+.sb-nav{flex:1;padding:10px 8px;overflow-y:auto}
+.sb-sec{font-family:var(--fm);font-size:7px;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.25);padding:10px 8px 4px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;transition:all .18s;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);margin-bottom:1px;border:1px solid transparent}
+.sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.85)}
+.sb-item.active{background:rgba(184,134,42,.15);color:var(--gold-l);border-color:rgba(184,134,42,.25)}
+.sb-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0}
+.sb-foot{padding:10px 8px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:6px}
+.sb-fbt{flex:1;padding:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;cursor:pointer;font-size:13px;transition:all .18s;text-align:center;color:rgba(255,255,255,.4)}
+.sb-fbt:hover{border-color:rgba(184,134,42,.4);color:var(--gold-l);background:rgba(184,134,42,.1)}
+
+/* ════ MAIN ════ */
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* ════ PROJECT BAR ════ */
+.proj-bar{height:52px;background:var(--wh);border-bottom:1px solid var(--bd-g);display:flex;align-items:center;padding:0 28px;position:sticky;top:0;z-index:50;gap:0;box-shadow:0 1px 10px rgba(0,0,0,.05)}
+.pb-f{display:flex;flex-direction:column;gap:1px;padding:0 16px;border-right:1px solid rgba(0,0,0,.07)}
+.pb-f:first-child{padding-left:0}
+.pb-lbl{font-family:var(--fm);font-size:7px;text-transform:uppercase;letter-spacing:.18em;color:var(--smoke)}
+.pb-inp{background:transparent;border:none;outline:none;font-family:var(--fb);font-size:13px;font-weight:500;color:var(--ink);min-width:110px;transition:color .2s}
+.pb-inp::placeholder{color:var(--smoke);font-style:italic;font-weight:300;opacity:.7}
+.pb-inp:focus{color:var(--gold)}
+.pb-sel{background:transparent;border:none;outline:none;font-family:var(--fb);font-size:12px;color:var(--smoke);cursor:pointer}
+.pb-sel option{background:var(--wh);color:var(--ink)}
+.pb-sp{flex:1}
+.pb-badge{font-family:var(--fm);font-size:8px;padding:5px 12px;border-radius:100px;background:var(--gold-p);color:var(--gold);border:1px solid rgba(184,134,42,.25);letter-spacing:.07em;text-transform:uppercase}
+
+/* ════ CONTENT ════ */
+.content{padding:28px;flex:1}
+.panel{display:none;animation:fadeIn .22s ease}
+.panel.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ════ PANEL HEADER ════ */
+.ph{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ph-title{font-family:var(--ft);font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--ink)}
+.ph-sub{font-size:12px;color:var(--smoke);margin-top:5px;line-height:1.6;font-style:italic}
+.ph-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+
+/* ════ GRID ════ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+
+/* ════ CARD ════ */
+.card{background:var(--wh);border:1px solid var(--bd-g);border-radius:12px;padding:22px;margin-bottom:14px;box-shadow:0 1px 8px rgba(0,0,0,.04)}
+.card-t{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--smoke);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.card-t-left{display:flex;align-items:center;gap:8px}
+
+/* ════ EXPORT BUTTON ════ */
+.btn-export{display:inline-flex;align-items:center;gap:5px;font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:4px;border:1px solid var(--bd-g);background:var(--gold-p);color:var(--gold);cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-export:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+.btn-export-svg{background:rgba(30,77,107,.08);color:var(--acc);border-color:rgba(30,77,107,.2)}
+.btn-export-svg:hover{background:var(--acc);color:#fff}
+.export-grp{display:flex;gap:6px;align-items:center}
+
+/* ════ FORM ════ */
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:11px;font-weight:500;color:var(--ink-soft);margin-bottom:5px;letter-spacing:.01em}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--bd);border-radius:7px;color:var(--ink);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold-l);box-shadow:0 0 0 3px rgba(184,134,42,.1)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--smoke);font-style:italic;opacity:.7}
+.fg select option{background:var(--wh);color:var(--ink)}
+.fg .hint{font-family:var(--fm);font-size:9px;color:var(--smoke);margin-top:3px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ════ BUTTON ════ */
+.btn{padding:9px 18px;border-radius:7px;border:none;cursor:pointer;font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:all .18s}
+.btn:active{transform:translateY(1px)}
+.btn-g{background:var(--gold-l);color:#fff}.btn-g:hover{background:var(--gold);transform:translateY(-1px);box-shadow:0 4px 14px rgba(184,134,42,.3)}
+.btn-ghost{background:var(--bg);color:var(--ink-soft);border:1px solid var(--bd)}.btn-ghost:hover{border-color:var(--bd-g2);color:var(--gold)}
+
+/* ════ KPI ════ */
+.kpi{background:var(--wh);border:1px solid var(--bd-g);border-radius:10px;padding:14px;text-align:center;transition:all .2s}
+.kpi:hover{border-color:var(--gold-l);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.kpi-n{font-family:var(--ft);font-size:30px;line-height:1;margin-bottom:3px;color:var(--ink)}
+.kpi-l{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--smoke)}
+
+/* ════ TABLE ════ */
+table.dt{width:100%;border-collapse:collapse;font-size:12px}
+table.dt th{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:var(--smoke);padding:10px 12px;text-align:left;border-bottom:2px solid var(--bd-g);background:var(--bg3)}
+table.dt td{padding:9px 12px;border-bottom:1px solid var(--bd);color:var(--ink-soft);vertical-align:middle}
+table.dt tr:hover td{background:var(--gold-p)}
+
+/* ════ CHIP ════ */
+.chip{display:inline-flex;align-items:center;gap:3px;font-family:var(--fm);font-size:8px;padding:3px 8px;border-radius:100px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.chip-go{background:var(--go-bg);color:var(--go);border:1px solid rgba(26,107,60,.2)}
+.chip-warn{background:var(--warn-bg);color:var(--warn);border:1px solid rgba(150,105,15,.2)}
+.chip-stop{background:var(--stop-bg);color:var(--stop);border:1px solid rgba(154,42,42,.2)}
+.chip-info{background:rgba(30,77,107,.08);color:var(--acc);border:1px solid rgba(30,77,107,.2)}
+
+/* ════ RPN BAR ════ */
+.rpn-trk{height:5px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-top:4px}
+.rpn-fill{height:100%;border-radius:3px;transition:width .5s var(--r)}
+
+/* ════ EMPTY ════ */
+.empty{padding:48px 24px;text-align:center;color:var(--smoke)}
+.empty-ico{font-size:28px;margin-bottom:10px;opacity:.35}
+.empty-txt{font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.14em}
+.empty-sub{font-size:12px;margin-top:6px;opacity:.7}
+
+/* ════ SIGMA SCALE ════ */
+.sig-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:7px;margin-bottom:4px;background:var(--bg3);border:1px solid var(--bd)}
+.sig-trk{flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.sig-fill{height:100%;border-radius:3px}
+
+/* ════ DMAIC STEPS ════ */
+.dmaic-step{border-left:3px solid;padding:18px 22px;border-radius:0 10px 10px 0;margin-bottom:10px;background:var(--wh);border-top:1px solid var(--bd-g);border-right:1px solid var(--bd-g);border-bottom:1px solid var(--bd-g);box-shadow:0 1px 6px rgba(0,0,0,.03)}
+.dmaic-step h3{font-family:var(--ft);font-size:18px;letter-spacing:.03em;margin-bottom:8px}
+.dmaic-step p{font-size:13px;color:var(--ink-soft);line-height:1.7}
+.dmaic-step ul{margin:8px 0 0 16px;font-size:12px;color:var(--smoke);line-height:2}
+
+/* ════ ACTION ROW ════ */
+.act-row{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--bd);border-radius:7px;margin-bottom:5px;background:var(--wh);transition:all .18s}
+.act-row:hover{border-color:var(--bd-g2);background:var(--gold-p)}
+.act-row.done{opacity:.45}
+
+/* ════ CONTROL COCKPIT HERO ════ */
+.vh{background:var(--wh);border:1px solid var(--bd-g);border-radius:14px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.05)}
+.vh::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:background .5s;background:var(--bd-g)}
+.vh.neutral::before{background:linear-gradient(90deg,var(--bd-g),rgba(184,134,42,.35))}
+.vh.go::before{background:linear-gradient(90deg,var(--go),rgba(26,107,60,.4))}
+.vh.warn::before{background:linear-gradient(90deg,var(--warn),rgba(150,105,15,.4))}
+.vh.stop::before{background:linear-gradient(90deg,var(--stop),rgba(154,42,42,.4))}
+.vh-grid{display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:start}
+.vh-score-row{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.vh-score{font-family:var(--ft);font-size:96px;line-height:.85;letter-spacing:-.03em;transition:color .5s;color:var(--ink)}
+.vh-max{font-family:var(--fm);font-size:16px;color:var(--smoke);align-self:flex-end;padding-bottom:14px}
+.vh-verdict{font-family:var(--ft);font-size:28px;letter-spacing:.08em;margin-bottom:6px;transition:color .5s;color:var(--ink)}
+.vh-sub{font-size:12.5px;color:var(--smoke);line-height:1.7}
+.vh-gauge{height:6px;background:var(--bg2);border-radius:3px;margin:16px 0 6px;overflow:hidden;border:1px solid var(--bd)}
+.vh-fill{height:100%;border-radius:3px;transition:width 1.2s var(--r),background .5s;background:var(--gold-l)}
+.vh-lbls{display:flex;justify-content:space-between;font-family:var(--fm);font-size:8px;color:var(--smoke)}
+.vh-cta{font-family:var(--fm);font-size:8px;color:var(--smoke);margin-top:8px;text-transform:uppercase;letter-spacing:.1em;font-style:italic}
+
+/* ════ PILIERS ════ */
+.pilier{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:14px 13px;cursor:pointer;transition:all .22s;position:relative}
+.pilier:hover{border-color:var(--bd-g2);background:var(--gold-p);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.07)}
+.pilier.active{border-color:var(--gold-l);background:var(--gold-p);box-shadow:0 4px 14px rgba(184,134,42,.12)}
+.p-ico{font-size:18px;margin-bottom:6px}
+.p-nm{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--smoke);margin-bottom:8px;line-height:1.4;min-height:22px}
+.p-sc{font-family:var(--ft);font-size:32px;margin-bottom:2px;transition:color .4s;color:var(--ink)}
+.p-bar{height:3px;background:var(--bg2);border-radius:2px;margin-top:6px;overflow:hidden}
+.p-bf{height:100%;border-radius:2px;transition:width .8s var(--r)}
+.p-wt{font-family:var(--fm);font-size:7px;color:var(--smoke);margin-top:4px}
+.p-hint{font-size:9px;color:var(--gold);font-style:italic;margin-top:4px}
+
+/* ════ PILIER EDIT ════ */
+.p-edit{background:var(--gold-p);border:1px solid var(--bd-g2);border-radius:12px;padding:22px;margin-bottom:20px;animation:fadeIn .2s ease}
+.pe-t{font-family:var(--ft);font-size:22px;letter-spacing:.03em;margin-bottom:4px;color:var(--ink)}
+.pe-sub{font-size:12px;color:var(--smoke);margin-bottom:18px}
+
+/* ════ SCROLLBAR ════ */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--gold-l);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+@media(max-width:900px){.vh-grid{grid-template-columns:1fr}.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
+
+/* ════ PRINT STYLES ════ */
+@media print{.sidebar,.proj-bar,.ph-actions,.btn-export,.btn-export-svg,.sb-foot{display:none!important}.main{margin-left:0}.content{padding:0}}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<!-- ════════════════ SIDEBAR ════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="sb-logo">Smart-<em>Invest</em>.ia</div>
+    <div class="sb-sub">Lean Six Sigma · Control Cockpit</div>
+  </div>
+
+  <div class="sb-cockpit" onclick="showPanel('cockpit')">
+    <div class="svp-lbl">— Control Cockpit</div>
+    <div class="svp-score" id="sbScore">—</div>
+    <div class="svp-txt" id="sbTxt">AUCUNE DONNÉE</div>
+    <div class="svp-bar"><div class="svp-fill" id="sbFill" style="width:0%"></div></div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-sec">Décision</div>
+    <div class="sb-item active" onclick="showPanel('cockpit')"><span class="sb-icon">◉</span><span>Control Cockpit</span></div>
+    <div class="sb-sec">Outils Qualité</div>
+    <div class="sb-item" onclick="showPanel('fmea')"><span class="sb-icon">⚠</span><span>FMEA — AMDEC</span></div>
+    <div class="sb-item" onclick="showPanel('pareto')"><span class="sb-icon">▦</span><span>Pareto 80/20</span></div>
+    <div class="sb-item" onclick="showPanel('ishikawa')"><span class="sb-icon">◈</span><span>Ishikawa 5M</span></div>
+    <div class="sb-item" onclick="showPanel('dmaic')"><span class="sb-icon">⊙</span><span>Cycle DMAIC</span></div>
+    <div class="sb-sec">Mesure & Contrôle</div>
+    <div class="sb-item" onclick="showPanel('sigma')"><span class="sb-icon">σ</span><span>Niveaux Sigma</span></div>
+    <div class="sb-item" onclick="showPanel('spc')"><span class="sb-icon">⌇</span><span>Carte de Contrôle</span></div>
+    <div class="sb-item" onclick="showPanel('avapres')"><span class="sb-icon">⇌</span><span>Sim. Avant / Après</span></div>
+    <div class="sb-sec">Suivi</div>
+    <div class="sb-item" onclick="showPanel('actions')"><span class="sb-icon">✔</span><span>Plan d'Actions</span></div>
+  </nav>
+
+  <div class="sb-foot">
+    <button class="sb-fbt" onclick="exportAllPDF()" title="Export PDF global">📄</button>
+    <button class="sb-fbt" onclick="exportData()" title="Exporter JSON">⬇</button>
+    <button class="sb-fbt" onclick="clearAll()" title="Réinitialiser">↺</button>
+  </div>
+</aside>
+
+<!-- ════════════════ MAIN ════════════════ -->
+<main class="main">
+  <div class="proj-bar">
+    <div class="pb-f"><span class="pb-lbl">Projet</span><input class="pb-inp" id="pb_projet" placeholder="Nom du projet…"></div>
+    <div class="pb-f"><span class="pb-lbl">Secteur</span><input class="pb-inp" id="pb_secteur" placeholder="Secteur…" style="min-width:90px"></div>
+    <div class="pb-f"><span class="pb-lbl">Responsable</span><input class="pb-inp" id="pb_resp" placeholder="Chef de projet…" style="min-width:100px"></div>
+    <div class="pb-f"><span class="pb-lbl">Budget (MAD)</span><input class="pb-inp" id="pb_budget" type="number" placeholder="—" style="min-width:90px"></div>
+    <div class="pb-f"><span class="pb-lbl">Phase</span>
+      <select class="pb-sel" id="pb_phase">
+        <option value="">— Phase —</option>
+        <option>Études & Conception</option><option>Financement & Montage</option>
+        <option>Construction</option><option>Installation équipements</option>
+        <option>Mise en service</option><option>Exploitation</option>
+      </select>
+    </div>
+    <div class="pb-sp"></div>
+    <div class="pb-badge">Smart-Invest.ia · Lean Six Sigma</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ════ CONTROL COCKPIT ════ -->
+    <div class="panel show" id="panel-cockpit">
+      <div class="ph">
+        <div>
+          <div class="ph-title">LEAN SIX SIGMA — CONTROL COCKPIT</div>
+          <div class="ph-sub">Évaluez les 5 piliers de performance · Le score décisionnel se calcule automatiquement</div>
+        </div>
+        <div class="ph-actions">
+          <button class="btn-export" onclick="printCockpit()">⬇ Exporter PDF</button>
+        </div>
+      </div>
+      <div class="vh neutral" id="vhCard">
+        <div class="vh-grid">
+          <div>
+            <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--smoke);margin-bottom:10px">— Verdict décisionnel —</div>
+            <div class="vh-score-row">
+              <div class="vh-score" id="vhScore">—</div>
+              <div class="vh-max">/100</div>
+            </div>
+            <div class="vh-verdict" id="vhVerdict">EN ATTENTE</div>
+            <div class="vh-sub" id="vhSub">Évaluez chacun des 5 piliers pour obtenir le verdict décisionnel.</div>
+            <div class="vh-gauge"><div class="vh-fill" id="vhFill" style="width:0%"></div></div>
+            <div class="vh-lbls"><span>STOP ≤ 40</span><span>ALERTE 40–70</span><span>GO ≥ 70</span></div>
+            <div class="vh-cta" id="vhCta">— Renseignez les piliers pour démarrer —</div>
+          </div>
+          <div>
+            <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--smoke);margin-bottom:10px">5 piliers — cliquer pour évaluer</div>
+            <div class="g5 mb20" id="piliersGrid" style="margin-bottom:14px"></div>
+          </div>
+        </div>
+      </div>
+      <div id="pilierEdit"></div>
+      <div class="g4" id="verdictKPIs"></div>
+    </div>
+
+    <!-- ════ FMEA ════ -->
+    <div class="panel" id="panel-fmea">
+      <div class="ph">
+        <div><div class="ph-title">FMEA — ANALYSE DES RISQUES</div><div class="ph-sub">RPN = Sévérité × Occurrence × Détectabilité · Seuil critique : RPN &gt; 100</div></div>
+        <div class="ph-actions">
+          <div class="chip chip-stop" id="fmeaCrit">0 critiques</div>
+          <div class="chip chip-warn" id="fmeaWarn">0 modérés</div>
+          <div class="export-grp">
+            <button class="btn-export" onclick="printFMEA()">⬇ PDF Registre</button>
+            <button class="btn-export" onclick="printFMEADash()">⬇ PDF Dashboard</button>
+          </div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-t"><div class="card-t-left"><span>⚠</span> Nouveau mode de défaillance</div></div>
+          <div class="fg"><label>Mode de défaillance / Risque potentiel</label><input type="text" id="f_mode" placeholder="Décrivez le risque ou la défaillance…"></div>
+          <div class="fg-row3">
+            <div class="fg"><label>Sévérité S (1–10)</label>
+              <select id="f_sev"><option value="1">1 — Négligeable</option><option value="2">2 — Très faible</option><option value="3">3 — Faible</option><option value="4">4 — Mineur</option><option value="5">5 — Modéré</option><option value="6">6 — Significatif</option><option value="7">7 — Majeur</option><option value="8">8 — Critique</option><option value="9">9 — Très grave</option><option value="10">10 — Catastrophique</option></select>
+            </div>
+            <div class="fg"><label>Occurrence O (1–10)</label>
+              <select id="f_occ"><option value="1">1 — Très rare</option><option value="2">2 — Rare</option><option value="3">3 — Peu fréquent</option><option value="4">4 — Faible</option><option value="5">5 — Modéré</option><option value="6">6 — Assez fréquent</option><option value="7">7 — Fréquent</option><option value="8">8 — Élevé</option><option value="9">9 — Très élevé</option><option value="10">10 — Inévitable</option></select>
+            </div>
+            <div class="fg"><label>Détectabilité D (1–10)</label>
+              <select id="f_det"><option value="1">1 — Quasi-certaine</option><option value="2">2 — Très haute</option><option value="3">3 — Haute</option><option value="4">4 — Assez haute</option><option value="5">5 — Modérée</option><option value="6">6 — Faible</option><option value="7">7 — Très faible</option><option value="8">8 — Difficile</option><option value="9">9 — Très difficile</option><option value="10">10 — Impossible</option></select>
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Impact financier estimé (MAD)</label><input type="number" id="f_fin" placeholder="Ex : 500 000"></div>
+            <div class="fg"><label>Phase projet concernée</label>
+              <select id="f_phase_fmea"><option value="">— Sélectionner —</option><option>Études & Conception</option><option>Financement & Montage</option><option>Construction / Gros œuvre</option><option>Installation équipements</option><option>Mise en service</option><option>Exploitation</option></select>
+            </div>
+          </div>
+          <div class="fg"><label>Action préventive / corrective</label><input type="text" id="f_action" placeholder="Décrivez la mesure de mitigation…"></div>
+          <div class="fg"><label>Responsable désigné</label><input type="text" id="f_resp_fmea" placeholder="Nom / Fonction"></div>
+          <button class="btn btn-g" onclick="addFMEA()" style="width:100%">+ Ajouter au registre FMEA</button>
+        </div>
+        <div class="card" id="fmeaDashCard">
+          <div class="card-t">
+            <div class="card-t-left"><span>▦</span> Tableau de bord risques</div>
+            <button class="btn-export" onclick="printFMEADash()">⬇ PDF</button>
+          </div>
+          <div id="fmeaDash"><div class="empty"><div class="empty-ico">⚠</div><div class="empty-txt">Registre vide</div><div class="empty-sub">Ajoutez des risques pour voir le dashboard</div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-t">
+          <div class="card-t-left"><span>📋</span> Registre FMEA complet</div>
+          <button class="btn-export" onclick="printFMEA()">⬇ PDF Registre complet</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="dt">
+            <thead><tr><th>Mode de défaillance</th><th>Phase</th><th>S</th><th>O</th><th>D</th><th>RPN</th><th>Criticité</th><th>Impact MAD</th><th>Provision EMV</th><th>Action corrective</th><th>Responsable</th><th></th></tr></thead>
+            <tbody id="fmeaTable"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--smoke);font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Aucun risque enregistré</td></tr></tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px;padding:12px;background:var(--bg3);border:1px solid var(--bd-g);border-radius:7px;font-size:12px;color:var(--smoke)" id="fmeaSummary">Commencez par saisir les risques identifiés.</div>
+      </div>
+    </div>
+
+    <!-- ════ PARETO ════ -->
+    <div class="panel" id="panel-pareto">
+      <div class="ph">
+        <div><div class="ph-title">PARETO 80/20</div><div class="ph-sub">Identifiez les 20% de causes responsables de 80% des problèmes</div></div>
+        <div class="ph-actions">
+          <button class="btn-export" onclick="printPareto()">⬇ PDF Diagramme</button>
+          <button class="btn-export-svg btn-export" onclick="downloadSVG('paretoSvg','Pareto_SmartInvest')">⬇ SVG</button>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-t"><div class="card-t-left"><span>+</span> Ajouter une cause</div></div>
+          <div class="fg"><label>Cause du dépassement / problème</label><input type="text" id="p_cause" placeholder="Ex : Retard fournisseur, surcoût douanier…"></div>
+          <div class="fg"><label>Fréquence observée (nombre d'occurrences)</label><input type="number" id="p_freq" placeholder="Ex : 42" min="1"></div>
+          <button class="btn btn-g" onclick="addPareto()" style="width:100%">+ Ajouter</button>
+          <div style="margin-top:12px" id="paretoList"></div>
+        </div>
+        <div class="card">
+          <div class="card-t"><div class="card-t-left"><span>▦</span> Diagramme de Pareto</div></div>
+          <svg id="paretoSvg" width="100%" height="220" viewBox="0 0 480 200" style="background:var(--bg3);border-radius:8px;border:1px solid var(--bd-g)"></svg>
+          <div style="margin-top:12px" id="paretoAnalysis"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ISHIKAWA ════ -->
+    <div class="panel" id="panel-ishikawa">
+      <div class="ph">
+        <div><div class="ph-title">ISHIKAWA — DIAGRAMME 5M</div><div class="ph-sub">Main d'œuvre · Matières · Méthodes · Machines · Milieu</div></div>
+        <div class="ph-actions">
+          <button class="btn-export" onclick="printIshikawa()">⬇ PDF Diagramme</button>
+          <button class="btn-export-svg btn-export" onclick="downloadSVG('ishiSvg','Ishikawa_SmartInvest')">⬇ SVG</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-t"><div class="card-t-left"><span>⚙</span> Configuration</div></div>
+        <div class="fg-row">
+          <div class="fg"><label>Effet observé (problème central)</label><input type="text" id="ishi_effet" placeholder="Ex : Dépassement budget de 18%…" oninput="renderIshi()"></div>
+          <div class="fg"><label>Catégorie</label>
+            <select id="ishi_cat"><option value="mo">Main d'œuvre</option><option value="ma">Matières</option><option value="me">Méthodes</option><option value="mc">Machines</option><option value="mi">Milieu</option></select>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Cause identifiée</label><input type="text" id="ishi_cause" placeholder="Décrivez la cause…"></div>
+          <div style="display:flex;align-items:flex-end;padding-bottom:12px"><button class="btn btn-g" onclick="addIshi()" style="width:100%">+ Ajouter</button></div>
+        </div>
+      </div>
+      <div class="card" id="ishiCard">
+        <div class="card-t"><div class="card-t-left"><span>◈</span> Diagramme en arêtes de poisson</div></div>
+        <svg id="ishiSvg" width="100%" height="360" viewBox="0 0 900 360" style="background:var(--bg3);border-radius:8px;border:1px solid var(--bd-g)"></svg>
+      </div>
+      <div class="g5" id="ishiCats"></div>
+    </div>
+
+    <!-- ════ DMAIC ════ -->
+    <div class="panel" id="panel-dmaic">
+      <div class="ph">
+        <div><div class="ph-title">CYCLE DMAIC</div><div class="ph-sub">Définir · Mesurer · Analyser · Améliorer · Contrôler</div></div>
+        <div class="ph-actions"><button class="btn-export" onclick="printDMAIC()">⬇ PDF Cycle DMAIC</button></div>
+      </div>
+      <div class="dmaic-step" style="border-color:var(--acc)" id="dmaic-define">
+        <h3 style="color:var(--acc)">D — DÉFINIR le problème</h3>
+        <p>Délimitez clairement le périmètre, les parties prenantes et la Voix du Client (VOC).</p>
+        <ul><li>Charte du projet d'amélioration (Problem Statement)</li><li>Cartographie SIPOC des flux critiques</li><li>Définition des CTQ (Critical To Quality)</li></ul>
+        <div class="fg" style="margin-top:14px"><label>Problem Statement</label><textarea id="d_ps" rows="2" placeholder="Ex : Le processus de livraison génère un surcoût moyen de X% et retarde la mise en service de Y mois…"></textarea></div>
+      </div>
+      <div class="dmaic-step" style="border-color:var(--gold-l)" id="dmaic-measure">
+        <h3 style="color:var(--gold)">M — MESURER la situation actuelle</h3>
+        <p>Quantifiez le problème avec des données réelles avant toute action corrective.</p>
+        <ul><li>Taux de défauts, coût de la non-qualité (CoQ)</li><li>Écart PV/EV depuis le Cockpit de Management</li><li>Fréquence des incidents / retards</li></ul>
+        <div class="fg-row" style="margin-top:14px">
+          <div class="fg"><label>Taux de défauts actuel (%)</label><input type="number" id="m_defects" placeholder="Ex : 8.5" oninput="calcSigmaLive()"></div>
+          <div class="fg"><label>Unités produites / livrées</label><input type="number" id="m_units" placeholder="Ex : 2000"></div>
+        </div>
+        <div id="dmaicSigma"></div>
+      </div>
+      <div class="dmaic-step" style="border-color:var(--ok)" id="dmaic-analyze">
+        <h3 style="color:var(--ok)">A — ANALYSER les causes racines</h3>
+        <p>Utilisez les outils Pareto et Ishikawa (accessibles via le menu) pour identifier et valider les causes profondes.</p>
+        <div class="fg" style="margin-top:14px"><label>5 Pourquoi — Synthèse de l'analyse</label>
+          <textarea id="a_cause" rows="3" placeholder="Pourquoi 1: …&#10;Pourquoi 2: …&#10;Cause racine identifiée : …"></textarea></div>
+      </div>
+      <div class="dmaic-step" style="border-color:#7A3560" id="dmaic-improve">
+        <h3 style="color:#7A3560">I — AMÉLIORER par des solutions ciblées</h3>
+        <p>Concevoir, tester et mettre en œuvre les solutions sur la cause racine identifiée.</p>
+        <div class="fg-row" style="margin-top:14px">
+          <div class="fg"><label>Action d'amélioration</label><input type="text" id="imp_a" placeholder="Décrivez l'action…"></div>
+          <div class="fg"><label>Responsable</label><input type="text" id="imp_o" placeholder="Nom / Fonction"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Délai cible</label><input type="date" id="imp_d"></div>
+          <div style="display:flex;align-items:flex-end;padding-bottom:12px"><button class="btn btn-g" onclick="addImprove()" style="width:100%">+ Ajouter l'action</button></div>
+        </div>
+        <div id="improveList"></div>
+      </div>
+      <div class="dmaic-step" style="border-color:var(--stop)" id="dmaic-control">
+        <h3 style="color:var(--stop)">C — CONTRÔLER et pérenniser</h3>
+        <p>Mettre en place des mécanismes de surveillance pour maintenir les gains obtenus dans le temps.</p>
+        <ul><li>Carte de contrôle SPC (accessible via menu ⌇)</li><li>Plan de contrôle et procédures documentées</li><li>Transfert des connaissances à l'équipe opérationnelle</li></ul>
+      </div>
+    </div>
+
+    <!-- ════ SIGMA ════ -->
+    <div class="panel" id="panel-sigma">
+      <div class="ph">
+        <div><div class="ph-title">NIVEAUX SIGMA</div><div class="ph-sub">Calculez le niveau de performance qualité de votre processus</div></div>
+        <div class="ph-actions"><button class="btn-export" onclick="printSigma()">⬇ PDF Sigma</button></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-t"><div class="card-t-left"><span>σ</span> Calculateur DPMO</div></div>
+          <div class="fg"><label>Unités produites / livrées (N)</label><input type="number" id="s_N" placeholder="Ex : 1000" oninput="calcSigmaTab()"></div>
+          <div class="fg"><label>Nombre de défauts observés (D)</label><input type="number" id="s_D" placeholder="Ex : 47" oninput="calcSigmaTab()"></div>
+          <div class="fg"><label>Opportunités de défaut par unité (O)</label><input type="number" id="s_O" placeholder="Ex : 5" min="1" oninput="calcSigmaTab()"><div class="hint">Nombre de façons dont un défaut peut se produire sur chaque unité</div></div>
+          <div id="sigmaResult"><div class="empty"><div class="empty-ico">σ</div><div class="empty-txt">Saisissez N, D et O</div></div></div>
+        </div>
+        <div class="card" id="sigmaScaleCard">
+          <div class="card-t"><div class="card-t-left"><span>▦</span> Échelle de référence Sigma</div></div>
+          <div id="sigmaScale"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ SPC ════ -->
+    <div class="panel" id="panel-spc">
+      <div class="ph">
+        <div><div class="ph-title">CARTE DE CONTRÔLE SPC</div><div class="ph-sub">Statistical Process Control · Stabilité des indicateurs dans le temps</div></div>
+        <div class="ph-actions">
+          <button class="btn-export" onclick="printSPC()">⬇ PDF Carte</button>
+          <button class="btn-export-svg btn-export" onclick="downloadSVG('spcSvg','SPC_SmartInvest')">⬇ SVG</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-t"><div class="card-t-left"><span>⌇</span> Paramètres du processus</div></div>
+        <div class="fg-row3">
+          <div class="fg"><label>Indicateur mesuré</label>
+            <select id="cc_indicator" onchange="renderSPC()"><option value="">— Sélectionner —</option><option>Délai de livraison (jours)</option><option>Coût réel par lot (MAD)</option><option>Taux de non-conformité (%)</option><option>Indicateur personnalisé</option></select>
+          </div>
+          <div class="fg"><label>Valeur cible (μ)</label><input type="number" id="cc_target" placeholder="Ex : 30" oninput="renderSPC()"></div>
+          <div class="fg"><label>Tolérance ± (σ×3)</label><input type="number" id="cc_tol" placeholder="Ex : 8" oninput="renderSPC()"></div>
+        </div>
+        <div class="fg">
+          <label>Mesures réelles (séparées par virgules — optionnel)</label>
+          <input type="text" id="cc_data" placeholder="Ex : 28,31,29,35,27,30… (vide = simulation)">
+          <div class="hint">Laissez vide pour générer une simulation aléatoire basée sur vos paramètres</div>
+        </div>
+        <button class="btn btn-g" onclick="renderSPC(true)">Générer la carte de contrôle</button>
+      </div>
+      <div class="card" id="spcCard" style="display:none">
+        <div class="card-t"><div class="card-t-left"><span>📈</span> Carte de contrôle</div><button class="btn-export" onclick="printSPC()">⬇ PDF</button></div>
+        <svg id="spcSvg" width="100%" height="260" viewBox="0 0 920 240" style="background:var(--bg3);border-radius:8px;border:1px solid var(--bd-g)"></svg>
+        <div style="display:flex;gap:14px;margin-top:10px;font-family:var(--fm);font-size:9px;flex-wrap:wrap;color:var(--smoke)">
+          <span style="color:var(--acc)">— Valeur mesurée</span>
+          <span style="color:var(--stop)">-- UCL / LCL (±3σ)</span>
+          <span style="color:var(--ok)">— Cible μ</span>
+          <span>● Point hors limites</span>
+        </div>
+        <div style="margin-top:12px" id="spcAnalysis"></div>
+      </div>
+    </div>
+
+    <!-- ════ AVANT/APRÈS ════ -->
+    <div class="panel" id="panel-avapres">
+      <div class="ph">
+        <div><div class="ph-title">SIMULATION AVANT / APRÈS</div><div class="ph-sub">Estimez le ROI de vos actions d'amélioration qualité</div></div>
+        <div class="ph-actions"><button class="btn-export" onclick="printAvApres()">⬇ PDF Simulation</button></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-t"><div class="card-t-left"><span>⇌</span> Paramètres</div></div>
+          <div class="fg-row3">
+            <div class="fg"><label>Taux de défauts actuel (%)</label><input type="number" id="ba_av" placeholder="Ex : 12" oninput="calcBA()"></div>
+            <div class="fg"><label>Taux cible après amélioration (%)</label><input type="number" id="ba_ap" placeholder="Ex : 3" oninput="calcBA()"></div>
+            <div class="fg"><label>Coût unitaire non-conformité (MAD)</label><input type="number" id="ba_cu" placeholder="Ex : 15 000" oninput="calcBA()"></div>
+          </div>
+          <div class="fg-row3">
+            <div class="fg"><label>Volume mensuel d'unités</label><input type="number" id="ba_vol" placeholder="Ex : 200" oninput="calcBA()"></div>
+            <div class="fg"><label>Coût de mise en œuvre (MAD)</label><input type="number" id="ba_cout" placeholder="Ex : 120 000" oninput="calcBA()"></div>
+            <div class="fg"><label>Horizon d'analyse (mois)</label><input type="number" id="ba_hz" placeholder="Ex : 12" oninput="calcBA()"></div>
+          </div>
+          <button class="btn btn-g" onclick="calcBA()" style="width:100%">Calculer le gain</button>
+        </div>
+        <div class="card" id="baResultCard">
+          <div class="card-t"><div class="card-t-left"><span>📊</span> Résultats de la simulation</div></div>
+          <div id="baResult"><div class="empty"><div class="empty-ico">⇌</div><div class="empty-txt">Saisissez les paramètres</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ACTIONS ════ -->
+    <div class="panel" id="panel-actions">
+      <div class="ph">
+        <div><div class="ph-title">PLAN D'ACTIONS</div><div class="ph-sub">Suivi global des actions correctives et préventives</div></div>
+        <div class="ph-actions"><button class="btn-export" onclick="printActions()">⬇ PDF Plan d'actions</button></div>
+      </div>
+      <div class="card">
+        <div class="card-t"><div class="card-t-left"><span>+</span> Nouvelle action</div></div>
+        <div class="fg-row3">
+          <div class="fg"><label>Titre de l'action</label><input type="text" id="act_t" placeholder="Décrivez l'action…"></div>
+          <div class="fg"><label>Responsable</label><input type="text" id="act_o" placeholder="Nom / Fonction"></div>
+          <div class="fg"><label>Date cible</label><input type="date" id="act_d"></div>
+        </div>
+        <div class="fg-row3">
+          <div class="fg"><label>Catégorie</label>
+            <select id="act_cat"><option value="">— Sélectionner —</option><option>FMEA — Correctif</option><option>FMEA — Préventif</option><option>DMAIC — Amélioration</option><option>Qualité — Contrôle</option><option>Risque — Mitigation</option><option>Autre</option></select>
+          </div>
+          <div class="fg"><label>Priorité</label>
+            <select id="act_prio"><option value="high">🔴 Haute</option><option value="med">🟡 Moyenne</option><option value="low">🟢 Basse</option></select>
+          </div>
+          <div style="display:flex;align-items:flex-end;padding-bottom:12px"><button class="btn btn-g" onclick="addAction()" style="width:100%">+ Ajouter</button></div>
+        </div>
+      </div>
+      <div class="g4 mb14" id="actKPIs"></div>
+      <div class="card">
+        <div class="card-t"><div class="card-t-left"><span>✔</span> Liste des actions</div></div>
+        <div id="actList"><div class="empty"><div class="empty-ico">✔</div><div class="empty-txt">Aucune action</div></div></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ════════════════════════ SCRIPT ════════════════════════ -->
+<script>
+// ══ COLORS (aligned with Smart-Invest.ia palette) ══
+const C={
+  gold:'#B8862A',goldD:'#96690F',goldP:'#FBF3DE',
+  ink:'#1A1A16',soft:'#4A4A40',smoke:'#6A6A60',
+  bg:'#F4F2EB',bg2:'#EAE7DE',bg3:'#EEEBE2',wh:'#FFFFFE',
+  acc:'#1E4D6B',ok:'#1A6B3C',er:'#9A2A2A',
+  warn:'#96690F',bd:'rgba(0,0,0,.10)',bdg:'rgba(184,134,42,.20)'
+};
+
+// ══ STATE ══
+let fmeaData=[],paretoData=[],ishiData={mo:[],ma:[],me:[],mc:[],mi:[]};
+let improveActions=[],globalActions=[];
+let piliers=[
+  {id:'op',icon:'⚙',name:'Viabilité Opérationnelle',weight:20,score:null,desc:'Processus, logistique, faisabilité terrain'},
+  {id:'fi',icon:'💰',name:'Modèle Financier',weight:25,score:null,desc:'TRI, VAN, DSCR, plan de financement'},
+  {id:'ri',icon:'⚖',name:'Conformité & Risques',weight:20,score:null,desc:'Risques identifiés, mitigation, conformité légale'},
+  {id:'ma',icon:'🌍',name:'Impact Marché',weight:20,score:null,desc:'Potentiel marché, concurrence, demande'},
+  {id:'st',icon:'🎯',name:'Alignement Stratégique',weight:15,score:null,desc:'Cohérence vision, timing, équipe'}
+];
+
+// ══ NAVIGATION ══
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('panel-'+id)?.classList.add('show');
+  document.querySelectorAll('.sb-item').forEach(i=>{if(i.getAttribute('onclick')?.includes("'"+id+"'"))i.classList.add('active')});
+  if(id==='cockpit')renderPiliers();
+  if(id==='sigma')renderSigmaScale();
+  if(id==='ishikawa')renderIshi();
+}
+
+// ══ CONTROL COCKPIT ══
+function calcVerdictScore(){
+  const f=piliers.filter(p=>p.score!==null);
+  if(!f.length)return null;
+  let t=0,w=0;f.forEach(p=>{t+=p.score*p.weight;w+=p.weight;});
+  return w>0?Math.round(t/w):null;
+}
+function renderPiliers(){
+  const grid=document.getElementById('piliersGrid');
+  grid.innerHTML=piliers.map((p,i)=>{
+    const h=p.score!==null;
+    const col=h?(p.score>=70?C.ok:p.score>=40?C.goldD:C.er):'#9A9A90';
+    return`<div class="pilier${h?' active':''}" onclick="openPilier(${i})">
+      <div class="p-ico">${p.icon}</div>
+      <div class="p-nm">${p.name}</div>
+      <div class="p-sc" style="color:${col}">${h?p.score:'—'}</div>
+      <div class="p-bar"><div class="p-bf" style="width:${h?p.score:0}%;background:${col}"></div></div>
+      <div class="p-wt">Pondération : ${p.weight}%</div>
+      ${!h?'<div class="p-hint">↑ Cliquer pour évaluer</div>':''}
+    </div>`;
+  }).join('');
+  updateVerdictHero();updateSidebarVerdict();
+}
+function openPilier(i){
+  const p=piliers[i];
+  const z=document.getElementById('pilierEdit');
+  z.style.display='block';
+  z.innerHTML=`<div class="p-edit">
+    <div class="pe-t">${p.icon} ${p.name}</div>
+    <div class="pe-sub">${p.desc} · Pondération : ${p.weight}%</div>
+    <div class="fg"><label>Score du pilier (0–100)</label>
+      <input type="number" id="ps_${i}" min="0" max="100" value="${p.score!==null?p.score:''}" placeholder="Saisissez un score entre 0 et 100…" oninput="previewPilier(${i})">
+      <div class="hint">0 = insuffisant · 40 = acceptable · 70 = bon · 100 = excellent</div>
+    </div>
+    <div id="pPrev_${i}" style="margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-g" onclick="savePilier(${i})">Valider</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('pilierEdit').style.display='none'">Fermer</button>
+      ${p.score!==null?`<button class="btn btn-ghost" onclick="piliers[${i}].score=null;renderPiliers();document.getElementById('pilierEdit').style.display='none'">Effacer</button>`:''}
+    </div>
+  </div>`;
+  document.getElementById(`ps_${i}`).focus();
+}
+function previewPilier(i){
+  const v=+document.getElementById(`ps_${i}`).value;
+  if(!v&&v!==0)return;
+  const col=v>=70?C.ok:v>=40?C.goldD:C.er;
+  const cls=v>=70?'chip-go':v>=40?'chip-warn':'chip-stop';
+  const lbl=v>=70?'BON ✓':v>=40?'ACCEPTABLE ⚡':'INSUFFISANT ✗';
+  document.getElementById(`pPrev_${i}`).innerHTML=
+    `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--wh);border:1px solid var(--bd-g);border-radius:7px">
+      <span style="font-family:var(--ft);font-size:32px;color:${col}">${v}</span>
+      <span class="chip ${cls}">${lbl}</span>
+    </div>`;
+}
+function savePilier(i){
+  const v=+document.getElementById(`ps_${i}`).value;
+  if(isNaN(v)||v<0||v>100){alert('Score entre 0 et 100 requis');return;}
+  piliers[i].score=v;renderPiliers();document.getElementById('pilierEdit').style.display='none';
+}
+function updateVerdictHero(){
+  const sc=calcVerdictScore();
+  const el={card:document.getElementById('vhCard'),sc:document.getElementById('vhScore'),v:document.getElementById('vhVerdict'),s:document.getElementById('vhSub'),f:document.getElementById('vhFill'),c:document.getElementById('vhCta')};
+  const filled=piliers.filter(p=>p.score!==null).length;
+  if(sc===null){el.card.className='vh neutral';el.sc.textContent='—';el.sc.style.color=C.ink;el.v.textContent='EN ATTENTE';el.v.style.color=C.smoke;el.s.textContent='Évaluez chacun des 5 piliers pour obtenir le verdict.';el.f.style.width='0%';el.f.style.background=C.bdg;el.c.textContent='— Renseignez les piliers pour démarrer —';document.getElementById('verdictKPIs').innerHTML='';return;}
+  el.sc.textContent=sc;el.f.style.width=sc+'%';
+  if(sc>=70){el.card.className='vh go';el.f.style.background=C.ok;el.sc.style.color=C.ok;el.v.style.color=C.ok;el.v.textContent='GO — PROCÉDER';el.s.textContent='Tous les indicateurs sont en zone favorable. Le projet est éligible à la validation et au financement.';}
+  else if(sc>=40){el.card.className='vh warn';el.f.style.background=C.goldD;el.sc.style.color=C.goldD;el.v.style.color=C.goldD;el.v.textContent='ALERTE — RÉVISER';el.s.textContent='Des points de vigilance ont été identifiés. Une revue des piliers en alerte est recommandée avant validation.';}
+  else{el.card.className='vh stop';el.f.style.background=C.er;el.sc.style.color=C.er;el.v.style.color=C.er;el.v.textContent='STOP — NE PAS ENGAGER';el.s.textContent='Le projet présente des risques significatifs. Des améliorations structurelles sont nécessaires.';}
+  el.c.textContent=`${filled}/5 piliers évalués · Score pondéré : ${sc}/100`;
+  const maxP=piliers.reduce((a,b)=>b.score!==null&&(a===null||b.score>a.score)?b:a,null);
+  const minP=piliers.reduce((a,b)=>b.score!==null&&(a===null||b.score<a.score)?b:a,null);
+  document.getElementById('verdictKPIs').innerHTML=`
+    <div class="kpi"><div class="kpi-n" style="color:${sc>=70?C.ok:sc>=40?C.goldD:C.er}">${sc}</div><div class="kpi-l">Score global /100</div></div>
+    <div class="kpi"><div class="kpi-n">${filled}/5</div><div class="kpi-l">Piliers évalués</div></div>
+    ${maxP?`<div class="kpi"><div class="kpi-n" style="color:${C.ok}">${maxP.score}</div><div class="kpi-l">Meilleur pilier<br>${maxP.icon} ${maxP.name.substring(0,14)}</div></div>`:''}
+    ${minP&&minP!==maxP?`<div class="kpi"><div class="kpi-n" style="color:${C.er}">${minP.score}</div><div class="kpi-l">Pilier faible<br>${minP.icon} ${minP.name.substring(0,14)}</div></div>`:''}`;
+}
+function updateSidebarVerdict(){
+  const sc=calcVerdictScore();
+  const es=document.getElementById('sbScore'),et=document.getElementById('sbTxt'),ef=document.getElementById('sbFill');
+  if(sc===null){es.textContent='—';es.style.color=C.gold;et.textContent='AUCUNE DONNÉE';et.style.color='rgba(255,255,255,.35)';ef.style.width='0%';ef.style.background=C.gold;return;}
+  const col=sc>=70?C.ok:sc>=40?C.goldD:C.er;
+  es.textContent=sc;es.style.color=sc>=70?C.gold:sc>=40?C.gold:C.er;
+  et.textContent=sc>=70?'GO':sc>=40?'ALERTE':'STOP';
+  ef.style.width=sc+'%';ef.style.background=col;
+}
+
+// ══ FMEA ══
+function addFMEA(){
+  const mode=document.getElementById('f_mode').value.trim();
+  if(!mode){alert('Saisissez un mode de défaillance');return;}
+  const S=+document.getElementById('f_sev').value,O=+document.getElementById('f_occ').value,D=+document.getElementById('f_det').value;
+  const fin=+document.getElementById('f_fin').value||0;
+  fmeaData.push({mode,phase:document.getElementById('f_phase_fmea').value||'—',S,O,D,RPN:S*O*D,fin,emv:Math.round(fin*(O/10)),action:document.getElementById('f_action').value||'—',resp:document.getElementById('f_resp_fmea').value||'—'});
+  ['f_mode','f_action','f_resp_fmea','f_fin'].forEach(id=>document.getElementById(id).value='');
+  renderFMEA();
+}
+function removeFMEA(i){fmeaData.splice(i,1);renderFMEA();}
+function renderFMEA(){
+  const s=[...fmeaData].sort((a,b)=>b.RPN-a.RPN);
+  const crit=fmeaData.filter(f=>f.RPN>100).length,warn=fmeaData.filter(f=>f.RPN>=50&&f.RPN<=100).length;
+  document.getElementById('fmeaCrit').textContent=crit+' critique'+(crit!==1?'s':'');
+  document.getElementById('fmeaWarn').textContent=warn+' modéré'+(warn!==1?'s':'');
+  if(!fmeaData.length){document.getElementById('fmeaTable').innerHTML=`<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--smoke);font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.1em">Aucun risque enregistré</td></tr>`;document.getElementById('fmeaDash').innerHTML=`<div class="empty"><div class="empty-ico">⚠</div><div class="empty-txt">Registre vide</div></div>`;document.getElementById('fmeaSummary').textContent='Commencez par saisir les risques identifiés.';return;}
+  document.getElementById('fmeaTable').innerHTML=s.map((f,i)=>{
+    const cls=f.RPN>100?'chip-stop':f.RPN>=50?'chip-warn':'chip-go';const lbl=f.RPN>100?'CRITIQUE':f.RPN>=50?'MODÉRÉ':'FAIBLE';
+    return`<tr><td style="font-weight:500;color:var(--ink)">${f.mode}</td><td style="font-size:11px">${f.phase}</td>
+      <td style="font-family:var(--fm)">${f.S}</td><td style="font-family:var(--fm)">${f.O}</td><td style="font-family:var(--fm)">${f.D}</td>
+      <td><strong style="font-family:var(--ft);font-size:16px;color:${f.RPN>100?C.er:f.RPN>=50?C.goldD:C.ok}">${f.RPN}</strong><div class="rpn-trk"><div class="rpn-fill" style="width:${(f.RPN/1000)*100}%;background:${f.RPN>100?C.er:f.RPN>=50?C.goldD:C.ok}"></div></div></td>
+      <td><span class="chip ${cls}">${lbl}</span></td>
+      <td style="font-family:var(--fm);font-size:11px">${f.fin?f.fin.toLocaleString('fr-FR')+' MAD':'—'}</td>
+      <td style="font-family:var(--fm);font-size:11px">${f.emv?f.emv.toLocaleString('fr-FR')+' MAD':'—'}</td>
+      <td style="font-size:11px">${f.action}</td><td style="font-size:11px">${f.resp}</td>
+      <td><button onclick="removeFMEA(${fmeaData.indexOf(fmeaData.find((x,j)=>j===i))})" style="background:none;border:none;cursor:pointer;color:var(--smoke);font-size:14px">✕</button></td></tr>`;
+  }).join('');
+  const totalEMV=fmeaData.reduce((s,f)=>s+f.emv,0),maxRPN=Math.max(...fmeaData.map(f=>f.RPN));
+  document.getElementById('fmeaDash').innerHTML=`
+    <div class="g3" style="margin-bottom:14px">
+      <div class="kpi"><div class="kpi-n" style="color:${crit>0?C.er:C.ok}">${crit}</div><div class="kpi-l">RPN &gt; 100</div></div>
+      <div class="kpi"><div class="kpi-n" style="color:${C.goldD}">${warn}</div><div class="kpi-l">RPN 50–100</div></div>
+      <div class="kpi"><div class="kpi-n">${maxRPN}</div><div class="kpi-l">RPN max</div></div>
+    </div>
+    <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--smoke);margin-bottom:4px">Provision totale EMV</div>
+    <div style="font-family:var(--ft);font-size:30px;color:${totalEMV>500000?C.er:C.goldD}">${totalEMV.toLocaleString('fr-FR')} MAD</div>`;
+  document.getElementById('fmeaSummary').innerHTML=`${fmeaData.length} risque(s) analysé(s). ${crit>0?`<strong style="color:${C.er}">${crit} risque(s) critique(s) — action immédiate requise (RPN > 100).</strong>`:'Aucun risque critique identifié.'} Provision EMV totale : <strong>${totalEMV.toLocaleString('fr-FR')} MAD</strong>.`;
+}
+
+// ══ PARETO ══
+function addPareto(){
+  const c=document.getElementById('p_cause').value.trim(),f=+document.getElementById('p_freq').value;
+  if(!c||!f){alert('Saisissez une cause et sa fréquence');return;}
+  paretoData.push({c,f});
+  document.getElementById('p_cause').value='';document.getElementById('p_freq').value='';
+  renderPareto();
+}
+function renderPareto(){
+  const s=[...paretoData].sort((a,b)=>b.f-a.f),total=s.reduce((t,x)=>t+x.f,0);
+  document.getElementById('paretoList').innerHTML=s.map((x,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:12px">
+      <span style="font-family:var(--ft);font-size:16px;color:var(--smoke);min-width:20px">${i+1}</span>
+      <span style="flex:1">${x.c}</span>
+      <span style="font-family:var(--fm);font-size:11px;color:var(--ink-soft)">${x.f}</span>
+      <button onclick="paretoData.splice(${i},1);renderPareto()" style="background:none;border:none;cursor:pointer;color:var(--smoke)">✕</button>
+    </div>`).join('')||'<div style="color:var(--smoke);font-family:var(--fm);font-size:10px;text-align:center;padding:16px">Aucune donnée</div>';
+  const svg=document.getElementById('paretoSvg');
+  if(!s.length){svg.innerHTML=`<text x="240" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="${C.smoke}" opacity=".5">— AUCUNE DONNÉE —</text>`;document.getElementById('paretoAnalysis').innerHTML='';return;}
+  const W=480,H=200,PL=40,PR=30,PT=10,PB=40,bW=(W-PL-PR)/s.length-3;
+  let cum=0,cumPts=[],svg_s='';
+  s.forEach((x,i)=>{
+    const pct=x.f/total,bH=(H-PT-PB)*pct,x0=PL+i*(bW+3),col=cum<0.8?C.gold:C.smoke;
+    svg_s+=`<rect x="${x0}" y="${H-PB-bH}" width="${bW}" height="${bH}" fill="${col}" rx="2" opacity=".85"/>`;
+    cum+=pct;cumPts.push({x:x0+bW/2,y:PT+(H-PT-PB)*(1-cum)});
+    const lbl=x.c.length>8?x.c.substring(0,7)+'…':x.c;
+    svg_s+=`<text x="${x0+bW/2}" y="${H-PB+14}" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="${C.smoke}" transform="rotate(-20,${x0+bW/2},${H-PB+14})">${lbl}</text>`;
+  });
+  if(cumPts.length>1){const pts=cumPts.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');svg_s+=`<path d="${pts}" fill="none" stroke="${C.acc}" stroke-width="2"/>`;cumPts.forEach(p=>svg_s+=`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3" fill="${C.acc}"/>`);}
+  const y80=PT+(H-PT-PB)*0.2;
+  svg_s+=`<line x1="${PL}" y1="${y80}" x2="${W-PR}" y2="${y80}" stroke="${C.er}" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="${W-PR+2}" y="${y80+4}" font-family="JetBrains Mono" font-size="8" fill="${C.er}">80%</text>`;
+  svg.innerHTML=svg_s;
+  let c80=0,n80=0;s.forEach(x=>{if(c80/total<0.8){c80+=x.f;n80++;}});
+  document.getElementById('paretoAnalysis').innerHTML=`<div style="padding:12px;background:var(--gold-p);border:1px solid var(--bd-g);border-radius:7px;font-size:12px;color:var(--smoke)"><strong style="color:var(--gold)">${n80} cause(s)</strong> sur ${s.length} représentent <strong>80%</strong> des occurrences. Focalisez vos actions sur : <strong style="color:var(--ink)">${s.slice(0,n80).map(x=>x.c).join(', ')}</strong></div>`;
+}
+
+// ══ ISHIKAWA ══
+const IM={mo:{l:'Main d\'œuvre',col:C.acc,x:200,y:80},ma:{l:'Matières',col:C.goldD,x:200,y:280},me:{l:'Méthodes',col:'#7A3560',x:450,y:80},mc:{l:'Machines',col:C.er,x:450,y:280},mi:{l:'Milieu',col:C.ok,x:680,y:80}};
+function addIshi(){
+  const cat=document.getElementById('ishi_cat').value,cause=document.getElementById('ishi_cause').value.trim();
+  if(!cause){alert('Saisissez une cause');return;}
+  ishiData[cat].push(cause);document.getElementById('ishi_cause').value='';renderIshi();
+}
+function renderIshi(){
+  const effet=document.getElementById('ishi_effet')?.value||'Effet à définir';
+  const svg=document.getElementById('ishiSvg');
+  const W=900,H=360,MX=800,MY=180;
+  let s=`<line x1="80" y1="${MY}" x2="${MX}" y2="${MY}" stroke="${C.ink}" stroke-width="2.5" opacity=".7"/>`;
+  s+=`<polygon points="${MX},${MY} ${MX-14},${MY-7} ${MX-14},${MY+7}" fill="${C.ink}" opacity=".7"/>`;
+  s+=`<rect x="${MX+4}" y="${MY-22}" width="92" height="44" rx="6" fill="${C.goldP}" stroke="${C.gold}" stroke-width="1.5"/>`;
+  s+=`<text x="${MX+50}" y="${MY-6}" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="${C.goldD}" font-weight="500">EFFET</text>`;
+  s+=`<text x="${MX+50}" y="${MY+8}" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="${C.gold}">${effet.substring(0,13)}</text>`;
+  Object.entries(IM).forEach(([k,m])=>{
+    const isTop=m.y<180,bY=isTop?MY-40:MY+40;
+    s+=`<line x1="${m.x}" y1="${m.y}" x2="${m.x}" y2="${bY}" stroke="${m.col}" stroke-width="1.5" opacity=".6"/>`;
+    s+=`<line x1="${m.x}" y1="${bY}" x2="${MX}" y2="${MY}" stroke="${m.col}" stroke-width="1.5" opacity=".5"/>`;
+    s+=`<rect x="${m.x-52}" y="${m.y-(isTop?16:0)}" width="104" height="16" rx="3" fill="${m.col}" opacity=".12"/>`;
+    s+=`<text x="${m.x}" y="${m.y+(isTop?-4:12)}" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="${m.col}" font-weight="600">${m.l}</text>`;
+    ishiData[k].forEach((c,i)=>{const cy=isTop?m.y-30-i*14:m.y+14+i*14;s+=`<text x="${m.x}" y="${cy}" text-anchor="middle" font-family="Space Grotesk" font-size="10" fill="${C.soft}">${c.substring(0,15)}</text>`;});
+    if(!ishiData[k].length)s+=`<text x="${m.x}" y="${isTop?m.y-28:m.y+26}" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="${C.smoke}" font-style="italic">aucune cause</text>`;
+  });
+  svg.innerHTML=s;
+  document.getElementById('ishiCats').innerHTML=Object.entries(IM).map(([k,m])=>`
+    <div style="background:var(--wh);border:1px solid var(--bd-g);border-radius:10px;padding:14px">
+      <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:${m.col};margin-bottom:8px;border-bottom:1px solid var(--bd);padding-bottom:6px">${m.l} (${ishiData[k].length})</div>
+      ${ishiData[k].length?ishiData[k].map((c,i)=>`<div style="display:flex;align-items:center;gap:6px;font-size:11px;padding:4px 0;border-bottom:1px solid var(--bd)"><span style="flex:1">${c}</span><button onclick="ishiData['${k}'].splice(${i},1);renderIshi()" style="background:none;border:none;cursor:pointer;color:var(--smoke)">✕</button></div>`).join(''):'<div style="font-size:11px;color:var(--smoke);font-style:italic">Aucune cause saisie</div>'}
+    </div>`).join('');
+}
+
+// ══ DMAIC SIGMA LIVE ══
+function calcSigmaLive(){
+  const d=+document.getElementById('m_defects')?.value;
+  if(!d){document.getElementById('dmaicSigma').innerHTML='';return;}
+  const dpmo=d/100*1e6,sigma=sigmaFromDPMO(dpmo);
+  const col=sigma>=4?C.ok:sigma>=3?C.goldD:C.er;
+  document.getElementById('dmaicSigma').innerHTML=`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+    <div class="kpi" style="flex:1"><div class="kpi-n" style="color:${col}">σ ${sigma.toFixed(1)}</div><div class="kpi-l">Niveau Sigma</div></div>
+    <div class="kpi" style="flex:1"><div class="kpi-n">${Math.round(dpmo).toLocaleString('fr-FR')}</div><div class="kpi-l">DPMO</div></div>
+    <div class="kpi" style="flex:1"><div class="kpi-n" style="color:${C.ok}">${(100-d).toFixed(1)}%</div><div class="kpi-l">Conformité</div></div>
+  </div>`;
+}
+function addImprove(){
+  const a=document.getElementById('imp_a').value.trim();if(!a)return;
+  improveActions.push({a,o:document.getElementById('imp_o').value,d:document.getElementById('imp_d').value,done:false});
+  document.getElementById('imp_a').value='';document.getElementById('imp_o').value='';document.getElementById('imp_d').value='';renderImprove();
+}
+function renderImprove(){
+  const el=document.getElementById('improveList');
+  el.innerHTML=improveActions.length?improveActions.map((x,i)=>`
+    <div class="act-row ${x.done?'done':''}">
+      <input type="checkbox" ${x.done?'checked':''} onchange="improveActions[${i}].done=this.checked;renderImprove()" style="accent-color:var(--gold-l);width:14px;height:14px;flex-shrink:0">
+      <span style="flex:1;font-size:12.5px;${x.done?'text-decoration:line-through;':''}">${x.a}</span>
+      <span style="font-family:var(--fm);font-size:10px;color:var(--smoke)">${x.o||'—'}</span>
+      <span style="font-family:var(--fm);font-size:10px;color:var(--gold)">${x.d||''}</span>
+      <button onclick="improveActions.splice(${i},1);renderImprove()" style="background:none;border:none;cursor:pointer;color:var(--smoke)">✕</button>
+    </div>`).join(''):'<div style="font-size:12px;color:var(--smoke);font-style:italic">Aucune action ajoutée.</div>';
+}
+
+// ══ SIGMA ══
+function calcSigmaTab(){
+  const N=+document.getElementById('s_N')?.value,D=+document.getElementById('s_D')?.value,O=+document.getElementById('s_O')?.value||1;
+  const el=document.getElementById('sigmaResult');
+  if(!N||!D){el.innerHTML='<div class="empty"><div class="empty-ico">σ</div><div class="empty-txt">Saisissez N, D et O</div></div>';return;}
+  const dpmo=(D/(N*O))*1e6,sigma=sigmaFromDPMO(dpmo),pct=((1-D/(N*O))*100).toFixed(3);
+  const col=sigma>=4?C.ok:sigma>=3?C.goldD:C.er;
+  el.innerHTML=`<div class="g3" style="margin-top:14px;margin-bottom:0">
+    <div class="kpi"><div class="kpi-n" style="color:${col}">σ ${sigma.toFixed(1)}</div><div class="kpi-l">Niveau Sigma</div></div>
+    <div class="kpi"><div class="kpi-n">${Math.round(dpmo).toLocaleString('fr-FR')}</div><div class="kpi-l">DPMO</div></div>
+    <div class="kpi"><div class="kpi-n" style="color:${C.ok}">${pct}%</div><div class="kpi-l">Conformité</div></div>
+  </div>`;
+}
+function sigmaFromDPMO(d){if(d<=3.4)return 6;if(d<=230)return 5;if(d<=6210)return 4;if(d<=66800)return 3;if(d<=308700)return 2;return 1;}
+function renderSigmaScale(){
+  const lvls=[{s:1,dpmo:691000,pct:30.85,lbl:'Insuffisant',col:'#B91C1C'},{s:2,dpmo:308700,pct:69.15,lbl:'Faible',col:'#EF4444'},{s:3,dpmo:66800,pct:93.32,lbl:'Moyen',col:'#F97316'},{s:4,dpmo:6210,pct:99.38,lbl:'Bon',col:C.goldD},{s:5,dpmo:230,pct:99.977,lbl:'Excellent',col:C.ok},{s:6,dpmo:3.4,pct:99.9997,lbl:'World Class',col:'#155724'}];
+  document.getElementById('sigmaScale').innerHTML=lvls.map(l=>`<div class="sig-row">
+    <div style="font-family:var(--fm);font-weight:700;font-size:14px;color:${l.col};width:30px">σ${l.s}</div>
+    <div class="sig-trk"><div class="sig-fill" style="width:${l.pct}%;background:${l.col};opacity:.75"></div></div>
+    <div style="font-family:var(--fm);font-size:10px;min-width:52px;text-align:right;color:${l.col}">${l.pct}%</div>
+    <div style="font-size:11px;color:var(--smoke);min-width:80px;text-align:right">${l.dpmo.toLocaleString('fr-FR')}</div>
+    <span class="chip" style="background:transparent;border:1px solid ${l.col};color:${l.col}">${l.lbl}</span>
+  </div>`).join('');
+}
+
+// ══ SPC ══
+function renderSPC(force){
+  const target=+document.getElementById('cc_target').value,tol=+document.getElementById('cc_tol').value;
+  if(!target||!tol){if(force)alert('Saisissez une valeur cible et une tolérance');return;}
+  const UCL=target+tol,LCL=Math.max(0,target-tol);
+  const raw=document.getElementById('cc_data').value;
+  let ms;
+  if(raw.trim()){ms=raw.split(',').map(v=>+v.trim()).filter(v=>!isNaN(v)&&v!==0);}
+  else{const n=24;ms=Array.from({length:n},()=>{const b=target+(Math.random()-.5)*tol*1.2;return+(Math.random()<.07?b+tol*1.9:b).toFixed(1);});}
+  const n=ms.length;if(n<2)return;
+  document.getElementById('spcCard').style.display='block';
+  const svg=document.getElementById('spcSvg');
+  const W=920,H=240,PL=55,PR=65,PT=20,PB=30;
+  const maxV=Math.max(UCL*1.12,...ms),minV=Math.min(LCL*0.88,...ms);
+  const tx=i=>(i/(n-1))*(W-PL-PR)+PL,ty=v=>PT+(H-PT-PB)*(1-(v-minV)/(maxV-minV));
+  let s=`<rect x="${PL}" y="${ty(UCL)}" width="${W-PL-PR}" height="${ty(LCL)-ty(UCL)}" fill="${C.goldP}" opacity=".4"/>`;
+  s+=`<line x1="${PL}" y1="${ty(UCL)}" x2="${W-PR}" y2="${ty(UCL)}" stroke="${C.er}" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+  s+=`<text x="${W-PR+6}" y="${ty(UCL)+4}" font-family="JetBrains Mono" font-size="9" fill="${C.er}">UCL ${UCL}</text>`;
+  s+=`<line x1="${PL}" y1="${ty(LCL)}" x2="${W-PR}" y2="${ty(LCL)}" stroke="${C.er}" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+  s+=`<text x="${W-PR+6}" y="${ty(LCL)+4}" font-family="JetBrains Mono" font-size="9" fill="${C.er}">LCL ${LCL}</text>`;
+  s+=`<line x1="${PL}" y1="${ty(target)}" x2="${W-PR}" y2="${ty(target)}" stroke="${C.ok}" stroke-width="2"/>`;
+  s+=`<text x="${W-PR+6}" y="${ty(target)+4}" font-family="JetBrains Mono" font-size="9" fill="${C.ok}">μ ${target}</text>`;
+  const pts=ms.map((v,i)=>`${i?'L':'M'}${tx(i).toFixed(1)},${ty(v).toFixed(1)}`).join(' ');
+  s+=`<path d="${pts}" fill="none" stroke="${C.acc}" stroke-width="2"/>`;
+  let out=0;
+  ms.forEach((v,i)=>{const o=v>UCL||v<LCL;if(o)out++;s+=`<circle cx="${tx(i).toFixed(1)}" cy="${ty(v).toFixed(1)}" r="${o?6:4}" fill="${o?C.er:C.acc}" stroke="white" stroke-width="${o?2:1}"/>`;if(o)s+=`<text x="${tx(i).toFixed(1)}" y="${ty(v)-11}" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="${C.er}">⚠</text>`;});
+  const tick=Math.max(1,Math.floor(n/8));
+  for(let i=0;i<n;i+=tick)s+=`<text x="${tx(i).toFixed(0)}" y="${H-PB+16}" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="${C.smoke}">M${i+1}</text>`;
+  svg.innerHTML=s;
+  const mean=(ms.reduce((a,b)=>a+b,0)/n).toFixed(1);
+  document.getElementById('spcAnalysis').innerHTML=`<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:12px;background:var(--bg3);border:1px solid var(--bd-g);border-radius:7px">
+    <span class="chip ${out===0?'chip-go':out<=2?'chip-warn':'chip-stop'}">${out===0?'Processus stable':out<=2?`${out} pts hors limites`:`⚠ ${out} dérives — action requise`}</span>
+    <span style="font-family:var(--fm);font-size:10px;color:var(--smoke)">Moyenne : <strong style="color:var(--ink)">${mean}</strong> (cible : ${target})</span>
+    <span style="font-family:var(--fm);font-size:10px;color:var(--smoke)">Taux dérive : <strong style="color:${out>0?C.er:C.ok}">${(out/n*100).toFixed(1)}%</strong></span>
+    <span style="font-family:var(--fm);font-size:10px;color:var(--smoke)">${n} mesures</span>
+  </div>`;
+}
+
+// ══ AVANT/APRÈS ══
+function calcBA(){
+  const av=+document.getElementById('ba_av').value,ap=+document.getElementById('ba_ap').value,cu=+document.getElementById('ba_cu').value,vol=+document.getElementById('ba_vol').value,cout=+document.getElementById('ba_cout').value,hz=+document.getElementById('ba_hz').value;
+  const el=document.getElementById('baResult');
+  if(!av||!ap||!cu||!vol||!hz){el.innerHTML='<div class="empty"><div class="empty-ico">⇌</div><div class="empty-txt">Saisissez tous les paramètres</div></div>';return;}
+  const coqAv=vol*(av/100)*cu,coqAp=vol*(ap/100)*cu,gain=(coqAv-coqAp)*hz;
+  const roi=cout>0?((gain-cout)/cout*100).toFixed(1):null,pb=cout>0?(cout/(coqAv-coqAp)).toFixed(1):null;
+  el.innerHTML=`<div class="g2" style="margin-bottom:12px">
+    <div class="kpi"><div class="kpi-n" style="color:${C.er}">${coqAv.toLocaleString('fr-FR')} MAD</div><div class="kpi-l">CoQ mensuel Avant</div></div>
+    <div class="kpi"><div class="kpi-n" style="color:${C.ok}">${coqAp.toLocaleString('fr-FR')} MAD</div><div class="kpi-l">CoQ mensuel Après</div></div>
+  </div>
+  <div style="padding:16px;background:var(--gold-p);border:1px solid var(--bd-g);border-radius:10px;margin-bottom:12px;text-align:center">
+    <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:var(--smoke);margin-bottom:4px">Gain net sur ${hz} mois</div>
+    <div style="font-family:var(--ft);font-size:42px;color:${gain>=(cout||0)?C.ok:C.er}">${gain.toLocaleString('fr-FR')} MAD</div>
+  </div>
+  <div class="g2">
+    ${roi!==null?`<div class="kpi"><div class="kpi-n" style="color:${+roi>0?C.ok:C.er}">${roi}%</div><div class="kpi-l">ROI de l'action</div></div>`:''}
+    ${pb!==null?`<div class="kpi"><div class="kpi-n">${pb} mois</div><div class="kpi-l">Retour sur investissement</div></div>`:''}
+  </div>`;
+}
+
+// ══ ACTIONS ══
+function addAction(){
+  const t=document.getElementById('act_t').value.trim();if(!t){alert('Saisissez un titre');return;}
+  globalActions.push({t,o:document.getElementById('act_o').value,d:document.getElementById('act_d').value,cat:document.getElementById('act_cat').value,prio:document.getElementById('act_prio').value,done:false,id:Date.now()});
+  document.getElementById('act_t').value='';document.getElementById('act_o').value='';renderActions();
+}
+function deleteAction(id){globalActions=globalActions.filter(a=>a.id!==id);renderActions();}
+function renderActions(){
+  const done=globalActions.filter(a=>a.done).length,high=globalActions.filter(a=>a.prio==='high'&&!a.done).length;
+  if(!globalActions.length){document.getElementById('actKPIs').innerHTML='';document.getElementById('actList').innerHTML='<div class="empty"><div class="empty-ico">✔</div><div class="empty-txt">Aucune action</div></div>';return;}
+  document.getElementById('actKPIs').innerHTML=`
+    <div class="kpi"><div class="kpi-n" style="color:${C.ok}">${done}</div><div class="kpi-l">Terminées</div></div>
+    <div class="kpi"><div class="kpi-n" style="color:${C.goldD}">${globalActions.length-done}</div><div class="kpi-l">En cours</div></div>
+    <div class="kpi"><div class="kpi-n" style="color:${C.er}">${high}</div><div class="kpi-l">Priorité haute</div></div>
+    <div class="kpi"><div class="kpi-n">${Math.round(done/globalActions.length*100)}%</div><div class="kpi-l">Avancement</div></div>`;
+  const pO={high:0,med:1,low:2},pC={high:'chip-stop',med:'chip-warn',low:'chip-go'},pL={high:'HAUTE',med:'MOY',low:'BASSE'};
+  document.getElementById('actList').innerHTML=[...globalActions].sort((a,b)=>pO[a.prio]-pO[b.prio]).map(a=>`
+    <div class="act-row ${a.done?'done':''}">
+      <input type="checkbox" ${a.done?'checked':''} onchange="globalActions.find(x=>x.id===${a.id}).done=this.checked;renderActions()" style="accent-color:var(--gold-l);width:14px;height:14px;flex-shrink:0">
+      <span class="chip ${pC[a.prio]}">${pL[a.prio]}</span>
+      <span style="flex:1;font-size:12.5px;${a.done?'text-decoration:line-through;color:var(--smoke);':''}">${a.t}</span>
+      <span style="font-family:var(--fm);font-size:9px;color:var(--smoke)">${a.cat||'—'}</span>
+      <span style="font-family:var(--fm);font-size:10px;color:var(--ink-soft)">${a.o||'—'}</span>
+      <span style="font-family:var(--fm);font-size:10px;color:var(--gold)">${a.d||''}</span>
+      <button onclick="deleteAction(${a.id})" style="background:none;border:none;cursor:pointer;color:var(--smoke)">✕</button>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════
+// PDF EXPORT ENGINE
+// ══════════════════════════════════
+function getProjectInfo(){
+  return {
+    nom:document.getElementById('pb_projet').value||'Smart-Invest.ia',
+    secteur:document.getElementById('pb_secteur').value||'—',
+    resp:document.getElementById('pb_resp').value||'—',
+    phase:document.getElementById('pb_phase').value||'—',
+    date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})
+  };
+}
+
+function printBase(title,bodyHTML,landscape=false){
+  const p=getProjectInfo();
+  const W=window.open('','_blank','width=1000,height=750');
+  W.document.write(`<!DOCTYPE html><html lang="fr"><head>
+  <meta charset="UTF-8">
+  <title>${title} — ${p.nom}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--gold:#B8862A;--goldD:#96690F;--goldP:#FBF3DE;--ink:#1A1A16;--soft:#4A4A40;--smoke:#6A6A60;--bg:#F4F2EB;--bg2:#EAE7DE;--bg3:#EEEBE2;--wh:#FFFFFE;--ok:#1A6B3C;--er:#9A2A2A;--acc:#1E4D6B;--bd:rgba(0,0,0,.10);--bdg:rgba(184,134,42,.2)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Space Grotesk',sans-serif;background:#fff;color:var(--ink);padding:24px 28px;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:13px}
+    .ph{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14px;border-bottom:3px solid var(--gold);margin-bottom:20px}
+    .ph-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--ink)}
+    .ph-logo em{color:var(--gold);font-style:normal}
+    .ph-meta{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--smoke);text-align:right;line-height:1.7}
+    .ph-meta strong{color:var(--ink)}
+    h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:4px;color:var(--ink)}
+    h2{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin:16px 0 10px;color:var(--goldD)}
+    .badge{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--goldP);color:var(--goldD);border:1px solid var(--bdg);padding:3px 10px;border-radius:100px;margin-bottom:16px;text-transform:uppercase;letter-spacing:.08em}
+    table{width:100%;border-collapse:collapse;font-size:11.5px;margin-bottom:16px}
+    th{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--smoke);padding:8px 10px;text-align:left;background:var(--bg3);border-bottom:2px solid var(--bdg)}
+    td{padding:7px 10px;border-bottom:1px solid var(--bd);color:var(--soft);vertical-align:middle}
+    tr:nth-child(even) td{background:var(--bg)}
+    .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+    .kpi{background:var(--bg3);border:1px solid var(--bdg);border-radius:8px;padding:12px;text-align:center}
+    .kpi-n{font-family:'Syne',sans-serif;font-size:28px;line-height:1;margin-bottom:2px}
+    .kpi-l{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--smoke)}
+    .chip{display:inline-flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 7px;border-radius:100px;text-transform:uppercase;font-weight:500;border:1px solid}
+    .chip-go{background:rgba(26,107,60,.08);color:#1A6B3C;border-color:rgba(26,107,60,.2)}
+    .chip-warn{background:rgba(150,105,15,.08);color:#96690F;border-color:rgba(150,105,15,.2)}
+    .chip-stop{background:rgba(154,42,42,.08);color:#9A2A2A;border-color:rgba(154,42,42,.2)}
+    .pf{padding:14px;background:var(--goldP);border:1px solid var(--bdg);border-radius:8px;margin-bottom:10px}
+    .rpn-bar{height:5px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-top:3px}
+    .rpn-fill{height:100%;border-radius:3px}
+    svg{max-width:100%;height:auto}
+    @page{margin:12mm;size:${landscape?'A4 landscape':'A4 portrait'}}
+    @media print{body{padding:0}.no-print{display:none}}
+  </style>
+</head><body>
+  <div class="ph">
+    <div><div class="ph-logo">Smart-<em>Invest</em>.ia</div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--smoke)">Lean Six Sigma · Control Cockpit</div></div>
+    <div class="ph-meta"><strong>${title}</strong><br>Projet : ${p.nom} · ${p.secteur}<br>Responsable : ${p.resp} · Phase : ${p.phase}<br>Exporté le ${p.date}</div>
+  </div>
+  <div class="badge">Smart-Invest.ia · ${title}</div>
+  ${bodyHTML}
+  <script>window.onload=function(){setTimeout(()=>{window.print();},700)}<\/script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body></html>`);
+  W.document.close();
+}
+
+function printCockpit(){
+  const sc=calcVerdictScore();
+  const rows=piliers.map(p=>`<tr>
+    <td style="font-weight:500">${p.icon} ${p.name}</td>
+    <td style="text-align:center;font-family:'JetBrains Mono',monospace">${p.weight}%</td>
+    <td style="text-align:center"><span class="chip ${!p.score?'chip-warn':p.score>=70?'chip-go':p.score>=40?'chip-warn':'chip-stop'}">${p.score!==null?p.score:'—'}</span></td>
+    <td><div class="rpn-bar"><div class="rpn-fill" style="width:${p.score||0}%;background:${!p.score?'#ccc':p.score>=70?'#1A6B3C':p.score>=40?'#96690F':'#9A2A2A'}"></div></div></td>
+    <td>${p.desc}</td>
+  </tr>`).join('');
+  const col=sc===null?'#888':sc>=70?'#1A6B3C':sc>=40?'#96690F':'#9A2A2A';
+  const lbl=sc===null?'En attente':sc>=70?'GO — PROCÉDER':sc>=40?'ALERTE — RÉVISER':'STOP — NE PAS ENGAGER';
+  printBase('Control Cockpit',`
+    <h1>Control Cockpit — Évaluation LSS</h1>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-n" style="color:${col}">${sc!==null?sc:'—'}</div><div class="kpi-l">Score /100</div></div>
+      <div class="kpi"><div class="kpi-n">${piliers.filter(p=>p.score!==null).length}/5</div><div class="kpi-l">Piliers évalués</div></div>
+      <div class="kpi" style="grid-column:span 2"><div class="kpi-n" style="font-size:20px;color:${col}">${lbl}</div><div class="kpi-l">Verdict</div></div>
+    </div>
+    <h2>Détail des 5 piliers</h2>
+    <table><thead><tr><th>Pilier</th><th>Poids</th><th>Score</th><th>Barre</th><th>Description</th></tr></thead><tbody>${rows}</tbody></table>`);
+}
+
+function printFMEA(){
+  if(!fmeaData.length){alert('Aucun risque enregistré dans le registre FMEA.');return;}
+  const s=[...fmeaData].sort((a,b)=>b.RPN-a.RPN);
+  const crit=s.filter(f=>f.RPN>100).length,totalEMV=s.reduce((t,f)=>t+f.emv,0);
+  const rows=s.map(f=>`<tr>
+    <td style="font-weight:500">${f.mode}</td>
+    <td>${f.phase}</td>
+    <td style="text-align:center;font-family:'JetBrains Mono',monospace">${f.S}</td>
+    <td style="text-align:center;font-family:'JetBrains Mono',monospace">${f.O}</td>
+    <td style="text-align:center;font-family:'JetBrains Mono',monospace">${f.D}</td>
+    <td style="text-align:center"><strong style="font-family:'Syne',sans-serif;font-size:16px;color:${f.RPN>100?'#9A2A2A':f.RPN>=50?'#96690F':'#1A6B3C'}">${f.RPN}</strong></td>
+    <td><span class="chip ${f.RPN>100?'chip-stop':f.RPN>=50?'chip-warn':'chip-go'}">${f.RPN>100?'CRITIQUE':f.RPN>=50?'MODÉRÉ':'FAIBLE'}</span></td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:10px">${f.fin?f.fin.toLocaleString('fr-FR')+' MAD':'—'}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:10px">${f.emv?f.emv.toLocaleString('fr-FR')+' MAD':'—'}</td>
+    <td>${f.action}</td>
+    <td>${f.resp}</td>
+  </tr>`).join('');
+  printBase('Registre FMEA',`
+    <h1>Registre FMEA — Analyse des risques</h1>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-n" style="color:#9A2A2A">${crit}</div><div class="kpi-l">RPN Critiques &gt;100</div></div>
+      <div class="kpi"><div class="kpi-n">${s.filter(f=>f.RPN>=50&&f.RPN<=100).length}</div><div class="kpi-l">RPN Modérés</div></div>
+      <div class="kpi"><div class="kpi-n">${s.length}</div><div class="kpi-l">Total risques</div></div>
+      <div class="kpi"><div class="kpi-n" style="color:#96690F">${totalEMV.toLocaleString('fr-FR')}</div><div class="kpi-l">Provision EMV (MAD)</div></div>
+    </div>
+    <h2>Registre complet</h2>
+    <table><thead><tr><th>Mode de défaillance</th><th>Phase</th><th>S</th><th>O</th><th>D</th><th>RPN</th><th>Criticité</th><th>Impact MAD</th><th>Provision EMV</th><th>Action corrective</th><th>Responsable</th></tr></thead><tbody>${rows}</tbody></table>`,true);
+}
+
+function printFMEADash(){
+  if(!fmeaData.length){alert('Aucun risque enregistré.');return;}
+  const s=[...fmeaData].sort((a,b)=>b.RPN-a.RPN);
+  const crit=s.filter(f=>f.RPN>100),warn=s.filter(f=>f.RPN>=50&&f.RPN<=100),total=s.reduce((t,f)=>t+f.emv,0);
+  printBase('Dashboard Risques FMEA',`
+    <h1>Dashboard Risques — FMEA</h1>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-n" style="color:#9A2A2A">${crit.length}</div><div class="kpi-l">RPN Critiques</div></div>
+      <div class="kpi"><div class="kpi-n" style="color:#96690F">${warn.length}</div><div class="kpi-l">RPN Modérés</div></div>
+      <div class="kpi"><div class="kpi-n">${Math.max(...s.map(f=>f.RPN))}</div><div class="kpi-l">RPN Maximum</div></div>
+      <div class="kpi"><div class="kpi-n">${total.toLocaleString('fr-FR')}</div><div class="kpi-l">Provision EMV MAD</div></div>
+    </div>
+    ${crit.length?`<h2>Risques critiques (RPN &gt; 100) — Action immédiate requise</h2>
+    <table><thead><tr><th>Mode</th><th>Phase</th><th>S</th><th>O</th><th>D</th><th>RPN</th><th>Action</th><th>Responsable</th></tr></thead>
+    <tbody>${crit.map(f=>`<tr><td style="font-weight:500;color:#9A2A2A">${f.mode}</td><td>${f.phase}</td><td>${f.S}</td><td>${f.O}</td><td>${f.D}</td><td><strong style="color:#9A2A2A">${f.RPN}</strong></td><td>${f.action}</td><td>${f.resp}</td></tr>`).join('')}</tbody></table>`:''}
+    ${warn.length?`<h2>Risques modérés (RPN 50–100)</h2>
+    <table><thead><tr><th>Mode</th><th>Phase</th><th>RPN</th><th>Action</th></tr></thead>
+    <tbody>${warn.map(f=>`<tr><td>${f.mode}</td><td>${f.phase}</td><td style="color:#96690F">${f.RPN}</td><td>${f.action}</td></tr>`).join('')}</tbody></table>`:''}
+  `);
+}
+
+function printPareto(){
+  if(!paretoData.length){alert('Aucune donnée Pareto.');return;}
+  const svg=document.getElementById('paretoSvg');
+  const svgStr=new XMLSerializer().serializeToString(svg);
+  const s=[...paretoData].sort((a,b)=>b.f-a.f),total=s.reduce((t,x)=>t+x.f,0);
+  let c=0,n=0;s.forEach(x=>{if(c/total<0.8){c+=x.f;n++;}});
+  const rows=s.map(x=>`<tr><td>${x.c}</td><td style="text-align:center;font-family:'JetBrains Mono',monospace">${x.f}</td><td style="text-align:center;font-family:'JetBrains Mono',monospace">${(x.f/total*100).toFixed(1)}%</td></tr>`).join('');
+  printBase('Diagramme Pareto 80/20',`
+    <h1>Analyse Pareto — Règle 80/20</h1>
+    <div class="pf"><strong>${n} cause(s)</strong> sur ${s.length} représentent 80% des occurrences. <em>Concentrez vos actions sur : ${s.slice(0,n).map(x=>x.c).join(', ')}.</em></div>
+    <div style="text-align:center;margin:16px 0"><svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;height:220px;background:#F4F2EB;border-radius:8px">${svgStr.replace(/<svg[^>]*>/,'').replace('</svg>','')}</svg></div>
+    <h2>Tableau des causes</h2>
+    <table><thead><tr><th>Cause</th><th>Fréquence</th><th>Part (%)</th></tr></thead><tbody>${rows}</tbody></table>`);
+}
+
+function printIshikawa(){
+  const svg=document.getElementById('ishiSvg');
+  const svgStr=new XMLSerializer().serializeToString(svg);
+  const effet=document.getElementById('ishi_effet').value||'Non défini';
+  const cats=Object.entries(IM).map(([k,m])=>`<tr><td style="font-weight:500;color:${m.col}">${m.l}</td><td>${ishiData[k].join(', ')||'—'}</td></tr>`).join('');
+  printBase('Diagramme Ishikawa 5M',`
+    <h1>Diagramme Ishikawa — 5M</h1>
+    <div class="pf"><strong>Effet analysé :</strong> ${effet}</div>
+    <div style="text-align:center;margin:16px 0"><svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:280px;background:#F4F2EB;border-radius:8px">${svgStr.replace(/<svg[^>]*>/,'').replace('</svg>','')}</svg></div>
+    <h2>Causes par catégorie</h2>
+    <table><thead><tr><th>Catégorie (M)</th><th>Causes identifiées</th></tr></thead><tbody>${cats}</tbody></table>`,true);
+}
+
+function printDMAIC(){
+  const ps=document.getElementById('d_ps')?.value||'—';
+  const ac=document.getElementById('a_cause')?.value||'—';
+  const d=+document.getElementById('m_defects')?.value,dpmo=d?Math.round(d/100*1e6):null,sigma=dpmo?sigmaFromDPMO(dpmo):null;
+  const imps=improveActions.map(x=>`<tr><td>${x.a}</td><td>${x.o||'—'}</td><td>${x.d||'—'}</td><td><span class="chip ${x.done?'chip-go':'chip-warn'}">${x.done?'TERMINÉ':'EN COURS'}</span></td></tr>`).join('');
+  printBase('Cycle DMAIC',`
+    <h1>Rapport Cycle DMAIC</h1>
+    <h2>D — Définir</h2><div class="pf">${ps||'—'}</div>
+    <h2>M — Mesurer</h2>
+    ${sigma?`<div class="kpi-row"><div class="kpi"><div class="kpi-n" style="color:${sigma>=4?'#1A6B3C':sigma>=3?'#96690F':'#9A2A2A'}">σ ${sigma.toFixed(1)}</div><div class="kpi-l">Niveau Sigma</div></div><div class="kpi"><div class="kpi-n">${dpmo.toLocaleString('fr-FR')}</div><div class="kpi-l">DPMO</div></div></div>`:'<div class="pf">Données de mesure non renseignées.</div>'}
+    <h2>A — Analyser (5 Pourquoi)</h2><div class="pf" style="white-space:pre-line">${ac||'—'}</div>
+    <h2>I — Améliorer — Plan d\'actions</h2>
+    ${imps?`<table><thead><tr><th>Action</th><th>Responsable</th><th>Délai</th><th>Statut</th></tr></thead><tbody>${imps}</tbody></table>`:'<div class="pf">Aucune action renseignée.</div>'}
+    <h2>C — Contrôler</h2><div class="pf">Référencer les résultats de la Carte de Contrôle SPC dans l\'onglet dédié.</div>`);
+}
+
+function printSigma(){
+  const N=+document.getElementById('s_N')?.value,D=+document.getElementById('s_D')?.value,O=+document.getElementById('s_O')?.value||1;
+  const lvls=[{s:1,dpmo:691000,pct:30.85,lbl:'Insuffisant'},{s:2,dpmo:308700,pct:69.15,lbl:'Faible'},{s:3,dpmo:66800,pct:93.32,lbl:'Moyen'},{s:4,dpmo:6210,pct:99.38,lbl:'Bon'},{s:5,dpmo:230,pct:99.977,lbl:'Excellent'},{s:6,dpmo:3.4,pct:99.9997,lbl:'World Class'}];
+  const hasCalc=N>0&&D>0;
+  const dpmo=hasCalc?(D/(N*O))*1e6:null,sigma=dpmo?sigmaFromDPMO(dpmo):null;
+  const scaleRows=lvls.map(l=>`<tr><td style="font-weight:700;color:${l.s<=2?'#9A2A2A':l.s<=3?'#F97316':l.s<=4?'#96690F':'#1A6B3C'}">σ ${l.s}</td><td>${l.lbl}</td><td style="font-family:'JetBrains Mono',monospace">${l.dpmo.toLocaleString('fr-FR')}</td><td style="font-family:'JetBrains Mono',monospace">${l.pct}%</td></tr>`).join('');
+  printBase('Niveaux Sigma',`
+    <h1>Rapport Niveaux Sigma</h1>
+    ${hasCalc?`<div class="kpi-row">
+      <div class="kpi"><div class="kpi-n" style="color:${sigma>=4?'#1A6B3C':sigma>=3?'#96690F':'#9A2A2A'}">σ ${sigma.toFixed(1)}</div><div class="kpi-l">Niveau calculé</div></div>
+      <div class="kpi"><div class="kpi-n">${Math.round(dpmo).toLocaleString('fr-FR')}</div><div class="kpi-l">DPMO</div></div>
+      <div class="kpi"><div class="kpi-n" style="color:#1A6B3C">${((1-D/(N*O))*100).toFixed(3)}%</div><div class="kpi-l">Conformité</div></div>
+      <div class="kpi"><div class="kpi-n">${N.toLocaleString('fr-FR')}</div><div class="kpi-l">Unités analysées</div></div>
+    </div>`:''}
+    <h2>Échelle de référence Six Sigma</h2>
+    <table><thead><tr><th>Niveau</th><th>Qualification</th><th>DPMO</th><th>Conformité (%)</th></tr></thead><tbody>${scaleRows}</tbody></table>`);
+}
+
+function printSPC(){
+  const svg=document.getElementById('spcSvg');
+  if(!svg||document.getElementById('spcCard').style.display==='none'){alert('Générez d\'abord la carte de contrôle.');return;}
+  const svgStr=new XMLSerializer().serializeToString(svg);
+  const ind=document.getElementById('cc_indicator').value||'Indicateur',t=document.getElementById('cc_target').value,tol=document.getElementById('cc_tol').value;
+  const an=document.getElementById('spcAnalysis').innerHTML;
+  printBase('Carte de Contrôle SPC',`
+    <h1>Carte de Contrôle — Statistical Process Control</h1>
+    <div class="pf"><strong>Indicateur :</strong> ${ind} · <strong>Cible μ :</strong> ${t} · <strong>Tolérance ±:</strong> ${tol}</div>
+    <div style="text-align:center;margin:16px 0"><svg viewBox="0 0 920 240" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:240px;background:#F4F2EB;border-radius:8px">${svgStr.replace(/<svg[^>]*>/,'').replace('</svg>','')}</svg></div>
+    <div style="padding:12px;background:#EEEBE2;border-radius:7px;font-size:12px">${an}</div>`,true);
+}
+
+function printAvApres(){
+  const res=document.getElementById('baResult').innerHTML;
+  if(res.includes('empty')){alert('Lancez d\'abord la simulation.');return;}
+  const av=document.getElementById('ba_av').value,ap=document.getElementById('ba_ap').value,cu=+document.getElementById('ba_cu').value,vol=document.getElementById('ba_vol').value,cout=+document.getElementById('ba_cout').value,hz=document.getElementById('ba_hz').value;
+  const gain=(vol*(av/100-ap/100)*cu)*hz;const roi=cout>0?((gain-cout)/cout*100).toFixed(1):null;
+  printBase('Simulation Avant / Après',`
+    <h1>Simulation Avant / Après — ROI Qualité</h1>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-n" style="color:#9A2A2A">${av}%</div><div class="kpi-l">Taux défauts Avant</div></div>
+      <div class="kpi"><div class="kpi-n" style="color:#1A6B3C">${ap}%</div><div class="kpi-l">Taux défauts Après</div></div>
+      <div class="kpi"><div class="kpi-n">${hz}</div><div class="kpi-l">Horizon (mois)</div></div>
+      ${roi!==null?`<div class="kpi"><div class="kpi-n" style="color:${+roi>0?'#1A6B3C':'#9A2A2A'}">${roi}%</div><div class="kpi-l">ROI</div></div>`:''}
+    </div>
+    <table><thead><tr><th>Paramètre</th><th>Valeur</th></tr></thead><tbody>
+      <tr><td>Coût unitaire non-conformité</td><td style="font-family:'JetBrains Mono',monospace">${cu.toLocaleString('fr-FR')} MAD</td></tr>
+      <tr><td>Volume mensuel</td><td style="font-family:'JetBrains Mono',monospace">${vol} unités</td></tr>
+      <tr><td>Coût de mise en œuvre</td><td style="font-family:'JetBrains Mono',monospace">${cout.toLocaleString('fr-FR')} MAD</td></tr>
+      <tr><td>Gain net estimé</td><td style="font-family:'JetBrains Mono',monospace;font-weight:700;color:${gain>=(cout||0)?'#1A6B3C':'#9A2A2A'}">${gain.toLocaleString('fr-FR')} MAD</td></tr>
+    </tbody></table>`);
+}
+
+function printActions(){
+  if(!globalActions.length){alert('Aucune action enregistrée.');return;}
+  const pO={high:0,med:1,low:2};
+  const rows=[...globalActions].sort((a,b)=>pO[a.prio]-pO[b.prio]).map(a=>`<tr>
+    <td style="font-weight:500">${a.t}</td>
+    <td><span class="chip ${a.prio==='high'?'chip-stop':a.prio==='med'?'chip-warn':'chip-go'}">${a.prio==='high'?'HAUTE':a.prio==='med'?'MOY':'BASSE'}</span></td>
+    <td>${a.cat||'—'}</td><td>${a.o||'—'}</td><td>${a.d||'—'}</td>
+    <td><span class="chip ${a.done?'chip-go':'chip-warn'}">${a.done?'TERMINÉ':'EN COURS'}</span></td>
+  </tr>`).join('');
+  const done=globalActions.filter(a=>a.done).length;
+  printBase('Plan d\'Actions',`
+    <h1>Plan d'Actions — Suivi Global</h1>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-n" style="color:#1A6B3C">${done}</div><div class="kpi-l">Terminées</div></div>
+      <div class="kpi"><div class="kpi-n">${globalActions.length-done}</div><div class="kpi-l">En cours</div></div>
+      <div class="kpi"><div class="kpi-n">${globalActions.filter(a=>a.prio==='high'&&!a.done).length}</div><div class="kpi-l">Priorité haute</div></div>
+      <div class="kpi"><div class="kpi-n">${Math.round(done/globalActions.length*100)}%</div><div class="kpi-l">Avancement</div></div>
+    </div>
+    <table><thead><tr><th>Action</th><th>Priorité</th><th>Catégorie</th><th>Responsable</th><th>Date cible</th><th>Statut</th></tr></thead><tbody>${rows}</tbody></table>`);
+}
+
+function exportAllPDF(){
+  const p=getProjectInfo();
+  const sc=calcVerdictScore();
+  printBase('Rapport Complet LSS',`
+    <h1>Rapport Lean Six Sigma — Control Cockpit</h1>
+    <div style="padding:12px;background:var(--goldP);border:1px solid var(--bdg);border-radius:8px;margin-bottom:16px;font-size:12px">
+      Projet : <strong>${p.nom}</strong> · Secteur : ${p.secteur} · Responsable : ${p.resp} · Phase : ${p.phase}
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-n" style="color:${sc===null?'#888':sc>=70?'#1A6B3C':sc>=40?'#96690F':'#9A2A2A'}">${sc!==null?sc:'—'}</div><div class="kpi-l">Score Control Cockpit</div></div>
+      <div class="kpi"><div class="kpi-n">${fmeaData.length}</div><div class="kpi-l">Risques FMEA</div></div>
+      <div class="kpi"><div class="kpi-n">${fmeaData.filter(f=>f.RPN>100).length}</div><div class="kpi-l">RPN Critiques</div></div>
+      <div class="kpi"><div class="kpi-n">${globalActions.length}</div><div class="kpi-l">Actions enregistrées</div></div>
+    </div>
+    <p style="color:var(--smoke);font-size:12px;font-style:italic">Pour un export détaillé par outil (FMEA, Pareto, Ishikawa…), utilisez les boutons ⬇ PDF dans chaque section.</p>`);
+}
+
+// ══ SVG DOWNLOAD ══
+function downloadSVG(svgId,filename){
+  const svg=document.getElementById(svgId);if(!svg)return;
+  const s=new XMLSerializer();
+  let str=s.serializeToString(svg);
+  if(!str.includes('xmlns='))str=str.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"');
+  const blob=new Blob([str],{type:'image/svg+xml'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=filename+'_'+new Date().toISOString().slice(0,10)+'.svg';a.click();
+}
+
+// ══ EXPORT JSON ══
+function exportData(){
+  const blob=new Blob([JSON.stringify({project:{nom:document.getElementById('pb_projet').value,secteur:document.getElementById('pb_secteur').value,resp:document.getElementById('pb_resp').value,budget:document.getElementById('pb_budget').value,phase:document.getElementById('pb_phase').value},piliers,fmea:fmeaData,pareto:paretoData,ishikawa:ishiData,actions:globalActions,improveActions,date:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`LSS_${(document.getElementById('pb_projet').value||'export').replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.json`;a.click();
+}
+
+// ══ RESET ══
+function clearAll(){if(!confirm('Réinitialiser toutes les données ?'))return;fmeaData=[];paretoData=[];ishiData={mo:[],ma:[],me:[],mc:[],mi:[]};improveActions=[];globalActions=[];piliers.forEach(p=>p.score=null);renderPiliers();renderFMEA();renderPareto();renderActions();renderImprove();['pb_projet','pb_secteur','pb_resp','pb_budget'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});}
+
+// ══ INIT ══
+renderPiliers();
+renderSigmaScale();
+renderIshi();
+</script>
+</body>
+</html>

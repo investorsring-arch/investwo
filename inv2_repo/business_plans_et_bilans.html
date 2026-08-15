@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Plan & Bilan Financier — Smart-Invest.ia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8862A;--gl:#F0C460;--gp:#FBF3DE;
+  --ink:#0E0E0C;--im:#2A2A24;--is:#4A4A40;--sm:#7A7A70;
+  --bg:#F7F6F1;--b2:#EFEDE6;--wh:#FFFFFE;
+  --ac:#1E4D6B;--ok:#1A6B3C;--er:#B91C1C;--wn:#C05820;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+.header{position:sticky;top:0;z-index:50;height:56px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  border-bottom:1px solid rgba(184,134,42,.2)}
+.hl{display:flex;align-items:center;gap:14px}
+.back{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none}.back:hover{color:var(--gl)}
+.logo{font-family:var(--ft);font-size:16px;font-weight:800;color:#fff}.logo span{color:var(--gl)}
+.badge{font-family:var(--fm);font-size:10px;color:var(--gl);background:rgba(184,134,42,.12);
+  border:1px solid rgba(184,134,42,.25);padding:4px 10px;border-radius:100px}
+.disc{font-size:11px;color:rgba(255,255,255,.25);font-family:var(--fm)}
+
+.page{max-width:1160px;margin:0 auto;padding:28px 28px 80px}
+.page-title{font-family:var(--ft);font-size:24px;font-weight:800;margin-bottom:4px}
+.page-title span{color:var(--gold)}
+.page-sub{font-size:13px;color:var(--sm);margin-bottom:22px}
+
+.tabs{display:flex;gap:3px;margin-bottom:24px;background:var(--b2);border-radius:12px;padding:4px;flex-wrap:wrap}
+.tab{padding:8px 15px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;
+  border:none;background:none;color:var(--sm);transition:all .18s;font-family:var(--fb);white-space:nowrap}
+.tab.active{background:var(--wh);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tab-panel{display:none}.tab-panel.show{display:block}
+
+.sim-panel{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.sim-panel{grid-template-columns:1fr}}
+.wide-panel{max-width:100%}
+
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:14px}
+.card-title{font-family:var(--ft);font-size:13.5px;font-weight:800;margin-bottom:13px;display:flex;align-items:center;gap:8px}
+
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.06em;color:var(--is);
+  margin-bottom:4px;text-transform:uppercase;font-family:var(--fm)}
+.fg input,.fg select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:8px;
+  font-family:var(--fb);font-size:13.5px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .18s}
+.fg input:focus,.fg select:focus{border-color:var(--gold);background:var(--wh)}
+.fg .hint{font-size:10.5px;color:var(--sm);margin-top:3px;font-family:var(--fm)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.fg input[readonly]{background:rgba(184,134,42,.07);border-color:rgba(184,134,42,.3);color:var(--is);cursor:default}
+
+.sync-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--fm);font-size:9.5px;
+  background:rgba(26,107,60,.08);border:1px solid rgba(26,107,60,.2);color:var(--ok);
+  padding:3px 8px;border-radius:100px;margin-left:8px}
+.sync-off{background:rgba(192,88,32,.08);border-color:rgba(192,88,32,.2);color:var(--wn)}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:14px}
+.kpi-grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.kpi-grid-4{grid-template-columns:repeat(2,1fr)}}
+.kpi-box{background:var(--b2);border-radius:10px;padding:13px;text-align:center;border:1px solid var(--bd)}
+.kpi-n{font-family:var(--ft);font-size:20px;font-weight:800;line-height:1;margin-bottom:3px}
+.kpi-l{font-size:10.5px;color:var(--sm)}
+.kpi-d{font-size:9.5px;margin-top:2px;font-family:var(--fm)}
+
+.prev-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.prev-table th{padding:7px 10px;background:var(--ink);color:rgba(255,255,255,.7);font-family:var(--fm);
+  font-size:9px;letter-spacing:.07em;text-transform:uppercase;border:1px solid rgba(255,255,255,.04);text-align:right}
+.prev-table th:first-child{text-align:left}
+.prev-table td{padding:8px 10px;border-bottom:1px solid var(--bd);text-align:right;vertical-align:middle;font-family:var(--fm)}
+.prev-table td:first-child{text-align:left;font-size:12px;color:var(--is);font-family:var(--fb)}
+.prev-table tr:hover td{background:rgba(184,134,42,.025)}
+.prev-table .section-row td{background:rgba(184,134,42,.07);font-weight:700;font-family:var(--ft);
+  font-size:10.5px;color:var(--gold);letter-spacing:.04em;padding:5px 10px}
+.prev-table .total-row td{background:var(--ink);color:#fff;font-weight:700;font-family:var(--ft);font-size:11.5px}
+.prev-table .sub-row td{font-size:11px;color:var(--sm)}
+
+.chart-bars{display:flex;align-items:flex-end;gap:5px;height:110px;padding:6px 0;border-bottom:1px solid var(--bd)}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.chart-bar{width:100%;border-radius:3px 3px 0 0;transition:height .45s;min-height:3px;position:relative}
+.chart-bar:hover::after{content:attr(data-val);position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;font-family:var(--fm);font-size:9px;padding:2px 5px;border-radius:3px;white-space:nowrap;z-index:10}
+.chart-label{font-family:var(--fm);font-size:9px;color:var(--sm);text-align:center}
+
+.ratio-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;
+  border-bottom:1px solid var(--bd);font-size:12.5px;gap:8px}
+.ratio-row:last-child{border:none}
+.ratio-val{font-family:var(--ft);font-size:15px;font-weight:800;white-space:nowrap}
+.ratio-interp{font-family:var(--fm);font-size:9px;padding:2px 7px;border-radius:100px;white-space:nowrap}
+.ri-ok{background:rgba(26,107,60,.1);color:var(--ok)}
+.ri-warn{background:rgba(192,88,32,.1);color:var(--wn)}
+.ri-bad{background:rgba(185,28,28,.1);color:var(--er)}
+.ri-neutral{background:var(--b2);color:var(--sm)}
+
+.btn-calc{width:100%;padding:12px;background:var(--gold);color:var(--ink);border:none;
+  border-radius:9px;font-family:var(--fb);font-size:13.5px;font-weight:700;cursor:pointer;transition:all .18s}
+.btn-calc:hover{background:var(--gl);transform:translateY(-1px)}
+.btn-export{padding:8px 16px;background:transparent;border:1.5px solid var(--bd);
+  border-radius:7px;font-family:var(--fb);font-size:12px;color:var(--is);cursor:pointer;transition:all .18s}
+.btn-export:hover{border-color:var(--gold);color:var(--gold)}
+
+.alert{display:flex;align-items:flex-start;gap:9px;padding:11px 13px;border-radius:8px;font-size:12.5px;margin-bottom:12px;line-height:1.55}
+.alert-info{background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.2);border-left:3px solid var(--ac);color:var(--ac)}
+.alert-ok{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.2);border-left:3px solid var(--ok);color:var(--ok)}
+.alert-warn{background:rgba(192,88,32,.07);border:1px solid rgba(192,88,32,.2);border-left:3px solid var(--wn);color:var(--wn)}
+.alert-err{background:rgba(185,28,28,.07);border:1px solid rgba(185,28,28,.2);border-left:3px solid var(--er);color:var(--er)}
+
+/* Sensitivity table */
+.sens-table{width:100%;border-collapse:collapse;font-size:11px}
+.sens-table th{padding:6px 8px;background:var(--b2);font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--bd)}
+.sens-table td{padding:7px 8px;border:1px solid var(--bd);text-align:center;font-family:var(--fm)}
+.sens-table td.pivot{background:rgba(184,134,42,.15);font-weight:700}
+
+/* Scenario cards */
+.scen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+@media(max-width:900px){.scen-grid{grid-template-columns:1fr}}
+.scen-card{border-radius:13px;padding:18px;border:1px solid var(--bd)}
+.scen-pessimiste{background:rgba(185,28,28,.04);border-color:rgba(185,28,28,.2)}
+.scen-base{background:rgba(184,134,42,.05);border-color:rgba(184,134,42,.3)}
+.scen-optimiste{background:rgba(26,107,60,.04);border-color:rgba(26,107,60,.2)}
+.scen-title{font-family:var(--ft);font-size:13px;font-weight:800;margin-bottom:2px}
+.scen-sub{font-size:10.5px;color:var(--sm);margin-bottom:12px;font-family:var(--fm)}
+.scen-stat{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bd);font-size:12px}
+.scen-stat:last-child{border:none;font-weight:700;padding-top:8px}
+.scen-val{font-family:var(--fm);font-weight:600}
+
+/* Toggle */
+.toggle-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;color:var(--is)}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--bd);border-radius:20px;cursor:pointer;transition:.2s}
+.toggle-slider:before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;
+  background:white;border-radius:50%;transition:.2s}
+.toggle input:checked + .toggle-slider{background:var(--ok)}
+.toggle input:checked + .toggle-slider:before{transform:translateX(16px)}
+
+/* Progress bar */
+.pbar-wrap{height:6px;background:var(--b2);border-radius:3px;margin:3px 0 8px}
+.pbar{height:100%;border-radius:3px;transition:width .5s}
+
+/* IS info badge */
+.is-badge{font-family:var(--fm);font-size:9.5px;background:rgba(30,77,107,.08);color:var(--ac);
+  border:1px solid rgba(30,77,107,.2);padding:3px 8px;border-radius:6px;margin-top:4px;display:inline-block}
+
+/* Cashflow chart line */
+.cf-chart{position:relative;height:80px;margin:8px 0}
+.cf-zero{position:absolute;left:0;right:0;border-top:1px dashed rgba(0,0,0,.15)}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="hl">
+    <a href="landing.html" class="back">← Accueil</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="badge">Business Plan · Prévisionnel 5 ans</span>
+  </div>
+  <div class="disc">⚖️ CGI IS 2025 · Progressif 10/20/35% · Interdépendances actives</div>
+</header>
+
+<div class="page">
+  <div class="page-title">Business Plan & <span>Bilan Prévisionnel</span></div>
+  <p class="page-sub">Compte de résultat · Financement · Ratios &amp; DSCR · BFR · VAN/TRI · Scénarios · CGI IS 2025</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('cdr',this)">📊 Compte de résultat</button>
+    <button class="tab" onclick="showTab('financement',this)">💰 Plan de financement</button>
+    <button class="tab" onclick="showTab('ratios',this)">📐 Ratios &amp; Viabilité</button>
+    <button class="tab" onclick="showTab('vanTri',this)">💹 VAN / TRI / Payback</button>
+    <button class="tab" onclick="showTab('scenarios',this)">🎯 Scénarios</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       ONGLET 1 : COMPTE DE RÉSULTAT
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel show" id="tp-cdr">
+    <div class="sim-panel">
+      <div>
+        <div class="card">
+          <div class="card-title">🏢 Informations projet</div>
+          <div class="fg"><label>Nom du projet</label><input type="text" id="p_nom" value="Mon Projet Industriel" oninput="calcAll()"></div>
+          <div class="fg-row">
+            <div class="fg"><label>Secteur</label>
+              <select id="p_secteur" onchange="onSecteurChange()">
+                <option value="industrie">Industrie</option>
+                <option value="agro">Agroalimentaire</option>
+                <option value="services">Services</option>
+                <option value="tic">TIC / Tech</option>
+                <option value="btp">BTP</option>
+                <option value="commerce">Commerce</option>
+                <option value="tourisme">Tourisme</option>
+                <option value="energie">Énergie</option>
+                <option value="sante">Santé</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Régime IS <span id="is_badge_lbl" class="is-badge">CGI 2025 Progressif</span></label>
+              <select id="p_tis" onchange="calcAll()">
+                <option value="progressif" selected>Progressif CGI 2025 (10/20/35%)</option>
+                <option value="0">0% — ZFE / Exonération totale</option>
+                <option value="10">10% — 1ère tranche uniquement</option>
+                <option value="17.5">17.5% — IS agricole / An 6-10 ZAI</option>
+                <option value="20">20% — Taux réduit ZAI/CFC</option>
+                <option value="26">26% — Ancien taux (2024)</option>
+              </select>
+              <div class="hint">Progressif = 10% sur ≤300k · 20% sur 300k–1M · 35% au-delà (CGI Art.19)</div>
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Horizon prévisionnel</label>
+              <select id="p_horizon" onchange="calcAll()">
+                <option value="5" selected>5 ans</option>
+                <option value="7">7 ans</option>
+              </select>
+            </div>
+            <div class="fg"><label>TVA applicable (%)</label>
+              <input type="number" id="p_tva" value="20" min="0" max="20" oninput="calcAll()">
+              <div class="hint">Impact sur BFR (créances/dettes)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📈 Chiffre d'affaires prévisionnel</div>
+          <div class="fg-row3">
+            <div class="fg"><label>CA An 1 (MAD HT)</label><input type="number" id="ca1" value="2000000" min="0" oninput="calcAll()"></div>
+            <div class="fg"><label>Croissance An 2 (%)</label><input type="number" id="g2" value="30" oninput="calcAll()"></div>
+            <div class="fg"><label>Croissance An 3+ (%)</label><input type="number" id="g35" value="15" oninput="calcAll()"></div>
+          </div>
+          <div class="fg">
+            <label>Taux de marge brute (%)</label>
+            <input type="number" id="marge_brute" value="40" min="0" max="100" oninput="calcAll()">
+            <div class="hint">Marge sur coût variable — ex: 40% = matières = 60% du CA</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">💸 Charges d'exploitation (An 1)</div>
+          <div class="fg-row">
+            <div class="fg"><label>Masse salariale brute (MAD)</label><input type="number" id="c_salaires" value="500000" oninput="calcAll()"></div>
+            <div class="fg"><label>Charges locatives (MAD)</label><input type="number" id="c_loyer" value="120000" oninput="calcAll()"></div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Services &amp; sous-traitance</label><input type="number" id="c_services" value="80000" oninput="calcAll()"></div>
+            <div class="fg"><label>Énergie &amp; fluides</label><input type="number" id="c_energie" value="60000" oninput="calcAll()"></div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Marketing &amp; commercial</label><input type="number" id="c_marketing" value="40000" oninput="calcAll()"></div>
+            <div class="fg"><label>Autres charges fixes</label><input type="number" id="c_autres" value="30000" oninput="calcAll()"></div>
+          </div>
+          <div class="fg"><label>Indexation annuelle charges (%)</label>
+            <input type="number" id="inflation" value="5" oninput="calcAll()">
+            <div class="hint">Revalorisation salaires, loyer, énergie — inflation Maroc ≈ 3-5%</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🏗️ Investissement &amp; Amortissements</div>
+          <div class="fg-row">
+            <div class="fg"><label>Investissement total HT (MAD)</label>
+              <input type="number" id="inv_total" value="3000000" oninput="onInvChange()">
+            </div>
+            <div class="fg"><label>Durée amortissement (ans)</label>
+              <input type="number" id="inv_duree" value="10" min="1" max="20" oninput="calcAll()">
+            </div>
+          </div>
+          <div class="fg">
+            <label>Charges financières An 1
+              <span id="cf_sync_badge" class="sync-badge">🔗 Auto depuis financement</span>
+            </label>
+            <input type="number" id="c_financier" value="90000" oninput="calcAll()" id="c_financier">
+            <div class="hint" id="cf_hint">Synchronisé automatiquement depuis le plan de financement</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📦 BFR — Besoin en Fonds de Roulement</div>
+          <div class="fg-row3">
+            <div class="fg"><label>Délai clients (jours)</label>
+              <input type="number" id="bfr_client" value="60" min="0" max="180" oninput="calcAll()">
+              <div class="hint">Crédit accordé aux clients</div>
+            </div>
+            <div class="fg"><label>Délai fournisseurs (j)</label>
+              <input type="number" id="bfr_fourn" value="45" min="0" max="180" oninput="calcAll()">
+              <div class="hint">Crédit obtenu des fournisseurs</div>
+            </div>
+            <div class="fg"><label>Rotation stocks (j)</label>
+              <input type="number" id="bfr_stock" value="30" min="0" max="365" oninput="calcAll()">
+              <div class="hint">Jours de stock moyen</div>
+            </div>
+          </div>
+          <div id="bfr_preview" style="font-size:12px;color:var(--sm);font-family:var(--fm)"></div>
+        </div>
+
+        <button class="btn-calc" onclick="calcAll()">📊 Actualiser le prévisionnel</button>
+      </div>
+
+      <!-- RÉSULTATS CDR -->
+      <div>
+        <div class="kpi-grid kpi-grid-4" id="kpiGrid">
+          <div class="kpi-box"><div class="kpi-n" id="k_ca5" style="color:var(--gold)">—</div><div class="kpi-l">CA An 5</div></div>
+          <div class="kpi-box"><div class="kpi-n" id="k_rnc5" style="color:var(--ok)">—</div><div class="kpi-l">Résultat net An 5</div></div>
+          <div class="kpi-box"><div class="kpi-n" id="k_marge5" style="color:var(--ac)">—</div><div class="kpi-l">Marge nette An 5</div></div>
+          <div class="kpi-box"><div class="kpi-n" id="k_pr" style="color:var(--wn)">—</div><div class="kpi-l">Point mort (CA)</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📊 Évolution CA &amp; Résultat net</div>
+          <div class="chart-bars" id="chartBars"></div>
+          <div style="display:flex;gap:14px;margin-top:7px;font-family:var(--fm);font-size:9.5px">
+            <span><span style="display:inline-block;width:9px;height:9px;background:var(--gold);border-radius:2px;margin-right:3px"></span>CA</span>
+            <span><span style="display:inline-block;width:9px;height:9px;background:var(--ok);border-radius:2px;margin-right:3px"></span>Résultat net</span>
+            <span><span style="display:inline-block;width:9px;height:9px;background:var(--ac);border-radius:2px;margin-right:3px"></span>EBITDA</span>
+          </div>
+        </div>
+
+        <div class="card" style="overflow-x:auto">
+          <div class="card-title" style="justify-content:space-between">
+            <span>📋 Compte de résultat prévisionnel</span>
+            <div id="is_info_badge" class="is-badge"></div>
+          </div>
+          <table class="prev-table" id="prevTable"></table>
+        </div>
+
+        <div id="bfr_table_card" class="card" style="overflow-x:auto;display:none">
+          <div class="card-title">📦 BFR prévisionnel &amp; impact trésorerie</div>
+          <table class="prev-table" id="bfrTable"></table>
+        </div>
+
+        <div id="is_detail_card" class="card" style="display:none">
+          <div class="card-title">🧮 Détail calcul IS progressif (CGI 2025)</div>
+          <div id="is_detail_content"></div>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-export" onclick="window.print()">🖨 Imprimer</button>
+          <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button>
+          <button class="btn-export" onclick="showIsDetail()">🧮 Détail IS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       ONGLET 2 : PLAN DE FINANCEMENT
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tp-financement">
+    <div class="sim-panel">
+      <div>
+        <div class="card">
+          <div class="card-title">💰 Sources de financement</div>
+          <div class="fg"><label>Apport personnel / fonds propres (MAD)</label>
+            <input type="number" id="fin_fonds" value="1200000" min="0" oninput="calcAll()">
+          </div>
+          <div class="fg"><label>Emprunt bancaire (MAD)</label>
+            <input type="number" id="fin_emprunt" value="1500000" min="0" oninput="calcAll()">
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Taux d'intérêt annuel (%)</label>
+              <input type="number" id="fin_taux" value="5.5" step="0.25" min="0" oninput="calcAll()">
+              <div class="hint">Taux crédit BAM Maroc 2025 : 5.5–7.5%</div>
+            </div>
+            <div class="fg"><label>Durée emprunt (ans)</label>
+              <input type="number" id="fin_duree" value="7" min="1" max="20" oninput="calcAll()">
+            </div>
+          </div>
+          <div class="fg">
+            <label>Différé de remboursement (ans)</label>
+            <input type="number" id="fin_differe" value="0" min="0" max="5" oninput="calcAll()">
+            <div class="hint">Période de grâce — intérêts seuls, sans remboursement capital</div>
+          </div>
+          <div class="fg"><label>Aides &amp; subventions (MAD)</label>
+            <input type="number" id="fin_aides" value="300000" min="0" oninput="calcAll()">
+            <div class="hint">FDII, CCG, Fonds HII, primes Charte 2023</div>
+          </div>
+          <div class="fg"><label>Crédit-bail / Leasing (MAD)</label>
+            <input type="number" id="fin_leasing" value="0" min="0" oninput="calcAll()">
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📊 Indicateurs bancaires</div>
+          <div id="bankIndicators">
+            <div class="alert alert-info">Calculez le prévisionnel pour voir les ratios bancaires.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="finResult">
+          <div class="card-title">📋 Résumé du financement</div>
+          <div id="finRows"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" id="amortTitle">📅 Tableau d'amortissement emprunt</div>
+          <div id="amortRows" style="overflow-x:auto"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       ONGLET 3 : RATIOS
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tp-ratios">
+    <div class="alert alert-info">📌 Ratios calculés automatiquement à partir du prévisionnel. Modifiez les données dans l'onglet "Compte de résultat".</div>
+    <div id="ratiosContent">
+      <div class="alert alert-warn">⚠️ Générez le prévisionnel (onglet Compte de résultat) pour afficher les ratios.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       ONGLET 4 : VAN / TRI / PAYBACK
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tp-vanTri">
+    <div class="sim-panel">
+      <div>
+        <div class="card">
+          <div class="card-title">⚙️ Paramètres VAN / TRI</div>
+          <div class="fg"><label>Taux d'actualisation WACC (%)</label>
+            <input type="number" id="van_taux" value="12" step="0.5" min="1" oninput="calcVAN()">
+            <div class="hint" id="wacc_hint">WACC sectoriel recommandé Maroc — voir ci-dessous</div>
+          </div>
+          <div id="wacc_suggest" style="font-size:11px;color:var(--sm);margin-bottom:10px;padding:8px;background:var(--b2);border-radius:7px;font-family:var(--fm)"></div>
+          <div class="fg"><label>Valeur résiduelle à fin période (MAD)</label>
+            <input type="number" id="van_residuel" value="0" oninput="calcVAN()">
+            <div class="hint">Valeur de revente actifs — 0 si actifs conservés</div>
+          </div>
+          <div class="fg"><label>Investissement initial (MAD) <span class="sync-badge">🔗 Auto</span></label>
+            <input type="number" id="van_invest" value="3000000" readonly>
+            <div class="hint">Synchronisé depuis Investissement total</div>
+          </div>
+          <div class="fg"><label>BFR initial inclus dans investissement</label>
+            <input type="number" id="van_bfr_init" value="0" readonly>
+            <div class="hint">BFR An 1 — automatiquement calculé</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📊 Analyse de sensibilité VAN</div>
+          <p style="font-size:12px;color:var(--sm);margin-bottom:10px">VAN pour différentes combinaisons CA × WACC</p>
+          <div id="sensTable"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="vanResult">
+          <div class="alert alert-info">ℹ️ Générez le prévisionnel pour calculer VAN / TRI.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">📈 Cash-flows cumulés</div>
+          <div class="chart-bars" id="cfCumulChart" style="height:130px"></div>
+          <div style="font-size:10px;color:var(--sm);margin-top:6px;font-family:var(--fm)" id="cfLegend"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       ONGLET 5 : SCÉNARIOS
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tp-scenarios">
+    <div class="alert alert-info">📌 Scénarios calculés automatiquement depuis vos hypothèses de base. Ajustez les paramètres dans "Compte de résultat".</div>
+    <div class="scen-grid" id="scenGrid">
+      <div class="alert alert-warn" style="grid-column:1/-1">⚠️ Générez le prévisionnel pour afficher les scénarios.</div>
+    </div>
+    <div class="card" style="overflow-x:auto">
+      <div class="card-title">📊 Comparaison tri-scénario — Compte de résultat An 5</div>
+      <div id="scenTable"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📈 Cash-flows annuels — Tri-scénario</div>
+      <div class="chart-bars" id="scenChart" style="height:130px"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  ÉTAT GLOBAL
+// ═══════════════════════════════════════════════════════
+let prevData     = null;  // données calculées
+let finCalc      = null;  // données financement
+let isDetailData = null;  // détail IS par année
+
+const WACC_SECTEUR = {
+  industrie:8.5, agro:8.0, services:10, tic:13.5,
+  btp:9.5, commerce:9, tourisme:11, energie:7.5, sante:8.5
+};
+
+// ═══════════════════════════════════════════════════════
+//  UTILITAIRES
+// ═══════════════════════════════════════════════════════
+function fmt(n, dec=0) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs >= 1e9) return (n/1e9).toFixed(2) + 'G';
+  if (abs >= 1e6) return (n/1e6).toFixed(2) + 'M';
+  if (abs >= 1000) return Math.round(n).toLocaleString('fr-MA');
+  return n.toFixed(dec).toLocaleString('fr-MA');
+}
+function fmtFull(n) {
+  if (isNaN(n)) return '—';
+  return Math.round(n).toLocaleString('fr-MA') + ' MAD';
+}
+function pct(n, dec=1) {
+  if (isNaN(n)) return '—';
+  return n.toFixed(dec) + '%';
+}
+function v(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+
+// ═══════════════════════════════════════════════════════
+//  IS PROGRESSIF — CGI ART.19 2025
+// ═══════════════════════════════════════════════════════
+function calcIS(benefice, mode) {
+  if (benefice <= 0) return 0;
+  if (mode === 'progressif') {
+    let is = 0;
+    if (benefice <= 300000)        is = benefice * 0.10;
+    else if (benefice <= 1000000)  is = 300000*0.10 + (benefice-300000)*0.20;
+    else                           is = 300000*0.10 + 700000*0.20 + (benefice-1000000)*0.35;
+    return is;
+  }
+  const taux = parseFloat(mode) / 100;
+  return benefice * taux;
+}
+function isTauxEffectif(benefice, mode) {
+  if (benefice <= 0) return 0;
+  return calcIS(benefice, mode) / benefice * 100;
+}
+
+// ═══════════════════════════════════════════════════════
+//  AMORTISSEMENT EMPRUNT (avec différé)
+// ═══════════════════════════════════════════════════════
+function buildAmort(emprunt, tauxAnnuel, duree, differe) {
+  if (emprunt <= 0 || tauxAnnuel <= 0 || duree <= 0) {
+    return { annuite:0, interets:[], capitals:[], soldes:[], rows:[] };
+  }
+  const t = tauxAnnuel / 100;
+  // Période de différé : intérêts seuls
+  const annuite = (duree - differe) > 0
+    ? emprunt * (t / (1 - Math.pow(1+t, -(duree - differe))))
+    : 0;
+
+  let cap = emprunt;
+  const interets = [], capitals = [], soldes = [], rows = [];
+
+  for (let i = 0; i < duree; i++) {
+    const int = cap * t;
+    let princ = 0;
+    if (i < differe) {
+      princ = 0; // période de grâce
+    } else {
+      princ = annuite - int;
+      if (princ < 0) princ = 0;
+    }
+    cap = Math.max(0, cap - princ);
+    interets.push(int);
+    capitals.push(princ);
+    soldes.push(cap);
+    rows.push({ an: i+1, annuite: int+princ, int, princ, solde: cap });
+  }
+  return { annuite, interets, capitals, soldes, rows };
+}
+
+// ═══════════════════════════════════════════════════════
+//  BFR
+// ═══════════════════════════════════════════════════════
+function calcBFR(ca, marge_b, delai_client, delai_fourn, jours_stock, tva_pct) {
+  const achats = ca * (1 - marge_b);
+  const tva    = tva_pct / 100;
+  const creances   = ca * (1 + tva) / 365 * delai_client;
+  const stock      = achats / 365 * jours_stock;
+  const dettes     = achats * (1 + tva) / 365 * delai_fourn;
+  return Math.max(0, creances + stock - dettes);
+}
+
+// ═══════════════════════════════════════════════════════
+//  CALCUL PRINCIPAL
+// ═══════════════════════════════════════════════════════
+function calcAll() {
+  calcFinancement();
+  calcPrev();
+  calcVAN();
+  calcScenarios();
+}
+
+function calcPrev() {
+  const ca1     = v('ca1');
+  const g2      = v('g2') / 100;
+  const g35     = v('g35') / 100;
+  const marge_b = v('marge_brute') / 100;
+  const tis     = document.getElementById('p_tis').value;
+  const inf     = v('inflation') / 100;
+  const horizon = parseInt(document.getElementById('p_horizon').value) || 5;
+
+  const charges0 = {
+    salaires:  v('c_salaires'),
+    loyer:     v('c_loyer'),
+    services:  v('c_services'),
+    energie:   v('c_energie'),
+    marketing: v('c_marketing'),
+    autres:    v('c_autres'),
+  };
+  const inv_total   = v('inv_total');
+  const inv_duree   = v('inv_duree') || 10;
+  const amortissement = inv_total / inv_duree;
+
+  const tva_pct    = v('p_tva') || 20;
+  const delai_cli  = v('bfr_client');
+  const delai_fourn= v('bfr_fourn');
+  const jours_stock= v('bfr_stock');
+
+  // Charges financières: depuis financement si disponible
+  const useAutoFin = finCalc && finCalc.interets && finCalc.interets.length > 0;
+
+  // CA par année (correction du forward-reference)
+  const cas = [ca1];
+  for (let i = 1; i < horizon; i++) {
+    cas.push(cas[i-1] * (i === 1 ? (1+g2) : (1+g35)));
+  }
+
+  // BFR par année
+  const bfrs = cas.map(ca => calcBFR(ca, marge_b, delai_cli, delai_fourn, jours_stock, tva_pct));
+
+  const isDetail = [];
+  const data = cas.map((ca, idx) => {
+    const y = idx + 1;
+    const mb          = ca * marge_b;
+    const totalFixe   = Object.values(charges0).reduce((a,b)=>a+b,0) * Math.pow(1+inf, idx);
+    const ebitda      = mb - totalFixe;
+    const ebit        = ebitda - amortissement;
+    const c_fin       = useAutoFin && idx < finCalc.interets.length ? finCalc.interets[idx] : v('c_financier');
+    const ebt         = ebit - c_fin;
+    const impot       = calcIS(ebt, tis);
+    const rn          = ebt - impot;
+    // FCF corrigé: RN + Amort - ΔBFR - Capital remboursé
+    const delta_bfr   = bfrs[idx] - (idx === 0 ? 0 : bfrs[idx-1]);
+    const cap_remb    = useAutoFin && idx < finCalc.capitals.length ? finCalc.capitals[idx] : 0;
+    const cashflow    = rn + amortissement - delta_bfr - cap_remb;
+    const cashflowSimple = rn + amortissement; // sans BFR et capital (pour compatibilité)
+
+    isDetail.push({ y, ebt, impot, taux_eff: isTauxEffectif(ebt, tis) });
+    return { y, ca, mb, totalFixe, ebitda, ebit, c_fin, ebt, impot, rn, cashflow, cashflowSimple,
+             amort: amortissement, bfr: bfrs[idx], delta_bfr, cap_remb };
+  });
+
+  prevData  = data;
+  isDetailData = isDetail;
+
+  // Mise à jour sync badge
+  const badge = document.getElementById('cf_sync_badge');
+  if (useAutoFin) {
+    badge.className = 'sync-badge';
+    badge.textContent = '🔗 Auto depuis financement';
+    document.getElementById('c_financier').value = Math.round(finCalc.interets[0] || 0);
+    document.getElementById('c_financier').readOnly = true;
+  } else {
+    badge.className = 'sync-badge sync-off';
+    badge.textContent = '✏ Manuel';
+    document.getElementById('c_financier').readOnly = false;
+  }
+
+  // KPIs
+  const last = data[data.length-1];
+  const firstYear = data[0];
+  document.getElementById('k_ca5').textContent   = fmt(last.ca) + ' MAD';
+  document.getElementById('k_rnc5').textContent  = fmt(last.rn) + ' MAD';
+  document.getElementById('k_rnc5').style.color  = last.rn >= 0 ? 'var(--ok)' : 'var(--er)';
+  document.getElementById('k_marge5').textContent = pct(last.rn / last.ca * 100);
+
+  // Point mort en MAD = Charges fixes / taux MCV
+  const breakEvenMAD_an1 = firstYear.totalFixe / marge_b;
+  const breakEvenPct     = breakEvenMAD_an1 / cas[0] * 100;
+  document.getElementById('k_pr').textContent = fmt(breakEvenMAD_an1) + ' MAD';
+  document.getElementById('k_pr').title = `Point mort An 1 = ${pct(breakEvenPct)} du CA prévu`;
+
+  // IS badge info
+  document.getElementById('is_info_badge').textContent =
+    tis === 'progressif' ? `IS: ${pct(isTauxEffectif(last.ebt, tis))} effectif An ${last.y}` : `IS: ${tis}%`;
+
+  // Chart CA / RN / EBITDA
+  const maxVal = Math.max(...data.map(d => d.ca), ...data.map(d => Math.abs(d.rn)), ...data.map(d => Math.abs(d.ebitda)), 1);
+  document.getElementById('chartBars').innerHTML = data.map(d => `
+    <div class="chart-bar-wrap">
+      <div style="flex:1;display:flex;align-items:flex-end;gap:1px;width:100%">
+        <div class="chart-bar" style="flex:1.2;height:${(d.ca/maxVal)*100}%;background:linear-gradient(180deg,var(--gl),var(--gold))" data-val="${fmtFull(d.ca)}"></div>
+        <div class="chart-bar" style="flex:1;height:${(Math.abs(d.ebitda)/maxVal)*100}%;background:${d.ebitda>=0?'linear-gradient(180deg,#7DD3FC,var(--ac))':'var(--wn)'}" data-val="${fmtFull(d.ebitda)}"></div>
+        <div class="chart-bar" style="flex:1;height:${(Math.abs(d.rn)/maxVal)*100}%;background:${d.rn>=0?'linear-gradient(180deg,#4ADE80,var(--ok))':'var(--er)'}" data-val="${fmtFull(d.rn)}"></div>
+      </div>
+      <div class="chart-label">An ${d.y}</div>
+    </div>`).join('');
+
+  // Tableau CDR
+  const colHeaders = data.map(d => `<th>An ${d.y}</th>`).join('');
+  const rows_def = [
+    { key:'ca',       label:'Chiffre d\'affaires', bold:true },
+    { key:'mb',       label:'↳ Marge brute', sub:true },
+    { key:'totalFixe',label:'Charges d\'exploitation', neg:true },
+    { key:'ebitda',   label:'EBITDA', bold:true },
+    { key:'amort',    label:'Amortissements', neg:true },
+    { key:'ebit',     label:'EBIT', bold:true },
+    { key:'c_fin',    label:'Charges financières', neg:true },
+    { key:'ebt',      label:'Résultat avant IS' },
+    { key:'impot',    label:'IS (CGI 2025)', neg:true },
+    { key:'rn',       label:'Résultat Net', bold:true, color:true },
+    { key:'cashflow', label:'FCF (incl. BFR + capital)', bold:true },
+    { key:'cashflowSimple', label:'↳ Cash-flow opérationnel', sub:true },
+  ];
+  const tableBody = rows_def.map(r => {
+    const cls = r.bold ? 'font-weight:700' : (r.sub ? 'color:var(--sm);font-size:11px' : '');
+    const cells = data.map(d => {
+      let val = d[r.key] !== undefined ? d[r.key] : 0;
+      const sign = r.neg ? '' : '';
+      const color = r.color ? (val >= 0 ? 'var(--ok)' : 'var(--er)') : '';
+      const prefix = (r.neg && val > 0) ? '-' : '';
+      return `<td style="color:${color};${r.bold?'font-weight:700':''}">${prefix}${fmt(Math.abs(val))}</td>`;
+    }).join('');
+    return `<tr style="${cls}"><td>${r.label}</td>${cells}</tr>`;
+  }).join('');
+  document.getElementById('prevTable').innerHTML =
+    `<thead><tr><th>Indicateurs (MAD)</th>${colHeaders}</tr></thead><tbody>${tableBody}</tbody>`;
+
+  // Table BFR
+  const bfrCard = document.getElementById('bfr_table_card');
+  if (delai_cli > 0 || jours_stock > 0) {
+    bfrCard.style.display = 'block';
+    const bfrRows = [
+      { label:'BFR (MAD)', vals: data.map(d => fmt(d.bfr)) },
+      { label:'Variation BFR (MAD)', vals: data.map(d => (d.delta_bfr >= 0 ? '+' : '') + fmt(d.delta_bfr)) },
+    ];
+    document.getElementById('bfrTable').innerHTML =
+      `<thead><tr><th>BFR</th>${colHeaders}</tr></thead><tbody>` +
+      bfrRows.map(r => `<tr><td>${r.label}</td>${r.vals.map(v => `<td>${v}</td>`).join('')}</tr>`).join('') +
+      `</tbody>`;
+  } else { bfrCard.style.display = 'none'; }
+
+  // BFR preview
+  document.getElementById('bfr_preview').textContent =
+    `BFR An 1 estimé : ${fmtFull(bfrs[0])} · Variation An 2 : ${fmtFull(bfrs[1] - bfrs[0])}`;
+
+  // VAN invest sync
+  document.getElementById('van_invest').value = inv_total + bfrs[0];
+  document.getElementById('van_bfr_init').value = Math.round(bfrs[0]);
+
+  // WACC suggestion
+  const secteur = document.getElementById('p_secteur').value;
+  const wacc_rec = WACC_SECTEUR[secteur] || 10;
+  document.getElementById('wacc_suggest').textContent =
+    `WACC recommandé secteur ${secteur} (Maroc 2025) : ${wacc_rec}% · Prime de risque pays : +2-3% · Votre saisie : ${v('van_taux')}%`;
+
+  // Ratios
+  renderRatios(data);
+  renderBankIndicators(data);
+}
+
+// ═══════════════════════════════════════════════════════
+//  FINANCEMENT
+// ═══════════════════════════════════════════════════════
+function calcFinancement() {
+  const fonds   = v('fin_fonds');
+  const emprunt = v('fin_emprunt');
+  const taux    = v('fin_taux');
+  const duree   = v('fin_duree') || 7;
+  const differe = v('fin_differe') || 0;
+  const aides   = v('fin_aides');
+  const leasing = v('fin_leasing');
+  const total   = fonds + emprunt + aides + leasing;
+  const inv     = v('inv_total');
+
+  const amort = buildAmort(emprunt, taux, duree, differe);
+  finCalc = { ...amort, total, fonds, emprunt, aides, leasing };
+
+  document.getElementById('finRows').innerHTML = `
+    <div class="ratio-row"><span>Apport personnel / fonds propres</span><strong>${fmtFull(fonds)}</strong></div>
+    <div class="ratio-row"><span>Emprunt bancaire</span><strong>${fmtFull(emprunt)}</strong></div>
+    <div class="ratio-row"><span>Aides &amp; subventions</span><strong style="color:var(--ok)">${fmtFull(aides)}</strong></div>
+    ${leasing>0?`<div class="ratio-row"><span>Crédit-bail</span><strong>${fmtFull(leasing)}</strong></div>`:''}
+    <div class="ratio-row" style="font-weight:700;border-top:2px solid var(--bd);padding-top:12px">
+      <span>Total financement</span>
+      <span style="font-family:var(--ft);font-size:17px;color:var(--gold)">${fmtFull(total)}</span>
+    </div>
+    ${total < inv
+      ? `<div class="alert alert-warn" style="margin-top:10px">⚠ Besoin non couvert : <strong>${fmtFull(inv - total)}</strong></div>`
+      : `<div class="alert alert-ok" style="margin-top:10px">✓ Financement complet. Excédent : <strong>${fmtFull(total - inv)}</strong></div>`}
+    <div style="margin-top:10px;font-size:12.5px;color:var(--is);padding:10px;background:var(--b2);border-radius:8px">
+      <strong>Autonomie financière :</strong> ${pct(fonds/total*100)}
+      — ${fonds/total > 0.3 ? '<span style="color:var(--ok)">✓ Conforme exigence bancaire (> 30%)</span>' : '<span style="color:var(--er)">⚠ Sous le minimum bancaire (30%)</span>'}
+    </div>
+    ${amort.annuite>0 ? `<div style="margin-top:8px;font-size:12px;color:var(--sm);font-family:var(--fm)">Annuité emprunt : <strong>${fmtFull(amort.annuite)}/an</strong> · Intérêts An 1 : <strong>${fmtFull(amort.interets[0] || 0)}</strong></div>` : ''}`;
+
+  // Tableau amortissement
+  document.getElementById('amortTitle').textContent =
+    amort.annuite > 0 ? `📅 Tableau d'amortissement — Annuité : ${fmtFull(amort.annuite)}/an` : '📅 Tableau d\'amortissement';
+
+  if (emprunt > 0 && taux > 0) {
+    const rows = amort.rows.map(r => {
+      const isGrace = r.princ === 0 && r.an <= differe;
+      return `<tr ${isGrace ? 'style="background:rgba(192,88,32,.04)"' : ''}>
+        <td style="font-family:var(--fm)">${r.an}${isGrace?' 🔄':''}</td>
+        <td style="font-family:var(--fm)">${fmtFull(r.annuite)}</td>
+        <td style="font-family:var(--fm);color:var(--er)">${fmtFull(r.int)}</td>
+        <td style="font-family:var(--fm);color:var(--ok)">${fmtFull(r.princ)}</td>
+        <td style="font-family:var(--fm)">${fmtFull(r.solde)}</td>
+      </tr>`;
+    }).join('');
+    document.getElementById('amortRows').innerHTML = `
+      <table class="prev-table">
+        <thead><tr><th style="text-align:left">An</th><th>Annuité</th><th>Intérêts</th><th>Capital</th><th>Solde</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      ${differe>0?'<div style="font-size:10px;color:var(--wn);margin-top:6px;font-family:var(--fm)">🔄 Années en différé : intérêts seuls (pas de remboursement capital)</div>':''}`;
+  } else {
+    document.getElementById('amortRows').innerHTML = '<div style="font-size:12px;color:var(--sm)">Entrez un emprunt et un taux pour générer le tableau.</div>';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  RATIOS
+// ═══════════════════════════════════════════════════════
+function renderRatios(data) {
+  if (!data || !data.length) return;
+  const annuite = finCalc ? finCalc.annuite : 0;
+
+  const html = data.map(d => {
+    const margin_brute   = d.mb / d.ca * 100;
+    const ebitda_margin  = d.ebitda / d.ca * 100;
+    const marge_nette    = d.rn / d.ca * 100;
+    const charges_ratio  = d.totalFixe / d.ca * 100;
+    const dscr           = annuite > 0 ? d.ebitda / annuite : null;
+    const bfr_jours      = d.bfr / d.ca * 365;
+    const breakEvenMAD   = d.totalFixe / (v('marge_brute') / 100);
+    const marge_secu     = (d.ca - breakEvenMAD) / d.ca * 100;
+
+    const dscrBadge = dscr !== null
+      ? `<span class="ratio-interp ${dscr>=1.5?'ri-ok':dscr>=1.25?'ri-warn':'ri-bad'}">${dscr>=1.5?'✓ Bancable':dscr>=1.25?'Limite':'⚠ Risqué'}</span>`
+      : '<span class="ratio-interp ri-neutral">N/A</span>';
+
+    return `
+      <div class="card">
+        <div class="card-title" style="color:var(--gold)">An ${d.y} — CA ${fmtFull(d.ca)}</div>
+        <div class="ratio-row">
+          <span>Taux de marge brute</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="ratio-val" style="color:${margin_brute>30?'var(--ok)':'var(--wn)'}">${pct(margin_brute)}</span>
+            <span class="ratio-interp ${margin_brute>40?'ri-ok':margin_brute>25?'ri-warn':'ri-bad'}">${margin_brute>40?'Excellent':margin_brute>25?'Correct':'Faible'}</span>
+          </div>
+        </div>
+        <div class="ratio-row">
+          <span>Marge EBITDA</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="ratio-val" style="color:${d.ebitda>0?'var(--ok)':'var(--er)'}">${pct(ebitda_margin)}</span>
+            <span class="ratio-interp ${ebitda_margin>20?'ri-ok':ebitda_margin>10?'ri-warn':'ri-bad'}">${ebitda_margin>20?'Très bon':ebitda_margin>10?'Moyen':'Insuffisant'}</span>
+          </div>
+        </div>
+        <div class="ratio-row">
+          <span>Marge nette</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="ratio-val" style="color:${marge_nette>0?'var(--ok)':'var(--er)'}">${pct(marge_nette)}</span>
+            <span class="ratio-interp ${marge_nette>10?'ri-ok':marge_nette>3?'ri-warn':'ri-bad'}">${marge_nette>10?'Excellent':marge_nette>3?'Acceptable':marge_nette<0?'Déficit':'Faible'}</span>
+          </div>
+        </div>
+        <div class="ratio-row">
+          <span>Ratio charges fixes / CA</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="ratio-val">${pct(charges_ratio)}</span>
+            <span class="ratio-interp ${charges_ratio<50?'ri-ok':charges_ratio<70?'ri-warn':'ri-bad'}">${charges_ratio<50?'Bon':charges_ratio<70?'Acceptable':'Élevé'}</span>
+          </div>
+        </div>
+        ${annuite > 0 ? `
+        <div class="ratio-row">
+          <span>DSCR — Couverture dette (annuité: ${fmt(annuite)})</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="ratio-val" style="color:${dscr>=1.25?'var(--ok)':'var(--er)'}">${dscr ? dscr.toFixed(2) : 'N/A'}</span>
+            ${dscrBadge}
+          </div>
+        </div>` : ''}
+        <div class="ratio-row">
+          <span>Point mort (seuil rentabilité)</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="ratio-val" style="font-size:12px">${fmt(breakEvenMAD)} MAD</span>
+            <span class="ratio-interp ${marge_secu>20?'ri-ok':marge_secu>5?'ri-warn':'ri-bad'}">${pct(marge_secu)} marge sécu.</span>
+          </div>
+        </div>
+        <div class="ratio-row">
+          <span>BFR</span>
+          <span class="ratio-val" style="font-size:12px">${fmt(d.bfr)} MAD (${bfr_jours.toFixed(0)} j)</span>
+        </div>
+        <div class="ratio-row">
+          <span>FCF libre</span>
+          <span class="ratio-val" style="color:${d.cashflow>=0?'var(--ok)':'var(--er)'}; font-size:14px">${fmtFull(d.cashflow)}</span>
+        </div>
+        <div class="pbar-wrap"><div class="pbar" style="width:${Math.min(100,Math.max(0,margin_brute))}%;background:${margin_brute>30?'var(--ok)':'var(--er)'}"></div></div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('ratiosContent').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">${html}</div>`;
+}
+
+function renderBankIndicators(data) {
+  if (!data || !data.length || !finCalc) return;
+  const last = data[data.length-1];
+  const an1  = data[0];
+  const totalFin = finCalc.total || 1;
+  const fonds    = finCalc.fonds || 0;
+  const emprunt  = finCalc.emprunt || 0;
+  const annuite  = finCalc.annuite || 0;
+  const autonomie = fonds / totalFin * 100;
+  const endettement = emprunt / (last.ca || 1) * 100; // dette / CA
+  const dscr_an1 = annuite > 0 ? an1.ebitda / annuite : null;
+
+  document.getElementById('bankIndicators').innerHTML = `
+    <div class="ratio-row">
+      <span>Autonomie financière</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="ratio-val" style="color:${autonomie>=30?'var(--ok)':'var(--er)'}">${pct(autonomie)}</span>
+        <span class="ratio-interp ${autonomie>=40?'ri-ok':autonomie>=30?'ri-warn':'ri-bad'}">${autonomie>=40?'Excellent':autonomie>=30?'Conforme':'< 30% min'}</span>
+      </div>
+    </div>
+    <div class="ratio-row">
+      <span>DSCR An 1 (seuil min : 1.25)</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="ratio-val" style="color:${dscr_an1>=1.25?'var(--ok)':'var(--er)'}">${dscr_an1 ? dscr_an1.toFixed(2) : 'N/A'}</span>
+        <span class="ratio-interp ${dscr_an1>=1.5?'ri-ok':dscr_an1>=1.25?'ri-warn':'ri-bad'}">${dscr_an1>=1.5?'Bancable':dscr_an1>=1.25?'Limite':'Insuffisant'}</span>
+      </div>
+    </div>
+    <div class="ratio-row">
+      <span>Taux d'endettement (dette/CA An 1)</span>
+      <span class="ratio-val">${pct(endettement)}</span>
+    </div>
+    <div class="ratio-row">
+      <span>Intérêts An 1</span>
+      <span class="ratio-val">${fmtFull(finCalc.interets[0] || 0)}</span>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  VAN / TRI
+// ═══════════════════════════════════════════════════════
+function calcVAN() {
+  if (!prevData) {
+    document.getElementById('vanResult').innerHTML = '<div class="alert alert-info">ℹ️ Générez d\'abord le prévisionnel.</div>';
+    return;
+  }
+  const tauxA    = v('van_taux') / 100 || 0.12;
+  const residuel = v('van_residuel');
+  const invest   = v('van_invest');
+
+  const flux = prevData.map(d => d.cashflow);
+  flux[flux.length-1] += residuel;
+
+  // VAN
+  const van = flux.reduce((sum, f, i) => sum + f / Math.pow(1+tauxA, i+1), 0) - invest;
+
+  // TRI (Newton-Raphson, 200 itérations)
+  let tri = 0.15;
+  for (let iter = 0; iter < 200; iter++) {
+    const f0 = flux.reduce((s,f,i) => s + f/Math.pow(1+tri,i+1), 0) - invest;
+    const f1 = flux.reduce((s,f,i) => s - (i+1)*f/Math.pow(1+tri,i+2), 0);
+    if (Math.abs(f1) < 1e-10) break;
+    const next = tri - f0/f1;
+    if (Math.abs(next - tri) < 0.00001) { tri = next; break; }
+    tri = Math.max(-0.99, Math.min(10, next)); // borner
+  }
+
+  // Payback précis (interpolation linéaire)
+  let cumul = -invest;
+  let payback = null, paybackFrac = null;
+  flux.forEach((f, i) => {
+    const prev = cumul;
+    cumul += f;
+    if (cumul >= 0 && payback === null) {
+      payback = i + 1;
+      paybackFrac = (i + 1) + (prev / (prev - cumul));
+    }
+  });
+
+  const vanOk = van > 0;
+  const triOk = tri * 100 > v('van_taux');
+  const seuil_invest = 0.15;
+
+  document.getElementById('vanResult').innerHTML = `
+    <div class="card-title">💹 Indicateurs de rentabilité</div>
+    <div class="ratio-row">
+      <span>Valeur Actuelle Nette (VAN)</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="ratio-val" style="color:${vanOk?'var(--ok)':'var(--er)'}">${fmtFull(van)}</span>
+        <span class="ratio-interp ${vanOk?'ri-ok':'ri-bad'}">${vanOk?'Projet rentable':'Non rentable'}</span>
+      </div>
+    </div>
+    <div class="ratio-row">
+      <span>TRI (Taux Rentabilité Interne)</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="ratio-val" style="color:${triOk?'var(--ok)':'var(--er)'}">${pct(tri*100)}</span>
+        <span class="ratio-interp ${tri>seuil_invest?'ri-ok':tri>tauxA?'ri-warn':'ri-bad'}">${tri>seuil_invest?'Excellent > 15%':tri>tauxA?'> WACC':'< WACC'}</span>
+      </div>
+    </div>
+    <div class="ratio-row">
+      <span>Délai de récupération (Payback)</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="ratio-val">${paybackFrac ? paybackFrac.toFixed(1) + ' ans' : '> horizon'}</span>
+        <span class="ratio-interp ${paybackFrac && paybackFrac<=3?'ri-ok':paybackFrac<=5?'ri-warn':'ri-bad'}">${paybackFrac ? (paybackFrac<=3?'Rapide':paybackFrac<=5?'Correct':'Long') : 'Non atteint'}</span>
+      </div>
+    </div>
+    <div class="ratio-row">
+      <span>WACC utilisé</span>
+      <span class="ratio-val">${pct(tauxA*100)}</span>
+    </div>
+    <div class="ratio-row">
+      <span>Investissement total (CAPEX + BFR)</span>
+      <span class="ratio-val" style="font-size:13px">${fmtFull(invest)}</span>
+    </div>
+    <div style="margin-top:14px;padding:12px;background:${vanOk?'rgba(26,107,60,.06)':'rgba(185,28,28,.06)'};border-radius:9px;border:1px solid ${vanOk?'rgba(26,107,60,.2)':'rgba(185,28,28,.2)'};font-size:13px;color:${vanOk?'var(--ok)':'var(--er)'}">
+      ${vanOk
+        ? `✓ <strong>Projet viable.</strong> VAN positive de ${fmtFull(van)} — création de valeur effective. TRI ${pct(tri*100)} ${tri>seuil_invest?'> seuil Invest-Ready de 15%.':'> WACC mais sous le seuil recommandé de 15%.'}`
+        : `⚠ <strong>Rentabilité insuffisante.</strong> VAN négative. Revoyez le CA cible, les charges ou le montage financier.`}
+    </div>`;
+
+  // Chart cash-flows cumulés
+  const cumuls = [];
+  let c = -invest;
+  flux.forEach(f => { c += f; cumuls.push(c); });
+  const maxAbs = Math.max(invest, ...cumuls.map(Math.abs), 1);
+  const zeroH  = (invest / maxAbs) * 100;
+
+  document.getElementById('cfCumulChart').innerHTML = `
+    <div style="position:relative;width:100%;height:100%;display:flex;align-items:flex-end;gap:5px">
+      ${cumuls.map((c, i) => {
+        const h = Math.abs(c) / maxAbs * 90;
+        const isNeg = c < 0;
+        return `<div class="chart-bar-wrap">
+          <div style="flex:1;display:flex;align-items:${isNeg?'flex-start':'flex-end'};width:100%;height:100%">
+            <div class="chart-bar" style="height:${h}%;width:100%;background:${isNeg?'var(--er)':'linear-gradient(180deg,#4ADE80,var(--ok))'};border-radius:3px" data-val="${fmtFull(c)}"></div>
+          </div>
+          <div class="chart-label">An ${i+1}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  document.getElementById('cfLegend').textContent =
+    `Flux actualisés · Investissement initial : ${fmtFull(invest)} · Payback : ${paybackFrac ? paybackFrac.toFixed(1) + ' ans' : 'Non atteint'}`;
+
+  // Tableau sensibilité VAN
+  renderSensTable(invest, flux, tauxA);
+}
+
+function renderSensTable(invest, baseFlux, tauxBase) {
+  const caVariations = [-20, -10, 0, +10, +20]; // %
+  const waccVars     = [tauxBase*100-4, tauxBase*100-2, tauxBase*100, tauxBase*100+2, tauxBase*100+4];
+
+  let th = `<tr><th>CA \\ WACC</th>${waccVars.map(w=>`<th>${pct(w)}</th>`).join('')}</tr>`;
+  let rows = caVariations.map(caVar => {
+    const factor = 1 + caVar/100;
+    const adjFlux = baseFlux.map(f => f * factor); // approximation
+    const cells = waccVars.map(wacc => {
+      const t = wacc / 100;
+      const van = adjFlux.reduce((s,f,i) => s + f/Math.pow(1+t,i+1), 0) - invest;
+      const isPivot = caVar === 0 && Math.abs(wacc - tauxBase*100) < 0.1;
+      return `<td class="${isPivot?'pivot':''}" style="color:${van>0?'var(--ok)':'var(--er)'}">${fmt(van/1e6)}M</td>`;
+    }).join('');
+    return `<tr><td style="font-family:var(--fb);font-weight:600">${caVar>0?'+':''}${caVar}% CA</td>${cells}</tr>`;
+  }).join('');
+
+  document.getElementById('sensTable').innerHTML =
+    `<table class="sens-table"><thead>${th}</thead><tbody>${rows}</tbody></table>
+     <div style="font-size:10px;color:var(--sm);margin-top:6px;font-family:var(--fm)">🟡 = scénario base · Vert = VAN positive · Rouge = VAN négative</div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  SCÉNARIOS
+// ═══════════════════════════════════════════════════════
+function calcScenarios() {
+  if (!prevData) {
+    document.getElementById('scenGrid').innerHTML =
+      '<div class="alert alert-warn" style="grid-column:1/-1">⚠ Générez le prévisionnel pour afficher les scénarios.</div>';
+    return;
+  }
+
+  const scenarios = [
+    { id:'pessimiste', label:'Scénario Pessimiste', sub:'CA -20% · Charges +10%', caFactor:0.80, chgFactor:1.10, colorClass:'scen-pessimiste', icon:'📉' },
+    { id:'base',       label:'Scénario de Base',    sub:'Hypothèses nominales',   caFactor:1.00, chgFactor:1.00, colorClass:'scen-base',       icon:'📊' },
+    { id:'optimiste',  label:'Scénario Optimiste',  sub:'CA +15% · Charges -5%',  caFactor:1.15, chgFactor:0.95, colorClass:'scen-optimiste',   icon:'📈' },
+  ];
+
+  const tis    = document.getElementById('p_tis').value;
+  const wacc   = v('van_taux') / 100 || 0.12;
+  const invest = v('van_invest');
+  const horizon = parseInt(document.getElementById('p_horizon').value) || 5;
+
+  const results = scenarios.map(s => {
+    const d = prevData;
+    const fluxAdj = d.map(yr => yr.cashflow * (yr.rn >= 0 ? s.caFactor : s.caFactor * 0.9));
+
+    // Calcul VAN
+    const van = fluxAdj.reduce((sum,f,i) => sum + f/Math.pow(1+wacc,i+1), 0) - invest;
+
+    // TRI
+    let tri = 0.15;
+    for (let iter = 0; iter < 100; iter++) {
+      const f0 = fluxAdj.reduce((s,f,i) => s + f/Math.pow(1+tri,i+1), 0) - invest;
+      const f1 = fluxAdj.reduce((s,f,i) => s - (i+1)*f/Math.pow(1+tri,i+2), 0);
+      if (Math.abs(f1) < 1e-10) break;
+      const next = tri - f0/f1;
+      if (Math.abs(next - tri) < 0.00001) { tri = next; break; }
+      tri = Math.max(-0.99, Math.min(10, next));
+    }
+
+    // Payback
+    let cumul = -invest, payback = null;
+    fluxAdj.forEach((f,i) => { cumul += f; if (cumul>=0 && !payback) payback = i+1; });
+
+    // CA et RN An 5 ajustés (approximation)
+    const lastD = d[d.length-1];
+    const ca_adj = lastD.ca * s.caFactor;
+    const totalFixe_adj = lastD.totalFixe * s.chgFactor;
+    const mb_adj = ca_adj * (v('marge_brute')/100);
+    const ebitda_adj = mb_adj - totalFixe_adj;
+    const amort_adj = lastD.amort;
+    const cfin_adj = lastD.c_fin;
+    const ebt_adj = ebitda_adj - amort_adj - cfin_adj;
+    const is_adj = calcIS(ebt_adj, tis);
+    const rn_adj = ebt_adj - is_adj;
+    const marge_adj = rn_adj / ca_adj * 100;
+
+    // DSCR An 1
+    const annuite = finCalc ? finCalc.annuite : 0;
+    const ebitda_an1 = (d[0].ebitda * s.caFactor * s.chgFactor);
+    const dscr_an1 = annuite > 0 ? ebitda_an1 / annuite : null;
+
+    return { ...s, van, tri, payback, ca_adj, rn_adj, marge_adj, fluxAdj, dscr_an1 };
+  });
+
+  // Cartes scénarios
+  document.getElementById('scenGrid').innerHTML = results.map(r => `
+    <div class="scen-card ${r.colorClass}">
+      <div class="scen-title">${r.icon} ${r.label}</div>
+      <div class="scen-sub">${r.sub}</div>
+      <div class="scen-stat"><span>CA An ${horizon}</span><span class="scen-val">${fmtFull(r.ca_adj)}</span></div>
+      <div class="scen-stat"><span>Résultat Net An ${horizon}</span><span class="scen-val" style="color:${r.rn_adj>=0?'var(--ok)':'var(--er)'}">${fmtFull(r.rn_adj)}</span></div>
+      <div class="scen-stat"><span>Marge nette An ${horizon}</span><span class="scen-val">${pct(r.marge_adj)}</span></div>
+      <div class="scen-stat"><span>VAN</span><span class="scen-val" style="color:${r.van>0?'var(--ok)':'var(--er)'}">${fmtFull(r.van)}</span></div>
+      <div class="scen-stat"><span>TRI</span><span class="scen-val" style="color:${r.tri>wacc?'var(--ok)':'var(--er)'}">${pct(r.tri*100)}</span></div>
+      <div class="scen-stat"><span>Payback</span><span class="scen-val">${r.payback ? `An ${r.payback}` : '> horizon'}</span></div>
+      ${r.dscr_an1 !== null ? `<div class="scen-stat"><span>DSCR An 1</span><span class="scen-val" style="color:${r.dscr_an1>=1.25?'var(--ok)':'var(--er)'}">${r.dscr_an1.toFixed(2)}</span></div>` : ''}
+    </div>`).join('');
+
+  // Tableau comparatif
+  const headers = ['CA An '+horizon, 'EBITDA An '+horizon, 'RN An '+horizon, 'Marge nette', 'VAN', 'TRI', 'Payback'];
+  document.getElementById('scenTable').innerHTML = `
+    <table class="prev-table" style="font-size:12px">
+      <thead><tr><th>Indicateur</th>${results.map(r=>`<th>${r.label}</th>`).join('')}</tr></thead>
+      <tbody>
+        <tr><td>CA An ${horizon}</td>${results.map(r=>`<td>${fmt(r.ca_adj)}</td>`).join('')}</tr>
+        <tr><td>Résultat Net An ${horizon}</td>${results.map(r=>`<td style="color:${r.rn_adj>=0?'var(--ok)':'var(--er)'}">${fmt(r.rn_adj)}</td>`).join('')}</tr>
+        <tr><td>Marge nette</td>${results.map(r=>`<td>${pct(r.marge_adj)}</td>`).join('')}</tr>
+        <tr><td>VAN</td>${results.map(r=>`<td style="color:${r.van>0?'var(--ok)':'var(--er)'}">${fmt(r.van/1e6)}M</td>`).join('')}</tr>
+        <tr><td>TRI</td>${results.map(r=>`<td style="color:${r.tri>wacc?'var(--ok)':'var(--er)'}">${pct(r.tri*100)}</td>`).join('')}</tr>
+        <tr><td>Payback</td>${results.map(r=>`<td>${r.payback?`An ${r.payback}`:'> horizon'}</td>`).join('')}</tr>
+      </tbody>
+    </table>`;
+
+  // Graphique scénarios
+  const maxFlux = Math.max(...results.flatMap(r => r.fluxAdj.map(Math.abs)), 1);
+  const colors = ['var(--er)','var(--gold)','var(--ok)'];
+  const horizon_years = parseInt(document.getElementById('p_horizon').value) || 5;
+
+  document.getElementById('scenChart').innerHTML =
+    Array.from({length: horizon_years}, (_, i) => `
+      <div class="chart-bar-wrap">
+        <div style="flex:1;display:flex;align-items:flex-end;gap:2px;width:100%">
+          ${results.map((r,j) => `<div class="chart-bar" style="flex:1;height:${(Math.abs(r.fluxAdj[i]||0)/maxFlux)*100}%;background:${colors[j]};opacity:.85" data-val="${fmtFull(r.fluxAdj[i]||0)}"></div>`).join('')}
+        </div>
+        <div class="chart-label">An ${i+1}</div>
+      </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  UTILITAIRES UI
+// ═══════════════════════════════════════════════════════
+function showTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tp-' + id).classList.add('show');
+  if (el) el.classList.add('active');
+}
+
+function onSecteurChange() {
+  const secteur  = document.getElementById('p_secteur').value;
+  const wacc_rec = WACC_SECTEUR[secteur] || 10;
+  document.getElementById('van_taux').value = wacc_rec;
+  calcAll();
+}
+
+function onInvChange() {
+  document.getElementById('van_invest').value = v('inv_total');
+  calcAll();
+}
+
+function showIsDetail() {
+  const card = document.getElementById('is_detail_card');
+  if (!isDetailData) return;
+  card.style.display = card.style.display === 'none' ? 'block' : 'none';
+  if (card.style.display === 'block') {
+    const tis = document.getElementById('p_tis').value;
+    const html = isDetailData.map(d => {
+      if (tis !== 'progressif') {
+        return `<div style="font-family:var(--fm);font-size:11.5px;padding:6px 0;border-bottom:1px solid var(--bd)">
+          An ${d.y} · EBT: ${fmtFull(d.ebt)} · IS (${tis}%): ${fmtFull(d.impot)} · Taux effectif: ${pct(d.taux_eff)}</div>`;
+      }
+      const t1 = Math.min(d.ebt, 300000)*0.10;
+      const t2 = d.ebt > 300000 ? Math.min(d.ebt-300000, 700000)*0.20 : 0;
+      const t3 = d.ebt > 1000000 ? (d.ebt-1000000)*0.35 : 0;
+      return `<div style="font-family:var(--fm);font-size:11.5px;padding:8px 0;border-bottom:1px solid var(--bd)">
+        <strong>An ${d.y}</strong> · EBT: ${fmtFull(d.ebt)}<br>
+        Tranche 1 (≤300k × 10%) : ${fmtFull(t1)} |
+        Tranche 2 (300k–1M × 20%) : ${fmtFull(t2)} |
+        Tranche 3 (>1M × 35%) : ${fmtFull(t3)}<br>
+        IS total: ${fmtFull(d.impot)} · Taux effectif: <strong>${pct(d.taux_eff)}</strong></div>`;
+    }).join('');
+    document.getElementById('is_detail_content').innerHTML = html;
+  }
+}
+
+function exportCSV() {
+  if (!prevData) return;
+  const horizon = prevData.length;
+  const rows = [['Indicateur',...Array.from({length:horizon},(_,i)=>`An ${i+1}`),'Unité']];
+  const defs = [
+    ['CA',         d => d.ca,       'MAD HT'],
+    ['Marge brute',d => d.mb,       'MAD'],
+    ['Charges fixes',d => d.totalFixe,'MAD'],
+    ['EBITDA',     d => d.ebitda,   'MAD'],
+    ['Amortissements',d => d.amort, 'MAD'],
+    ['EBIT',       d => d.ebit,     'MAD'],
+    ['Charges fin.',d => d.c_fin,   'MAD'],
+    ['EBT',        d => d.ebt,      'MAD'],
+    ['IS',         d => d.impot,    'MAD'],
+    ['Résultat Net',d => d.rn,      'MAD'],
+    ['FCF libre',  d => d.cashflow, 'MAD'],
+    ['BFR',        d => d.bfr,      'MAD'],
+    ['ΔBFR',       d => d.delta_bfr,'MAD'],
+    ['Marge brute %',d => (d.mb/d.ca*100).toFixed(1),'%'],
+    ['Marge nette %',d => (d.rn/d.ca*100).toFixed(1),'%'],
+    ['Marge EBITDA %',d => (d.ebitda/d.ca*100).toFixed(1),'%'],
+  ];
+  defs.forEach(([label, fn, unit]) => {
+    rows.push([label, ...prevData.map(d => Math.round(fn(d))), unit]);
+  });
+  const csv = rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8;'}));
+  a.download = `previsionnel_${document.getElementById('p_nom').value.replace(/\s+/g,'_')}_${horizon}ans.csv`;
+  a.click();
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => { calcAll(); });
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>

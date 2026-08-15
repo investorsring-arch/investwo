@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur TVA — Smart-Invest.ia · CGI 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#B8862A; --gl:#F0C460; --gp:#FBF3DE;
+  --ink:#0E0E0C; --im:#2A2A24; --is:#44443C; --sm:#7A7A70;
+  --bg:#F4F3EE; --b2:#EBEBDF; --wh:#FFFFFE;
+  --ac:#1E4D6B; --ok:#1A6B3C; --er:#B91C1C; --wn:#C05820;
+  --bd:rgba(0,0,0,.09);
+  --ft:'Syne',sans-serif; --fb:'DM Sans',sans-serif; --fm:'JetBrains Mono',monospace;
+  /* Button palette */
+  --btn-20:#1C3A5B; --btn-20-h:#22466e; --btn-20-t:#fff;
+  --btn-10:#1A5C2A; --btn-10-h:#207332; --btn-10-t:#fff;
+  --btn-exo:#7B3800; --btn-exo-h:#9a4500; --btn-exo-t:#fff;
+  --btn-0:#4A1070; --btn-0-h:#5d1490; --btn-0-t:#fff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:50;height:54px;background:rgba(14,14,12,.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(184,134,42,.22)}
+.hl{display:flex;align-items:center;gap:12px}
+.back{font-size:11px;color:rgba(255,255,255,.38);text-decoration:none;transition:color .2s}.back:hover{color:var(--gl)}
+.logo{font-family:var(--ft);font-size:15px;font-weight:800;color:#fff}.logo span{color:var(--gl)}
+.h-badge{font-family:var(--fm);font-size:9.5px;color:var(--gl);background:rgba(184,134,42,.14);border:1px solid rgba(184,134,42,.28);padding:3px 9px;border-radius:100px;letter-spacing:.04em}
+.h-disc{font-size:10.5px;color:rgba(255,255,255,.22);font-family:var(--fm)}
+.h-new{font-family:var(--fm);font-size:9px;color:#fff;background:#B91C1C;padding:2px 7px;border-radius:4px;letter-spacing:.04em;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.65}}
+
+/* ── PAGE ── */
+.page{max-width:1200px;margin:0 auto;padding:28px 28px 80px}
+.page-title{font-family:var(--ft);font-size:24px;font-weight:800;margin-bottom:5px}
+.page-title span{color:var(--gold)}
+.page-sub{font-size:13px;color:var(--sm);margin-bottom:10px;line-height:1.65}
+.reform-banner{background:linear-gradient(90deg,rgba(185,28,28,.08),rgba(185,28,28,.03));border:1px solid rgba(185,28,28,.2);border-left:3px solid var(--er);border-radius:9px;padding:10px 14px;margin-bottom:22px;font-size:12px;color:var(--er);line-height:1.55}
+.reform-banner strong{font-weight:700}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:8px;margin-bottom:26px;flex-wrap:wrap}
+.tab{padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .22s;font-family:var(--fb);display:flex;align-items:center;gap:8px;white-space:nowrap;letter-spacing:.01em;box-shadow:0 2px 8px rgba(0,0,0,.12);position:relative;overflow:hidden}
+.tab::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .2s}
+.tab:hover::after{background:rgba(255,255,255,.12)}
+.tab .tab-icon{font-size:15px;line-height:1}
+/* Tab 1 — Calculateur — gold/amber */
+.tab-calcul{background:linear-gradient(135deg,#B8862A 0%,#d4a034 100%);color:#1a1000}
+.tab-calcul.active{box-shadow:0 4px 18px rgba(184,134,42,.5),0 0 0 2px rgba(184,134,42,.3)}
+.tab-calcul:not(.active){opacity:.72;transform:translateY(1px);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* Tab 2 — Prorata — blue */
+.tab-prorata{background:linear-gradient(135deg,#1C3A5B 0%,#2a527a 100%);color:#fff}
+.tab-prorata.active{box-shadow:0 4px 18px rgba(28,58,91,.5),0 0 0 2px rgba(28,58,91,.3)}
+.tab-prorata:not(.active){opacity:.72;transform:translateY(1px);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* Tab 3 — Régimes — green */
+.tab-regimes{background:linear-gradient(135deg,#1A5C2A 0%,#227a38 100%);color:#fff}
+.tab-regimes.active{box-shadow:0 4px 18px rgba(26,92,42,.5),0 0 0 2px rgba(26,92,42,.3)}
+.tab-regimes:not(.active){opacity:.72;transform:translateY(1px);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* Tab 4 — Exonérations — violet */
+.tab-exo{background:linear-gradient(135deg,#4A1070 0%,#6d18a3 100%);color:#fff}
+.tab-exo.active{box-shadow:0 4px 18px rgba(74,16,112,.5),0 0 0 2px rgba(74,16,112,.3)}
+.tab-exo:not(.active){opacity:.72;transform:translateY(1px);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tab-panel{display:none}.tab-panel.show{display:block}
+
+/* ── GRID ── */
+.sim-panel{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+@media(max-width:860px){.sim-panel{grid-template-columns:1fr}}
+
+/* ── CARDS ── */
+.card{background:var(--wh);border:1px solid var(--bd);border-radius:13px;padding:20px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.card-title{font-family:var(--ft);font-size:13px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ct-badge{font-family:var(--fm);font-size:8.5px;padding:2px 7px;border-radius:100px;background:var(--gp);color:var(--gold);border:1px solid rgba(184,134,42,.2)}
+
+/* ── FORM ── */
+.fg{margin-bottom:13px}
+.fg label{display:block;font-size:10.5px;font-weight:600;letter-spacing:.06em;color:var(--is);margin-bottom:4px;text-transform:uppercase;font-family:var(--fm)}
+.fg input,.fg select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:8px;font-family:var(--fb);font-size:13.5px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus{border-color:var(--gold);background:var(--wh)}
+.fg .hint{font-size:10.5px;color:var(--sm);margin-top:3px;font-family:var(--fm)}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+/* ── TOGGLE ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bd);font-size:12.5px;color:var(--is)}
+.toggle-row:last-child{border:none}
+.tgl{position:relative;width:36px;height:20px;cursor:pointer;flex-shrink:0}
+.tgl input{opacity:0;width:0;height:0;position:absolute}
+.tgl-bg{position:absolute;inset:0;background:var(--b2);border-radius:10px;transition:.22s}
+.tgl-bg::before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:var(--sm);border-radius:50%;transition:.22s}
+.tgl input:checked+.tgl-bg{background:var(--ok)}
+.tgl input:checked+.tgl-bg::before{transform:translateX(16px);background:#fff}
+
+/* ── RATE CARDS ── */
+.rate-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.rate-card{border-radius:11px;padding:13px 10px;cursor:pointer;transition:all .22s;text-align:center;border:2px solid transparent;position:relative;overflow:hidden}
+.rate-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .22s}
+.rate-card:hover::before{opacity:.08}
+/* 20% - deep navy */
+.rc-20{background:linear-gradient(135deg,var(--btn-20) 0%,#2a527a 100%);color:#fff}
+.rc-20::before{background:#fff}
+.rc-20.selected{box-shadow:0 0 0 3px rgba(28,58,91,.35),0 4px 14px rgba(28,58,91,.4)}
+.rc-20:not(.selected){opacity:.7;transform:scale(.97)}
+/* 10% - forest green */
+.rc-10{background:linear-gradient(135deg,var(--btn-10) 0%,#227a38 100%);color:#fff}
+.rc-10::before{background:#fff}
+.rc-10.selected{box-shadow:0 0 0 3px rgba(26,92,42,.35),0 4px 14px rgba(26,92,42,.4)}
+.rc-10:not(.selected){opacity:.7;transform:scale(.97)}
+/* 0% Export - violet */
+.rc-0{background:linear-gradient(135deg,var(--btn-0) 0%,#6d18a3 100%);color:#fff}
+.rc-0::before{background:#fff}
+.rc-0.selected{box-shadow:0 0 0 3px rgba(74,16,112,.35),0 4px 14px rgba(74,16,112,.4)}
+.rc-0:not(.selected){opacity:.7;transform:scale(.97)}
+/* Exo - amber */
+.rc-exo{background:linear-gradient(135deg,#7B3800 0%,#9e5000 100%);color:#fff}
+.rc-exo::before{background:#fff}
+.rc-exo.selected{box-shadow:0 0 0 3px rgba(123,56,0,.35),0 4px 14px rgba(123,56,0,.4)}
+.rc-exo:not(.selected){opacity:.7;transform:scale(.97)}
+
+.rate-card.selected{opacity:1;transform:scale(1)}
+.rc-rate{font-family:var(--ft);font-size:22px;font-weight:800;line-height:1;margin-bottom:3px}
+.rc-label{font-size:10px;opacity:.88}
+.rc-ref{font-family:var(--fm);font-size:8.5px;opacity:.65;margin-top:2px}
+
+/* ── RESULTS ── */
+.result-hero{background:linear-gradient(140deg,rgba(14,14,12,.97) 0%,rgba(28,58,91,.9) 100%);border-radius:13px;padding:22px;color:#fff;margin-bottom:14px}
+.rh-title{font-family:var(--fm);font-size:9.5px;color:rgba(255,255,255,.4);letter-spacing:.09em;text-transform:uppercase;margin-bottom:7px}
+.rh-amount{font-family:var(--ft);font-size:38px;font-weight:800;color:var(--gl);line-height:1;margin-bottom:3px}
+.rh-sub{font-size:11.5px;color:rgba(255,255,255,.4)}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.result-row:last-child{border:none;font-weight:700;font-size:13.5px}
+.result-row .rr-label{color:var(--is)}
+.result-row .rr-val{font-family:var(--fm);font-weight:600}
+.result-row.total .rr-val{color:var(--gold)}
+.result-row.credit .rr-val{color:var(--ok)}
+.result-row.debit .rr-val{color:var(--er)}
+
+/* ── TABLES ── */
+.reg-table{width:100%;border-collapse:collapse;font-size:12px}
+.reg-table th{padding:8px 11px;background:var(--ink);color:rgba(255,255,255,.65);font-family:var(--fm);font-size:8.5px;letter-spacing:.07em;text-transform:uppercase;text-align:left}
+.reg-table th:first-child{border-radius:6px 0 0 6px}
+.reg-table th:last-child{border-radius:0 6px 6px 0}
+.reg-table td{padding:10px 11px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.reg-table tr:last-child td{border:none}
+.reg-table tr:hover td{background:rgba(184,134,42,.03)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--fm);font-size:9px;padding:3px 9px;border-radius:100px;font-weight:700}
+.chip-20{background:rgba(28,58,91,.12);color:var(--btn-20);border:1px solid rgba(28,58,91,.2)}
+.chip-10{background:rgba(26,92,42,.12);color:var(--btn-10);border:1px solid rgba(26,92,42,.2)}
+.chip-exo-ok{background:rgba(74,16,112,.1);color:var(--btn-0);border:1px solid rgba(74,16,112,.2)}
+.chip-exo{background:rgba(192,88,32,.1);color:var(--wn);border:1px solid rgba(192,88,32,.2)}
+.chip-new{background:rgba(185,28,28,.1);color:var(--er);border:1px solid rgba(185,28,28,.2)}
+
+/* ── EXO GRID ── */
+.exo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:10px}
+.exo-item{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;background:var(--b2);border-radius:8px;font-size:11.5px;color:var(--is);line-height:1.4}
+.exo-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+
+/* ── BUTTONS ── */
+.btn-calc{width:100%;padding:12px;background:linear-gradient(135deg,var(--gold) 0%,#d4a034 100%);color:var(--ink);border:none;border-radius:10px;font-family:var(--fb);font-size:13.5px;font-weight:700;cursor:pointer;transition:all .22s;margin-top:4px;box-shadow:0 2px 8px rgba(184,134,42,.3);letter-spacing:.01em}
+.btn-calc:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(184,134,42,.4)}
+.btn-calc:active{transform:translateY(0);box-shadow:0 1px 4px rgba(184,134,42,.2)}
+.btn-reset{padding:8px 16px;background:transparent;border:1.5px solid var(--bd);border-radius:8px;font-family:var(--fb);font-size:11.5px;color:var(--sm);cursor:pointer;transition:all .2s}
+.btn-reset:hover{border-color:var(--er);color:var(--er)}
+.btn-export{padding:8px 16px;background:linear-gradient(135deg,var(--ink) 0%,var(--im) 100%);border:none;border-radius:8px;font-family:var(--fb);font-size:11.5px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .2s}
+.btn-export:hover{color:#fff;transform:translateY(-1px)}
+.btn-row{display:flex;gap:8px;margin-top:10px}
+
+/* ── ALERTS ── */
+.alert{display:flex;align-items:flex-start;gap:9px;padding:11px 13px;border-radius:8px;font-size:12.5px;margin-bottom:12px;line-height:1.55}
+.alert-info{background:rgba(30,77,107,.06);border:1px solid rgba(30,77,107,.2);border-left:3px solid var(--ac);color:var(--ac)}
+.alert-ok{background:rgba(26,107,60,.06);border:1px solid rgba(26,107,60,.2);border-left:3px solid var(--ok);color:var(--ok)}
+.alert-warn{background:rgba(192,88,32,.07);border:1px solid rgba(192,88,32,.2);border-left:3px solid var(--wn);color:var(--wn)}
+.alert-reform{background:rgba(185,28,28,.05);border:1px solid rgba(185,28,28,.2);border-left:3px solid var(--er);color:var(--er)}
+
+/* ── TAUX VIS ── */
+.taux-vis{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tv-pill{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600}
+.tv-pill .tv-rate{font-family:var(--ft);font-size:28px;font-weight:800;line-height:1}
+.tv-pill .tv-info{display:flex;flex-direction:column;gap:2px}
+.tv-pill .tv-name{font-size:11px;font-weight:700}
+.tv-pill .tv-ref{font-family:var(--fm);font-size:9px;opacity:.7}
+.tp-20{background:linear-gradient(135deg,var(--btn-20),#2a527a);color:#fff;flex:1;min-width:160px}
+.tp-10{background:linear-gradient(135deg,var(--btn-10),#227a38);color:#fff;flex:1;min-width:160px}
+.tp-exo{background:linear-gradient(135deg,#4A1070,#6d18a3);color:#fff;flex:1;min-width:160px}
+.tp-nc{background:linear-gradient(135deg,#7B3800,#9e5000);color:#fff;flex:1;min-width:160px}
+
+/* ── PHASE TABLE ── */
+.phase-table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:12px}
+.phase-table th{padding:7px 10px;background:var(--b2);color:var(--sm);font-family:var(--fm);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1.5px solid var(--bd);text-align:center}
+.phase-table td{padding:9px 10px;border-bottom:1px solid var(--bd);text-align:center}
+.phase-table td:first-child{text-align:left;font-weight:600;color:var(--is)}
+.phase-old{color:var(--sm);text-decoration:line-through;font-family:var(--fm)}
+.phase-new{font-family:var(--fm);font-weight:700;color:var(--ok)}
+.phase-new-20{font-family:var(--fm);font-weight:700;color:var(--btn-20)}
+
+/* ── SCORE BOX ── */
+.score-box{background:var(--gp);border:1px solid rgba(184,134,42,.25);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--im);margin-top:12px;line-height:1.65}
+.score-box strong{color:var(--gold)}
+
+/* ── ECHEANCES ── */
+.ech-row{padding:8px 0;border-bottom:1px solid var(--bd);font-size:12.5px;display:flex;align-items:center;gap:8px;color:var(--is)}
+.ech-row:last-child{border:none}
+.ech-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+/* divider */
+.div-line{height:1px;background:var(--b2);margin:10px 0}
+
+@media(max-width:640px){
+  .tabs{overflow-x:auto;width:100%}
+  .rate-grid{grid-template-columns:1fr 1fr}
+  .taux-vis{flex-direction:column}
+  .exo-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style>
+
+/* ─── ANTISCRAPING PATCH V1 : CSS user-select ─── */
+body, body * {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* Réactiver la sélection sur les inputs/textareas pour l'UX */
+input, textarea, select {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+/* Accordion-hidden : sections légales masquées par défaut */
+.as-accordion-body {
+  display: none;
+  overflow: hidden;
+}
+.as-accordion-body.as-open {
+  display: block;
+}
+.as-accordion-trigger {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem !important;
+}
+.as-accordion-trigger::after {
+  content: '▸';
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--gold, #B8922A);
+  transition: transform 0.2s ease;
+}
+.as-accordion-trigger.as-open::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+</style>
+<!-- ANTISCRAPING-PATCH-V1 -->
+</head>
+<body>
+
+<header class="header">
+  <div class="hl">
+    <a href="landing.html" class="back">← Accueil</a>
+    <div class="logo">Smart-<span>Invest</span>.ia</div>
+    <span class="h-badge">TVA Avancée · CGI 2026</span>
+    <span class="h-new">RÉFORME 2026</span>
+  </div>
+  <div class="h-disc">⚖️ Simulation indicative — CGI 2026 · LF n° 50-25</div>
+</header>
+
+<div class="page">
+  <div class="page-title">Simulateur <span>TVA Avancé</span></div>
+  <p class="page-sub">Calcul TVA collectée, déductible et crédit/complément · CGI 2026 · Prorata, exonérations, auto-liquidation · Réforme LF 2024–2026</p>
+
+  <div class="reform-banner">
+    <strong>⚡ Réforme TVA 2026 :</strong> Le CGI 2026 (LF n° 50-25) ne retient plus que <strong>deux taux</strong> — 20% (normal) et 10% (réduit). Les taux 14% et 7% ont été progressivement supprimés entre 2024 et 2026. L'électricité passe à <strong>20% au 1er janvier 2026</strong>. L'eau de distribution est à <strong>10% depuis 2024</strong>.
+  </div>
+
+  <div class="tabs">
+    <button class="tab tab-calcul active" onclick="showTab('calcul',this)"><span class="tab-icon">🧮</span>Calculateur TVA</button>
+    <button class="tab tab-prorata" onclick="showTab('prorata',this)"><span class="tab-icon">📐</span>Prorata &amp; Déduction</button>
+    <button class="tab tab-regimes" onclick="showTab('regimes',this)"><span class="tab-icon">📋</span>Régimes &amp; Taux</button>
+    <button class="tab tab-exo" onclick="showTab('exo',this)"><span class="tab-icon">✅</span>Exonérations</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ONGLET 1 : CALCULATEUR TVA
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel show" id="tp-calcul">
+    <div class="sim-panel">
+
+      <!-- INPUTS -->
+      <div>
+        <div class="card">
+          <div class="card-title">📊 Chiffre d'affaires &amp; Taux <span class="ct-badge">CGI 2026 · Art. 99</span></div>
+
+          <div class="fg">
+            <label>Période de calcul</label>
+            <select id="periode" onchange="calcTVA()">
+              <option value="mensuel">Mensuel</option>
+              <option value="trimestriel">Trimestriel</option>
+              <option value="annuel">Annuel</option>
+            </select>
+          </div>
+
+          <div class="fg">
+            <label>Taux TVA applicable — CGI 2026</label>
+            <div class="rate-grid">
+              <div class="rate-card rc-20 selected" onclick="selectRate(20, this)">
+                <div class="rc-rate">20%</div>
+                <div class="rc-label">Taux normal</div>
+                <div class="rc-ref">Art. 99-A CGI</div>
+              </div>
+              <div class="rate-card rc-10" onclick="selectRate(10, this)">
+                <div class="rc-rate">10%</div>
+                <div class="rc-label">Taux réduit</div>
+                <div class="rc-ref">Art. 99-B CGI</div>
+              </div>
+              <div class="rate-card rc-0" onclick="selectRate(0, this)">
+                <div class="rc-rate">0%</div>
+                <div class="rc-label">Export avec déd.</div>
+                <div class="rc-ref">Art. 92-I-1° CGI</div>
+              </div>
+              <div class="rate-card rc-exo" onclick="selectRate(-1, this)">
+                <div class="rc-rate">Exo.</div>
+                <div class="rc-label">Sans droit déd.</div>
+                <div class="rc-ref">Art. 91 CGI</div>
+              </div>
+            </div>
+            <div class="hint" id="rate-hint">⚡ 14% et 7% supprimés au 1er janv. 2026 (Art. 247-XXXXI CGI)</div>
+          </div>
+
+          <div class="fg-row">
+            <div class="fg">
+              <label>CA HT (MAD)</label>
+              <input type="number" id="ca_ht" value="500000" min="0" oninput="calcTVA()">
+            </div>
+            <div class="fg">
+              <label>CA TTC (MAD)</label>
+              <input type="number" id="ca_ttc" placeholder="Calcul auto" min="0" oninput="calcFromTTC()">
+              <div class="hint">Remplissez l'un OU l'autre</div>
+            </div>
+          </div>
+
+          <div class="fg">
+            <label>Achats &amp; charges HT (TVA déductible)</label>
+            <input type="number" id="achats_ht" value="300000" min="0" oninput="calcTVA()">
+            <div class="hint">Achats soumis à TVA déductible (Art. 101 CGI)</div>
+          </div>
+
+          <div class="fg">
+            <label>Taux TVA sur achats</label>
+            <select id="taux_achat" onchange="calcTVA()">
+              <option value="20">20% — taux normal (Art. 99-A)</option>
+              <option value="10">10% — taux réduit (Art. 99-B)</option>
+              <option value="0">0% — achat en exonération/suspension</option>
+            </select>
+          </div>
+
+          <div class="fg-row">
+            <div class="fg">
+              <label>Prorata de déduction (%)</label>
+              <input type="number" id="prorata" value="100" min="0" max="100" oninput="calcTVA()">
+              <div class="hint">100% si activité 100% taxable (Art. 104 CGI)</div>
+            </div>
+            <div class="fg">
+              <label>Crédit TVA antérieur (MAD)</label>
+              <input type="number" id="credit_ant" value="0" min="0" oninput="calcTVA()">
+            </div>
+          </div>
+
+          <div class="card-title" style="font-size:12px;margin-top:6px;margin-bottom:10px">Options déclaratives</div>
+          <div class="toggle-row">
+            <span>Régime de déclaration mensuelle</span>
+            <label class="tgl"><input type="checkbox" id="chk_mensuel" checked onchange="calcTVA()"><span class="tgl-bg"></span></label>
+          </div>
+          <div class="toggle-row">
+            <span>Auto-liquidation (assujettis étrangers — Art. 115 bis)</span>
+            <label class="tgl"><input type="checkbox" id="chk_autoliq" onchange="calcTVA()"><span class="tgl-bg"></span></label>
+          </div>
+          <div class="toggle-row">
+            <span>Activité partiellement exonérée (prorata &lt; 100%)</span>
+            <label class="tgl"><input type="checkbox" id="chk_partiel" onchange="calcTVA()"><span class="tgl-bg"></span></label>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="btn-calc" onclick="calcTVA()" style="flex:1">🧮 Calculer la TVA</button>
+            <button class="btn-reset" onclick="resetForm()">↺</button>
+          </div>
+          <div class="btn-row">
+            <button class="btn-export" onclick="window.print()" style="flex:1">🖨 Imprimer / PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div>
+        <div class="result-hero">
+          <div class="rh-title">Résultat Net TVA</div>
+          <div class="rh-amount" id="r_net">60 000,00 MAD</div>
+          <div class="rh-sub" id="r_net_sub">TVA à reverser à la DGI</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📋 Détail du calcul — Art. 101 CGI</div>
+          <div class="result-row">
+            <span class="rr-label">CA HT</span>
+            <span class="rr-val" id="r_ca_ht">500 000,00 MAD</span>
+          </div>
+          <div class="result-row">
+            <span class="rr-label">TVA collectée (<span id="r_taux_label">20%</span>)</span>
+            <span class="rr-val" id="r_tva_coll">100 000,00 MAD</span>
+          </div>
+          <div class="result-row">
+            <span class="rr-label">CA TTC</span>
+            <span class="rr-val" id="r_ca_ttc">600 000,00 MAD</span>
+          </div>
+          <div class="div-line"></div>
+          <div class="result-row">
+            <span class="rr-label">TVA sur achats</span>
+            <span class="rr-val" id="r_tva_ach">60 000,00 MAD</span>
+          </div>
+          <div class="result-row">
+            <span class="rr-label">Prorata appliqué (Art. 104)</span>
+            <span class="rr-val" id="r_prorata_val">100%</span>
+          </div>
+          <div class="result-row">
+            <span class="rr-label">TVA déductible nette</span>
+            <span class="rr-val" id="r_tva_ded">60 000,00 MAD</span>
+          </div>
+          <div class="result-row">
+            <span class="rr-label">Crédit antérieur</span>
+            <span class="rr-val" id="r_credit_ant">—</span>
+          </div>
+          <div class="div-line"></div>
+          <div class="result-row total">
+            <span class="rr-label">TVA à reverser / Crédit</span>
+            <span class="rr-val" id="r_final">40 000,00 MAD ← à payer</span>
+          </div>
+        </div>
+
+        <div id="alertBox" style="display:none"></div>
+
+        <div class="card">
+          <div class="card-title">📅 Échéances déclaratives</div>
+          <div id="echeances"></div>
+          <div class="score-box" style="margin-top:10px">
+            <strong>💡 Bon à savoir :</strong> Art. 110 CGI — déclaration électronique (Simpl-TVA) : dépôt avant la fin du mois courant (et non le 20). La déclaration papier reste au 20 du mois suivant.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ONGLET 2 : PRORATA & DÉDUCTION
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tp-prorata">
+    <div class="alert alert-info">ℹ️ <strong>Art. 104 CGI 2026 :</strong> Le prorata est arrondi au % supérieur et déterminé à la fin de chaque année civile. Il s'applique à l'exercice suivant. Les immobilisations bénéficient d'une régularisation sur 5 ans (biens meubles, 60 mois) et 10 ans (biens immeubles).</div>
+    <div class="sim-panel">
+      <div>
+        <div class="card">
+          <div class="card-title">📐 Calcul du prorata de déduction <span class="ct-badge">Art. 104 CGI</span></div>
+          <div class="fg">
+            <label>CA taxable HT (opérations imposables)</label>
+            <input type="number" id="ca_taxable" value="800000" oninput="calcProrata()">
+            <div class="hint">Toutes opérations soumises à TVA (20% ou 10%)</div>
+          </div>
+          <div class="fg">
+            <label>CA exonéré avec droit à déduction HT</label>
+            <input type="number" id="ca_exo" value="200000" oninput="calcProrata()">
+            <div class="hint">Export (Art. 92), ZAI, régime suspensif (Art. 94)</div>
+          </div>
+          <div class="fg">
+            <label>CA exonéré SANS droit à déduction HT</label>
+            <input type="number" id="ca_exo_sans" value="100000" oninput="calcProrata()">
+            <div class="hint">Art. 91 CGI : médicaments, enseignement, soins médicaux…</div>
+          </div>
+          <div class="fg">
+            <label>CA hors champ TVA HT</label>
+            <input type="number" id="ca_hors" value="0" oninput="calcProrata()">
+            <div class="hint">Opérations hors champ d'application de la TVA</div>
+          </div>
+          <div class="div-line"></div>
+          <div class="fg">
+            <label>TVA sur immobilisations à déduire (MAD)</label>
+            <input type="number" id="tva_immo" value="0" oninput="calcProrata()">
+            <div class="hint">Déductible à 100% si bien inscrit en immobilisation (Art. 102)</div>
+          </div>
+          <button class="btn-calc" onclick="calcProrata()">📐 Calculer le prorata</button>
+        </div>
+      </div>
+      <div>
+        <div class="result-hero">
+          <div class="rh-title">Prorata de déduction — Art. 104 CGI</div>
+          <div class="rh-amount" id="p_prorata">—</div>
+          <div class="rh-sub">Arrondi au % supérieur · Révisé en fin d'exercice</div>
+        </div>
+        <div class="card">
+          <div class="card-title">📊 Ventilation du CA</div>
+          <div class="result-row"><span class="rr-label">CA total</span><span class="rr-val" id="p_total">—</span></div>
+          <div class="result-row"><span class="rr-label">Numérateur — imposable + exo. avec déd.</span><span class="rr-val" id="p_num">—</span></div>
+          <div class="result-row"><span class="rr-label">Dénominateur — CA total</span><span class="rr-val" id="p_den">—</span></div>
+          <div class="result-row total"><span class="rr-label">Prorata définitif</span><span class="rr-val" id="p_final">—</span></div>
+        </div>
+        <div class="card">
+          <div class="card-title">💡 Impact sur la déduction</div>
+          <div id="p_impact" style="font-size:13px;color:var(--is);line-height:1.85"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚠️ Régularisation Art. 104-II</div>
+          <div style="font-size:12.5px;color:var(--is);line-height:1.75">
+            <p>Si le prorata d'une année suivante varie de <strong>plus de 5 centièmes</strong> par rapport au prorata initial, une régularisation s'impose sur les immobilisations (1/5 de la différence par an pour les biens meubles, 1/10 pour les immeubles).</p>
+            <p style="margin-top:8px;font-family:var(--fm);font-size:11px;color:var(--sm)">Régularisation à reporter sur la déclaration de mars (mensuel) ou 1er trimestre (trimestriel).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ONGLET 3 : RÉGIMES & TAUX
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tp-regimes">
+
+    <!-- Visuel des deux taux -->
+    <div class="card">
+      <div class="card-title">⚡ Structure des taux TVA — CGI 2026 (LF n° 50-25) <span class="ct-badge">2 taux seulement</span></div>
+      <div class="taux-vis">
+        <div class="tv-pill tp-20">
+          <div class="tv-rate">20%</div>
+          <div class="tv-info">
+            <span class="tv-name">Taux normal</span>
+            <span class="tv-ref">Art. 99-A CGI 2026</span>
+          </div>
+        </div>
+        <div class="tv-pill tp-10">
+          <div class="tv-rate">10%</div>
+          <div class="tv-info">
+            <span class="tv-name">Taux réduit</span>
+            <span class="tv-ref">Art. 99-B CGI 2026</span>
+          </div>
+        </div>
+        <div class="tv-pill tp-exo">
+          <div class="tv-rate">0%</div>
+          <div class="tv-info">
+            <span class="tv-name">Export / suspension</span>
+            <span class="tv-ref">Art. 92 &amp; 94 CGI</span>
+          </div>
+        </div>
+        <div class="tv-pill tp-nc">
+          <div class="tv-rate">Exo.</div>
+          <div class="tv-info">
+            <span class="tv-name">Sans droit à déd.</span>
+            <span class="tv-ref">Art. 91 CGI</span>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-reform" style="margin-bottom:0">
+        ⚡ <strong>Réforme 2024–2026 :</strong> Les taux 7% et 14% ont été supprimés par étapes conformément aux dispositions transitoires de l'article 247-XXXXI du CGI 2026. Voir tableau ci-dessous.
+      </div>
+    </div>
+
+    <!-- Tableau principal taux -->
+    <div class="card">
+      <div class="card-title">📋 Taux TVA applicables — CGI 2026 · Art. 99</div>
+      <table class="reg-table">
+        <thead>
+          <tr><th>Taux 2026</th><th>Produits / Opérations</th><th>Régime</th><th>Déclaration</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="chip chip-20">20%</span></td>
+            <td>Taux normal — tous produits et services non listés ci-dessous<br><small style="color:var(--sm);font-family:var(--fm);font-size:10px">⚡ Incl. électricité distribution (ex-14%, passage à 20% au 01/01/2026 — Art. 247-XXXXI-B)</small></td>
+            <td><span class="chip chip-20">Taxable</span></td>
+            <td>Mensuel / Trimestriel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Hébergement, restauration, cafés (Art. 99-B-1°)</td>
+            <td><span class="chip chip-10">Taxable</span></td>
+            <td>Mensuel / Trimestriel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Opérations bancaires, crédit, financement islamique (Mourabaha, Ijara…) — Art. 99-B</td>
+            <td><span class="chip chip-10">Taxable</span></td>
+            <td>Mensuel obligatoire</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Eau — réseaux de distribution publique + assainissement + location compteur<br><small style="color:var(--sm);font-family:var(--fm);font-size:10px">🆕 Passage de 14% à 10% depuis 01/01/2024 — Art. 247-XXXXI-A</small></td>
+            <td><span class="chip chip-10">Taxable</span></td>
+            <td>Mensuel / Trimestriel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Transport urbain + transport routier voyageurs/marchandises<br><small style="color:var(--sm);font-family:var(--fm);font-size:10px">🆕 Passage de 14% → 13% (2024) → 12% (2025) → 10% (01/01/2026) — Art. 247-XXXXI-G</small></td>
+            <td><span class="chip chip-10">Taxable</span></td>
+            <td>Mensuel / Trimestriel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Sucre raffiné/aggloméré, vergeoises, candis<br><small style="color:var(--sm);font-family:var(--fm);font-size:10px">🆕 Passage de 7% → 8% (2024) → 9% (2025) → 10% (01/01/2026) — Art. 247-XXXXI-E</small></td>
+            <td><span class="chip chip-10">Taxable</span></td>
+            <td>Mensuel / Trimestriel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Huiles fluides alimentaires (excl. huile de palme) · Riz usiné · Sel de cuisine · Gaz/hydrocarbures · Panneaux photovoltaïques · Chauffe-eaux solaires · Aliments bétail</td>
+            <td><span class="chip chip-10">Taxable</span></td>
+            <td>Mensuel / Trimestriel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Pâtes alimentaires (autres que semoules exonérées) — Art. 99-B, LF 2026 n° 50-25</td>
+            <td><span class="chip chip-10">Taxable</span></td>
+            <td>Mensuel / Trimestriel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Énergie électrique issue d'énergies renouvelables (producteurs)<br><small style="color:var(--sm);font-family:var(--fm);font-size:10px">Passage de 14% → 12% (2024) → 10% (01/01/2025) — Art. 247-XXXXI-D</small></td>
+            <td><span class="chip chip-10">Taxable</span></td>
+            <td>Mensuel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-10">10%</span></td>
+            <td>Courtiers/démarcheurs d'assurances (sans droit à déduction)<br><small style="color:var(--sm);font-family:var(--fm);font-size:10px">Passage de 14% → 12% (2024) → 10% (01/01/2025) — Art. 247-XXXXI-H</small></td>
+            <td><span class="chip chip-exo">10% sans déd.</span></td>
+            <td>Mensuel</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-exo-ok">0% + déd.</span></td>
+            <td>Exportations de biens et services — exonéré avec droit à déduction</td>
+            <td><span class="chip chip-exo-ok">Exo. + déd.</span></td>
+            <td>Mensuel obligatoire</td>
+          </tr>
+          <tr>
+            <td><span class="chip chip-exo">Exo.</span></td>
+            <td>Médicaments, pêche fraîche, lait, pain, soins médicaux, enseignement privé…</td>
+            <td><span class="chip chip-exo">Exo. sans déd.</span></td>
+            <td>Hors champ / Art. 91</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tableau transitoire -->
+    <div class="card">
+      <div class="card-title">🔄 Tableau de transition 2023 → 2026 — Art. 247-XXXXI CGI</div>
+      <table class="phase-table">
+        <thead>
+          <tr>
+            <th style="text-align:left">Produit / Opération</th>
+            <th>2023</th>
+            <th>2024</th>
+            <th>2025</th>
+            <th>2026 ✓</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Électricité (distribution réseau)</td>
+            <td><span class="phase-old">14%</span></td>
+            <td>16%</td>
+            <td>18%</td>
+            <td><span class="phase-new-20">20%</span></td>
+          </tr>
+          <tr>
+            <td>Location compteur électricité</td>
+            <td><span class="phase-old">7%</span></td>
+            <td>11%</td>
+            <td>15%</td>
+            <td><span class="phase-new-20">20%</span></td>
+          </tr>
+          <tr>
+            <td>Transport (hors urbain/routier)</td>
+            <td><span class="phase-old">14%</span></td>
+            <td>16%</td>
+            <td>18%</td>
+            <td><span class="phase-new-20">20%</span></td>
+          </tr>
+          <tr>
+            <td>Transport urbain + routier voyageurs/marchandises</td>
+            <td><span class="phase-old">14%</span></td>
+            <td>13%</td>
+            <td>12%</td>
+            <td><span class="phase-new">10%</span></td>
+          </tr>
+          <tr>
+            <td>Eau (distribution + assainissement)</td>
+            <td><span class="phase-old">14%</span></td>
+            <td><span class="phase-new">10%</span></td>
+            <td><span class="phase-new">10%</span></td>
+            <td><span class="phase-new">10%</span></td>
+          </tr>
+          <tr>
+            <td>Sucre raffiné / aggloméré</td>
+            <td><span class="phase-old">7%</span></td>
+            <td>8%</td>
+            <td>9%</td>
+            <td><span class="phase-new">10%</span></td>
+          </tr>
+          <tr>
+            <td>Énergie renouvelable (producteurs)</td>
+            <td><span class="phase-old">14%</span></td>
+            <td>12%</td>
+            <td><span class="phase-new">10%</span></td>
+            <td><span class="phase-new">10%</span></td>
+          </tr>
+          <tr>
+            <td>Courtiers d'assurances</td>
+            <td><span class="phase-old">14%</span></td>
+            <td>12%</td>
+            <td><span class="phase-new">10%</span></td>
+            <td><span class="phase-new">10%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Régimes de déclaration -->
+    <div class="card">
+      <div class="card-title">🗓 Régimes de déclaration — Art. 108 CGI</div>
+      <table class="reg-table">
+        <thead><tr><th>Régime</th><th>Condition CA annuel taxable</th><th>Délai dépôt</th><th>Mode électronique</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Mensuel</strong></td>
+            <td>CA ≥ 1 000 000 MAD (ou option avant 31 janv.)</td>
+            <td>Avant le <strong>20</strong> du mois suivant</td>
+            <td>Avant la fin du mois (Art. 110 al. 2)</td>
+          </tr>
+          <tr>
+            <td><strong>Trimestriel</strong></td>
+            <td>CA &lt; 1 000 000 MAD · ou nouveaux contribuables</td>
+            <td>Avant le <strong>20</strong> du 1er mois du trimestre suivant</td>
+            <td>Avant la fin du 1er mois du trimestre suivant</td>
+          </tr>
+          <tr>
+            <td><strong>Auto-liquidation</strong></td>
+            <td>Achats auprès d'opérateurs étrangers non résidents (Art. 115 bis)</td>
+            <td>Déclaration spéciale mensuelle</td>
+            <td>Simultané à la déduction</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Secteurs spéciaux -->
+    <div class="card">
+      <div class="card-title">🏭 Régimes sectoriels 2026</div>
+      <table class="reg-table">
+        <thead><tr><th>Secteur</th><th>Régime TVA 2026</th><th>Particularité</th></tr></thead>
+        <tbody>
+          <tr><td>🏭 ZAI / Zones Franches d'Exportation</td><td><span class="chip chip-exo-ok">Exo. + déd.</span></td><td>Exonération totale — Art. 92-I-2°</td></tr>
+          <tr><td>🌍 Export direct</td><td><span class="chip chip-exo-ok">0% + déd.</span></td><td>Droit au remboursement crédit TVA — Art. 103</td></tr>
+          <tr><td>🏗️ BTP / Travaux immobiliers</td><td><span class="chip chip-20">20%</span></td><td>20% sur main-d'œuvre et matériaux (Art. 89-I-4°)</td></tr>
+          <tr><td>🏨 Hôtellerie / Restauration / Cafés</td><td><span class="chip chip-10">10%</span></td><td>Art. 99-B-1° CGI — hébergement + restauration</td></tr>
+          <tr><td>⚡ Électricité (distribution)</td><td><span class="chip chip-20">20%</span></td><td>🆕 Passage à 20% au 01/01/2026 (ex-14%)</td></tr>
+          <tr><td>💧 Eau (distribution + assainissement)</td><td><span class="chip chip-10">10%</span></td><td>🆕 Passage à 10% au 01/01/2024 (ex-14%)</td></tr>
+          <tr><td>💊 Pharmacie — Médicaments</td><td><span class="chip chip-exo">Exo.</span></td><td>Exo. sans droit à déduction — Art. 91</td></tr>
+          <tr><td>🎓 Enseignement privé</td><td><span class="chip chip-exo">Exo.</span></td><td>Scolarité exo. Art. 91 — matériel soumis à 20%</td></tr>
+          <tr><td>📦 Services numériques étrangers (e-commerce B2C)</td><td><span class="chip chip-20">20% auto-liq.</span></td><td>Auto-liquidation — Art. 115 bis LF 2024/2025</td></tr>
+          <tr><td>☀️ Énergie renouvelable (producteurs)</td><td><span class="chip chip-10">10%</span></td><td>Depuis 01/01/2025 — Art. 247-XXXXI-D</td></tr>
+          <tr><td>🏦 Banques / Crédit / Financement islamique</td><td><span class="chip chip-10">10%</span></td><td>Art. 99-B — Mourabaha, Salam, Istisna'a, Ijara</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ONGLET 4 : EXONÉRATIONS
+  ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tp-exo">
+
+    <div class="card">
+      <div class="card-title">✅ Opérations exonérées AVEC droit à déduction — Art. 92 CGI</div>
+      <div class="alert alert-ok">💡 Ces opérations permettent de récupérer la TVA payée sur les achats. Remboursement DGI possible (Art. 103 — délai max 3 mois).</div>
+      <div class="exo-grid">
+        <div class="exo-item"><span class="exo-icon">🌍</span><div><strong>Exportations</strong> de marchandises et services (Art. 92-I-1°)</div></div>
+        <div class="exo-item"><span class="exo-icon">✈️</span><div><strong>Transports internationaux</strong> de voyageurs et marchandises</div></div>
+        <div class="exo-item"><span class="exo-icon">🏭</span><div><strong>Ventes en ZAI/ZFE</strong> — Zones d'Accélération Industrielle (Art. 92-I-2°)</div></div>
+        <div class="exo-item"><span class="exo-icon">🚢</span><div><strong>Avitaillement</strong> des navires et aéronefs internationaux</div></div>
+        <div class="exo-item"><span class="exo-icon">🏗️</span><div><strong>Logements sociaux</strong> — matériaux de construction (conditions requises)</div></div>
+        <div class="exo-item"><span class="exo-icon">🌱</span><div><strong>Agriculture</strong> — engrais, matières fertilisantes, tracteurs, phytosanitaires (Art. 92-I-3°-4°-5°)</div></div>
+        <div class="exo-item"><span class="exo-icon">🤝</span><div><strong>ONG agréées</strong> — opérations réalisées par des associations reconnues</div></div>
+        <div class="exo-item"><span class="exo-icon">💊</span><div><strong>Médicaments à l'export</strong> et matières premières pharmaceutiques destinées à l'export</div></div>
+        <div class="exo-item"><span class="exo-icon">📦</span><div><strong>Régimes suspensifs douaniers</strong> — marchandises sous entrepôt, admission temp. (Art. 92-I-2°)</div></div>
+        <div class="exo-item"><span class="exo-icon">🔬</span><div><strong>Équipements médicaux</strong> — liste fixée par décret (Art. 92-I-6°)</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⛔ Opérations exonérées SANS droit à déduction — Art. 91 CGI</div>
+      <div class="alert alert-warn">⚠️ Pas de récupération de la TVA sur achats liés. Attention au prorata si activité mixte — Art. 104 CGI.</div>
+      <div class="exo-grid">
+        <div class="exo-item"><span class="exo-icon">🍞</span><div><strong>Pain, couscous, semoules, farines</strong>, céréales, levures pour panification — Art. 91-I-A-1°</div></div>
+        <div class="exo-item"><span class="exo-icon">🥛</span><div><strong>Lait</strong> frais, concentré, laits spéciaux nourrissons · <strong>Beurre</strong> d'origine animale — Art. 91-I-A-2°</div></div>
+        <div class="exo-item"><span class="exo-icon">🌾</span><div><strong>Sucre brut</strong> (betterave, canne) — Art. 91-I-A-3° [≠ sucre raffiné à 10%]</div></div>
+        <div class="exo-item"><span class="exo-icon">🐟</span><div><strong>Produits de pêche</strong> frais ou congelés — Art. 91-I-A-5°</div></div>
+        <div class="exo-item"><span class="exo-icon">🥩</span><div><strong>Viande fraîche/congelée</strong> assaisonnée ou non — Art. 91-I-A-6° (LF 2025)</div></div>
+        <div class="exo-item"><span class="exo-icon">🫙</span><div><strong>Conserves de sardines</strong> · <strong>Lait en poudre</strong> · <strong>Savon de ménage</strong> — Art. 91-I-A LF 2024</div></div>
+        <div class="exo-item"><span class="exo-icon">🫒</span><div><strong>Huile d'olive</strong> et sous-produits d'unités artisanales — Art. 91-I-A-7°</div></div>
+        <div class="exo-item"><span class="exo-icon">🗞️</span><div><strong>Presse, journaux, livres</strong>, musique imprimée — Art. 91-I-E</div></div>
+        <div class="exo-item"><span class="exo-icon">🎓</span><div><strong>Enseignement scolaire/universitaire privé</strong> — Art. 91 (scolarité uniquement)</div></div>
+        <div class="exo-item"><span class="exo-icon">🏥</span><div><strong>Soins médicaux</strong> et hospitalisation — Art. 91</div></div>
+        <div class="exo-item"><span class="exo-icon">💊</span><div><strong>Médicaments</strong> inscrits sur liste officielle — Art. 91</div></div>
+        <div class="exo-item"><span class="exo-icon">🏠</span><div><strong>Locations d'immeubles nus</strong> à usage d'habitation — Art. 91</div></div>
+        <div class="exo-item"><span class="exo-icon">🌊</span><div><strong>Pêche maritime</strong> (secteur primaire — produits frais) — Art. 91</div></div>
+        <div class="exo-item"><span class="exo-icon">🏺</span><div><strong>Tapis artisanaux</strong> de production locale — Art. 91-I-C-4°</div></div>
+        <div class="exo-item"><span class="exo-icon">♻️</span><div><strong>Métaux de récupération</strong> — Art. 91-I-C-5° (LF 2021/2022/2026)</div></div>
+        <div class="exo-item"><span class="exo-icon">🍝</span><div><strong>Pâtes alimentaires courtes</strong> non cuites et non farcies — Art. 91-I-A-1° LF 2026 n° 50-25</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔄 Remboursement de crédit TVA — Art. 103 &amp; 103 bis CGI</div>
+      <div class="sim-panel" style="gap:14px">
+        <div>
+          <div style="font-size:13px;color:var(--is);line-height:1.85">
+            <p><strong>Art. 103 — Cas ouvrant droit :</strong></p>
+            <p style="margin:6px 0">① Opérations réalisées sous exonération (Art. 92) ou suspension (Art. 94) — délai : <strong>3 mois</strong></p>
+            <p style="margin:6px 0">② Cessation d'activité taxable</p>
+            <p style="margin:6px 0">③ Acquisition de biens exonérés (Art. 92-I-6°, Art. 123-22°)</p>
+            <p style="margin:6px 0">④ Entreprises de crédit-bail (leasing)</p>
+            <p style="margin:6px 0">⑤ Entreprises de dessalement d'eau de mer</p>
+            <p style="margin:6px 0">⑥ Crédit issu de retenue à la source (Art. 117)</p>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:var(--is);line-height:1.85">
+            <p><strong>Art. 103 bis — Remboursement investissement :</strong></p>
+            <p style="margin:6px 0">Pour les biens d'investissement (hors mobilier bureau, véhicules de personnes non collectifs), remboursement en <strong>30 jours</strong> — demande trimestrielle.</p>
+            <p style="margin-top:12px"><strong>Documents requis :</strong></p>
+            <p style="margin:4px 0">• Déclarations CA · Grand livre achats · Factures d'achat</p>
+            <p style="margin:4px 0">• Titres d'exportation (DAU) pour exportateurs</p>
+            <p style="margin:4px 0">• Attestation bancaire de rapatriement en devises</p>
+            <div class="score-box" style="margin-top:10px">
+              <strong>Seuil pratique DGI :</strong> Crédit ≥ 5 000 MAD (règle d'usage — non codifiée dans le CGI 2026)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ── ÉTAT ─────────────────────────────────────────────────
+let tauxTVA = 20;
+
+function selectRate(taux, el) {
+  tauxTVA = taux;
+  document.querySelectorAll('.rate-card').forEach(c => {
+    c.classList.remove('selected');
+    c.style.opacity = '';
+    c.style.transform = '';
+  });
+  el.classList.add('selected');
+
+  const hints = {
+    20: '20% — Taux normal · Tous produits/services non listés (Art. 99-A CGI 2026)',
+    10: '10% — Taux réduit · Hôtellerie, eau, transport, banque, énergie (Art. 99-B CGI 2026)',
+    0:  '0% — Exportations avec droit à déduction · Remboursement crédit TVA possible (Art. 92)',
+    [-1]: 'Exonéré sans droit à déduction · Médicaments, enseignement, soins, lait, pain (Art. 91)'
+  };
+  document.getElementById('rate-hint').textContent = hints[taux] || hints[-1];
+  calcTVA();
+}
+
+function showTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tp-' + id).classList.add('show');
+  if (el) el.classList.add('active');
+}
+
+function fmt(n) {
+  return n.toLocaleString('fr-MA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' MAD';
+}
+function fmtPct(n) { return n.toFixed(0) + '%'; }
+
+// ── CALCUL TVA PRINCIPAL ──────────────────────────────────────
+function calcTVA() {
+  const ca_ht      = parseFloat(document.getElementById('ca_ht').value) || 0;
+  const achats_ht  = parseFloat(document.getElementById('achats_ht').value) || 0;
+  const taux_achat = parseFloat(document.getElementById('taux_achat').value) || 20;
+  const prorata    = parseFloat(document.getElementById('prorata').value) / 100 || 1;
+  const credit_ant = parseFloat(document.getElementById('credit_ant').value) || 0;
+  const autoLiq    = document.getElementById('chk_autoliq').checked;
+
+  // Pour exonéré sans droit (tauxTVA = -1) : collecte = 0
+  const taux_eff = tauxTVA < 0 ? 0 : tauxTVA;
+
+  const tva_coll   = ca_ht * (taux_eff / 100);
+  const ca_ttc     = ca_ht + tva_coll;
+  const tva_achats = achats_ht * (taux_achat / 100);
+  const tva_ded    = tva_achats * prorata + (autoLiq ? tva_achats * (1 - prorata) : 0);
+  const solde      = tva_coll - tva_ded - credit_ant;
+
+  document.getElementById('r_taux_label').textContent = taux_eff + '%';
+  document.getElementById('r_ca_ht').textContent      = fmt(ca_ht);
+  document.getElementById('r_tva_coll').textContent   = fmt(tva_coll);
+  document.getElementById('r_ca_ttc').textContent     = fmt(ca_ttc);
+  document.getElementById('r_tva_ach').textContent    = fmt(tva_achats);
+  document.getElementById('r_prorata_val').textContent= fmtPct(prorata * 100);
+  document.getElementById('r_tva_ded').textContent    = fmt(tva_ded);
+  document.getElementById('r_credit_ant').textContent = credit_ant > 0 ? fmt(credit_ant) : '—';
+
+  const netEl  = document.getElementById('r_net');
+  const subEl  = document.getElementById('r_net_sub');
+  const finEl  = document.getElementById('r_final');
+  const absNet = Math.abs(solde);
+
+  if (solde > 0) {
+    netEl.textContent = fmt(solde);
+    netEl.style.color = '#F0C460';
+    subEl.textContent = 'TVA à reverser à la DGI';
+    finEl.className = 'rr-val debit';
+    finEl.textContent = fmt(solde) + ' ← à payer';
+  } else if (solde < 0) {
+    netEl.textContent = fmt(absNet);
+    netEl.style.color = '#4ADE80';
+    subEl.textContent = 'Crédit de TVA — remboursable si exportateur (Art. 103)';
+    finEl.className = 'rr-val credit';
+    finEl.textContent = fmt(absNet) + ' ← crédit';
+  } else {
+    netEl.textContent = '0,00 MAD';
+    netEl.style.color = 'rgba(255,255,255,.6)';
+    subEl.textContent = 'TVA équilibrée';
+    finEl.textContent = '0,00 MAD';
+    finEl.className = 'rr-val';
+  }
+
+  // Alertes contextuelles
+  const alertBox = document.getElementById('alertBox');
+  let alerts = [];
+  const periode = document.getElementById('periode').value;
+  const caAnnuel = periode === 'mensuel' ? ca_ht * 12 : periode === 'trimestriel' ? ca_ht * 4 : ca_ht;
+
+  if (caAnnuel >= 1000000 && periode !== 'mensuel') {
+    alerts.push({ type: 'warn', msg: '⚠ CA taxable ≥ 1 000 000 MAD/an : déclaration mensuelle obligatoire (Art. 108-I CGI).' });
+  }
+  if (solde < 0 && absNet >= 5000) {
+    alerts.push({ type: 'ok', msg: '✓ Crédit TVA ≥ 5 000 MAD : demande de remboursement possible à la DGI (Art. 103 CGI). Délai de traitement : 3 mois (exportateurs), 30 jours (investissements — Art. 103 bis).' });
+  }
+  if (prorata < 1 && prorata > 0) {
+    alerts.push({ type: 'info', msg: `ℹ️ Prorata de ${fmtPct(prorata*100)} appliqué (Art. 104 CGI). Prorata arrondi au % supérieur. À recalculer en fin d'exercice pour le prorata définitif.` });
+  }
+  if (tauxTVA === -1) {
+    alerts.push({ type: 'info', msg: 'ℹ️ Activité exonérée sans droit à déduction (Art. 91) : aucune TVA collectée ni déductible sur les achats liés. Si activité mixte, appliquer le prorata de l\'onglet dédié.' });
+  }
+  if (tauxTVA === 0) {
+    alerts.push({ type: 'ok', msg: '✓ Export/suspension (Art. 92-94) : TVA collectée nulle. Vous conservez le droit à déduction et au remboursement du crédit TVA (Art. 103 CGI).' });
+  }
+  if (autoLiq) {
+    alerts.push({ type: 'info', msg: 'ℹ️ Auto-liquidation activée (Art. 115 bis CGI) : applicable aux achats auprès de prestataires étrangers non résidents n\'ayant pas d\'établissement au Maroc. Déclaration spéciale mensuelle requise.' });
+  }
+
+  if (alerts.length > 0) {
+    alertBox.style.display = 'block';
+    alertBox.innerHTML = alerts.map(a => `<div class="alert alert-${a.type}" style="margin-bottom:8px">${a.msg}</div>`).join('');
+  } else {
+    alertBox.style.display = 'none';
+  }
+
+  // Échéances
+  const now = new Date();
+  const mois = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  const m = now.getMonth();
+  const y = now.getFullYear();
+  const next1 = `20 ${mois[(m+1)%12]} ${(m+1) >= 12 ? y+1 : y}`;
+  const next2 = `20 ${mois[(m+2)%12]} ${(m+2) >= 12 ? y+1 : y}`;
+  document.getElementById('echeances').innerHTML = `
+    <div class="ech-row"><span class="ech-dot"></span>Prochaine déclaration : <strong>${next1}</strong></div>
+    <div class="ech-row"><span class="ech-dot" style="background:var(--sm)"></span>Suivante : <strong>${next2}</strong></div>
+    <div class="ech-row" style="color:var(--sm);font-size:11.5px;font-family:var(--fm)">Régime ${periode} · Dépôt en ligne sur Simpl-TVA (DGI)</div>`;
+
+  // Sync champ TTC
+  if (taux_eff > 0) document.getElementById('ca_ttc').placeholder = fmt(ca_ttc);
+}
+
+function calcFromTTC() {
+  const ttc = parseFloat(document.getElementById('ca_ttc').value) || 0;
+  const taux_eff = tauxTVA < 0 ? 0 : tauxTVA;
+  if (ttc > 0 && taux_eff > 0) {
+    const ht = ttc / (1 + taux_eff / 100);
+    document.getElementById('ca_ht').value = Math.round(ht);
+    calcTVA();
+  }
+}
+
+function resetForm() {
+  document.getElementById('ca_ht').value = '500000';
+  document.getElementById('ca_ttc').value = '';
+  document.getElementById('achats_ht').value = '300000';
+  document.getElementById('prorata').value = '100';
+  document.getElementById('credit_ant').value = '0';
+  document.getElementById('taux_achat').value = '20';
+  document.getElementById('chk_autoliq').checked = false;
+  document.getElementById('chk_partiel').checked = false;
+  // Reset to 20%
+  document.querySelectorAll('.rate-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector('.rc-20').classList.add('selected');
+  tauxTVA = 20;
+  calcTVA();
+}
+
+// ── PRORATA ──────────────────────────────────────────────
+function calcProrata() {
+  const taxable   = parseFloat(document.getElementById('ca_taxable').value) || 0;
+  const exo_avec  = parseFloat(document.getElementById('ca_exo').value) || 0;
+  const exo_sans  = parseFloat(document.getElementById('ca_exo_sans').value) || 0;
+  const hors      = parseFloat(document.getElementById('ca_hors').value) || 0;
+  const tva_immo  = parseFloat(document.getElementById('tva_immo').value) || 0;
+
+  // Art. 104 CGI : numérateur = taxable + exo avec droit / dénominateur = tout le CA
+  const num   = taxable + exo_avec;
+  const total = taxable + exo_avec + exo_sans + hors;
+  const rawPct = total > 0 ? (num / total) * 100 : 0;
+  const prorata = Math.ceil(rawPct); // arrondi au % supérieur (Art. 104)
+
+  document.getElementById('p_total').textContent   = fmt(total);
+  document.getElementById('p_num').textContent     = fmt(num);
+  document.getElementById('p_den').textContent     = fmt(total);
+  document.getElementById('p_prorata').textContent = prorata + '%';
+  document.getElementById('p_final').textContent   = prorata + '%';
+
+  const tva100k_ded = Math.round(100000 * prorata / 100);
+  const tva100k_nd  = 100000 - tva100k_ded;
+
+  document.getElementById('p_impact').innerHTML = `
+    <div style="padding:7px 0;border-bottom:1px solid var(--bd)">🔹 Sur 100 000 MAD de TVA sur achats : <strong style="color:var(--ok)">${tva100k_ded.toLocaleString('fr-MA')} MAD déductibles</strong></div>
+    <div style="padding:7px 0;border-bottom:1px solid var(--bd)">🔹 TVA non déductible : <strong style="color:var(--er)">${tva100k_nd.toLocaleString('fr-MA')} MAD</strong> (charge définitive)</div>
+    ${tva_immo > 0 ? `<div style="padding:7px 0;border-bottom:1px solid var(--bd)">🔹 TVA immobilisations : <strong>${fmt(tva_immo)}</strong> — déductible à 100% hors prorata (Art. 102 CGI)</div>` : ''}
+    <div style="padding:7px 0;font-size:11px;color:var(--sm);font-family:var(--fm)">Art. 104 CGI : prorata arrondi au % supérieur. Régularisation possible si variation &gt; 5 centièmes (Art. 104-II).</div>`;
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', function() {
+  calcTVA();
+  calcProrata();
+});
+</script>
+
+<script>
+
+/* ─── ANTISCRAPING PATCH V1 : Zero-Width + Accordion + Guards ─── */
+(function() {
+  'use strict';
+
+  /* ── 1. Interception copier/coller ── */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '\u00A0');
+  });
+  document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+  /* ── 2. Blocage raccourcis clavier ── */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'a', 'p', 'i'].includes(key)) {
+      e.preventDefault();
+      return false;
+    }
+    if (key === 'f12') { e.preventDefault(); return false; }
+    if (key === 'printscreen') { e.preventDefault(); return false; }
+  });
+
+  /* ── 3. Blocage clic droit ── */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* ── 4. Zero-Width Unicode injection ──
+     Fragmente le contenu textuel des nœuds légaux avec des
+     caractères invisibles U+200B U+200C U+200D toutes les ~6 lettres.
+     Résultat : copier le texte retourne du bruit inutilisable. */
+  var ZW_CHARS = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+
+  function zwRandom() {
+    return ZW_CHARS[Math.floor(Math.random() * ZW_CHARS.length)];
+  }
+
+  function injectZW(text) {
+    if (!text || text.trim().length < 4) return text;
+    var result = '';
+    var step = 5 + Math.floor(Math.random() * 3); // 5-7 chars
+    for (var i = 0; i < text.length; i++) {
+      result += text[i];
+      if (i > 0 && i % step === 0 && text[i] !== ' ') {
+        result += zwRandom();
+        step = 5 + Math.floor(Math.random() * 3);
+      }
+    }
+    return result;
+  }
+
+  function processTextNode(node) {
+    if (node.nodeType === 3 && node.nodeValue) {
+      var v = node.nodeValue;
+      if (v.trim().length > 3 && !/^\s+$/.test(v)) {
+        node.nodeValue = injectZW(v);
+      }
+    }
+  }
+
+  /* Sélecteurs des zones légales à fragmenter */
+  var LEGAL_SELECTORS = [
+    'p', 'li', 'td', 'th', 'blockquote',
+    '.law-text', '.legal-text', '.ref-text',
+    '.law-content', '.legal-content',
+    '.law-card-body', '.acc-body',
+    '.info-body', '.doc-body',
+    '.protected', '.protected-text',
+    'h3', 'h4', 'h5',
+  ].join(',');
+
+  /* Exclusions : ne pas fragmenter le contenu interactif */
+  var EXCLUDE_SELECTORS = [
+    '.sim-result', '.sim-output', '.calc-result',
+    'input', 'textarea', 'select', 'option',
+    'script', 'style', 'code', 'pre',
+  ];
+
+  function isExcluded(el) {
+    for (var i = 0; i < EXCLUDE_SELECTORS.length; i++) {
+      if (el.closest && el.closest(EXCLUDE_SELECTORS[i])) return true;
+    }
+    return false;
+  }
+
+  function applyZWInjection() {
+    try {
+      var nodes = document.querySelectorAll(LEGAL_SELECTORS);
+      nodes.forEach(function(el) {
+        if (isExcluded(el)) return;
+        var walker = document.createTreeWalker(
+          el, NodeFilter.SHOW_TEXT, null, false
+        );
+        var textNodes = [];
+        var node;
+        while ((node = walker.nextNode())) textNodes.push(node);
+        textNodes.forEach(processTextNode);
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 5. Accordion-hidden pour les sections légales ── */
+  var ACCORDION_SELECTORS = [
+    '.law-card', '.law-section', '.acc-card',
+    '.info-block', '.ref-block', '.legal-block',
+    '.reg-block', '.doc-block', '.content-block',
+    '.fiche-block', '.note-block',
+  ].join(',');
+
+  var EXCLUDE_ACCORDION = [
+    '.sim-', '#sim', '.simulator', '.calculator',
+    '.calc-', '.tab-panel', '.tab-content',
+    '.modal', '.chart', '.graph',
+  ];
+
+  function isAccordionExcluded(el) {
+    for (var i = 0; i < EXCLUDE_ACCORDION.length; i++) {
+      try {
+        if (el.closest && el.closest(EXCLUDE_ACCORDION[i])) return true;
+        if (el.id && el.id.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) === 0) return true;
+        if (el.className && typeof el.className === 'string' &&
+            el.className.indexOf(EXCLUDE_ACCORDION[i].replace(/[.#]/g,'')) >= 0) return true;
+      } catch(e) {}
+    }
+    return false;
+  }
+
+  function buildAccordions() {
+    try {
+      var blocks = document.querySelectorAll(ACCORDION_SELECTORS);
+      blocks.forEach(function(block) {
+        if (isAccordionExcluded(block)) return;
+        /* Cherche le premier enfant qui fait office de titre (header, h2-h6, .card-header, etc.) */
+        var trigger = block.querySelector(
+          '.law-card-header, .acc-trigger, .card-header, .block-header, h2, h3, h4'
+        );
+        if (!trigger) return;
+        /* Le reste = body à masquer */
+        var body = trigger.nextElementSibling;
+        if (!body) return;
+
+        /* Éviter double-patch */
+        if (trigger.classList.contains('as-accordion-trigger')) return;
+
+        trigger.classList.add('as-accordion-trigger');
+        body.classList.add('as-accordion-body');
+        /* Premier bloc ouvert par défaut, les suivants fermés */
+        var siblings = block.parentElement
+          ? block.parentElement.querySelectorAll(ACCORDION_SELECTORS)
+          : [];
+        var isFirst = (siblings.length > 0 && siblings[0] === block);
+        if (isFirst) {
+          trigger.classList.add('as-open');
+          body.classList.add('as-open');
+        }
+
+        trigger.addEventListener('click', function(e) {
+          var isOpen = this.classList.contains('as-open');
+          this.classList.toggle('as-open', !isOpen);
+          body.classList.toggle('as-open', !isOpen);
+        });
+      });
+    } catch(err) { /* silencieux */ }
+  }
+
+  /* ── 6. DevTools detection (soft — overlay seulement, pas de innerHTML destroy) ── */
+  var devtoolsOpen = false;
+  var overlay = null;
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:rgba(15,25,35,0.97)',
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'flex-direction:column', 'gap:1rem',
+      'font-family:DM Sans,sans-serif',
+    ].join(';');
+    overlay.innerHTML = '<div style="color:#B8922A;font-size:1.5rem;font-weight:700;">🔒 Contenu protégé</div>'
+      + '<div style="color:#aaa;font-size:0.9rem;">Fermer les outils développeur pour continuer.</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideOverlay() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  setInterval(function() {
+    var t = performance.now();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    var dt = performance.now() - t;
+    if (dt > 80) {
+      if (!devtoolsOpen) { devtoolsOpen = true; showOverlay(); }
+    } else {
+      if (devtoolsOpen) { devtoolsOpen = false; hideOverlay(); }
+    }
+  }, 2000);
+
+  /* ── 7. Blocage impression ── */
+  window.addEventListener('beforeprint', function(e) { e.preventDefault(); });
+
+  /* ── Init au chargement ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      buildAccordions();
+      applyZWInjection();
+    });
+  } else {
+    buildAccordions();
+    applyZWInjection();
+  }
+
+})();
+
+</script>
+</body>
+</html>
